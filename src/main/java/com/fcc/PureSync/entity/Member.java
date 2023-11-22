@@ -3,14 +3,14 @@ package com.fcc.PureSync.entity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tb_member")
 @Getter
-@Setter
+@NoArgsConstructor
 public class Member {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,4 +26,17 @@ public class Member {
     private Long memImgsize;
     private LocalDateTime memCreatedAt;
     private LocalDateTime memLastLoginAt;
+
+    @Builder
+    public Member(String memId, String memPassword,
+                  String memNick, String memEmail, String memBirth, String memGender) {
+        this.memId = memId;
+        this.memPassword = memPassword;
+        this.memNick = memNick;
+        this.memEmail = memEmail;
+        this.memBirth = memBirth;
+        this.memGender = memGender;
+        this.memStatus = 1;
+        this.memCreatedAt = LocalDateTime.now();
+    }
 }

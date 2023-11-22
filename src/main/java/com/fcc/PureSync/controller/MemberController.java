@@ -1,16 +1,15 @@
 package com.fcc.PureSync.controller;
 
 import com.fcc.PureSync.dto.LoginDto;
+import com.fcc.PureSync.dto.SignupDto;
 import com.fcc.PureSync.entity.Member;
 import com.fcc.PureSync.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 
 
 @RestController
@@ -21,20 +20,20 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/signup")
-    public ResponseEntity<String> signUp(@RequestBody Member member) {
+    public HashMap<String, Object> signUp(@RequestBody SignupDto signupDto) {
 
-        memberService.signUp(member);
-        return new ResponseEntity<>("User signed up successfully", HttpStatus.CREATED);
+        return memberService.signUp(signupDto);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginDto loginDto) {
-        if (memberService.login(loginDto)) {
-            return new ResponseEntity<>("Login successful", HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("Invalid credentials", HttpStatus.UNAUTHORIZED);
-        }
+    public HashMap<String, Object> login(@RequestBody LoginDto loginDto) {
+
+        return memberService.login(loginDto);
     }
 
+    @GetMapping("/check-duplicate/{field}/{value}")
+    public HashMap<String, Object> checkDuplicate(@PathVariable String field, @PathVariable String value) {
 
+        return memberService.checkDuplicate(field, value);
+    }
 }
