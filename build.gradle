@@ -36,6 +36,14 @@ dependencies {
 	testImplementation 'io.projectreactor:reactor-test'
 	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.2'
 	testImplementation 'org.springframework.security:spring-security-test'
+
+	//히카리하고 mybatis 에 필요한 모듈둘
+	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+	implementation 'com.zaxxer:HikariCP:5.0.1'
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.0'
+
+	// https://mvnrepository.com/artifact/org.bgee.log4jdbc-log4j2/log4jdbc-log4j2-jdbc4
+	implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4:1.16'
 }
 
 tasks.named('bootBuildImage') {
