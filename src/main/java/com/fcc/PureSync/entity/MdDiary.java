@@ -2,6 +2,7 @@ package com.fcc.PureSync.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Fetch;
 
 import java.time.LocalDateTime;
 
@@ -23,4 +24,11 @@ public class MdDiary {
     Boolean dyStatus;
     LocalDateTime dyWdate;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "mem_seq")
+    Member member;
+
+    @OneToOne
+    @JoinColumn(name="emo_seq")
+    Emotion emotion;
 }
