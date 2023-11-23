@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+    a : tb_menu_list
+    b : tb_food
+    c : tb_member
+-->
+<mapper namespace="Menu">
+    <select id="getMenuAllList" resultType="MenuDto" parameterType="MenuDto">
+        SELECT a.menu_seq, a.menu_date, a.menu_when, a.menu_total, a.menu_gram,
+                      b.food_name, b.food_car, b.food_pro, b.food_fat, b.food_sugar, b.food_na, b.food_col, b.food_kcal
+        FROM tb_menu_list a
+        LEFT OUTER JOIN tb_food b ON a.food_seq = b.food_seq
+        LEFT OUTER JOIN tb_member c ON a.mem_seq = c.mem_seq
+        WHERE a.mem_seq = #{mem_seq} and a.menu_when=#{menu_when} and a.menu_date=#{menu_date}
+    </select>
+
+</mapper>
