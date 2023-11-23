@@ -16,5 +16,5 @@ public class Emotion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long emoSeq;
     String emoState;
-    Integer emofield;
+    Integer emoField;
 }
