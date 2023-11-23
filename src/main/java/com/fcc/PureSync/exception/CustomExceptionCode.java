@@ -10,6 +10,8 @@ public enum CustomExceptionCode {
     /*
      * 400
      */
+    BAD_REQUEST(HttpStatus.BAD_REQUEST, "잘못된 접근입니다."),
+    NOT_INSERT_USER(HttpStatus.BAD_REQUEST, "잘못된 회원가입 요청입니다."),
     NOT_MATCH_WRITER(HttpStatus.BAD_REQUEST, "작성자가 아닙니다."),
     ALREADY_LOGOUT_USER(HttpStatus.BAD_REQUEST, "다시 로그인해 주시기 바랍니다."),
     NOT_ALLOW_MORE_REPLY(HttpStatus.BAD_REQUEST, "더 이상 대댓글을 등록할 수 없습니다."),
@@ -32,6 +34,8 @@ public enum CustomExceptionCode {
     /*
      * 404
      */
+    NOT_FOUND_USER_ID(HttpStatus.NOT_FOUND, "아이디가 일치하지 않습니다."),
+    NOT_FOUND_USER_PW(HttpStatus.NOT_FOUND, "비밀번호가 일치하지 않습니다."),
     NOT_FOUND_USER(HttpStatus.NOT_FOUND, "해당 사용자를 찾을 수 없습니다."),
     USER_ROLE_NOT_EXIST(HttpStatus.NOT_FOUND, "권한이 존재하지 않습니다."),
     USER_ROLE_INVALID(HttpStatus.NOT_FOUND, "옳은 권한이 아닙니다."),
@@ -52,8 +56,9 @@ public enum CustomExceptionCode {
     /*
      * 409
      */
-    ALREADY_EXIST_USER(HttpStatus.CONFLICT, "이미 존재하는 아이디입니다."),
+    ALREADY_EXIST_ID(HttpStatus.CONFLICT, "이미 존재하는 아이디입니다."),
     ALREADY_EXIST_EMAIL(HttpStatus.CONFLICT, "이미 존재하는 이메일입니다."),
+    ALREADY_EXIST_NICK(HttpStatus.CONFLICT, "이미 존재하는 닉네임입니다."),
     ALREADY_USED_PASSWORD(HttpStatus.CONFLICT, "기존 비밀번호로 변경할 수 없습니다."),
     USER_NOT_MATCH(HttpStatus.CONFLICT, "해당 사용자가 존재하지 않거나, 아이디 혹은 비밀번호가 일치하지 않습니다."),
     PASSWORD_NOT_MATCH(HttpStatus.CONFLICT, "비밀번호가 일치하지 않습니다."),
