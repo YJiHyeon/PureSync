@@ -18,7 +18,6 @@ public class Menu {
     private Long menuSeq;
     private String menuDate;
     private Integer menuWhen;
-    private  Double menuTotal;
     private Double menuGram;
     private LocalDateTime menuWdate = LocalDateTime.now();
     private Long memSeq;
