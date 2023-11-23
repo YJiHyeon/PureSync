@@ -12,12 +12,12 @@ import java.time.LocalDateTime;
 @Setter
 public class ExerciseDto {
     private Long el_seq;
-    private LocalDateTime exercise_wdate;
-    private Integer el_tme;
-    private Double el_kcal;
-    private Long ec_seq;
-    private Long mem_seq;
     private String el_date;
+    private String el_time;
+    private Double el_total;
+    private LocalDateTime el_wdate = LocalDateTime.now() ;
+    private Long mem_seq;
+    private Long ec_seq;
 
     private String ec_name;
     private Double ec_calc;

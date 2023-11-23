@@ -18,6 +18,6 @@
     LEFT OUTER JOIN tb_exercise_calc b ON a.ec_seq = b.ec_seq
     LEFT OUTER JOIN tb_member c ON a.mem_seq = c.mem_seq
     LEFT OUTER JOIN tb_body d ON a.mem_seq = c.mem_seq = d.mem_seq
-    WHERE a.mem_seq = #{mem_seq} and a.el_time=#{el_time}
+    WHERE a.mem_id = #{mem_id} and a.el_date=#{el_date}
     </select>
 </mapper>

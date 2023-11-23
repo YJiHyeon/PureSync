@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 public class MenuDto {
     private Long menu_seq;
-    private LocalDateTime menu_wdate;
+    private LocalDateTime menu_wdate = LocalDateTime.now() ;
     private Integer menu_when;
     private Long mem_seq;
     private Long food_seq;
