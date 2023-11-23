@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+    a : tb_exercise_list
+    b : tb_exercise_calc
+    c : tb_member
+    d : tb_body
+-->
+<mapper namespace="Exercise">
+    <select id="getExerciseAllList" resultType="ExerciseDto" parameterType="ExerciseDto">
+    SELECT a.mem_seq, a.el_seq, a.el_date, a.el_time, a.el_total,
+                b.ec_name, b.ec_calc,
+                c.mem_gender,
+                d.body_height, d.body_weight
+    FROM tb_exercise_list a
+    LEFT OUTER JOIN tb_exercise_calc b ON a.ec_seq = b.ec_seq
+    LEFT OUTER JOIN tb_member c ON a.mem_seq = c.mem_seq
+    LEFT OUTER JOIN tb_body d ON a.mem_seq = c.mem_seq = d.mem_seq
+    WHERE a.mem_seq = #{mem_seq} and a.el_time=#{el_time}
+    </select>
+</mapper>

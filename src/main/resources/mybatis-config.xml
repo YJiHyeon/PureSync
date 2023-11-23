@@ -4,11 +4,16 @@
 
 <configuration>
     <typeAliases>
-        <typeAlias alias="Exam" type="com.fcc.PureSync.entity.entity"/>
+        <typeAlias alias="Exam"  type="com.fcc.PureSync.entity.entity"/>
+        <typeAlias alias="ExerciseDto" type="com.fcc.PureSync.dto.ExerciseDto"/>
+        <typeAlias alias="MenuDto"     type="com.fcc.PureSync.dto.MenuDto"/>
     </typeAliases>
 
     <mappers>
         <mapper resource="mapper/exam.xml" />
+        <mapper resource="mapper/Exercise.xml" />
+        <mapper resource="mapper/Menu.xml" />
 
     </mappers>
 </configuration>
+
