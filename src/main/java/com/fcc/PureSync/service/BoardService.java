@@ -1,6 +1,5 @@
 package com.fcc.PureSync.service;
 
-import com.fcc.PureSync.dto.BoardDetailDto;
 import com.fcc.PureSync.dto.BoardDto;
 import com.fcc.PureSync.dto.ResultDto;
 import com.fcc.PureSync.entity.Board;
@@ -17,7 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 
-import static com.fcc.PureSync.dto.BoardDetailDto.toDto;
+import static com.fcc.PureSync.dto.BoardDto.toDto;
 
 
 @Service
@@ -27,7 +26,7 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
 
-    public ResultDto getResultDto(int code, HttpStatus status, String msg, HashMap<String, Object> map) {
+    public ResultDto buildResultDto(int code, HttpStatus status, String msg, HashMap<String, Object> map) {
         return ResultDto.builder()
                 .code(code)
                 .httpStatus(status)
@@ -51,10 +50,10 @@ public class BoardService {
         //Board board = new Board(boardDto.getBoardName(), boardDto.getBoardContents(), member);
         boardRepository.save(board);
 
-        BoardDto dto = BoardDto.toDto(board);
+        BoardDto dto = toDto(board);
         HashMap<String, Object> map = new HashMap<>();
         map.put("board", dto);
-        return getResultDto(HttpStatus.CREATED.value(), HttpStatus.CREATED, "게시판 생성 성공", map);
+        return buildResultDto(HttpStatus.CREATED.value(), HttpStatus.CREATED, "게시판 생성 성공", map);
 
     }
 
@@ -73,41 +72,55 @@ public class BoardService {
                 .build();
 
         boardRepository.save(updatedBoard);
-        BoardDto dto = BoardDto.toDto(board);
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("updatedBoard", BoardDto.toDto(updatedBoard));
 
-        return getResultDto(HttpStatus.OK.value(), HttpStatus.OK, "게시판 수정 성공", map);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("updatedBoard", toDto(updatedBoard));
+
+        return buildResultDto(HttpStatus.OK.value(), HttpStatus.OK, "게시판 수정 성공", map);
     }
 
     public ResultDto deleteBoard(Long boardSeq, String id) {
+        id = "aaa";//////////////////////////////////////////////
+        Member member = memberRepository.findByMemId(id)
+                .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
         Board board = boardRepository.findById(boardSeq)
                 .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_ARTICLE));
-        boardRepository.delete(board);
+        Board updatedBoard = Board.builder()
+                .boardSeq(board.getBoardSeq())
+                .boardName(board.getBoardName())
+                .boardContents(board.getBoardContents())
+                .boardStatus(false)
+                .member(member)
+                .build();
+        boardRepository.save(updatedBoard);
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("updatedBoard", toDto(updatedBoard));
         return ResultDto.builder()
                 .code(HttpStatus.OK.value())
                 .httpStatus(HttpStatus.OK)
                 .message("게시판 삭제 성공")
+                .data(map)
                 .build();
     }
 
     public ResultDto detailBoard(Long boardSeq, String id) {
         Board board = boardRepository.findById(boardSeq)
                 .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_ARTICLE));
-        BoardDetailDto boardDetailDto = toDto(board);
+        BoardDto boardDetailDto = toDto(board);
         HashMap<String, Object> map = new HashMap<>();
         map.put("boardDetailDto", boardDetailDto);
-        return getResultDto(HttpStatus.OK.value(), HttpStatus.OK, "게시판 조회 성공", map);
+        return buildResultDto(HttpStatus.OK.value(), HttpStatus.OK, "게시판 조회 성공", map);
     }
 
     public ResultDto findAllBoard(Pageable pageable, String id) {
         List<Board> boardPage = boardRepository.findAll(pageable).getContent();
-        List<BoardDetailDto> boardDetailDtoList = boardPage.stream()
-                .map(BoardDetailDto::toDto)
+        List<BoardDto> boardDetailDtoList = boardPage.stream()
+                .map(BoardDto::toDto)
                 .toList();
         HashMap<String, Object> map = new HashMap<>();
         map.put("boardPage", boardDetailDtoList);
-        return getResultDto(HttpStatus.OK.value(), HttpStatus.OK, "게시판 전체 조회 성공", map);
+        return buildResultDto(HttpStatus.OK.value(), HttpStatus.OK, "게시판 전체 조회 성공", map);
     }
 }
 

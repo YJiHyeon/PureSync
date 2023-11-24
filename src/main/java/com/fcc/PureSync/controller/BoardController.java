@@ -20,7 +20,7 @@ public class BoardController {
     /**
      * 등록
      */
-    @PostMapping("/create")
+    @PostMapping
     public ResultDto createBoard(@RequestBody BoardDto boardDto, String id) {
         return boardService.createBoard(boardDto, id);
     }
@@ -28,7 +28,7 @@ public class BoardController {
     /**
      * 수정
      */
-    @PutMapping("/update/{boardSeq}")
+    @PutMapping("/{boardSeq}")
     public ResultDto updateBoard(@PathVariable Long boardSeq, @RequestBody BoardDto boardDto,String mem_id) {
         return boardService.updateBoard(boardSeq, boardDto, mem_id);
     }
@@ -36,7 +36,7 @@ public class BoardController {
     /**
      * 삭제
      */
-    @DeleteMapping("/delete/{boardSeq}")
+    @DeleteMapping("/{boardSeq}")
     public ResultDto deleteBoard(@PathVariable Long boardSeq, String id) {
         return boardService.deleteBoard(boardSeq, id);
     }
@@ -52,7 +52,7 @@ public class BoardController {
     /**
      * 조회(전체)
      */
-    @GetMapping("/view")
+    @GetMapping
     public ResultDto getAllBoards(Pageable pageable , String id) {
         return boardService.findAllBoard(pageable,id);
 
