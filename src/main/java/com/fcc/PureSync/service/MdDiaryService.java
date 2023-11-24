@@ -12,6 +12,7 @@ import com.fcc.PureSync.repository.EmotionRepository;
 import com.fcc.PureSync.repository.MdDiaryRepository;
 import com.fcc.PureSync.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.sql.Update;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -37,24 +38,75 @@ public class MdDiaryService {
                 ResultDto.builder()
                         .code(HttpStatus.OK.value())
                         .httpStatus(HttpStatus.OK)
-                        .message("Success")
+                        .message("success")
                         .data(data)
                         .build();
 
         return resultDto;
     }
 
-    public ResultDto writeMdDiary(DiaryRequestDto dto){
+    public ResultDto getMdDiary(Long dySeq) {
+        MdDiary mdDiary = mdDiaryRepository.findById(dySeq).orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_ARTICLE));
+        if(!mdDiary.getDyStatus()) throw new CustomException(CustomExceptionCode.ALREADY_DELETED_ARTICLE);
+        entityToDto(mdDiary);
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("mdDiary", mdDiary);
+
+        ResultDto resultDto = buildResultDto(200, HttpStatus.OK, "success", data);
+
+        return resultDto;
+    }
+
+    public ResultDto writeMdDiary(DiaryRequestDto dto) {
         MdDiary mdDiary = dtoToEntity(dto);
         mdDiaryRepository.save(mdDiary);
         HashMap<String, Object> data = new HashMap<>();
         data.put("mdDiary", mdDiary);
-        ResultDto resultDto = ResultDto.builder()
-                .code(HttpStatus.OK.value())
-                .httpStatus(HttpStatus.OK)
-                .message("Success")
-                .data(data)
-                .build();
+
+        ResultDto resultDto = buildResultDto(201, HttpStatus.CREATED, "insert Complete", data);
+
+        return resultDto;
+    }
+
+    public ResultDto updateMdDiray(Long dySeq, DiaryRequestDto dto) {
+        MdDiary mdDiary = mdDiaryRepository.findById(dySeq).orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_ARTICLE));
+        Emotion updatedEmotion = emotionRepository.findByEmoState(dto.getEmoState());
+        MdDiary updatedMdDiary =
+                MdDiary.builder()
+                        .dySeq(mdDiary.getDySeq())
+                        .dyDate(dto.getDyDate())
+                        .dyTitle(dto.getDyTitle())
+                        .dyContents(dto.getDyContents())
+                        .dyStatus(true)
+                        .emotion(updatedEmotion)
+                        .member(mdDiary.getMember())
+                        .build();
+
+        mdDiaryRepository.save(updatedMdDiary);
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("mdDiary", updatedMdDiary);
+        ResultDto resultDto = buildResultDto(200, HttpStatus.OK, "update Complete", data);
+
+        return resultDto;
+    }
+
+    public ResultDto deleteMdDiary(Long dySeq) {
+        MdDiary mdDiary = mdDiaryRepository.findById(dySeq).orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_ARTICLE));
+        MdDiary deletedMdDiary =
+                MdDiary.builder()
+                        .dySeq(mdDiary.getDySeq())
+                        .dyDate(mdDiary.getDyDate())
+                        .dyTitle(mdDiary.getDyTitle())
+                        .dyContents(mdDiary.getDyContents())
+                        .dyStatus(false)
+                        .emotion(mdDiary.getEmotion())
+                        .member(mdDiary.getMember())
+                        .build();
+
+        mdDiaryRepository.save(deletedMdDiary);
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("mdDiary", deletedMdDiary);
+        ResultDto resultDto = buildResultDto(200, HttpStatus.OK, "delete Complete", data);
 
         return resultDto;
     }
@@ -85,4 +137,16 @@ public class MdDiaryService {
                 .member(dtoMember)
                 .build();
     }
+
+    //ResultDto 빌더
+    public ResultDto buildResultDto(int code, HttpStatus httpStatuss, String message, HashMap<String, Object> data) {
+        return ResultDto.builder()
+                .code(code)
+                .httpStatus(httpStatuss)
+                .message(message)
+                .data(data)
+                .build();
+    }
+
+
 }

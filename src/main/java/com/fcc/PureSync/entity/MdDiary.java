@@ -3,6 +3,7 @@ package com.fcc.PureSync.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.Where;
 
 import java.time.LocalDateTime;
 
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 @Builder
 @Entity
 @Table(name="tb_md_diary")
+@Where(clause = "dy_status=true")
 public class MdDiary {
 
     @Id
