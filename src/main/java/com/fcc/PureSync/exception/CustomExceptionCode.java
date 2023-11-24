@@ -17,6 +17,11 @@ public enum CustomExceptionCode {
     NOT_ALLOW_MORE_REPLY(HttpStatus.BAD_REQUEST, "더 이상 대댓글을 등록할 수 없습니다."),
     IMAGE_COUNT_MISMATCH(HttpStatus.BAD_REQUEST, "전달된 이미지의 수와 업로드된 이미지의 수가 일치하지 않습니다."),
     WRONG_SECURITY_ANSWER(HttpStatus.BAD_REQUEST, "보안 질문 혹은 답변을 다시 확인해 주시기 바랍니다."),
+
+    INSERT_FAIL(HttpStatus.BAD_REQUEST, "잘못된 접근입니다. 잘못된 데이터 형식으로 요청을 보내거나 필수 필드를 누락했는지 확인하십시오."),
+    UPDATE_FAIL(HttpStatus.BAD_REQUEST, "잘못된 접근입니다. 잘못된 데이터 형식으로 요청을 보내거나 필수 필드를 누락했는지 확인하십시오."),
+    DELETE_FAIL(HttpStatus.BAD_REQUEST, "잘못된 접근입니다. 잘못된 데이터 형식으로 요청을 보내거나 필수 필드를 누락했는지 확인하십시오."),
+
     /*
      * 401
      */
@@ -34,6 +39,7 @@ public enum CustomExceptionCode {
     /*
      * 404
      */
+    NOT_FOUND_MENU(HttpStatus.NOT_FOUND, "존재 하지 않는 회원입니다"),
     NOT_FOUND_USER_ID(HttpStatus.NOT_FOUND, "아이디가 일치하지 않습니다."),
     NOT_FOUND_USER_PW(HttpStatus.NOT_FOUND, "비밀번호가 일치하지 않습니다."),
     NOT_FOUND_USER(HttpStatus.NOT_FOUND, "해당 사용자를 찾을 수 없습니다."),
@@ -53,6 +59,9 @@ public enum CustomExceptionCode {
     NOT_FOUND_COMMENT(HttpStatus.NOT_FOUND, "해당 댓글을 찾을 수 없습니다."),
     NOT_FOUND_IMAGE(HttpStatus.NOT_FOUND, "해당 이미지를 찾을 수 없습니다."),
     NOT_FOUND_FOLLOW(HttpStatus.NOT_FOUND, "아직 팔로우 한 인원이 없습니다."),
+
+
+    NOT_FOUND_EXERCISE(HttpStatus.NOT_FOUND, "존재하지 않는 회원입니다"),
     /*
      * 409
      */
@@ -72,6 +81,7 @@ public enum CustomExceptionCode {
     ALREADY_EXIST_ROADMAP_BOOKMARK(HttpStatus.CONFLICT, "이미 북마크에 저장된 로드맵입니다."),
     ALREADY_DELETED_USER(HttpStatus.CONFLICT, "이전에 삭제된 아이디입니다."),
     ALREADY_DELETED_EMAIL(HttpStatus.CONFLICT, "이전에 삭제된 이메일입니다."),
+
     /*
      * 415
      */
