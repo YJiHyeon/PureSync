@@ -22,7 +22,9 @@ public class MdDiary {
     String dyTitle;
     String dyContents;
     Boolean dyStatus;
-    LocalDateTime dyWdate;
+
+    @Builder.Default
+    LocalDateTime dyWdate=LocalDateTime.now();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mem_seq")
