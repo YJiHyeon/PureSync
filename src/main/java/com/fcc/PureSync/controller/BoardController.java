@@ -4,9 +4,11 @@ import com.fcc.PureSync.dto.BoardDto;
 import com.fcc.PureSync.dto.ResultDto;
 import com.fcc.PureSync.repository.MemberRepository;
 import com.fcc.PureSync.service.BoardService;
+import com.fcc.PureSync.util.FileUploadUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
@@ -25,6 +27,12 @@ public class BoardController {
         return boardService.createBoard(boardDto, id);
     }
 
+//    @PostMapping
+//    public ResultDto createBoard(BoardDto boardDto, String id, MultipartFile file) {
+//        String filename = FileUploadUtil.upload("", file);
+//
+//        return boardService.createBoard(boardDto, id);
+//    }
     /**
      * 수정
      */
