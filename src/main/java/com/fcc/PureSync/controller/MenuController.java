@@ -17,7 +17,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MenuController {
     // 서비스에서 예외처리
-
     private final MenuService menuService;
 
     @GetMapping("/list")
