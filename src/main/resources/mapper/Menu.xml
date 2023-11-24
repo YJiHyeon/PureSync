@@ -11,11 +11,11 @@
     <select id="getMenuAllList" resultType="MenuDto" parameterType="MenuDto">
         SELECT a.menu_seq, a.menu_date, a.menu_when,a.menu_gram,
                      b.food_name, b.food_car, b.food_pro, b.food_fat, b.food_sugar, b.food_na, b.food_col, b.food_kcal,
-                     a.menu_gram * b.food_kcal  as menu_total
+                    (a.menu_gram/100.0) * b.food_kcal  as menu_total
         FROM tb_menu_list a
         LEFT OUTER JOIN tb_food b ON a.food_seq = b.food_seq
         LEFT OUTER JOIN tb_member c ON a.mem_seq = c.mem_seq
-        WHERE a.mem_id = #{mem_id} AND a.menu_when=#{menu_when} AND a.menu_date=#{menu_date}
+        WHERE a.mem_seq = #{mem_seq} AND a.menu_when=#{menu_when} AND a.menu_date=#{menu_date}
     </select>
 
 </mapper>

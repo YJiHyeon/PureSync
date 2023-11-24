@@ -21,8 +21,8 @@ public class MenuController {
     private final MenuService menuService;
 
     @GetMapping("/list")
-    public ResultDto getAllMenuList (@RequestBody  MenuDto menuTo ) {
-        return  menuService.getMenuAllList(menuTo);
+    public ResultDto  getAllMenuList (@RequestBody  MenuDto menuTo ) {
+         return menuService.getMenuAllList(menuTo);
     }
 
     @PostMapping("/save")

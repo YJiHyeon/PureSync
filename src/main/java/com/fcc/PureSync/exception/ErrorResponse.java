@@ -13,6 +13,7 @@ public class ErrorResponse {
     private final String message;
 
     public static ResponseEntity<ErrorResponse> errorResponse(CustomExceptionCode customExceptionCode) {
+
         return ResponseEntity
                 .status(customExceptionCode.getHttpStatus())
                 .body(ErrorResponse.builder()

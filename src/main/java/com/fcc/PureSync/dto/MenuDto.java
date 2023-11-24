@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Builder
 @Getter
 @Setter
-public class MenuDto {
+public class  MenuDto {
     private Long menu_seq;
     private LocalDateTime menu_wdate = LocalDateTime.now() ;
     private Integer menu_when;
