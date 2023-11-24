@@ -24,6 +24,16 @@ public class MenuService {
     private final MenuRepository menuRepository;
 
     public ResultDto getMenuAllList(MenuDto menuTo) {
+        if (menuTo.getMem_seq() == null ) {
+            throw new CustomException(CustomExceptionCode.NOT_FOUND_SEQ);
+        }
+        if (menuTo.getMenu_date() == null ) {
+            throw new CustomException(CustomExceptionCode.NOT_FOUND_DATE);
+        }
+        if (menuTo.getMenu_when()== null ) {
+            throw new CustomException(CustomExceptionCode.NOT_FOUND_WHEN);
+        }
+
         List<MenuDto> menuList = menuDao.getMenuList(menuTo);
         // 잘못된 seq 전달
         if (menuList.isEmpty()) {

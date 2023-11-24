@@ -25,8 +25,12 @@ public class ExerciseService {
     private final ExerciseRepository exerciseRepository;
 
     public ResultDto getExerciseAllList(ExerciseDto exerciseTo) {
-
-
+        if (exerciseTo.getMem_seq() == null ) {
+            throw new CustomException(CustomExceptionCode.NOT_FOUND_SEQ);
+        }
+        if (exerciseTo.getEl_date() == null ) {
+            throw new CustomException(CustomExceptionCode.NOT_FOUND_DATE);
+        }
 
         List<ExerciseDto> exerciseList = exerciseDao.getExerciseList(exerciseTo);
         // 잘못된 seq 전달
