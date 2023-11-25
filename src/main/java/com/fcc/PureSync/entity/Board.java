@@ -32,6 +32,4 @@ public class Board {
     @JoinColumn(name = "mem_seq")
     private Member member;
 
-
-
 }
