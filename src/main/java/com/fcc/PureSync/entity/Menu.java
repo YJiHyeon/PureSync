@@ -19,7 +19,16 @@ public class Menu {
     private String menuDate;
     private Integer menuWhen;
     private Double menuGram;
+    @Builder.Default
     private LocalDateTime menuWdate = LocalDateTime.now();
-    private Long memSeq;
-    private Long foodSeq;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "mem_seq")
+    Member member;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "food_seq")
+    Food food;
+    //    private Long memSeq;
+    //      private Long foodSeq;
 }
