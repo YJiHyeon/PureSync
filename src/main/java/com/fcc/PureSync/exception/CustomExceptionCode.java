@@ -55,6 +55,7 @@ public enum CustomExceptionCode {
     NOT_FOUND_ROADMAP_TODO(HttpStatus.NOT_FOUND, "해당 로드맵 Todo를 찾을 수 없습니다."),
     NOT_FOUND_ARTICLE(HttpStatus.NOT_FOUND, "해당 게시글을 찾을 수 없습니다."),
     NOT_FOUND_BOARD(HttpStatus.NOT_FOUND, "해당 게시글을 찾을 수 없습니다."),
+    NOT_FOUND_SLEEP(HttpStatus.NOT_FOUND, "수면 기록을 찾을 수 없습니다."),
     ALREADY_DELETED_ARTICLE(HttpStatus.NOT_FOUND, "이미 삭제된 게시글입니다."),
     ALREADY_DELETED_COMMENT(HttpStatus.NOT_FOUND, "이미 삭제된 댓글입니다."),
  
