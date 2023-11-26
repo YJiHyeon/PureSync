@@ -1,7 +1,5 @@
 package com.fcc.PureSync.dto;
 
-import com.fcc.PureSync.entity.Emotion;
-import com.fcc.PureSync.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class DiaryRequestDto {
+public class MdDiaryRequestDto {
     String dyDate;
     String dyTitle;
     String dyContents;

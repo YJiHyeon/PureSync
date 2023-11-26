@@ -2,6 +2,7 @@ package com.fcc.PureSync.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Where;
 
 import java.time.LocalDateTime;
 
@@ -17,5 +18,11 @@ public class MdTrash {
     Long tsSeq;
     String tsContents;
     Boolean tsStatus;
-    LocalDateTime tsWdate;
+
+    @Builder.Default
+    LocalDateTime tsWdate=LocalDateTime.now();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "mem_seq")
+    Member member;
 }
