@@ -1,0 +1,27 @@
+package com.fcc.PureSync.entity;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.time.LocalDateTime;
+
+@Builder
+@Getter
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor(access= AccessLevel.PROTECTED)
+@Table(name="tb_sleep")
+public class Sleep {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long sleepSeq;
+    @Builder.Default
+    private LocalDateTime sleepWdate = LocalDateTime.now();
+    private LocalDateTime sleepGodate;
+    private LocalDateTime sleepWudate;
+    private Integer sleepWhen;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "mem_seq")
+    Member member;
+}
