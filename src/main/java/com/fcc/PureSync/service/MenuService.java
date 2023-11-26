@@ -73,10 +73,10 @@ public class MenuService {
     }
 
     private ResultDto performMenuOperation( Menu menu, String successMessage, CustomExceptionCode exceptionCode ) {
-        System.out.println( "mem_seq>>>>>>>> " + menu.getMemSeq() );
+/*        System.out.println( "mem_seq>>>>>>>> " + menu.getMemSeq() );
         if ( menu.getMemSeq() == null ) {
             throw new CustomException( CustomExceptionCode.NOT_FOUND_USER );
-        }
+        }*/
         try {
             if( exceptionCode == CustomExceptionCode.DELETE_FAIL ) {
                 menuRepository.delete( menu );

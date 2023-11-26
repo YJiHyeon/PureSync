@@ -39,6 +39,17 @@ public class CommentService {
                 .build();
     }
 
+    private void boardStatusChk(Board board) {
+        if (!board.isBoardStatus()) {
+            throw new CustomException(CustomExceptionCode.ALREADY_DELETED_ARTICLE);
+        }
+    }
+
+    private void commentStatusChk(Comment comment) {
+        if (!comment.isCmtStatus()) {
+            throw new CustomException(CustomExceptionCode.ALREADY_DELETED_COMMENT);
+        }
+    }
 
     public ResultDto createComment(CommentDto commentDto, String id, Long boardSeq) {
         id = "aaa";//////////////////////////////////////////////
@@ -46,6 +57,7 @@ public class CommentService {
                 .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
         Board board = boardRepository.findById(boardSeq)
                 .orElseThrow(()-> new CustomException(CustomExceptionCode.NOT_FOUND_BOARD));
+        boardStatusChk(board);
 
         Comment comment = Comment.builder()
                 .cmtContents(commentDto.getCmtContents())
@@ -54,7 +66,6 @@ public class CommentService {
                 .build();
 
         commentRepository.save(comment);
-
         CommentDto dto = toDto(comment);
         HashMap<String, Object> map = new HashMap<>();
         map.put("comment", dto);
@@ -67,19 +78,20 @@ public class CommentService {
                 .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
         Board board = boardRepository.findById(boardSeq)
                 .orElseThrow(()-> new CustomException(CustomExceptionCode.NOT_FOUND_BOARD));
-
         Comment comment = commentRepository.findById(cmtSeq)
                 .orElseThrow(()->new CustomException(CustomExceptionCode.NOT_FOUND_COMMENT));
+        boardStatusChk(board);
+        commentStatusChk(comment);
 
         Comment updateComment = Comment.builder()
                 .cmtSeq(comment.getCmtSeq())
                 .cmtContents(commentDto.getCmtContents())
+                .cmtWdate(comment.getCmtWdate())
                 .member(member)
                 .board(board)
                 .build();
 
         commentRepository.save(updateComment);
-
         CommentDto dto = toDto(comment);
         HashMap<String, Object> map = new HashMap<>();
         map.put("comment", dto);
@@ -93,19 +105,21 @@ public class CommentService {
                 .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
         Board board = boardRepository.findById(boardSeq)
                 .orElseThrow(()-> new CustomException(CustomExceptionCode.NOT_FOUND_BOARD));
-
         Comment comment = commentRepository.findById(cmtSeq)
                 .orElseThrow(()->new CustomException(CustomExceptionCode.NOT_FOUND_COMMENT));
+        boardStatusChk(board);
+        commentStatusChk(comment);
 
         Comment updatedComment = Comment.builder()
                 .cmtSeq(comment.getCmtSeq())
                 .cmtContents(comment.getCmtContents())
                 .cmtStatus(false)
+                .cmtWdate(comment.getCmtWdate())
                 .member(member)
                 .board(board)
                 .build();
-        commentRepository.save(updatedComment);
 
+        commentRepository.save(updatedComment);
         CommentDto dto = toDto(comment);
         HashMap<String, Object> map = new HashMap<>();
         map.put("comment", dto);

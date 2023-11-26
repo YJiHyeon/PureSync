@@ -18,15 +18,15 @@ public class CommentDto {
     private String cmtContents;
     private LocalDateTime cmtWdate;
     private Boolean cmtStatus;
-    private Long memSeq; // Member의 PK
-    private Long boardSeq; // Board의 PK
+    private Long memSeq;
+    private Long boardSeq;
 
     public static CommentDto toDto(Comment comment) {
         return CommentDto.builder()
                 .cmtSeq(comment.getCmtSeq())
                 .cmtContents(comment.getCmtContents())
                 .cmtWdate(comment.getCmtWdate())
-                .cmtStatus(comment.getCmtStatus())
+                .cmtStatus(comment.isCmtStatus())
                 .memSeq(comment.getMember().getMemSeq())
                 .boardSeq(comment.getBoard().getBoardSeq())
                 .build();

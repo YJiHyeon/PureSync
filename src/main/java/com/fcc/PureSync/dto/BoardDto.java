@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Getter
-@Builder
+@Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
 public class BoardDto {
@@ -34,6 +34,11 @@ public class BoardDto {
                 .build();
     }
 
+    public BoardDto updateLikesCount(Long likesCount) {
+        return this.toBuilder()
+                .boardLikescount(likesCount)
+                .build();
+    }
 
 
 }

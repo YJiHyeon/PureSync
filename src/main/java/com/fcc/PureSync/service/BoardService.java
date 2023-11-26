@@ -42,6 +42,14 @@ public class BoardService {
                 .build();
     }
 
+    /**
+     * boardStatus가 false면 NOT_FOUND_BOARD
+     */
+    private void boardStatusChk(Board board) {
+        if (!board.isBoardStatus()) {
+            throw new CustomException(CustomExceptionCode.ALREADY_DELETED_ARTICLE);
+        }
+    }
 
     public ResultDto createBoard(BoardDto boardDto, String id, MultipartFile file) {
         id = "aaa";//////////////////////////////////////////////
@@ -55,6 +63,7 @@ public class BoardService {
                 .build();
 
         boardRepository.save(board);
+
         /**
          * 파일 존재 o
          */
@@ -88,6 +97,13 @@ public class BoardService {
 
             return buildResultDto(HttpStatus.CREATED.value(), HttpStatus.CREATED, "게시판 생성 성공", map);
         }
+
+        BoardDto dto = toDto(board);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("board", dto);
+        return buildResultDto(HttpStatus.CREATED.value(), HttpStatus.CREATED, "게시판 생성 성공", map);
+
+
     }
 
     public ResultDto updateBoard(Long boardSeq, BoardDto boardDto, String id, MultipartFile file) {
@@ -95,16 +111,20 @@ public class BoardService {
         Member member = memberRepository.findByMemId(id)
                 .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
         Board board = boardRepository.findById(boardSeq)
-                .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_ARTICLE));
+                .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_BOARD));
+        boardStatusChk(board);
 
         Board updatedBoard = Board.builder()
                 .boardSeq(board.getBoardSeq())
                 .boardName(boardDto.getBoardName())
                 .boardContents(boardDto.getBoardContents())
+                .boardWdate(board.getBoardWdate())
+                .boardLikescount(board.getBoardLikescount())
                 .member(member)
                 .build();
 
         boardRepository.save(updatedBoard);
+
         /**
          * 파일 존재 o
          */
@@ -138,6 +158,12 @@ public class BoardService {
             return buildResultDto(HttpStatus.CREATED.value(), HttpStatus.CREATED, "게시판 수정 성공", map);
         }
 
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("updatedBoard", toDto(updatedBoard));
+
+        return buildResultDto(HttpStatus.OK.value(), HttpStatus.OK, "게시판 수정 성공", map);
+
     }
 
     public ResultDto deleteBoard(Long boardSeq, String id) {
@@ -145,16 +171,20 @@ public class BoardService {
         Member member = memberRepository.findByMemId(id)
                 .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
         Board board = boardRepository.findById(boardSeq)
-                .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_ARTICLE));
+                .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_BOARD));
+        boardStatusChk(board);
+
         Board updatedBoard = Board.builder()
                 .boardSeq(board.getBoardSeq())
                 .boardName(board.getBoardName())
                 .boardContents(board.getBoardContents())
+                .boardWdate(board.getBoardWdate())
+                .boardLikescount(board.getBoardLikescount())
                 .boardStatus(false)
                 .member(member)
                 .build();
-        boardRepository.save(updatedBoard);
 
+        boardRepository.save(updatedBoard);
         HashMap<String, Object> map = new HashMap<>();
         map.put("updatedBoard", toDto(updatedBoard));
         return ResultDto.builder()
@@ -167,7 +197,8 @@ public class BoardService {
 
     public ResultDto detailBoard(Long boardSeq, String id) {
         Board board = boardRepository.findById(boardSeq)
-                .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_ARTICLE));
+                .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_BOARD));
+        boardStatusChk(board);
         BoardDto boardDetailDto = toDto(board);
         HashMap<String, Object> map = new HashMap<>();
         map.put("boardDetailDto", boardDetailDto);
@@ -176,7 +207,12 @@ public class BoardService {
 
     public ResultDto findAllBoard(Pageable pageable, String id) {
         List<Board> boardPage = boardRepository.findAll(pageable).getContent();
-        List<BoardDto> boardDetailDtoList = boardPage.stream()
+
+        //status가 true인 board만 보이게
+        List<Board> enabledBoards = boardPage.stream()
+                .filter(Board::isBoardStatus)
+                .toList();
+        List<BoardDto> boardDetailDtoList = enabledBoards.stream()
                 .map(BoardDto::toDto)
                 .toList();
         HashMap<String, Object> map = new HashMap<>();
