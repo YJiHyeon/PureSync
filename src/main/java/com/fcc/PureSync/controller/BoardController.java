@@ -23,22 +23,16 @@ public class BoardController {
      * 등록
      */
     @PostMapping
-    public ResultDto createBoard(@RequestBody BoardDto boardDto, String id) {
-        return boardService.createBoard(boardDto, id);
+    public ResultDto createBoard(@RequestPart("boardDto") BoardDto boardDto, String id, @RequestPart(value = "file", required = false) MultipartFile file) {
+        return boardService.createBoard(boardDto, id, file);
     }
 
-//    @PostMapping
-//    public ResultDto createBoard(BoardDto boardDto, String id, MultipartFile file) {
-//        String filename = FileUploadUtil.upload("", file);
-//
-//        return boardService.createBoard(boardDto, id);
-//    }
     /**
      * 수정
      */
     @PutMapping("/{boardSeq}")
-    public ResultDto updateBoard(@PathVariable Long boardSeq, @RequestBody BoardDto boardDto,String mem_id) {
-        return boardService.updateBoard(boardSeq, boardDto, mem_id);
+    public ResultDto updateBoard(@PathVariable Long boardSeq, @RequestPart("boardDto") BoardDto boardDto, String id, @RequestPart(value = "file", required = false) MultipartFile file) {
+        return boardService.updateBoard(boardSeq, boardDto, id, file);
     }
 
     /**

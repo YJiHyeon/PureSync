@@ -1,20 +1,26 @@
 package com.fcc.PureSync.service;
 
 import com.fcc.PureSync.dto.BoardDto;
+import com.fcc.PureSync.dto.BoardFileDto;
 import com.fcc.PureSync.dto.ResultDto;
 import com.fcc.PureSync.entity.Board;
+import com.fcc.PureSync.entity.BoardFile;
 import com.fcc.PureSync.entity.Member;
 import com.fcc.PureSync.exception.CustomException;
 import com.fcc.PureSync.exception.CustomExceptionCode;
+import com.fcc.PureSync.repository.BoardFileRepository;
 import com.fcc.PureSync.repository.BoardRepository;
 import com.fcc.PureSync.repository.MemberRepository;
+import com.fcc.PureSync.util.FileUploadUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.fcc.PureSync.dto.BoardDto.toDto;
 
@@ -24,6 +30,7 @@ import static com.fcc.PureSync.dto.BoardDto.toDto;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    private final BoardFileRepository boardFileRepository;
     private final MemberRepository memberRepository;
 
     public ResultDto buildResultDto(int code, HttpStatus status, String msg, HashMap<String, Object> map) {
@@ -36,7 +43,7 @@ public class BoardService {
     }
 
 
-    public ResultDto createBoard(BoardDto boardDto, String id) {
+    public ResultDto createBoard(BoardDto boardDto, String id, MultipartFile file) {
         id = "aaa";//////////////////////////////////////////////
         Member member = memberRepository.findByMemId(id)
                 .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
@@ -47,17 +54,43 @@ public class BoardService {
                 .member(member)
                 .build();
 
-        //Board board = new Board(boardDto.getBoardName(), boardDto.getBoardContents(), member);
         boardRepository.save(board);
+        /**
+         * 파일 존재 o
+         */
+        if (file != null) {
+            String fileName = FileUploadUtil.upload("", file);
+            long fileSize = file.getSize();
 
-        BoardDto dto = toDto(board);
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("board", dto);
-        return buildResultDto(HttpStatus.CREATED.value(), HttpStatus.CREATED, "게시판 생성 성공", map);
+            BoardFile boardFile = BoardFile.builder()
+                    .boardfileName(fileName)
+                    .boardfileSize(fileSize)
+                    .board(board)
+                    .build();
 
+            boardFileRepository.save(boardFile);
+
+            BoardFileDto boardFileDto = BoardFileDto.toDto(boardFile);
+            BoardDto boardDtoResult = toDto(board);
+
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("board", boardDtoResult);
+            map.put("boardFile", boardFileDto);
+
+            return buildResultDto(HttpStatus.CREATED.value(), HttpStatus.CREATED, "게시판 생성 성공", map);
+        } else {
+            /**
+             * 파일 존재 x
+             */
+            BoardDto boardDtoResult = toDto(board);
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("board", boardDtoResult);
+
+            return buildResultDto(HttpStatus.CREATED.value(), HttpStatus.CREATED, "게시판 생성 성공", map);
+        }
     }
 
-    public ResultDto updateBoard(Long boardSeq, BoardDto boardDto, String id) {
+    public ResultDto updateBoard(Long boardSeq, BoardDto boardDto, String id, MultipartFile file) {
         id = "aaa";//////////////////////////////////////////////
         Member member = memberRepository.findByMemId(id)
                 .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
@@ -72,11 +105,39 @@ public class BoardService {
                 .build();
 
         boardRepository.save(updatedBoard);
+        /**
+         * 파일 존재 o
+         */
+        if (file != null) {
+            String fileName = FileUploadUtil.upload("", file);
+            long fileSize = file.getSize();
 
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("updatedBoard", toDto(updatedBoard));
+            BoardFile boardFile = BoardFile.builder()
+                    .boardfileName(fileName)
+                    .boardfileSize(fileSize)
+                    .board(board)
+                    .build();
 
-        return buildResultDto(HttpStatus.OK.value(), HttpStatus.OK, "게시판 수정 성공", map);
+            boardFileRepository.save(boardFile);
+
+            BoardFileDto boardFileDto = BoardFileDto.toDto(boardFile);
+            BoardDto boardDtoResult = toDto(board);
+
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("board", boardDtoResult);
+            map.put("boardFile", boardFileDto);
+
+            return buildResultDto(HttpStatus.CREATED.value(), HttpStatus.CREATED, "게시판 수정 성공", map);
+        } else {
+            /**
+             * 파일 존재 x
+             */
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("updatedBoard", toDto(updatedBoard));
+
+            return buildResultDto(HttpStatus.CREATED.value(), HttpStatus.CREATED, "게시판 수정 성공", map);
+        }
+
     }
 
     public ResultDto deleteBoard(Long boardSeq, String id) {
