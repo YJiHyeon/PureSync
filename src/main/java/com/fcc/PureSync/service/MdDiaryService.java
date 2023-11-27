@@ -41,9 +41,9 @@ public class MdDiaryService {
     public ResultDto getMdDiary(Long dySeq) {
         MdDiary mdDiary = mdDiaryRepository.findById(dySeq).orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_ARTICLE));
         if(!mdDiary.getDyStatus()) throw new CustomException(CustomExceptionCode.ALREADY_DELETED_ARTICLE);
-        entityToDto(mdDiary);
+        MdDiaryResponseDto mdDiaryResponseDto = entityToDto(mdDiary);
         HashMap<String, Object> data = new HashMap<>();
-        data.put("mdDiary", mdDiary);
+        data.put("mdDiary", mdDiaryResponseDto);
 
         ResultDto resultDto = buildResultDto(200, HttpStatus.OK, "success", data);
 
