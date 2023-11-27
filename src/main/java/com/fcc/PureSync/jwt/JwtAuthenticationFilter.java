@@ -1,5 +1,6 @@
 package com.fcc.PureSync.jwt;
 
+import com.fcc.PureSync.entity.Member;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,11 +34,12 @@ public class JwtAuthenticationFilter  extends OncePerRequestFilter {
             if(token != null && !token.equalsIgnoreCase(null)) {
                 // userId 가져오기. 위조된 경우 예외 처리된다.
                 String userId = jwtUtil.getMemId(token);
-                String memSeq = String.valueOf(jwtUtil.getMemSeq(token));
+                Long memSeq = jwtUtil.getMemSeq(token);
+                Member member = Member.builder().memId(userId).memSeq(memSeq).build();
 
                 //인증 완료. SecurityContextHolder에 등록해야 인증된 사용자라고 생가한다.
                 AbstractAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                        memSeq, // 인증된 사용자의 정보. 문자열이 아니어도 아무것이나 넣을 수 있다. 보통 UserDetails라는 오브젝트를 넣는데 우리는 넣지 않았다.
+                        new CustomUserDetails(member), // 인증된 사용자의 정보. 문자열이 아니어도 아무것이나 넣을 수 있다. 보통 UserDetails라는 오브젝트를 넣는데 우리는 넣지 않았다.
                         null,
                         AuthorityUtils.NO_AUTHORITIES
                 );

@@ -1,6 +1,7 @@
 package com.fcc.PureSync.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,8 @@ import java.time.LocalDateTime;
 @Table(name = "tb_member")
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Member {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
