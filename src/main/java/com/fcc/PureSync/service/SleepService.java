@@ -58,22 +58,24 @@ public class SleepService {
         id = "aaa";//////////////////////////////////////////////
         Member member = memberRepository.findByMemId(id)
                 .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
-        
+        Sleep sleep = sleepRepository.findById(sleepSeq)
+                .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_SLEEP));
         LocalDateTime godate = sleepDto.getSleepGodate().withNano(0);
         LocalDateTime wudate = sleepDto.getSleepWudate().withNano(0);
 
-        Sleep sleep = Sleep.builder()
+        Sleep updateSleep = Sleep.builder()
                 .sleepSeq(sleepSeq)
                 .sleepGodate(godate)
                 .sleepWudate(wudate)
                 .sleepWhen(sleepDto.getSleepWhen())
+                .sleepWdate(sleep.getSleepWdate())
                 .member(member)
                 .build();
 
-        sleepRepository.save(sleep);
-        SleepDto dto = toDto(sleep);
+        sleepRepository.save(updateSleep);
+        SleepDto dto = toDto(updateSleep);
         HashMap<String, Object> map = new HashMap<>();
-        map.put("sleep", dto);
+        map.put("updateSleep", dto);
         return buildResultDto(HttpStatus.CREATED.value(), HttpStatus.CREATED, "수면 기록 수정 성공", map);
     }
 
