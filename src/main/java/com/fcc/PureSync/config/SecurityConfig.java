@@ -1,7 +1,10 @@
 package com.fcc.PureSync.config;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -11,6 +14,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
     @Bean
@@ -32,6 +36,25 @@ public class SecurityConfig {
         http.sessionManagement(management -> management
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
+        //요청 경로별 권한 설정
+        http.authorizeHttpRequests(customizer -> customizer
+                //방법1
+//                .antMatchers("/api/**").permitAll() //회원만 가능
+//                .antMatchers("/user/**").hasAuthority("ROLE_USER") //회원만 가능
+//                .antMatchers("/doctor/**").hasAuthority("ROLE_DOCTOR") //의사만 가능
+//                .antMatchers("/hoslital/**").hasAuthority("ROLE_HADMIN") //병원 관리자만 가능
+//                .antMatchers(("/doctorAdd")).permitAll()
+                //방법2
+                //.antMatchers(HttpMethod.GET, "/board/list").hasAuthority("ROLE_USER") //ROLE_생략하면 안됨
+                //.antMatchers(HttpMethod.POST, "/board/create").hasAnyRole("USER") //ROLE_ 붙이면 안됨
+                //그 이외의 모든 경로 허가
+                .anyRequest().permitAll()); //위에 사이트 외에는 권한다 허용
+
         return http.build();
     }
+    @Bean
+    AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
+
 }
