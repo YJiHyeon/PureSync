@@ -32,23 +32,15 @@ public class DashboardService {
         HashMap<String, Object> data = new HashMap<>();
 
         List<ExerciseStatsNativeVo> exerciseStatsWeeklyList =  exerciseRepository.findLastDaysExerciseStats(member.getMemSeq(), date, 7);
-
-        HashMap<String, Object> exerciseMap = new HashMap<>();
-        exerciseMap.put("weekly", exerciseStatsWeeklyList);
-
         List<SleepStatsNativeVo> sleepStatsWeeklyList =  sleepRepository.findLastDaysSleepStats(member.getMemSeq(), date, 7);
-
-        HashMap<String, Object> sleepMap = new HashMap<>();
-        sleepMap.put("weekly", sleepStatsWeeklyList);
-
         List<EmotionNativeVo> emotionNativeVoList = mdDiaryRepository.findDataByMonth(member.getMemSeq(), date);
         Optional<DashboardDefaultNativeVo> defaultData = exerciseRepository.findDefaultData(member.getMemSeq(), date);
         List<MenuStatsNativeVo> menuStatsNativeVoList = menuRepository.find7DaysMenuStats(member.getMemSeq(), date);
 
-        data.put("exercise", exerciseMap);
-        data.put("sleep", sleepMap);
+        data.put("exerciseList", exerciseStatsWeeklyList);
+        data.put("sleepList", sleepStatsWeeklyList);
         data.put("emotionList", emotionNativeVoList);
-        data.put("default", defaultData);
+        data.put("defaultInfo", defaultData);
         data.put("menuList", menuStatsNativeVoList);
 
         ResultDto resultDto =
