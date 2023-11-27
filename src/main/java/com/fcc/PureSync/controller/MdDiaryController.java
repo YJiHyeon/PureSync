@@ -1,8 +1,7 @@
 package com.fcc.PureSync.controller;
 
-import com.fcc.PureSync.dto.DiaryRequestDto;
+import com.fcc.PureSync.dto.MdDiaryRequestDto;
 import com.fcc.PureSync.dto.ResultDto;
-import com.fcc.PureSync.entity.Member;
 import com.fcc.PureSync.service.MdDiaryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -24,12 +23,12 @@ public class MdDiaryController {
     }
 
     @PostMapping
-    public ResultDto writeMdDiary(@RequestBody DiaryRequestDto dto) {
+    public ResultDto writeMdDiary(@RequestBody MdDiaryRequestDto dto) {
         return mdDiaryService.writeMdDiary(dto);
     }
 
     @PutMapping("/{dySeq}")
-    public ResultDto updateMdDiary(@PathVariable("dySeq") Long dySeq, @RequestBody DiaryRequestDto dto) {
+    public ResultDto updateMdDiary(@PathVariable("dySeq") Long dySeq, @RequestBody MdDiaryRequestDto dto) {
         return mdDiaryService.updateMdDiray(dySeq, dto);
     }
 

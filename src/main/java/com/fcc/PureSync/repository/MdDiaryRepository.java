@@ -5,13 +5,16 @@ import com.fcc.PureSync.entity.Member;
 import com.fcc.PureSync.vo.EmotionNativeVo;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
+@Repository
 public interface MdDiaryRepository extends JpaRepository <MdDiary, Long> {
     List<MdDiary> findAllByMemberOrderByDyDateDesc(Member member, Pageable pageable);
+
 
     @Query(value =
             "WITH RECURSIVE DateRange AS ( " +
