@@ -77,7 +77,7 @@ public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
                     "   END + tb5.emotion AS score " +
                     "FROM " +
                     "(SELECT pv_contents, pv_talker FROM tb_positive ORDER BY RAND() LIMIT 1) AS tb1, " +
-                    "(SELECT body_wish_conscal, body_wish_burncal FROM tb_body WHERE mem_seq = 1) AS tb2, " +
+                    "(SELECT body_wish_conscal, body_wish_burncal FROM tb_body WHERE mem_seq = :memSeq order by body_seq limit 1) AS tb2, " +
                     "(SELECT " +
                     "COALESCE(round(sum(round(ml.menu_gram / 100) * food.food_car)), 0) as eat_kcal " +
                     "FROM " +
