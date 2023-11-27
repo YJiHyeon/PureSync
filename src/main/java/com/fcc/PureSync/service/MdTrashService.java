@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 
@@ -60,6 +61,7 @@ public class MdTrashService {
                 MdTrash.builder()
                         .tsSeq(mdTrash.getTsSeq())
                         .tsContents(mdTrash.getTsContents())
+                        .tsWdate(mdTrash.getTsWdate())
                         .tsStatus(false)
                         .member(mdTrash.getMember())
                         .build();
@@ -71,6 +73,26 @@ public class MdTrashService {
         ResultDto resultDto = buildResultDto(200, HttpStatus.OK, "delete Complete", data);
 
         return resultDto;
+    }
+
+    public void deleteYesterdayMdTrashes(){
+        LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
+        LocalDateTime yesterdayStart = LocalDateTime.of(yesterday.getYear(), yesterday.getMonth(), yesterday.getDayOfMonth(), 0,0,0);
+        LocalDateTime yesterdayEnd = LocalDateTime.of(yesterday.getYear(), yesterday.getMonth(), yesterday.getDayOfMonth(), 23,59,59);
+        List<MdTrash> yesterdayMdTrashlist = mdTrashRepository.findAllByTsStatusAndTsWdateBetween(true, yesterdayStart, yesterdayEnd);
+
+        yesterdayMdTrashlist.stream().forEach(e -> {
+            MdTrash deletedMdTrash = MdTrash.builder()
+                    .tsSeq(e.getTsSeq())
+                    .tsContents(e.getTsContents())
+                    .tsWdate(e.getTsWdate())
+                    .tsStatus(false)
+                    .member(e.getMember())
+                    .build();
+
+            mdTrashRepository.save(deletedMdTrash);
+        });
+
     }
 
     private MdTrashResponseDto entityToDto(MdTrash mdTrash) {
