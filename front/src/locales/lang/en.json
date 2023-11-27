@@ -1,6 +1,6 @@
 {
     "nav": {
-        "apps": "Apps",
+        "apps": "대시보드",
         "appsProject": {
             "project": "Project",
             "dashboard": "Dashboard",
@@ -46,7 +46,7 @@
             "activityLog": "Activity Log",
             "kycForm": "KYC Form"
         },
-        "uiComponents": "UI Components",
+        "uiComponents": "신체",
         "uiComponentsCommon": {
             "common": "Common",
             "button": "Button",
@@ -102,12 +102,12 @@
             "maps": "Maps"
         },
         "pages": {
-            "pages": "Pages",
+            "pages": "마음",
             "welcome": "Welcome",
             "accessDenied": "Access Denied"
         },
         "authentication": {
-            "authentication": "Authentication",
+            "authentication": "게시판",
             "signIn": "Sign In",
             "signInSimple": "Simple",
             "signInSide": "Side",
@@ -126,7 +126,7 @@
             "resetPasswordCover": "Cover"
         },
         "docs": {
-            "guide": "Guide",
+            "guide": "가이드",
             "documentation": "Documentation",
             "sharedComponentDoc": "Shared Component",
             "utilsDoc": "Utilities",

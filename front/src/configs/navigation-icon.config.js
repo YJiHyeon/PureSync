@@ -26,6 +26,14 @@ import {
     HiOutlineCode,
 } from 'react-icons/hi'
 
+
+import {
+    BsHeart,
+    BsPersonBoundingBox,
+    BsBarChart,
+    BsClipboard 
+ } from "react-icons/bs";
+
 const navigationIcon = {
     apps: <HiOutlineViewGridAdd />,
     project: <HiOutlineChartSquareBar />,
@@ -54,6 +62,10 @@ const navigationIcon = {
     sharedComponentDoc: <HiOutlineShare />,
     utilsDoc: <HiOutlineVariable />,
     changeLog: <HiOutlineCode />,
+    heart : <BsHeart />,
+    body : <BsPersonBoundingBox />,
+    dashboard : <BsBarChart />,
+    board : <BsClipboard />
 }
 
 export default navigationIcon

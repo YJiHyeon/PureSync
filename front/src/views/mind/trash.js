@@ -1,7 +1,7 @@
 import React from 'react'
 
-const mindTrash = () => {
+const Trash = () => {
     return <div>mindTrash</div>
 }
 
-export default mindTrash
+export default Trash

@@ -8,41 +8,47 @@ import { ADMIN, USER } from 'constants/roles.constant'
 const appsRoute = [
     // 메인
     {
-        key: 'home.home1',
-        path: `${APP_PREFIX_PATH}/home`,
+        key: 'home.home',
+        path: `/home`,
         component: React.lazy(() => import('views/Home')),
         authority: [ADMIN, USER],
     },
     // 신체
     {
         key: 'body.body',
-        path: `${APP_PREFIX_PATH}/body/body`,
+        path: `/body/body`,
         component: React.lazy(() => import('views/body/Body')),
         authority: [ADMIN, USER],
     },
     {
         key: 'body.sleep',
-        path: `${APP_PREFIX_PATH}/body/sleep`,
+        path: `/body/sleep`,
         component: React.lazy(() => import('views/body/Sleep')),
         authority: [ADMIN, USER],
     },
     // 마음
     {
         key: 'mind.diary',
-        path: `${APP_PREFIX_PATH}/mind/diary`,
-        component: React.lazy(() => import('views/mind/mindDiary')),
+        path: `/mind/diary`,
+        component: React.lazy(() => import('views/mind/diary')),
         authority: [ADMIN, USER],
     },
     {
         key: 'mind.trash',
-        path: `${APP_PREFIX_PATH}/mind/trash`,
-        component: React.lazy(() => import('views/mind/mindTrash')),
+        path: `/mind/trash`,
+        component: React.lazy(() => import('views/mind/trash')),
+        authority: [ADMIN, USER],
+    },
+    {
+        key: 'mind.exam',
+        path: `/mind/exam`,
+        component: React.lazy(() => import('views/mind/exam')),
         authority: [ADMIN, USER],
     },
     // 게시판
     {
         key: 'board',
-        path: `${APP_PREFIX_PATH}/board`,
+        path: `/board`,
         component: React.lazy(() => import('views/Board')),
         authority: [ADMIN, USER],
     },
@@ -53,7 +59,6 @@ const appsRoute = [
         component: React.lazy(() => import('views/Mypage2')),
         authority: [ADMIN, USER],
     },
-
 
 // 기존 -----------------------------------------------------------------------------------------
 

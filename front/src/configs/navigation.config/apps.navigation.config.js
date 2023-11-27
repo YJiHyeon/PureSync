@@ -6,120 +6,21 @@ import {
 } from 'constants/navigation.constant'
 import { ADMIN, USER } from 'constants/roles.constant'
 
-
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
 const appsNavigationConfig = [
     {
         key: 'apps',
         path: '',
         title: 'APPS',
         translateKey: 'nav.apps',
-        icon: 'apps',
+        icon: 'dashboard',
         type: NAV_ITEM_TYPE_TITLE,
         authority: [ADMIN, USER],
         subMenu: [
             {
                 key: 'apps.home',
-                path: `${APP_PREFIX_PATH}/home`,
-                title: '메인',
-                translateKey: 'nav.home.home1',
-                icon: 'home',
-                type: NAV_ITEM_TYPE_ITEM,
-
-                authority: [ADMIN, USER],
-                subMenu: [
-                    
-                ],
-            },
-            // 신체
-            {
-                key: 'app.body',
-                path: `${APP_PREFIX_PATH}/body`,
-                title: '신체',
-                translateKey: 'nav.body.body',
-                icon: 'home',
-                type: NAV_ITEM_TYPE_ITEM,
-
-                authority: [ADMIN, USER],
-                subMenu: [
-                    {
-                        key: 'body.body',
-                        path: `${APP_PREFIX_PATH}/body/body`,
-                        title: '신체',
-                        translateKey: 'nav.body.body',
-                        icon: '',
-                        type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
-                        subMenu: [],
-                    },
-                    {
-                        key: 'body.sleep',
-                        path: `${APP_PREFIX_PATH}/body/sleep`,
-                        title: '수면',
-                        translateKey: 'nav.body.sleep',
-                        icon: '',
-                        type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
-                        subMenu: [],
-                    },
-                    
-                ],
-            },
-            // 마음
-            {
-                key: 'app.mind',
-                path: `${APP_PREFIX_PATH}/mind`,
-                title: '마음',
-                translateKey: 'nav.mind.mind',
-                icon: 'home',
-                type: NAV_ITEM_TYPE_ITEM,
-
-                authority: [ADMIN, USER],
-                subMenu: [
-                    {
-                        key: 'mind.diary',
-                        path: `${APP_PREFIX_PATH}/mind/diary`,
-                        title: '마음일지',
-                        translateKey: 'nav.mind.diary',
-                        icon: '',
-                        type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
-                        subMenu: [],
-                    },
-                    {
-                        key: 'mind.trash',
-                        path: `${APP_PREFIX_PATH}/mind/trash`,
-                        title: '마음쓰레기통',
-                        translateKey: 'nav.mind.trash',
-                        icon: '',
-                        type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
-                        subMenu: [],
-                    },
-                    
-                ],
-            },
-            // 게시판
-            {
-                key: 'apps.board',
-                path: `${APP_PREFIX_PATH}/board`,
-                title: '게시판',
-                translateKey: 'nav.board',
-                icon: 'home',
-                type: NAV_ITEM_TYPE_ITEM,
-
-                authority: [ADMIN, USER],
-                subMenu: [
-                    
-                ],
-            },
-            // 마이페이지
-            {
-                key: 'apps.mypage',
-                path: `${APP_PREFIX_PATH}/mypage`,
-                title: '내정보',
-                translateKey: 'nav.mypage',
+                path: `/home`,
+                title: '대시보드',
+                translateKey: 'nav.home',
                 icon: 'account',
                 type: NAV_ITEM_TYPE_ITEM,
 

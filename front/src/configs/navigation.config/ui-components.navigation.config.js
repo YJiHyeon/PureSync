@@ -17,6 +17,26 @@ const uiComponentNavigationConfig = [
         authority: [ADMIN, USER],
         subMenu: [
             {
+                key: 'body.body',
+                path: `/body/body`,
+                title: '식단기록',
+                translateKey: 'nav.body.body',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [ADMIN, USER],
+                subMenu: [],
+            },
+            {
+                key: 'body.sleep',
+                path: `/body/sleep`,
+                title: '수면기록',
+                translateKey: 'nav.body.sleep',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [ADMIN, USER],
+                subMenu: [],
+            },
+            {
                 key: 'uiComponent.common',
                 path: '',
                 title: 'Common',

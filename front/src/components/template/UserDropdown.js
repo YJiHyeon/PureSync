@@ -10,19 +10,9 @@ import { FiActivity } from 'react-icons/fi'
 
 const dropdownItemList = [
     {
-        label: 'Profile',
+        label: '내 정보',
         path: '/app/account/settings/profile',
         icon: <HiOutlineUser />,
-    },
-    {
-        label: 'Account Setting',
-        path: '/app/account/settings/profile',
-        icon: <HiOutlineCog />,
-    },
-    {
-        label: 'Activity Log',
-        path: '/app/account/activity-log',
-        icon: <FiActivity />,
     },
 ]
 
@@ -92,7 +82,7 @@ export const UserDropdown = ({ className }) => {
                     <span className="text-xl opacity-50">
                         <HiOutlineLogout />
                     </span>
-                    <span>Sign Out</span>
+                    <span>로그아웃</span>
                 </Dropdown.Item>
             </Dropdown>
         </div>
