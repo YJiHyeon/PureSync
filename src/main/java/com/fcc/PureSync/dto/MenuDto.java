@@ -21,6 +21,14 @@ public class  MenuDto {
     private String menu_date;
     private String menu_gram;
 
+    private  Double menu_total_car;
+    private  Double menu_total_pro;
+    private  Double menu_total_fat;
+    private  Double menu_total_sugar;
+    private  Double menu_total_na;
+    private  Double menu_total_cal;
+
+
     private  String food_name;
     private  String food_car;
     private  String food_pro;

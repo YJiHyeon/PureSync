@@ -12,6 +12,14 @@
         SELECT a.menu_seq, a.menu_date, a.menu_when,a.menu_gram,
                      b.food_name, b.food_car, b.food_pro, b.food_fat, b.food_sugar, b.food_na, b.food_col, b.food_kcal,
                     (a.menu_gram/100.0) * b.food_kcal  as menu_total
+        (a.menu_gram/100.0) * b.food_kcal  as menu_total
+        (a.menu_gram/100.0) * b.food_car  as menu_total_car
+        (a.menu_gram/100.0) * b.food_pro  as menu_total_pro
+        (a.menu_gram/100.0) * b.food_fat  as menu_total_fat
+        (a.menu_gram/100.0) * b.food_sugar  as menu_total_sugar
+        (a.menu_gram/100.0) * b.food_na  as menu_total_na
+        (a.menu_gram/100.0) * b.b.food_col  as menu_total_cal
+
         FROM tb_menu_list a
         LEFT OUTER JOIN tb_food b ON a.food_seq = b.food_seq
         LEFT OUTER JOIN tb_member c ON a.mem_seq = c.mem_seq

@@ -19,6 +19,7 @@ public class Exercise {
     private String elDate;
     private Integer elTime;
     private Double elTotal;
+    @Builder.Default
     private LocalDateTime elWdate = LocalDateTime.now();
     private Long memSeq;
     private Long ecSeq;
