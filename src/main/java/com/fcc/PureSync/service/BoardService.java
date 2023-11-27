@@ -52,7 +52,7 @@ public class BoardService {
 
     public ResultDto createBoard(BoardDto boardDto, String id, MultipartFile file) {
         id = "aaa";//////////////////////////////////////////////
-        Member member = memberRepository.findByMemId(id)
+        Member member = memberRepository.findByMemIdAndMemStatus(id, 1)
                 .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
 
         Board board = Board.builder()
@@ -99,7 +99,7 @@ public class BoardService {
 
     public ResultDto updateBoard(Long boardSeq, BoardDto boardDto, String id, MultipartFile file) {
         id = "aaa";//////////////////////////////////////////////
-        Member member = memberRepository.findByMemId(id)
+        Member member = memberRepository.findByMemIdAndMemStatus(id, 1)
                 .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
         Board board = boardRepository.findById(boardSeq)
                 .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_ARTICLE));
