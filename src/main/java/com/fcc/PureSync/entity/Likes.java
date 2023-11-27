@@ -6,30 +6,23 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Entity
-@Table(name = "tb_board")
+@Table(name = "tb_likes")
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Board {
+public class Likes {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long boardSeq;
-    private String boardName;
-    private String boardContents;
-    @Builder.Default
-    private LocalDateTime boardWdate=LocalDateTime.now();
-    @Builder.Default
-    private Long boardLikescount=0L;
-    @Builder.Default
-    private boolean boardStatus=true;
+    private Long likesSeq;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mem_seq")
     private Member member;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "board_seq")
+    private Board board;
 }

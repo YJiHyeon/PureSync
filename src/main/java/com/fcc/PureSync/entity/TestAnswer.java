@@ -9,27 +9,28 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "tb_board")
+@Table(name = "tb_test_answer")
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Board {
+public class TestAnswer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long boardSeq;
-    private String boardName;
-    private String boardContents;
+    private Long ansSeq;
+    private Long testSeq;
+    private int testAns;
     @Builder.Default
-    private LocalDateTime boardWdate=LocalDateTime.now();
-    @Builder.Default
-    private Long boardLikescount=0L;
-    @Builder.Default
-    private boolean boardStatus=true;
+    private LocalDateTime ansWdate=LocalDateTime.now();
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mem_seq")
     private Member member;
+
+    @OneToOne
+    @JoinColumn(name = "que_seq")
+    private TestQuestion testQuestion;
 
 }

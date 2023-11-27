@@ -4,9 +4,11 @@ import com.fcc.PureSync.dto.BoardDto;
 import com.fcc.PureSync.dto.ResultDto;
 import com.fcc.PureSync.repository.MemberRepository;
 import com.fcc.PureSync.service.BoardService;
+import com.fcc.PureSync.util.FileUploadUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
@@ -21,16 +23,16 @@ public class BoardController {
      * 등록
      */
     @PostMapping
-    public ResultDto createBoard(@RequestBody BoardDto boardDto, String id) {
-        return boardService.createBoard(boardDto, id);
+    public ResultDto createBoard(@RequestPart("boardDto") BoardDto boardDto, String id, @RequestPart(value = "file", required = false) MultipartFile file) {
+        return boardService.createBoard(boardDto, id, file);
     }
 
     /**
      * 수정
      */
     @PutMapping("/{boardSeq}")
-    public ResultDto updateBoard(@PathVariable Long boardSeq, @RequestBody BoardDto boardDto,String mem_id) {
-        return boardService.updateBoard(boardSeq, boardDto, mem_id);
+    public ResultDto updateBoard(@PathVariable Long boardSeq, @RequestPart("boardDto") BoardDto boardDto, String id, @RequestPart(value = "file", required = false) MultipartFile file) {
+        return boardService.updateBoard(boardSeq, boardDto, id, file);
     }
 
     /**
