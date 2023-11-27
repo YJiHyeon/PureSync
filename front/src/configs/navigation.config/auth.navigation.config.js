@@ -17,6 +17,16 @@ const authNavigationConfig = [
         authority: [ADMIN, USER],
         subMenu: [
             {
+                key: 'board',
+                path: `/board`,
+                title: '게시판',
+                translateKey: 'board',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [ADMIN, USER],
+                subMenu: [],
+            },
+            {
                 key: 'authentication.signIn',
                 path: '',
                 title: 'Sign In',

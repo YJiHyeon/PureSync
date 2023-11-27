@@ -2,8 +2,8 @@ import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import en from './lang/en.json'
 import zh_cn from './lang/zh-cn.json'
-import es from './lang/es.json'
 import ar from './lang/ar.json'
+import es from './lang/es.json'
 import appConfig from 'configs/app.config'
 
 const resources = {
@@ -18,7 +18,7 @@ const resources = {
     },
     ar: {
         translation: ar,
-    },
+    }
 }
 
 i18n.use(initReactI18next).init({

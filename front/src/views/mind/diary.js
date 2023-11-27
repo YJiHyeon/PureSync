@@ -1,7 +1,7 @@
 import React from 'react'
 
-const mindDiary = () => {
+const Diary = () => {
     return <div>mindDiary</div>
 }
 
-export default mindDiary
+export default Diary
