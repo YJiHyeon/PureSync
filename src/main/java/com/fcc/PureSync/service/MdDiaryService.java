@@ -71,6 +71,7 @@ public class MdDiaryService {
                         .dyTitle(dto.getDyTitle())
                         .dyContents(dto.getDyContents())
                         .dyStatus(true)
+                        .dyWdate(mdDiary.getDyWdate())
                         .emotion(updatedEmotion)
                         .member(mdDiary.getMember())
                         .build();
@@ -92,6 +93,7 @@ public class MdDiaryService {
                         .dyTitle(mdDiary.getDyTitle())
                         .dyContents(mdDiary.getDyContents())
                         .dyStatus(false)
+                        .dyWdate(mdDiary.getDyWdate())
                         .emotion(mdDiary.getEmotion())
                         .member(mdDiary.getMember())
                         .build();
