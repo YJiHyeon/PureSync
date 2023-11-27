@@ -5,9 +5,15 @@ import com.fcc.PureSync.dto.ResultDto;
 import com.fcc.PureSync.dto.SignupDto;
 import com.fcc.PureSync.entity.Member;
 import com.fcc.PureSync.exception.CustomException;
+import com.fcc.PureSync.jwt.JwtUtil;
 import com.fcc.PureSync.repository.MemberRepository;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +24,8 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
+    private final AuthenticationManager authenticationManager;
 
     // 회원가입
     public ResultDto signup(SignupDto signupDto) {
@@ -46,13 +54,20 @@ public class MemberService {
                 .build();
     }
 
-    public ResultDto login(LoginDto loginDto) {
+    public ResultDto login(LoginDto loginDto, HttpServletResponse response) {
         Member member = memberRepository.findByMemId(loginDto.getMemId())
                 .orElseThrow( () -> new CustomException(NOT_FOUND_USER_ID) );
 
         if( !passwordEncoder.matches(loginDto.getMemPassword(), member.getMemPassword()) ){
             throw new CustomException(NOT_FOUND_USER_PW);
         }
+
+        UsernamePasswordAuthenticationToken authToken =
+                new UsernamePasswordAuthenticationToken(loginDto.getMemId(), loginDto.getMemPassword());
+        Authentication authentication = authenticationManager.authenticate(authToken);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String accessToken = jwtUtil.createToken(member);
+        response.addHeader("Authorization", "Bearer " + accessToken);
 
         return ResultDto.builder()
                 .code(HttpStatus.OK.value())
