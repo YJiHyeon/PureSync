@@ -1,9 +1,6 @@
 package com.fcc.PureSync.service;
 
-import com.fcc.PureSync.dto.BodySignupDto;
-import com.fcc.PureSync.dto.LoginDto;
-import com.fcc.PureSync.dto.ResultDto;
-import com.fcc.PureSync.dto.SignupDto;
+import com.fcc.PureSync.dto.*;
 import com.fcc.PureSync.entity.Body;
 import com.fcc.PureSync.entity.Member;
 import com.fcc.PureSync.exception.CustomException;
@@ -19,6 +16,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.HashMap;
 
 import static com.fcc.PureSync.exception.CustomExceptionCode.*;
 @Service
@@ -55,6 +55,7 @@ public class MemberService {
                 .memEmail(dto.getMemEmail())
                 .memBirth(dto.getMemBirth())
                 .memGender(dto.getMemGender())
+                .memCreatedAt(LocalDateTime.now())
                 .build();
     }
 
@@ -138,5 +139,34 @@ public class MemberService {
         }catch (CustomException e){
             throw new CustomException(NOT_INSERT_USER);
         }
+    }
+
+
+    public ResultDto getMemberInfo(Long memSeq) {
+
+        Member member = memberRepository.findById(memSeq)
+                .orElseThrow( () -> new CustomException(NOT_FOUND_USER_SEQ) );
+        Body body = bodyRepository.findByMemSeq(memSeq)
+                .orElseThrow( () -> new CustomException(NOT_FOUND_USER_SEQ) );
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("member", member);
+        map.put("body", body);
+
+        return ResultDto.builder()
+                .code(HttpStatus.OK.value())
+                .httpStatus(HttpStatus.OK)
+                .message("회원정보 불러오기 성공")
+                .data(map)
+                .build();
+    }
+
+    public ResultDto updateMemberInfo(MemberInfoUpdateDto dto, Long memSeq) {
+
+        Member member = memberRepository.findById(memSeq).orElse(null);
+//        Member updatedMember = Member.builder()
+//                        .memSeq(mem);
+//
+//                dto.getMemNick(), memSeq
+        return null;
     }
 }

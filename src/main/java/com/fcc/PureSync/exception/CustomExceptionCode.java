@@ -40,7 +40,7 @@ public enum CustomExceptionCode {
     /*
      * 404
      */
-
+    NOT_FOUND_USER_SEQ(HttpStatus.NOT_FOUND, "일치하는 회원 일련번호가 없습니다."),
     NOT_FOUND_USER_ID(HttpStatus.NOT_FOUND, "아이디가 일치하지 않습니다."),
     NOT_FOUND_USER_PW(HttpStatus.NOT_FOUND, "비밀번호가 일치하지 않습니다."),
     NOT_FOUND_USER(HttpStatus.NOT_FOUND, "해당 사용자를 찾을 수 없습니다."),

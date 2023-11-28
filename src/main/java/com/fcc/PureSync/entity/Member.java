@@ -18,7 +18,8 @@ public class Member {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memSeq;
-    private Integer memStatus;
+    @Builder.Default
+    private Integer memStatus = 1;
     private String memId;
     private String memPassword;
     private String memNick;
@@ -28,18 +29,6 @@ public class Member {
     private String memImg;
     private Long memImgsize;
     private LocalDateTime memCreatedAt;
-    private LocalDateTime memLastLoginAt;
-
-    @Builder
-    public Member(String memId, String memPassword,
-                  String memNick, String memEmail, String memBirth, String memGender) {
-        this.memId = memId;
-        this.memPassword = memPassword;
-        this.memNick = memNick;
-        this.memEmail = memEmail;
-        this.memBirth = memBirth;
-        this.memGender = memGender;
-        this.memStatus = 1;
-        this.memCreatedAt = LocalDateTime.now();
-    }
+    @Builder.Default
+    private LocalDateTime memLastLoginAt = LocalDateTime.now();
 }

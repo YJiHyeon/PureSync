@@ -1,9 +1,6 @@
 package com.fcc.PureSync.controller;
 
-import com.fcc.PureSync.dto.BodySignupDto;
-import com.fcc.PureSync.dto.LoginDto;
-import com.fcc.PureSync.dto.ResultDto;
-import com.fcc.PureSync.dto.SignupDto;
+import com.fcc.PureSync.dto.*;
 import com.fcc.PureSync.jwt.CustomUserDetails;
 import com.fcc.PureSync.service.MemberService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -53,6 +50,21 @@ public class MemberController {
         map.put("memId", memId);
         map.put("memSeq", memSeq);
         return map;
+    }
+
+    @GetMapping("/info")
+    public ResultDto getMemberInfo(@AuthenticationPrincipal CustomUserDetails userDetails) {
+
+        Long memSeq = userDetails.getMemSeq();
+        return memberService.getMemberInfo(memSeq);
+    }
+
+    @PutMapping("/info")
+    public ResultDto updateMemberInfo(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                      @RequestBody MemberInfoUpdateDto dto) {
+
+        Long memSeq = userDetails.getMemSeq();
+        return memberService.updateMemberInfo(dto, memSeq);
     }
 
 

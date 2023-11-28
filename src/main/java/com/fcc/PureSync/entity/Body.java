@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Body {
 
     @Id
@@ -23,19 +24,8 @@ public class Body {
     private Double bodyWishWeight;
     private Double bodyWishConscal;
     private Double bodyWishBurncal;
-    private LocalDateTime bodyWdate;
+    @Builder.Default
+    private LocalDateTime bodyWdate = LocalDateTime.now();
     private Long memSeq;
-
-    @Builder
-    public Body(Double bodyHeight, Double bodyWeight, Double bodyWishWeight,
-                Double bodyWishConscal, Double bodyWishBurncal, Long memSeq) {
-        this.bodyHeight = bodyHeight;
-        this.bodyWeight = bodyWeight;
-        this.bodyWishWeight = bodyWishWeight;
-        this.bodyWishConscal = bodyWishConscal;
-        this.bodyWishBurncal = bodyWishBurncal;
-        this.memSeq = memSeq;
-        this.bodyWdate = LocalDateTime.now();
-    }
 
 }
