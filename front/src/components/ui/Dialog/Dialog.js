@@ -8,7 +8,6 @@ import { theme } from 'twin.macro';
 import useWindowSize from '../hooks/useWindowSize';
 
 const Dialog = (props) => {
-    console.log("Dialog 컴포넌트가 렌더링됨");
     const currentSize = useWindowSize();
 
     const {
