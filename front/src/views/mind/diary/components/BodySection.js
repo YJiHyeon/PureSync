@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react';
 import { Loading } from 'components/shared'
 import Categories from './Categories'
-import ArticleList from './ArticleList'
+import ArticleList from './Diaries'
 import { getCategories } from '../store/dataSlice'
 import { useDispatch, useSelector } from 'react-redux'
 
