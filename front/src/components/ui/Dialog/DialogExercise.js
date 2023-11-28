@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Modal from 'react-modal';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
@@ -6,18 +6,13 @@ import CloseButton from '../CloseButton';
 import { motion } from 'framer-motion';
 import { theme } from 'twin.macro';
 import useWindowSize from '../hooks/useWindowSize';
-
-import { Button, Select, Input } from 'components/ui';
+import { Button, Input } from 'components/ui';
 import Axios from 'axios';
 
 import { useNavigate } from 'react-router-dom';
 
-const DialogMenu = (props) => {
-    // 현재 창 크기를 가져오는 커스텀 훅 사용
+const DialogExercise = (props) => {
     const currentSize = useWindowSize();
-
-    //useNavigate
-    const navigate = useNavigate();
 
     const {
         className,
@@ -35,19 +30,10 @@ const DialogMenu = (props) => {
         ...rest
     } = props;
 
-    // 닫기 버튼 클릭 이벤트 핸들러
     const onCloseClick = (e) => {
-        setMealType('');
-        setSearchValue('');
-        setSearchResults([]);
-        setSelectedItems([]);
-        setSelectedMealType('');
-
         onClose(e);
-
     }
 
-    // 닫기 버튼을 렌더링하는 JSX 요소
     const renderCloseButton = (
         <CloseButton
             onClick={onCloseClick}
@@ -56,7 +42,6 @@ const DialogMenu = (props) => {
         />
     );
 
-    // 모달 콘텐츠의 모양을 커스터마이즈하기 위한 contentStyle 객체
     const contentStyle = {
         content: {
             inset: 'unset',
@@ -64,11 +49,9 @@ const DialogMenu = (props) => {
         ...style,
     };
 
-    // 현재 창 크기와 제공된 width prop을 기반으로 콘텐츠 너비 커스터마이즈
     if (width !== undefined) {
         contentStyle.content.width = width;
 
-        // 창 크기가 테마에서 정의한 "sm" 브레이크포인트보다 작거나 같으면 width를 'auto'로 설정
         if (
             currentSize.width <=
             parseInt(theme`screens.sm`.split(/ /)[0].replace(/[^\d]/g, ''))
@@ -76,43 +59,20 @@ const DialogMenu = (props) => {
             contentStyle.content.width = 'auto';
         }
     }
-
-    // 제공된 height prop을 기반으로 콘텐츠 높이 커스터마이즈
     if (height !== undefined) {
         contentStyle.content.height = height;
     }
 
-    // 모달 콘텐츠의 CSS 클래스 정의
     const defaultDialogContentClass = 'dialog-content';
 
-    // 기본 및 사용자 제공 콘텐츠 클래스 이름을 결합
     const dialogClass = classNames(defaultDialogContentClass, contentClassName);
 
-    // 식사 선택을 위한 상태 변수들
-    const [mealType, setMealType] = useState('');
+    // 변수들
     const [searchValue, setSearchValue] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [selectedItems, setSelectedItems] = useState([]);
-    const [selectedMealType, setSelectedMealType] = useState('');
-
     const [loading, setLoding] = useState(false);
-
-    const mealTypes = [{ meal: '아침', value: 1 }, { meal: '점심', value: 2 }, { meal: '저녁', value: 3 }, { meal: '간식', value: 4 }];
-
-    // 섭취 그람수를 저장하는 상태 변수 추가
-    const [gramAmounts, setGramAmounts] = useState([]);
-
-    // 식사 유형 선택 변경 핸들러
-    const handleMealTypeChange = (value) => {
-        console.log("Selected meal type:", value);
-        setMealType(value);
-        setSelectedMealType(value);
-    }
-
-    // mealType 변경 시 selectedMealType 업데이트하기 위해 useEffect 사용
-    useEffect(() => {
-        setSelectedMealType(mealType);
-    }, [mealType]);
+    const [timeAmounts, setTimeAmounts] = useState([]);
 
     // 검색 입력 변경 핸들러
     const handleSearchChange = (e) => {
@@ -120,17 +80,15 @@ const DialogMenu = (props) => {
         setSearchValue(value);
     }
 
-
-    // 검색 버튼 클릭
     const handleSearchClick = () => {
 
-        Axios.get("http://127.0.0.1:9000/api/menu/foodList",
-            { params: { "foodName": searchValue } },
+        Axios.get("http://127.0.0.1:9000/api/exercise/exerciseList",
+            { params: { "exerciseName" : searchValue } },
             { withCredentials: true }
         )
             .then((res) => {
-                console.log(res.data.data.allFoods);
-                setSearchResults(res.data.data.allFoods);
+                console.log(res.data.data.allExercise);
+                setSearchResults(res.data.data.allExercise);
                 setLoding(true);
 
             })
@@ -138,7 +96,6 @@ const DialogMenu = (props) => {
                 console.log(res);
             })
     }
-
 
     // 항목 선택/해제 핸들러  
     const handleItemToggle = (item) => {
@@ -152,57 +109,40 @@ const DialogMenu = (props) => {
         }
     }
 
-    // 섭취 그람수를 변경하는 핸들러
-    const handleGramAmountChange = (e) => {
+    // 운동 시간을 변경하는 핸들러
+    const handleTimeAmountChange = (e) => {
 
-        setGramAmounts({
-            ...gramAmounts,
+        setTimeAmounts({
+            ...timeAmounts,
             [e.target.id]: e.target.value
         });
         // console.log( "***");
-        console.log(gramAmounts);
+        console.log(timeAmounts);
 
     }
 
-
     // 등록 버튼 클릭
-
     const handleRegisterClick = () => {
-        const sendFoodDatas = [];
-
-        // 선택한 식사 유형의 "value" 값을 추출
-        const menuWhenValue = selectedMealType ? selectedMealType.value : '';
+        const sendExerciseDatas = [];
 
         // 선택한 항목에 대한 정보를 배열에 추가
         let i = 0;
-        const menuGramValue = parseInt(gramAmounts[i]);
+        const exerciseTimeValue = parseInt(timeAmounts[i]);
         selectedItems.forEach((item) => {
             // console.log(item);
-            const foodInfo = {
-                menuWhen: menuWhenValue,
-                menuDate: props.selectDate,
-                menuGram: menuGramValue,
-                member: { memSeq: 1 },
-                food: {
-                    foodSeq: item.foodSeq,
-                    foodName: item.foodName,
-                    foodCar: item.foodCar,
-                    foodPro: item.foodPro,
-                    foodFat: item.foodFat,
-                    foodSugar: item.foodSugar,
-                    foodNa: item.foodNa,
-                    foodCol: item.foodCol,
-                    foodKcal: item.foodKcal,
-                },
-
+            const exerciseInfo = {
+                elDate : props.selectDate,
+                elTime : exerciseTimeValue,
+                memSeq: 1,
+                ecSeq : item.ecSeq
             };
             i++;
-            sendFoodDatas.push(foodInfo);
-            console.log(foodInfo);
+            sendExerciseDatas.push(exerciseInfo);
+            console.log(exerciseInfo);
 
-            Axios.post("http://127.0.0.1:9000/api/menu/save", sendFoodDatas[0])
+            Axios.post("http://127.0.0.1:9000/api/exercise/save", sendExerciseDatas[0])
                 .then((res) => {
-                    console.log("등록 후 res.data");
+                    console.log("운동 등록 후 res.data");
                     props.onClose();
                 })
                 .catch((res) => {
@@ -210,10 +150,10 @@ const DialogMenu = (props) => {
                     console.log(res);
                 })
         });
-
     }
 
-    // 'react-modal'에서 Modal 컴포넌트를 사용하여 모달 대화상자 렌더링
+
+
     return (
         <Modal
             className={{
@@ -234,7 +174,6 @@ const DialogMenu = (props) => {
             closeTimeoutMS={closeTimeoutMS}
             {...rest}
         >
-            {/* framer-motion을 사용하여 모달 콘텐츠에 애니메이션 적용 */}
             <motion.div
                 className={dialogClass}
                 initial={{ transform: 'scale(0.9)' }}
@@ -242,28 +181,14 @@ const DialogMenu = (props) => {
                     transform: isOpen ? 'scale(1)' : 'scale(0.9)',
                 }}
             >
-                {/* closable이 true인 경우 닫기 버튼 렌더링 */}
                 {closable && renderCloseButton}
-                <h4>음식 선택</h4><br />
 
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                    <Select
-                        placeholder="식사 유형"
-                        options={mealTypes.map((type) => ({
-                            value: type.value,
-                            label: type.meal,
-                        }))}
-                        value={selectedMealType}
-                        onChange={(value) => handleMealTypeChange(value)}
-                        style={{ width: '60px', height: '70px' }}
-                    />
-                </div>
-                <br />
+                <h4>운동 선택</h4><br />
                 <div>
                     {/* 항목 검색을 위한 Input 컴포넌트와 검색 버튼 */}
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                         <Input
-                            placeholder="식품을 입력하세요"
+                            placeholder="운동을 입력하세요"
                             value={searchValue}
                             onChange={handleSearchChange}
                         />
@@ -279,7 +204,7 @@ const DialogMenu = (props) => {
                         <div style={{ maxHeight: '100px', overflowY: 'auto' }}>
                             {searchResults.map((result, index) => (
                                 <div key={index} onClick={() => handleItemToggle(result)}>
-                                    {result.foodName}
+                                    {result.ecName}
                                     {selectedItems.includes(result) && " ✔️"}
                                 </div>
                             ))}
@@ -288,22 +213,19 @@ const DialogMenu = (props) => {
                 </div>
                 <br /><br />
                 <div style={{ maxHeight: '220px', overflowY: 'auto' }}>
-                    <h5>식단 추가</h5>
+                    <h5>운동 기록 추가</h5>
                     {/* 선택한 항목을 표시 */}
-
                     {selectedItems.length > 0 ? (
                         selectedItems.map((item, index) => (
-
-
                             <div key={index} style={{ display: 'flex', alignItems: 'center' }}>
 
                                 <span style={{ flex: 1 }}>
-                                    {item.foodName} - 섭취한 양(g) :&nbsp;&nbsp;
+                                    {item.ecName} - 운동 시간(분) :&nbsp;&nbsp;
                                     <Input
                                         id={index}
-                                        name="gramAmounts"
-                                        value={gramAmounts[index]}
-                                        onChange={handleGramAmountChange}
+                                        name="timeAmounts"
+                                        value={timeAmounts[index]}
+                                        onChange={handleTimeAmountChange}
                                         type="number"
                                         style={{ width: '100px', height: '15px' }}
                                     />
@@ -312,7 +234,7 @@ const DialogMenu = (props) => {
 
                         ))
                     ) : (
-                        <p>식단에 항목을 추가하세요.</p>
+                        <p>운동 기록에 항목을 추가하세요.</p>
                     )
 
 
@@ -324,16 +246,17 @@ const DialogMenu = (props) => {
                 <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                     <Button onClick={handleRegisterClick} variant="solid">
                         등록
-
                     </Button>
                 </div>
+
+               
+                
             </motion.div>
         </Modal>
     );
 }
 
-// 컴포넌트의 PropTypes 정의
-DialogMenu.propTypes = {
+DialogExercise.propTypes = {
     className: PropTypes.string,
     closable: PropTypes.bool,
     width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -348,12 +271,10 @@ DialogMenu.propTypes = {
     closeTimeoutMS: PropTypes.number,
 }
 
-// 컴포넌트의 기본 속성값 정의
-DialogMenu.defaultProps = {
+DialogExercise.defaultProps = {
     closable: true,
     width: 520,
     closeTimeoutMS: 150,
 }
 
-export default DialogMenu;
-
+export default DialogExercise;

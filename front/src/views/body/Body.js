@@ -9,9 +9,9 @@ const BodyMenu = () => {
     // 오늘날짜
     let today = new Date();
     
-    
     const [selectDate, setSelectDate] = useState(today);
-    const [menuList, setMenuList] = useState(false);
+    const [menuList, setMenuList] = useState([]);
+    const [exerciseList, setExerciseList] = useState([]);
 
 
     const dataLoad = () => {
@@ -31,8 +31,9 @@ const BodyMenu = () => {
     }
 
     useEffect(() => {
+        console.log("menu에서 useEffect()호출");
         dataLoad();
-    }, [menuList]);
+    }, [menuList], [exerciseList] );
 
     return (
         <>
