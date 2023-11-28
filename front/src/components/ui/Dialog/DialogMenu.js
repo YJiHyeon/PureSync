@@ -7,14 +7,18 @@ import { motion } from 'framer-motion';
 import { theme } from 'twin.macro';
 import useWindowSize from '../hooks/useWindowSize';
 
-import { Button, Select, Input, Checkbox  } from 'components/ui';
+import { Button, Select, Input } from 'components/ui';
+import Axios from 'axios';
 
+import { useNavigate } from 'react-router-dom';
 
 const DialogMenu = (props) => {
     // 현재 창 크기를 가져오는 커스텀 훅 사용
     const currentSize = useWindowSize();
 
-    // props에서 필요한 값을 추출
+    //useNavigate
+    const navigate = useNavigate();
+
     const {
         className,
         closable,
@@ -34,6 +38,7 @@ const DialogMenu = (props) => {
     // 닫기 버튼 클릭 이벤트 핸들러
     const onCloseClick = (e) => {
         onClose(e);
+
     }
 
     // 닫기 버튼을 렌더링하는 JSX 요소
@@ -84,19 +89,20 @@ const DialogMenu = (props) => {
     const [selectedItems, setSelectedItems] = useState([]);
     const [selectedMealType, setSelectedMealType] = useState('');
 
-    // 모든 가능한 항목과 식사 유형 목록 정의
-    const allItems = [ '사이다', '사과주스', '사과케이크','사과케이크2','사과케이크3','사과케이크4','사과케이크5','사과케이크6', '당근', '당근케이크', '당근주스'];
-    const mealTypes = ['아침', '점심', '저녁', '간식'];
+    const [loading, setLoding] = useState(false);
+
+    const mealTypes = [{ meal: '아침', value: 1 }, { meal: '점심', value: 2 }, { meal: '저녁', value: 3 }, { meal: '간식', value: 4 }];
 
     // 섭취 그람수를 저장하는 상태 변수 추가
-    const [gramAmounts, setGramAmounts] = useState({});
+    const [gramAmounts, setGramAmounts] = useState([]);
 
-    
+
+
     // 식사 유형 선택 변경 핸들러
     const handleMealTypeChange = (value) => {
         console.log("Selected meal type:", value);
-        setMealType(value);  
-        setSelectedMealType(value); 
+        setMealType(value);
+        setSelectedMealType(value);
     }
 
     // mealType 변경 시 selectedMealType 업데이트하기 위해 useEffect 사용
@@ -108,52 +114,98 @@ const DialogMenu = (props) => {
     const handleSearchChange = (e) => {
         const value = e.target.value;
         setSearchValue(value);
-
-        // 검색 값을 기반으로 항목 필터링
-        const filteredItems = allItems.filter(item => item.includes(value));
-        setSearchResults(filteredItems);
     }
 
-    // 검색 버튼 클릭 핸들러 (플레이스홀더용)
     const handleSearchClick = () => {
-        const dummyResults = ['검색 결과 1', '검색 결과 2', '검색 결과 3'];
-        setSearchResults(dummyResults);
+
+        Axios.get("http://127.0.0.1:9000/api/menu/foodList",
+            { params: { "foodName": searchValue } },
+            { withCredentials: true }
+        )
+            .then((res) => {
+                console.log(res.data.data.allFoods);
+                setSearchResults(res.data.data.allFoods);
+                setLoding(true);
+
+            })
+            .catch((res) => {
+                console.log(res);
+            })
     }
 
-    // 항목 선택/해제 핸들러
+
+    // 항목 선택/해제 핸들러  
     const handleItemToggle = (item) => {
+
+        console.log(item);
         if (selectedItems.includes(item)) {
             setSelectedItems(selectedItems.filter((selectedItem) => selectedItem !== item));
-        } else {
-            // 기본값으로 빈 문자열로 초기화된 섭취 그람수를 설정합니다.
-            setGramAmounts({
-                ...gramAmounts,
-                [item]: '',
-            });
-            setSelectedItems([...selectedItems, item]);
+        }
+        else {
+            setSelectedItems([...selectedItems, item]);// 선택된 아이템들의 목록
         }
     }
 
     // 섭취 그람수를 변경하는 핸들러
-    const handleGramAmountChange = (item, amount) => {
-        // 입력된 값이 음수인지 확인
-        if (amount < 0) {
-            amount = 1;
-        }
+    const handleGramAmountChange = (e) => {
+
         setGramAmounts({
             ...gramAmounts,
-            [item]: amount,
+            [e.target.id]: e.target.value
         });
+        // console.log( "***");
+        console.log(gramAmounts);
+
     }
-    
+
     // 등록 버튼 클릭 핸들러
     const handleRegisterClick = () => {
-        const selectedItemsInfo = selectedItems.map((item) => {
-            return `${item} - 섭취 그람수: ${gramAmounts[item] || '0'}g`;
+        const sendFoodDatas = [];
+
+        // 선택한 식사 유형의 "value" 값을 추출
+        const menuWhenValue = selectedMealType ? selectedMealType.value : '';
+
+        // 선택한 항목에 대한 정보를 배열에 추가
+        let i = 0;
+        const menuGramValue = parseInt(gramAmounts[i]);
+        selectedItems.forEach((item) => {
+            // console.log(item);
+            const foodInfo = {
+                menuWhen: menuWhenValue,
+                menuDate: props.selectDate,
+                menuGram: menuGramValue,
+                member: { memSeq: 1 },
+                food: {
+                    foodSeq: item.foodSeq,
+                    foodName: item.foodName,
+                    foodCar: item.foodCar,
+                    foodPro: item.foodPro,
+                    foodFat: item.foodFat,
+                    foodSugar: item.foodSugar,
+                    foodNa: item.foodNa,
+                    foodCol: item.foodCol,
+                    foodKcal: item.foodKcal,
+                },
+
+            };
+            i++;
+            sendFoodDatas.push(foodInfo);
+            console.log(foodInfo);
+
+            Axios.post("http://127.0.0.1:9000/api/menu/save", sendFoodDatas[0])
+                .then((res) => {
+                    console.log("등록 후 res.data");
+                    props.onClose();
+                })
+                .catch((res) => {
+                    console.log('에러 : ');
+                    console.log(res);
+                })
         });
-    
-        const message = `선택한 식사 유형: ${selectedMealType}\n선택한 항목: ${selectedItemsInfo.join(', ')}`;
-        alert(message);
+
+
+
+
     }
 
 
@@ -192,18 +244,18 @@ const DialogMenu = (props) => {
                 <h4>음식 선택</h4><br />
 
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                <Select
-                    placeholder="식사 유형"
-                    options={mealTypes.map((type) => ({
-                        value: type,
-                        label: type,
-                    }))}
-                    value={selectedMealType}
-                    onChange={(value) => handleMealTypeChange(value)} 
-                    style={{ width: '60px', height:'70px' }} 
-                />
+                    <Select
+                        placeholder="식사 유형"
+                        options={mealTypes.map((type) => ({
+                            value: type.value,
+                            label: type.meal,
+                        }))}
+                        value={selectedMealType}
+                        onChange={(value) => handleMealTypeChange(value)}
+                        style={{ width: '60px', height: '70px' }}
+                    />
                 </div>
-<br />
+                <br />
                 <div>
                     {/* 항목 검색을 위한 Input 컴포넌트와 검색 버튼 */}
                     <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -217,14 +269,14 @@ const DialogMenu = (props) => {
                         </Button>
                     </div>
                 </div>
-                
+
                 <div>
                     {/* 검색 결과 표시 및 항목 선택 가능 */}
-                    {searchValue && searchResults.length > 0 && (
+                    {searchValue && searchResults.length >= 2 && (
                         <div style={{ maxHeight: '100px', overflowY: 'auto' }}>
                             {searchResults.map((result, index) => (
                                 <div key={index} onClick={() => handleItemToggle(result)}>
-                                    {result}
+                                    {result.foodName}
                                     {selectedItems.includes(result) && " ✔️"}
                                 </div>
                             ))}
@@ -233,33 +285,42 @@ const DialogMenu = (props) => {
                 </div>
                 <br /><br />
                 <div style={{ maxHeight: '220px', overflowY: 'auto' }}>
-    <h5>식단 추가</h5>
-    {/* 선택한 항목을 체크리스트로 표시 */}
-    {selectedItems.length > 0 ? (
-        selectedItems.map((item, index) => (
-            <div key={index} style={{ display: 'flex', alignItems: 'center' }}>
-                <Checkbox checked={selectedItems.includes(item)} onChange={() => handleItemToggle(item)} />
-                <span style={{ flex: 1 }}>
-                    {item} - 섭취한 양(g) :&nbsp;&nbsp;
-                    <Input
-                        type="number"
-                        value={gramAmounts[item] || ''}
-                        onChange={(e) => handleGramAmountChange(item, e.target.value)}
-                        style={{ width: '100px', height:'15px' }}
-                    />
-                </span>
-            </div>
-        ))
-    ) : (
-        <p>식단에 항목을 추가하세요.</p>
-    )}
-</div>
+                    <h5>식단 추가</h5>
+                    {/* 선택한 항목을 체크리스트로 표시 */}
+                    {selectedItems.length > 0 ? (
+                        selectedItems.map((item, index) => (
+
+
+                            <div key={index} style={{ display: 'flex', alignItems: 'center' }}>
+
+                                <span style={{ flex: 1 }}>
+                                    {item.foodName} - 섭취한 양(g) :&nbsp;&nbsp;
+                                    <Input
+                                        id={index}
+                                        name="gramAmounts"
+                                        value={gramAmounts[index]}
+                                        onChange={handleGramAmountChange}
+                                        type="number"
+                                        style={{ width: '100px', height: '15px' }}
+                                    />
+                                </span>
+                            </div>
+
+                        ))
+                    ) : (
+                        <p>식단에 항목을 추가하세요.</p>
+                    )
+
+
+                    }
+                </div>
 
 
                 <br /><br />
                 <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                     <Button onClick={handleRegisterClick} variant="solid">
                         등록
+
                     </Button>
                 </div>
             </motion.div>
