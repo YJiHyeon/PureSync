@@ -120,6 +120,7 @@ const DialogMenu = (props) => {
         setSearchValue(value);
     }
 
+
     // 검색 버튼 클릭
     const handleSearchClick = () => {
 
@@ -163,7 +164,9 @@ const DialogMenu = (props) => {
 
     }
 
+
     // 등록 버튼 클릭
+
     const handleRegisterClick = () => {
         const sendFoodDatas = [];
 
@@ -207,6 +210,7 @@ const DialogMenu = (props) => {
                     console.log(res);
                 })
         });
+
     }
 
     // 'react-modal'에서 Modal 컴포넌트를 사용하여 모달 대화상자 렌더링
@@ -286,6 +290,7 @@ const DialogMenu = (props) => {
                 <div style={{ maxHeight: '220px', overflowY: 'auto' }}>
                     <h5>식단 추가</h5>
                     {/* 선택한 항목을 표시 */}
+
                     {selectedItems.length > 0 ? (
                         selectedItems.map((item, index) => (
 

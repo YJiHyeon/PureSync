@@ -15,6 +15,7 @@ const BodyMenu = () => {
 
 
     const dataLoad = () => {
+
         Axios.get(`http://127.0.0.1:9000/api/menu/list?mem_seq=1&menu_date=${selectDate}`)
             .then((res) => {
                 console.log(res.data)

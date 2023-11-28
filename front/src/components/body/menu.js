@@ -5,7 +5,6 @@ import Axios from 'axios';
 
 import { useNavigate } from 'react-router-dom';
 
-
 function Menu(props) {
     const [isDialogOpen, setDialogOpen] = useState(false);
     const [menuData, setMenuData] = useState([]);
@@ -55,7 +54,6 @@ function Menu(props) {
            menuSeq: menu_seq
         })
         .then((res) => {
-            //console.log( menuData.filter((item)=> item.menu_seq !== menu_seq) );
             setMenuData(menuData.filter((item)=> item.menu_seq !== menu_seq));
         })
         .catch((error) => {
@@ -224,7 +222,6 @@ function Menu(props) {
                         );
                         })}
                     </tbody>
-
                 </table>
             </div>
             <br /><br />
