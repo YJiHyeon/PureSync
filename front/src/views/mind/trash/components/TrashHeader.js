@@ -1,20 +1,28 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
 import { Button } from 'components/ui'
-import { toggleAddCategoryDialog } from '../store/stateSlice'
-import { useDispatch } from 'react-redux'
+import DialogTrashInsert from 'components/ui/Dialog/DialogTrashInsert';
 
 const TrashHeader = () => {
-    const dispatch = useDispatch()
+    const [isDialogOpen, setDialogOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
 
-    const onAddTrash = () => {
-        dispatch(toggleAddCategoryDialog(true))
+    const openDialog = () => {
+        setDialogOpen(true);
+        setLoading(false);
     }
 
+    const closeDialog = () => {
+        setDialogOpen(false);
+        setLoading(true);
+        
+    }
+    
     return (
         <div className="flex items-center">
-            <Button onClick={onAddTrash} size="sm" variant="solid">
+            <Button onClick={openDialog} size="sm" variant="solid">
                 Add Trash
             </Button>
+            <DialogTrashInsert isOpen={isDialogOpen} onClose={closeDialog} />
         </div>
     )
 }
