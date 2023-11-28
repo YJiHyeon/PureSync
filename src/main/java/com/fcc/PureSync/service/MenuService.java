@@ -52,11 +52,6 @@ public class MenuService {
 
         List<MenuDto> menuList= menuDao.getMenuList(menuTo);
 
-        // 잘못된 seq 전달
-        if (menuList.isEmpty()) {
-            throw new CustomException(CustomExceptionCode.NOT_FOUND_MENU);
-        }
-
         try {
             HashMap<String, Object> data = new HashMap<String, Object>();
             System.out.println("dsdsdsdssd >>>> " +menuList.size());

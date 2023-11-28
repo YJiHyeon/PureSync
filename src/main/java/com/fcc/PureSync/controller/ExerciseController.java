@@ -5,7 +5,6 @@ import com.fcc.PureSync.dto.ResultDto;
 import com.fcc.PureSync.entity.Exercise;
 import com.fcc.PureSync.service.ExerciseService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,8 +16,14 @@ public class ExerciseController {
 
     private final ExerciseService exerciseService;
 
+    @GetMapping("/exerciseList")
+    public ResultDto getAllExerciseList(String exerciseName) {
+        System.out.println("exerciseName >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + exerciseName );
+        return exerciseService.getAllExerciseList(exerciseName);
+    }
+
     @GetMapping("/list")
-    public ResultDto getAllExerciseList ( @RequestBody ExerciseDto exerciseTo ) {
+    public ResultDto getAllExerciseList ( ExerciseDto exerciseTo ) {
         return exerciseService.getExerciseAllList(exerciseTo);
     }
 
@@ -32,8 +37,8 @@ public class ExerciseController {
         return exerciseService.updateExercise(exercise);
     }
 
-    @DeleteMapping("/delete")
-    public  ResultDto exerciseDelete ( @RequestBody Exercise exercise ) {
+    @PostMapping("/delete")
+    public  ResultDto exerciseDelete (@RequestBody Exercise exercise ) {
         return exerciseService.deleteExercise(exercise);
     }
 

@@ -21,7 +21,7 @@ public class MenuController {
 
     @GetMapping("/foodList")
     public ResultDto getAllFoodList(String foodName) {
-        System.out.println("foodName 받아오나 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + foodName );
+        System.out.println("foodName  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + foodName );
         return menuService.getAllFoods(foodName);
     }
 
