@@ -1,28 +1,59 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DialogMenu from 'components/ui/Dialog/DialogMenu';
 import { Button } from 'components/ui';
+import Axios from 'axios';
 
-function Menu() {
+import { useNavigate } from 'react-router-dom';
+function Menu(props) {
     const [isDialogOpen, setDialogOpen] = useState(false);
+    const [menuData, setMenuData] = useState([]);
+    const [selectedMenuWhen, setSelectedMenuWhen] = useState(1);
+    const [loading, setLoading] = useState(false);
+    //useNavigate
+    const navigate = useNavigate();
 
     const openDialog = () => {
         setDialogOpen(true);
+        setLoading(false);
     }
 
     const closeDialog = () => {
         setDialogOpen(false);
+        setLoading(true);
+        
     }
 
-    // 아침 식사의 음식 항목과 칼로리 값 예시
-    const [breakfastItems, setBreakfastItems] = useState([
-        { name: "샘플 음식명", protein: 10, carbohydrate: 20, fat: 5, cholesterol: 10, sugar: 3, sodium: 200, calories: 150 },
-        { name: "샘플 음식명2", protein: 10, carbohydrate: 20, fat: 5, cholesterol: 10, sugar: 3, sodium: 200, calories: 170 }
-    ]);
+    useEffect(() => {
+        Axios.get('http://127.0.0.1:9000/api/menu/list', {
+            params: {
+                mem_seq: 1,
+                menu_date: props.selectDate,
+            },
+            withCredentials: true
+        })
+            .then((res) => {
+                console.log(res.data.data.menuList);
+                setMenuData(res.data.data.menuList);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
 
-    const deleteBreakfastItem = (index) => {
-        const updatedItems = [...breakfastItems];
-        updatedItems.splice(index, 1);
-        setBreakfastItems(updatedItems);
+        
+    }, [props.selectDate, loading]);
+
+    // 삭제 버튼
+    const deleteMenuItem = (menu_seq) => {
+        Axios.post(`http://127.0.0.1:9000/api/menu/delete`, {
+           menuSeq: menu_seq
+        })
+        .then((res) => {
+            console.log( menuData.filter((item)=> item.menu_seq !== menu_seq) );
+            setMenuData(menuData.filter((item)=> item.menu_seq !== menu_seq));
+        })
+        .catch((error) => {
+             console.error(error);
+        });
     }
 
     return (
@@ -42,22 +73,23 @@ function Menu() {
                 >
                     식단 등록
                 </Button>
-                <DialogMenu isOpen={isDialogOpen} onClose={closeDialog} />
+                <DialogMenu isOpen={isDialogOpen} onClose={closeDialog} selectDate={props.selectDate} />
             </div>
             <br /><br />
+
+            {/* 아침 메뉴 */}
             <div>
-            <h3>아침</h3>
-                총 칼로리 : 320 kacl
+                <h3>아침</h3>
                 <table className="table table-striped" style={{ marginTop: 20 }}>
                     <colgroup>
                         <col width="*%" />
                         <col width="10%" />
                         <col width="13%" />
                         <col width="10%" />
-                        <col width="18%" />
+                        <col width="13%" />
                         <col width="8%" />
                         <col width="10%" />
-                        <col width="10%" /> 
+                        <col width="10%" />
                         <col width="12%" />
                     </colgroup>
                     <thead>
@@ -70,55 +102,242 @@ function Menu() {
                             <th style={{ textAlign: "center" }}>당</th>
                             <th style={{ textAlign: "center" }}>나트륨</th>
                             <th style={{ textAlign: "center" }}>칼로리</th>
-                            <th></th> 
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        {breakfastItems.map((item, index) => (
-                            <tr key={index}>
-                                <td style={{ textAlign: "left" }}>{item.name}</td>
-                                <td style={{ textAlign: "center" }}>{item.protein}</td>
-                                <td style={{ textAlign: "center" }}>{item.carbohydrate}</td>
-                                <td style={{ textAlign: "center" }}>{item.fat}</td>
-                                <td style={{ textAlign: "center" }}>{item.cholesterol}</td>
-                                <td style={{ textAlign: "center" }}>{item.sugar}</td>
-                                <td style={{ textAlign: "center" }}>{item.sodium}</td>
-                                <td style={{ textAlign: "center" }}>{item.calories}</td>
-                                <td style={{ textAlign: "center" }}>
-                                    <Button
-                                        onClick={() => deleteBreakfastItem(index)}
-                                        variant="solid"
-                                        style={{
-                                            width: '50px',
-                                            height: '20px',
-                                            display: 'flex',
-                                            justifyContent: 'center',
-                                            alignItems: 'center',
-                                            fontSize: '12px',
-                                        }}
-                                    >
-                                        삭제
-                                    </Button>
-                                </td>
-                            </tr>
-                        ))}
+                        {menuData
+                            .filter(item => item.menu_when === 1)
+                            .map((item, index) => (
+                                <tr key={index}>
+                                    <td style={{ textAlign: "left" }}>{item.food_name}</td>
+                                    <td style={{ textAlign: "center" }}>{item.menu_total_pro.toFixed(2)}</td>
+                                    <td style={{ textAlign: "center" }}>{item.menu_total_car.toFixed(2)}</td>
+                                    <td style={{ textAlign: "center" }}>{item.menu_total_fat.toFixed(2)}</td>
+                                    <td style={{ textAlign: "center" }}>{item.menu_total_cal.toFixed(2)}</td>
+                                    <td style={{ textAlign: "center" }}>{item.menu_total_sugar.toFixed(2)}</td>
+                                    <td style={{ textAlign: "center" }}>{item.menu_total_na.toFixed(2)}</td>
+                                    <td style={{ textAlign: "center" }}>{item.menu_total.toFixed(2)}</td>
+                                    <td style={{ textAlign: "center" }}>
+                                        <Button
+                                            onClick={()=>{
+                                                deleteMenuItem(item.menu_seq)
+                                            }}
+                                            variant="solid"
+                                            style={{
+                                                width: '50px',
+                                                height: '20px',
+                                                display: 'flex',
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
+                                                fontSize: '12px',
+                                            }}
+                                        >
+                                            삭제
+                                        </Button>
+                                    </td>
+                                </tr>
+                            ))}
                     </tbody>
                 </table>
             </div>
             <br /><br />
+
+            {/* 점심 메뉴 */}
             <div>
                 <h3>점심</h3>
-                {/* Add content for 점심 here */}
+                <table className="table table-striped" style={{ marginTop: 20 }}>
+                    <colgroup>
+                        <col width="*%" />
+                        <col width="10%" />
+                        <col width="13%" />
+                        <col width="10%" />
+                        <col width="13%" />
+                        <col width="8%" />
+                        <col width="10%" />
+                        <col width="10%" />
+                        <col width="12%" />
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th style={{ textAlign: "left" }}>음식명</th>
+                            <th style={{ textAlign: "center" }}>단백질</th>
+                            <th style={{ textAlign: "center" }}>탄수화물</th>
+                            <th style={{ textAlign: "center" }}>지방</th>
+                            <th style={{ textAlign: "center" }}>콜레스테롤</th>
+                            <th style={{ textAlign: "center" }}>당</th>
+                            <th style={{ textAlign: "center" }}>나트륨</th>
+                            <th style={{ textAlign: "center" }}>칼로리</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {menuData
+                            .filter(item => item.menu_when === 2)
+                            .map((item, index) => (
+                                <tr key={index}>
+                                    <td style={{ textAlign: "left" }}>{item.food_name}</td>
+                                    <td style={{ textAlign: "center" }}>{item.menu_total_pro.toFixed(2)}</td>
+                                    <td style={{ textAlign: "center" }}>{item.menu_total_car.toFixed(2)}</td>
+                                    <td style={{ textAlign: "center" }}>{item.menu_total_fat.toFixed(2)}</td>
+                                    <td style={{ textAlign: "center" }}>{item.menu_total_cal.toFixed(2)}</td>
+                                    <td style={{ textAlign: "center" }}>{item.menu_total_sugar.toFixed(2)}</td>
+                                    <td style={{ textAlign: "center" }}>{item.menu_total_na.toFixed(2)}</td>
+                                    <td style={{ textAlign: "center" }}>{item.menu_total.toFixed(2)}</td>
+                                    <td style={{ textAlign: "center" }}>
+                                        <Button
+                                            onClick={()=>{
+                                                deleteMenuItem(item.menu_seq)
+                                            }}
+                                            variant="solid"
+                                            style={{
+                                                width: '50px',
+                                                height: '20px',
+                                                display: 'flex',
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
+                                                fontSize: '12px',
+                                            }}
+                                        >
+                                            삭제
+                                        </Button>
+                                    </td>
+                                </tr>
+                            ))}
+                    </tbody>
+                </table>
             </div>
             <br /><br />
+
+            {/* 저녁 메뉴 */}
             <div>
                 <h3>저녁</h3>
-                {/* Add content for 저녁 here */}
+                <table className="table table-striped" style={{ marginTop: 20 }}>
+                    <colgroup>
+                        <col width="*%" />
+                        <col width="10%" />
+                        <col width="13%" />
+                        <col width="10%" />
+                        <col width="13%" />
+                        <col width="8%" />
+                        <col width="10%" />
+                        <col width="10%" />
+                        <col width="12%" />
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th style={{ textAlign: "left" }}>음식명</th>
+                            <th style={{ textAlign: "center" }}>단백질</th>
+                            <th style={{ textAlign: "center" }}>탄수화물</th>
+                            <th style={{ textAlign: "center" }}>지방</th>
+                            <th style={{ textAlign: "center" }}>콜레스테롤</th>
+                            <th style={{ textAlign: "center" }}>당</th>
+                            <th style={{ textAlign: "center" }}>나트륨</th>
+                            <th style={{ textAlign: "center" }}>칼로리</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {menuData
+                            .filter(item => item.menu_when === 3)
+                            .map((item, index) => (
+                                <tr key={index}>
+                                    <td style={{ textAlign: "left" }}>{item.food_name}</td>
+                                    <td style={{ textAlign: "center" }}>{item.menu_total_pro.toFixed(2)}</td>
+                                    <td style={{ textAlign: "center" }}>{item.menu_total_car.toFixed(2)}</td>
+                                    <td style={{ textAlign: "center" }}>{item.menu_total_fat.toFixed(2)}</td>
+                                    <td style={{ textAlign: "center" }}>{item.menu_total_cal.toFixed(2)}</td>
+                                    <td style={{ textAlign: "center" }}>{item.menu_total_sugar.toFixed(2)}</td>
+                                    <td style={{ textAlign: "center" }}>{item.menu_total_na.toFixed(2)}</td>
+                                    <td style={{ textAlign: "center" }}>{item.menu_total.toFixed(2)}</td>
+                                    <td style={{ textAlign: "center" }}>
+                                        <Button
+                                            onClick={()=>{
+                                                deleteMenuItem(item.menu_seq)
+                                            }}
+                                            variant="solid"
+                                            style={{
+                                                width: '50px',
+                                                height: '20px',
+                                                display: 'flex',
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
+                                                fontSize: '12px',
+                                            }}
+                                        >
+                                            삭제
+                                        </Button>
+                                    </td>
+                                </tr>
+                            ))}
+                    </tbody>
+                </table>
             </div>
             <br /><br />
+
+            {/* 간식 메뉴 */}
             <div>
                 <h3>간식</h3>
-                {/* Add content for 간식 here */}
+                <table className="table table-striped" style={{ marginTop: 20 }}>
+                    <colgroup>
+                        <col width="*%" />
+                        <col width="10%" />
+                        <col width="13%" />
+                        <col width="10%" />
+                        <col width="13%" />
+                        <col width="8%" />
+                        <col width="10%" />
+                        <col width="10%" />
+                        <col width="12%" />
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th style={{ textAlign: "left" }}>음식명</th>
+                            <th style={{ textAlign: "center" }}>단백질</th>
+                            <th style={{ textAlign: "center" }}>탄수화물</th>
+                            <th style={{ textAlign: "center" }}>지방</th>
+                            <th style={{ textAlign: "center" }}>콜레스테롤</th>
+                            <th style={{ textAlign: "center" }}>당</th>
+                            <th style={{ textAlign: "center" }}>나트륨</th>
+                            <th style={{ textAlign: "center" }}>칼로리</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {menuData
+                            .filter(item => item.menu_when === 4)
+                            .map((item, index) => (
+                                <tr key={index}>
+                                    <td style={{ textAlign: "left" }}>{item.food_name}</td>
+                                    <td style={{ textAlign: "center" }}>{item.menu_total_pro.toFixed(2)}</td>
+                                    <td style={{ textAlign: "center" }}>{item.menu_total_car.toFixed(2)}</td>
+                                    <td style={{ textAlign: "center" }}>{item.menu_total_fat.toFixed(2)}</td>
+                                    <td style={{ textAlign: "center" }}>{item.menu_total_cal.toFixed(2)}</td>
+                                    <td style={{ textAlign: "center" }}>{item.menu_total_sugar.toFixed(2)}</td>
+                                    <td style={{ textAlign: "center" }}>{item.menu_total_na.toFixed(2)}</td>
+                                    <td style={{ textAlign: "center" }}>{item.menu_total.toFixed(2)}</td>
+                                    <td style={{ textAlign: "center" }}>
+                                        <Button
+                                            onClick={()=>{
+                                                deleteMenuItem(item.menu_seq)
+                                            }}
+                                            variant="solid"
+                                            style={{
+                                                width: '50px',
+                                                height: '20px',
+                                                display: 'flex',
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
+                                                fontSize: '12px',
+                                            }}
+                                        >
+                                            삭제
+                                        </Button>
+                                    </td>
+                                </tr>
+                            ))}
+                    </tbody>
+                </table>
             </div>
         </div>
     );
