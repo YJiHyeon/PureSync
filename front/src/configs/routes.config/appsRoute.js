@@ -38,6 +38,15 @@ const appsRoute = [
         path: `/mind/trash`,
         component: React.lazy(() => import('views/mind/trash')),
         authority: [ADMIN, USER],
+        meta: {
+            header: '마음쓰레기통',
+            extraHeader: React.lazy(() =>
+                import(
+                    'views/mind/trash/components/TrashHeader'
+                )
+            ),
+            headerContainer: true,
+        },
     },
     {
         key: 'mind.exam',
