@@ -3,6 +3,7 @@ import { Button } from 'components/ui';
 import Axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import DialogExercise from 'components/ui/Dialog/DialogExercise';
+import TableExercise from 'components/ui/Table/TableExercise';
 
 
 function Exercise(props) {
@@ -10,9 +11,6 @@ function Exercise(props) {
     const [exerciseData, setExerciseData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [totalCalories, setTotalCalories] = useState(0);
-
-    //useNavigate
-    const navigate = useNavigate();
 
     // 다이얼로그
     const openDialog = () => {
@@ -104,53 +102,7 @@ function Exercise(props) {
             <br />
             {/* 운동 리스트 */}
             <div>
-                <table className="table table-striped" style={{ marginTop: 20 }}>
-                    <colgroup>
-                        <col width="*%" />
-                        <col width="25%" />
-                        <col width="25%" />
-                        <col width="10%" />
-                    </colgroup>
-                    <thead>
-                        <tr>
-                            <th style={{ textAlign: "left" }}>운동명</th>
-                            <th style={{ textAlign: "center" }}>운동시간(분)</th>
-                            <th style={{ textAlign: "center" }}>소모칼로리</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {exerciseData
-                            .map((item, index) => {
-                                return (
-                                    <tr key={index}>
-                                        <td style={{ textAlign: "left" }}>{item.ec_name}</td>
-                                        <td style={{ textAlign: "center" }}>{item.el_time}</td>
-                                        <td style={{ textAlign: "center" }}>{item.el_total.toFixed(2)}</td>
-                                        <td style={{ textAlign: "center" }}>
-                                            <Button
-                                                onClick={() => {
-                                                    deleteMenuItem(item.el_seq);
-                                                }}
-                                                variant="solid"
-                                                style={{
-                                                    width: '50px',
-                                                    height: '20px',
-                                                    display: 'flex',
-                                                    justifyContent: 'center',
-                                                    alignItems: 'center',
-                                                    fontSize: '12px',
-                                                }}
-                                            >
-                                                삭제
-                                            </Button>
-                                        </td>
-                                    </tr>
-                                );
-                            })}
-                    </tbody>
-
-                </table>
+                <TableExercise exerciseData={exerciseData} deleteMenuItem={deleteMenuItem} />
             </div>
         </div>
     )

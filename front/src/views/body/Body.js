@@ -28,11 +28,10 @@ const BodyMenu = () => {
 
     const DatePickerClick = (date) => {
         setSelectDate(date);
-        //dataLoad();
+        dataLoad();
     }
 
     // useEffect(() => {
-    //     console.log("menu에서 useEffect()호출");
     //     dataLoad();
     // }, [selectDate] );
 

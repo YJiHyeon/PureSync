@@ -6,7 +6,6 @@ import SummaryChart from 'views/ui-components/graph/Charts/SummaryChart';
 
 function Summary(props) {
   const [exTotal, setExTotal] = useState("");             // 운동 총 칼로리
-  const [totalMenuKcal, setTotalMenuKcal] = useState(0);  // 오늘 총 섭취 칼로리
   const [menuWhenData, setMenuWhenData] = useState([]);   // 아점저간 각 칼로리
   const [bodyBaseData, setBodyBaseData] = useState([]);   // 기초대사량
   const [loading, setLoading] = useState(false);
@@ -40,12 +39,11 @@ function Summary(props) {
           el_total = exerciseTotalList[0].el_total;
 
         let cbodyBaseData = getBodyBase[0].body_base;
-        let consumedCaloriesSum = (menuWhenData[1] || 0) + (menuWhenData[2] || 0) + (menuWhenData[3] || 0) + (menuWhenData[4] || 0);
-
+       
         setMenuWhenData(whenTotalData);
         setExTotal(el_total.toFixed(2));
         setBodyBaseData(cbodyBaseData.toFixed(2));
-        setTotalMenuKcal(consumedCaloriesSum.toFixed(2));
+
 
       })
       .catch((error) => {
@@ -55,11 +53,11 @@ function Summary(props) {
 
   return (
     <div className="summary-container">
-      <h2>요약</h2>
-      <div className="summary-content">
+      <h2>요약</h2><br />
+      <div className="summary-content ">
 
         {/* 요약 박스 */}
-        <div className="summary-box">
+        <div class="summary-box checkbox-box grid-cols-2">
           <h6>섭취 칼로리</h6>
           <div className="summary-item">
             <p>아침 + {menuWhenData[1] === 0 ? 0 : (menuWhenData[1] || 0)}</p>
@@ -105,11 +103,11 @@ function Summary(props) {
           </div>
         </div>
 
-        {/* summary-chart */}
-        <div className="summary-chart">
+        {/* 차트 */}
+        <div className="summary-chart grid grid-cols-3" >
           {
             <SummaryChart 
-              totalMenuKcal={totalMenuKcal}
+              totalMenuKcal={((menuWhenData[1] || 0) + (menuWhenData[2] || 0) + (menuWhenData[3] || 0) + (menuWhenData[4] || 0)).toFixed(2)}
               exerciseTotal={exTotal}
               selectDate={props.selectDate}
             />
