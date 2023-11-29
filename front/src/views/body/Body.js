@@ -11,9 +11,9 @@ const BodyMenu = () => {
     let today = new Date();
     
     const [selectDate, setSelectDate] = useState(today);
-    const [menuList, setMenuList] = useState([]);
-    const [exerciseList, setExerciseList] = useState([]);
-    const [summaryList, setSummaryList] = useState([]);
+    // const [menuList, setMenuList] = useState([]);
+    // const [exerciseList, setExerciseList] = useState([]);
+    // const [summaryList, setSummaryList] = useState([]);
 
 
     const dataLoad = () => {
@@ -28,13 +28,13 @@ const BodyMenu = () => {
 
     const DatePickerClick = (date) => {
         setSelectDate(date);
-        dataLoad();
+        //dataLoad();
     }
 
-    useEffect(() => {
-        console.log("menu에서 useEffect()호출");
-        dataLoad();
-    }, [menuList], [exerciseList], [summaryList] );
+    // useEffect(() => {
+    //     console.log("menu에서 useEffect()호출");
+    //     dataLoad();
+    // }, [selectDate] );
 
     return (
         <>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import DialogMenu from 'components/ui/Dialog/DialogMenu';
 import { Button } from 'components/ui';
 import Axios from 'axios';
-import './menu.css';
+
 
 function Menu(props) {
     const [isDialogOpen, setDialogOpen] = useState(false);
@@ -41,47 +41,49 @@ function Menu(props) {
             },
             withCredentials: true
         })
-            .then((res) => {
-                const menuList = res.data.data.menuList;
-                let breakfastCalories = 0;
-                let lunchCalories = 0;
-                let dinnerCalories = 0;
-                let snackCalories = 0;
-                let dailyCalories = 0;
+        .then((res) => {
+            console.log("menu  stat -----------------------------------------");
+            const menuList = res.data.data.menuList;
+            let breakfastCalories = 0;
+            let lunchCalories = 0;
+            let dinnerCalories = 0;
+            let snackCalories = 0;
+            let dailyCalories = 0;
 
-                menuList.forEach((item) => {
-                    const mealCalories = parseFloat(item.menu_total);
-                    dailyCalories += mealCalories;
+            menuList.forEach((item) => {
+                const mealCalories = parseFloat(item.menu_total);
+                dailyCalories += mealCalories;
 
-                    switch (item.menu_when) {
-                        case 1: // 아침
-                            breakfastCalories += mealCalories;
-                            break;
-                        case 2: // 점심
-                            lunchCalories += mealCalories;
-                            break;
-                        case 3: // 저녁
-                            dinnerCalories += mealCalories;
-                            break;
-                        case 4: // 간식
-                            snackCalories += mealCalories;
-                            break;
-                        default:
-                            break;
-                    }
-                });
-
-                setBreakfastTotalCalories(breakfastCalories.toFixed(2));
-                setLunchTotalCalories(lunchCalories.toFixed(2));
-                setDinnerTotalCalories(dinnerCalories.toFixed(2));
-                setSnackTotalCalories(snackCalories.toFixed(2));
-                setDailyTotalCalories(dailyCalories.toFixed(2));
-                setMenuData(menuList);
-            })
-            .catch((error) => {
-                console.error(error);
+                switch (item.menu_when) {
+                    case 1: // 아침
+                        breakfastCalories += mealCalories;
+                        break;
+                    case 2: // 점심
+                        lunchCalories += mealCalories;
+                        break;
+                    case 3: // 저녁
+                        dinnerCalories += mealCalories;
+                        break;
+                    case 4: // 간식
+                        snackCalories += mealCalories;
+                        break;
+                    default:
+                        break;
+                }
             });
 
+            setBreakfastTotalCalories(breakfastCalories.toFixed(2));
+            setLunchTotalCalories(lunchCalories.toFixed(2));
+            setDinnerTotalCalories(dinnerCalories.toFixed(2));
+            setSnackTotalCalories(snackCalories.toFixed(2));
+            setDailyTotalCalories(dailyCalories.toFixed(2));
+            setMenuData(menuList);
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+
+        console.log("menu end -------------------");
 
     }, [props.selectDate, loading]);
 

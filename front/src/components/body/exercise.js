@@ -26,6 +26,7 @@ function Exercise(props) {
     }
 
     useEffect(() => {
+        console.log("exercise");
         Axios.get('http://127.0.0.1:9000/api/exercise/list', {
             params: {
                 mem_seq: 1,
@@ -33,13 +34,13 @@ function Exercise(props) {
             },
             withCredentials: true
         })
-            .then((res) => {
-                setExerciseData(res.data.data.exerciseList);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-
+        .then((res) => {
+            setExerciseData(res.data.data.exerciseList);
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+        console.log("exercise end -------------------");
 
     }, [props.selectDate, loading]);
 

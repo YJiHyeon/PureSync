@@ -1,33 +1,40 @@
 .summary-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding-left: 20px;
-  }
-  
-  .summary-box {
-    border: 2px solid #333;
-    padding: 20px;
-    max-width: 400px;
-    margin-top: 20px;
-    width: 100%; /* 너비 100%로 설정하여 가로 정사각형으로 만듭니다. */
-    height: auto; /* 높이 자동으로 조정하여 내용에 맞게 크기가 조절됩니다. */
-  }
-  
-  .summary-item {
-    margin-bottom: 10px;
-  }
-  
-  /* 요약 박스 내부의 요약 항목을 가로 정사각형으로 만들어줍니다. */
-  .summary-item p {
-    width: 100%;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-left: 20px;
+}
 
-  .total {
-    font-weight: bold; /* 텍스트를 굵게 표시합니다. */
-    text-align: right;
-  }
+.summary-content {
+  display: flex;
+  align-items: flex-start;
+}
 
-  .result{
-    font-weight: bold; 
-  }
+.summary-box {
+  border: 2px solid #333;
+  padding: 20px;
+  max-width: 400px;
+  margin-top: 20px;
+  width: calc(50% - 20px); /* 너비를 50%로 설정하여 좌우 여백을 줍니다. */
+  flex: 1;
+  margin-right: 20px; /* 요약 박스와 차트 사이의 간격을 조절합니다. */
+}
+
+.summary-item {
+  margin-bottom: 10px;
+}
+
+/* 요약 박스 내부의 요약 항목을 가로 정사각형으로 만들어줍니다. */
+.summary-item p {
+  width: 100%;
+}
+
+.total {
+  font-weight: bold;
+  text-align: right;
+}
+
+.result {
+  font-weight: bold;
+}
+
