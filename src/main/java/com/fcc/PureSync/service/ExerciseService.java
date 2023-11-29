@@ -28,6 +28,7 @@ public class ExerciseService {
     private final ExerciseRepository exerciseRepository;
     private final ExerciseListRepository exerciseListRepository;
 
+    // 전체 데이터
     public ResultDto getAllExerciseList( String exerciseName ) {
         try {
             List<ExerciseList> allExercise = exerciseListRepository.findAllExercise(exerciseName);
@@ -44,6 +45,7 @@ public class ExerciseService {
         }
     }
 
+    // 리스트
     public ResultDto getExerciseAllList(ExerciseDto exerciseTo) {
         if (exerciseTo.getMem_seq() == null ) {
             throw new CustomException(CustomExceptionCode.NOT_FOUND_SEQ);
