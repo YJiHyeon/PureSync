@@ -61,4 +61,16 @@
         ) a
     </select>
 
+    <!-- 아침 점심 저녁 간식 각각의 총 칼로리-->
+    <select id="getMenuTotalKcal" resultType="MenuDto" parameterType="MenuDto">
+        SELECT c.mem_seq, a.menu_date, a.menu_when, SUM(a.menu_gram/100.0 * b.food_kcal) as when_total
+        FROM tb_menu_list a
+        LEFT OUTER JOIN tb_food b ON a.food_seq = b.food_seq
+        LEFT OUTER JOIN tb_member c ON a.mem_seq = c.mem_seq
+        WHERE  a.menu_date =#{menu_date} and a.mem_seq=#{mem_seq}
+        GROUP BY c.mem_seq, a.menu_date, a.menu_when;
+    </select>
+
+
+
 </mapper>
