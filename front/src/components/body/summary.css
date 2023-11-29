@@ -1,40 +1,20 @@
-.summary-container {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding-left: 20px;
+.summary-box {
+  border: 2px solid #333;
+  padding: 20px;
+  flex: 1;
+  margin-right: 20px;
+  margin-bottom: 20px; /* 박스 아래 여백을 추가합니다. */
+  box-sizing: border-box; /* 박스 크기가 border와 padding을 포함하도록 설정합니다. */
+  max-height: 50vh; /* 화면 높이의 절반까지만 요약 박스가 채워지도록 설정합니다. */
+}
+
+.checkbox-box {
+  max-width: 70%; /* 체크박스 박스의 최대 너비를 100%로 설정하여 절반까지 차지하도록 합니다. */
 }
 
 .summary-content {
   display: flex;
-  align-items: flex-start;
+  flex-wrap: wrap;
+  align-items: flex-start; /* 요약 박스와 차트를 상단 정렬로 배치합니다. */
+  gap: 20px; /* 요약 박스와 차트 사이의 간격을 조절합니다. */
 }
-
-.summary-box {
-  border: 2px solid #333;
-  padding: 20px;
-  max-width: 400px;
-  margin-top: 20px;
-  width: calc(50% - 20px); /* 너비를 50%로 설정하여 좌우 여백을 줍니다. */
-  flex: 1;
-  margin-right: 20px; /* 요약 박스와 차트 사이의 간격을 조절합니다. */
-}
-
-.summary-item {
-  margin-bottom: 10px;
-}
-
-/* 요약 박스 내부의 요약 항목을 가로 정사각형으로 만들어줍니다. */
-.summary-item p {
-  width: 100%;
-}
-
-.total {
-  font-weight: bold;
-  text-align: right;
-}
-
-.result {
-  font-weight: bold;
-}
-

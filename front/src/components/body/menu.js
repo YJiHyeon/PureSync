@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import DialogMenu from 'components/ui/Dialog/DialogMenu';
 import { Button } from 'components/ui';
+import TableMenu from 'components/ui/Table/TableMenu';
 import Axios from 'axios';
 
 
@@ -136,76 +137,7 @@ function Menu(props) {
                         아침 총 칼로리: {breakfastTotalCalories} kcal
                     </div>
                 </div>
-                <table className="table table-striped" style={{ marginTop: 20 }}>
-                    <colgroup>
-                        <col width="*%" />
-                        <col width="10%" />
-                        <col width="10%" />
-                        <col width="13%" />
-                        <col width="10%" />
-                        <col width="13%" />
-                        <col width="8%" />
-                        <col width="10%" />
-                        <col width="10%" />
-                        <col width="12%" />
-                    </colgroup>
-                    <thead>
-                        <tr>
-                            <th style={{ textAlign: "left" }}>음식명</th>
-                            <th style={{ textAlign: "center" }}>섭취량</th>
-                            <th style={{ textAlign: "center" }}>단백질</th>
-                            <th style={{ textAlign: "center" }}>탄수화물</th>
-                            <th style={{ textAlign: "center" }}>지방</th>
-                            <th style={{ textAlign: "center" }}>콜레스테롤</th>
-                            <th style={{ textAlign: "center" }}>당</th>
-                            <th style={{ textAlign: "center" }}>나트륨</th>
-                            <th style={{ textAlign: "center" }}>칼로리</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {menuData
-                            .filter(item => item.menu_when === 1)
-                            .map((item, index) => {
-                                const lastIndex = item.food_name.lastIndexOf('_'); // 마지막 '_'의 위치 찾기
-                                const extractedName = lastIndex !== -1 ? item.food_name.substr(lastIndex + 1) : item.food_name;
-
-
-                                return (
-                                    <tr key={index}>
-                                        <td style={{ textAlign: "left" }}>{extractedName}</td>
-                                        <td style={{ textAlign: "center" }}>{item.menu_gram}</td>
-                                        <td style={{ textAlign: "center" }}>{item.menu_total_pro.toFixed(2)}</td>
-                                        <td style={{ textAlign: "center" }}>{item.menu_total_car.toFixed(2)}</td>
-                                        <td style={{ textAlign: "center" }}>{item.menu_total_fat.toFixed(2)}</td>
-                                        <td style={{ textAlign: "center" }}>{item.menu_total_cal.toFixed(2)}</td>
-                                        <td style={{ textAlign: "center" }}>{item.menu_total_sugar.toFixed(2)}</td>
-                                        <td style={{ textAlign: "center" }}>{item.menu_total_na.toFixed(2)}</td>
-                                        <td style={{ textAlign: "center" }}>{item.menu_total.toFixed(2)}</td>
-                                        <td style={{ textAlign: "center" }}>
-                                            <Button
-                                                onClick={() => {
-                                                    deleteMenuItem(item.menu_seq);
-                                                }}
-                                                variant="solid"
-                                                style={{
-                                                    width: '50px',
-                                                    height: '20px',
-                                                    display: 'flex',
-                                                    justifyContent: 'center',
-                                                    alignItems: 'center',
-                                                    fontSize: '12px',
-                                                }}
-                                            >
-                                                삭제
-                                            </Button>
-                                        </td>
-                                    </tr>
-                                );
-                            })}
-                    </tbody>
-
-                </table>
+                <TableMenu menuData={menuData} deleteMenuItem={deleteMenuItem} menuWhen={1} />
             </div>
             <br /><br />
 
@@ -217,74 +149,7 @@ function Menu(props) {
                         점심 총 칼로리 : {lunchTotalCalories} kcal
                     </div>
                 </div>
-                <table className="table table-striped" style={{ marginTop: 20 }}>
-                    <colgroup>
-                        <col width="*%" />
-                        <col width="10%" />
-                        <col width="10%" />
-                        <col width="13%" />
-                        <col width="10%" />
-                        <col width="13%" />
-                        <col width="8%" />
-                        <col width="10%" />
-                        <col width="10%" />
-                        <col width="12%" />
-                    </colgroup>
-                    <thead>
-                        <tr>
-                            <th style={{ textAlign: "left" }}>음식명</th>
-                            <th style={{ textAlign: "center" }}>섭취량</th>
-                            <th style={{ textAlign: "center" }}>단백질</th>
-                            <th style={{ textAlign: "center" }}>탄수화물</th>
-                            <th style={{ textAlign: "center" }}>지방</th>
-                            <th style={{ textAlign: "center" }}>콜레스테롤</th>
-                            <th style={{ textAlign: "center" }}>당</th>
-                            <th style={{ textAlign: "center" }}>나트륨</th>
-                            <th style={{ textAlign: "center" }}>칼로리</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {menuData
-                            .filter(item => item.menu_when === 2)
-                            .map((item, index) => {
-                                const lastIndex = item.food_name.lastIndexOf('_'); // 마지막 '_'의 위치 찾기
-                                const extractedName = lastIndex !== -1 ? item.food_name.substr(lastIndex + 1) : item.food_name;
-
-                                return (
-                                    <tr key={index}>
-                                        <td style={{ textAlign: "left" }}>{extractedName}</td>
-                                        <td style={{ textAlign: "center" }}>{item.menu_gram}</td>
-                                        <td style={{ textAlign: "center" }}>{item.menu_total_pro.toFixed(2)}</td>
-                                        <td style={{ textAlign: "center" }}>{item.menu_total_car.toFixed(2)}</td>
-                                        <td style={{ textAlign: "center" }}>{item.menu_total_fat.toFixed(2)}</td>
-                                        <td style={{ textAlign: "center" }}>{item.menu_total_cal.toFixed(2)}</td>
-                                        <td style={{ textAlign: "center" }}>{item.menu_total_sugar.toFixed(2)}</td>
-                                        <td style={{ textAlign: "center" }}>{item.menu_total_na.toFixed(2)}</td>
-                                        <td style={{ textAlign: "center" }}>{item.menu_total.toFixed(2)}</td>
-                                        <td style={{ textAlign: "center" }}>
-                                            <Button
-                                                onClick={() => {
-                                                    deleteMenuItem(item.menu_seq);
-                                                }}
-                                                variant="solid"
-                                                style={{
-                                                    width: '50px',
-                                                    height: '20px',
-                                                    display: 'flex',
-                                                    justifyContent: 'center',
-                                                    alignItems: 'center',
-                                                    fontSize: '12px',
-                                                }}
-                                            >
-                                                삭제
-                                            </Button>
-                                        </td>
-                                    </tr>
-                                );
-                            })}
-                    </tbody>
-                </table>
+                <TableMenu menuData={menuData} deleteMenuItem={deleteMenuItem} menuWhen={2} />
             </div>
             <br /><br />
 
@@ -296,74 +161,7 @@ function Menu(props) {
                         저녁 총 칼로리 :{dinnerTotalCalories} kcal
                     </div>
                 </div>
-                <table className="table table-striped" style={{ marginTop: 20 }}>
-                    <colgroup>
-                        <col width="*%" />
-                        <col width="10%" />
-                        <col width="10%" />
-                        <col width="13%" />
-                        <col width="10%" />
-                        <col width="13%" />
-                        <col width="8%" />
-                        <col width="10%" />
-                        <col width="10%" />
-                        <col width="12%" />
-                    </colgroup>
-                    <thead>
-                        <tr>
-                            <th style={{ textAlign: "left" }}>음식명</th>
-                            <th style={{ textAlign: "center" }}>섭취량</th>
-                            <th style={{ textAlign: "center" }}>단백질</th>
-                            <th style={{ textAlign: "center" }}>탄수화물</th>
-                            <th style={{ textAlign: "center" }}>지방</th>
-                            <th style={{ textAlign: "center" }}>콜레스테롤</th>
-                            <th style={{ textAlign: "center" }}>당</th>
-                            <th style={{ textAlign: "center" }}>나트륨</th>
-                            <th style={{ textAlign: "center" }}>칼로리</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {menuData
-                            .filter(item => item.menu_when === 3)
-                            .map((item, index) => {
-                                const lastIndex = item.food_name.lastIndexOf('_'); // 마지막 '_'의 위치 찾기
-                                const extractedName = lastIndex !== -1 ? item.food_name.substr(lastIndex + 1) : item.food_name;
-
-                                return (
-                                    <tr key={index}>
-                                        <td style={{ textAlign: "left" }}>{extractedName}</td>
-                                        <td style={{ textAlign: "center" }}>{item.menu_gram}</td>
-                                        <td style={{ textAlign: "center" }}>{item.menu_total_pro.toFixed(2)}</td>
-                                        <td style={{ textAlign: "center" }}>{item.menu_total_car.toFixed(2)}</td>
-                                        <td style={{ textAlign: "center" }}>{item.menu_total_fat.toFixed(2)}</td>
-                                        <td style={{ textAlign: "center" }}>{item.menu_total_cal.toFixed(2)}</td>
-                                        <td style={{ textAlign: "center" }}>{item.menu_total_sugar.toFixed(2)}</td>
-                                        <td style={{ textAlign: "center" }}>{item.menu_total_na.toFixed(2)}</td>
-                                        <td style={{ textAlign: "center" }}>{item.menu_total.toFixed(2)}</td>
-                                        <td style={{ textAlign: "center" }}>
-                                            <Button
-                                                onClick={() => {
-                                                    deleteMenuItem(item.menu_seq);
-                                                }}
-                                                variant="solid"
-                                                style={{
-                                                    width: '50px',
-                                                    height: '20px',
-                                                    display: 'flex',
-                                                    justifyContent: 'center',
-                                                    alignItems: 'center',
-                                                    fontSize: '12px',
-                                                }}
-                                            >
-                                                삭제
-                                            </Button>
-                                        </td>
-                                    </tr>
-                                );
-                            })}
-                    </tbody>
-                </table>
+                <TableMenu menuData={menuData} deleteMenuItem={deleteMenuItem} menuWhen={3} />
             </div>
             <br /><br />
 
@@ -375,74 +173,7 @@ function Menu(props) {
                         간식 총 칼로리 : {snackTotalCalories} kcal
                     </div>
                 </div>
-                <table className="table table-striped" style={{ marginTop: 20 }}>
-                    <colgroup>
-                        <col width="*%" />
-                        <col width="10%" />
-                        <col width="10%" />
-                        <col width="13%" />
-                        <col width="10%" />
-                        <col width="13%" />
-                        <col width="8%" />
-                        <col width="10%" />
-                        <col width="10%" />
-                        <col width="12%" />
-                    </colgroup>
-                    <thead>
-                        <tr>
-                            <th style={{ textAlign: "left" }}>음식명</th>
-                            <th style={{ textAlign: "center" }}>섭취량</th>
-                            <th style={{ textAlign: "center" }}>단백질</th>
-                            <th style={{ textAlign: "center" }}>탄수화물</th>
-                            <th style={{ textAlign: "center" }}>지방</th>
-                            <th style={{ textAlign: "center" }}>콜레스테롤</th>
-                            <th style={{ textAlign: "center" }}>당</th>
-                            <th style={{ textAlign: "center" }}>나트륨</th>
-                            <th style={{ textAlign: "center" }}>칼로리</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {menuData
-                            .filter(item => item.menu_when === 4)
-                            .map((item, index) => {
-                                const lastIndex = item.food_name.lastIndexOf('_'); // 마지막 '_'의 위치 찾기
-                                const extractedName = lastIndex !== -1 ? item.food_name.substr(lastIndex + 1) : item.food_name;
-
-                                return (
-                                    <tr key={index}>
-                                        <td style={{ textAlign: "left" }}>{extractedName}</td>
-                                        <td style={{ textAlign: "center" }}>{item.menu_gram}</td>
-                                        <td style={{ textAlign: "center" }}>{item.menu_total_pro.toFixed(2)}</td>
-                                        <td style={{ textAlign: "center" }}>{item.menu_total_car.toFixed(2)}</td>
-                                        <td style={{ textAlign: "center" }}>{item.menu_total_fat.toFixed(2)}</td>
-                                        <td style={{ textAlign: "center" }}>{item.menu_total_cal.toFixed(2)}</td>
-                                        <td style={{ textAlign: "center" }}>{item.menu_total_sugar.toFixed(2)}</td>
-                                        <td style={{ textAlign: "center" }}>{item.menu_total_na.toFixed(2)}</td>
-                                        <td style={{ textAlign: "center" }}>{item.menu_total.toFixed(2)}</td>
-                                        <td style={{ textAlign: "center" }}>
-                                            <Button
-                                                onClick={() => {
-                                                    deleteMenuItem(item.menu_seq);
-                                                }}
-                                                variant="solid"
-                                                style={{
-                                                    width: '50px',
-                                                    height: '20px',
-                                                    display: 'flex',
-                                                    justifyContent: 'center',
-                                                    alignItems: 'center',
-                                                    fontSize: '12px',
-                                                }}
-                                            >
-                                                삭제
-                                            </Button>
-                                        </td>
-                                    </tr>
-                                );
-                            })}
-                    </tbody>
-                </table>
+                <TableMenu menuData={menuData} deleteMenuItem={deleteMenuItem} menuWhen={4} />
             </div>
         </div>
     );
