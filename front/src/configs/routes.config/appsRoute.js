@@ -32,6 +32,15 @@ const appsRoute = [
         path: `/mind/diary`,
         component: React.lazy(() => import('views/mind/diary')),
         authority: [ADMIN, USER],
+        meta: {
+            header: '마음일기',
+            extraHeader: React.lazy(() =>
+                import(
+                    'views/mind/diary/components/DiaryHeader'
+                )
+            ),
+            headerContainer: true,
+        },
     },
     {
         key: 'mind.trash',
