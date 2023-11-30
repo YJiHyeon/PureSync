@@ -29,6 +29,19 @@ const appsNavigationConfig = [
                     
                 ],
             },
+            {
+                key: 'board.detail',
+                path: `/board/view`,
+                title: '게시판 상세',
+                translateKey: 'nav.board.detail',
+                icon: 'account',
+                type: NAV_ITEM_TYPE_ITEM,
+
+                authority: [ADMIN, USER],
+                subMenu: [
+
+                ],
+            },
 
 
 

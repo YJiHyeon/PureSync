@@ -79,7 +79,19 @@ const appsRoute = [
     {
         key: 'board',
         path: `/board`,
-        component: React.lazy(() => import('views/Board')),
+        component: React.lazy(() => import('views/board/index')),
+        authority: [ADMIN, USER],
+    },
+    {
+        key: 'board.detail',
+        path: `/board/view`,
+        component: React.lazy(() => import('views/board/Article/index')),
+        authority: [ADMIN, USER],
+    },
+    {
+        key: 'board.write',
+        path: `/board/write`,
+        component: React.lazy(() => import('views/board/EditArticle')),
         authority: [ADMIN, USER],
     },
     // 마이페이지
