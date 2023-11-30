@@ -1,5 +1,6 @@
 package com.fcc.PureSync.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fcc.PureSync.entity.Board;
 import com.fcc.PureSync.entity.Comment;
 import lombok.AllArgsConstructor;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 public class CommentDto {
     private Long cmtSeq;
     private String cmtContents;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime cmtWdate;
     private Boolean cmtStatus;
     private Long memSeq;

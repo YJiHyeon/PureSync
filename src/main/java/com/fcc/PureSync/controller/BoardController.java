@@ -7,6 +7,7 @@ import com.fcc.PureSync.service.BoardService;
 import com.fcc.PureSync.util.FileUploadUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,8 +24,8 @@ public class BoardController {
      * 등록
      */
     @PostMapping
-    public ResultDto createBoard(@RequestPart("boardDto") BoardDto boardDto, String id, @RequestPart(value = "file", required = false) MultipartFile file) {
-        return boardService.createBoard(boardDto, id, file);
+    public ResultDto createBoard(@RequestPart("boardDto") BoardDto boardDto, @AuthenticationPrincipal String memSeqStr, @RequestPart(value = "file", required = false) MultipartFile file) {
+        return boardService.createBoard(boardDto, memSeqStr, file);
     }
 
     /**
@@ -39,8 +40,9 @@ public class BoardController {
      * 삭제
      */
     @DeleteMapping("/{boardSeq}")
-    public ResultDto deleteBoard(@PathVariable Long boardSeq, String id) {
-        return boardService.deleteBoard(boardSeq, id);
+    public ResultDto deleteBoard(@PathVariable Long boardSeq, @AuthenticationPrincipal String memSeqStr) {
+
+        return boardService.deleteBoard(boardSeq, memSeqStr);
     }
 
     /**
@@ -58,6 +60,14 @@ public class BoardController {
     public ResultDto getAllBoards(Pageable pageable , String id) {
         return boardService.findAllBoard(pageable,id);
 
+    }
+
+    /**
+     * 파일 조회
+     */
+    @GetMapping("/{boardSeq}/file")
+    public ResultDto getBoardFile(@PathVariable Long boardSeq){
+        return boardService.findFileChk(boardSeq);
     }
 
 }
