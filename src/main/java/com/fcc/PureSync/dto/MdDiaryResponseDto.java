@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MdDiaryResponseDto {
+    Long dySeq;
     String dyDate;
     String dyTitle;
     String dyContents;

@@ -3,10 +3,13 @@ import { HiOutlineClock } from 'react-icons/hi'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import React, { useEffect, useState } from "react";
+import {
+    Loading,
+} from 'components/shared'
 
 
 const Diaries = () => {
-    
+    const [loading, setLoding] = useState(true);
     const [diaries, setDiaries] = useState([]);
     useEffect(() => {
         // axios를 사용하여 데이터를 가져옴
@@ -19,6 +22,7 @@ const Diaries = () => {
             .then(response => {
                 // 요청이 성공하면 데이터를 articles 상태로 설정
                 setDiaries(response.data.data.mdDiaryList);
+                setLoding(false);
                 console.log(response.data.data.mdDiaryList);
             })
             .catch(error => {
@@ -30,15 +34,20 @@ const Diaries = () => {
     const navigate = useNavigate()
 
     const onArticleClick = (id) => {
-        navigate()
+        navigate(
+            `/mind/diary/view/${id}`
+        )
+        console.log(id);
     }
 
     return (
+        <Loading loading={loading}>
         <div>
         {diaries.map((diary, index) => (
             <Card key={index}
             className="group mb-4"
             clickable
+            onClick={() => onArticleClick(diary.dySeq)}
         >
             <div className="px-8 py-3 relative">
                 <div className="flex items-center justify-between mb-2">
@@ -70,6 +79,7 @@ const Diaries = () => {
                 
    
         </div>
+        </Loading>
     )
 }
 

@@ -20,7 +20,7 @@ const TrashHeader = () => {
     return (
         <div className="flex items-center">
             <Button onClick={openDialog} size="sm" variant="solid">
-                Add Trash
+                마음 비우기
             </Button>
             <DialogTrashInsert isOpen={isDialogOpen} onClose={closeDialog} />
         </div>

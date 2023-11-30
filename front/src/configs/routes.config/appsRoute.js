@@ -43,6 +43,18 @@ const appsRoute = [
         },
     },
     {
+        key: 'mind.diaryView',
+        path: `/mind/diary/view/:id`,
+        component: React.lazy(() => import('views/mind/diary/components/ArticleContent')),
+        authority: [ADMIN, USER],
+    },
+    {
+        key: 'mind.diaryWrite',
+        path: `/mind/diary/write`,
+        component: React.lazy(() => import('views/mind/diary/components/DiaryWrite')),
+        authority: [ADMIN, USER],
+    },
+    {
         key: 'mind.trash',
         path: `/mind/trash`,
         component: React.lazy(() => import('views/mind/trash')),

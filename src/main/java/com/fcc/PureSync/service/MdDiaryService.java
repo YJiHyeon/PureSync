@@ -110,6 +110,7 @@ public class MdDiaryService {
     //mdDiary entity -> dto 변환
     public MdDiaryResponseDto entityToDto(MdDiary mdDiary) {
         return MdDiaryResponseDto.builder()
+                .dySeq(mdDiary.getDySeq())
                 .dyDate(mdDiary.getDyDate())
                 .dyTitle(mdDiary.getDyTitle())
                 .dyContents(mdDiary.getDyContents())
