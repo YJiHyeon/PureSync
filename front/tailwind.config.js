@@ -15,6 +15,9 @@ module.exports = {
     theme: {
         fontFamily: {
             sans: [
+                'Pretendard Variable',
+                'Pretendard',
+                'IBM Plex Sans KR',
                 'Inter',
                 'ui-sans-serif',
                 'system-ui',
