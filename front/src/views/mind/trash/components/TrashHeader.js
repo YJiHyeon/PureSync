@@ -8,21 +8,19 @@ const TrashHeader = () => {
 
     const openDialog = () => {
         setDialogOpen(true);
-        setLoading(false);
     }
 
     const closeDialog = () => {
         setDialogOpen(false);
-        setLoading(true);
         
     }
-    
+
     return (
         <div className="flex items-center">
             <Button onClick={openDialog} size="sm" variant="solid">
                 마음 비우기
             </Button>
-            <DialogTrashInsert isOpen={isDialogOpen} onClose={closeDialog} />
+            <DialogTrashInsert isOpen={isDialogOpen} onClose={closeDialog}/>
         </div>
     )
 }

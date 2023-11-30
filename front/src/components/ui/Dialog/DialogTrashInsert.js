@@ -12,6 +12,8 @@ import Axios from 'axios';
 
 import { useNavigate } from 'react-router-dom';
 import Board from 'views/project/ScrumBoard/Board';
+import axios from 'axios';
+import { use } from 'i18next';
 
 const DialogTrashInsert = (props) => {
     // 현재 창 크기를 가져오는 커스텀 훅 사용
@@ -83,11 +85,28 @@ const DialogTrashInsert = (props) => {
     // 기본 및 사용자 제공 콘텐츠 클래스 이름을 결합
     const dialogClass = classNames(defaultDialogContentClass, contentClassName);
 
-
+    const [tsContents, setTsContents] = useState('');
 
     // 등록 버튼 클릭 핸들러
     const handleRegisterClick = () => {
-        const sendFoodDatas = [];
+        
+        const sendTrashData =
+            {   
+                tsContents: tsContents,
+                memId : 'aaa'
+            }
+        ;
+        console.log(sendTrashData)
+        axios.post('http://127.0.0.1:9000/api/mind/trash', sendTrashData)
+        .then((res) => {
+            console.log(res);
+            setTsContents('');
+            props.onClose();
+        })
+        .catch((res) => {
+            console.log('에러 : ');
+            console.log(res);
+        })
     }
 
 
@@ -125,7 +144,7 @@ const DialogTrashInsert = (props) => {
                 {closable && renderCloseButton}
                 <h4>버리고 싶은 감정을 적어주세요</h4><br />
                     <div className="form-floating">
-                    <textarea style={{
+                    <textarea value={tsContents} onChange={(e) => setTsContents(e.target.value)} style={{
                         width: "100%",                       
                         height: "200px",
                         padding: "10px",
