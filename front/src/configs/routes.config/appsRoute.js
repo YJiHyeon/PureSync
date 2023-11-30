@@ -10,7 +10,7 @@ const appsRoute = [
     {
         key: 'home.home',
         path: `/home`,
-        component: React.lazy(() => import('views/home/dashboard')),
+        component: React.lazy(() => import('views/Home')),
         authority: [ADMIN, USER],
     },
     // 신체
@@ -32,42 +32,12 @@ const appsRoute = [
         path: `/mind/diary`,
         component: React.lazy(() => import('views/mind/diary')),
         authority: [ADMIN, USER],
-        meta: {
-            header: '마음일기',
-            extraHeader: React.lazy(() =>
-                import(
-                    'views/mind/diary/components/DiaryHeader'
-                )
-            ),
-            headerContainer: true,
-        },
-    },
-    {
-        key: 'mind.diaryView',
-        path: `/mind/diary/view/:id`,
-        component: React.lazy(() => import('views/mind/diary/components/ArticleContent')),
-        authority: [ADMIN, USER],
-    },
-    {
-        key: 'mind.diaryWrite',
-        path: `/mind/diary/write`,
-        component: React.lazy(() => import('views/mind/diary/components/DiaryWrite')),
-        authority: [ADMIN, USER],
     },
     {
         key: 'mind.trash',
         path: `/mind/trash`,
         component: React.lazy(() => import('views/mind/trash')),
         authority: [ADMIN, USER],
-        meta: {
-            header: '마음쓰레기통',
-            extraHeader: React.lazy(() =>
-                import(
-                    'views/mind/trash/components/TrashHeader'
-                )
-            ),
-            headerContainer: true,
-        },
     },
     {
         key: 'mind.exam',
@@ -79,9 +49,22 @@ const appsRoute = [
     {
         key: 'board',
         path: `/board`,
-        component: React.lazy(() => import('views/Board')),
+        component: React.lazy(() => import('views/board/index')),
         authority: [ADMIN, USER],
     },
+    {
+        key: 'board.detail',
+        path: `/board/view`,
+        component: React.lazy(() => import('views/board/Article/index')),
+        authority: [ADMIN, USER],
+    },
+    {
+        key: 'board.write',
+        path: `/board/write`,
+        component: React.lazy(() => import('views/board/EditArticle')),
+        authority: [ADMIN, USER],
+    },
+
     // 마이페이지
     {
         key: 'mypage',

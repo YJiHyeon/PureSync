@@ -26,6 +26,8 @@ const authNavigationConfig = [
                 authority: [ADMIN, USER],
                 subMenu: [],
             },
+           
+
             {
                 key: 'authentication.signIn',
                 path: '',
