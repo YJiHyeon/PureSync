@@ -14,20 +14,25 @@ import java.util.Optional;
 
 
 @RestController
-@RequestMapping("/api/dashboard")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class DashboardController {
 
     private final DashboardService dashboardService;
 
-    @GetMapping(value = {"/{memId}", "/{memId}/{baseDate}"})
-    public ResultDto getDashboardInfo(@PathVariable("memId") String memId, @PathVariable(required = false) String baseDate)   {
+    @GetMapping(value = {"/dashboard/{memSeq}", "/dashboard/{memSeq}/{baseDate}"})
+    public ResultDto getDashboardInfo(@PathVariable("memSeq") Long memSeq, @PathVariable(required = false) String baseDate)   {
         if (baseDate == null) {
             LocalDate localDate = LocalDate.now();
             baseDate = localDate.toString();
         }
 
-        return dashboardService.getDashboardInfo(memId, baseDate);
+        return dashboardService.getDashboardInfo(memSeq, baseDate);
+    }
+
+    @GetMapping("/positive")
+    public ResultDto getPositive() {
+        return dashboardService.getRandomPositive();
     }
 
 

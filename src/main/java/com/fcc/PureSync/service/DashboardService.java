@@ -2,6 +2,7 @@ package com.fcc.PureSync.service;
 
 import com.fcc.PureSync.dto.ResultDto;
 import com.fcc.PureSync.entity.Member;
+import com.fcc.PureSync.entity.Positive;
 import com.fcc.PureSync.exception.CustomException;
 import com.fcc.PureSync.exception.CustomExceptionCode;
 import com.fcc.PureSync.repository.*;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -24,10 +26,11 @@ public class DashboardService {
     private final SleepRepository sleepRepository;
     private final MemberRepository memberRepository;
     private final MenuRepository menuRepository;
+    private final PositiveRepository positiveRepository;
 
     @Transactional
-    public ResultDto getDashboardInfo(String memId, String date) {
-        Member member = memberRepository.findByMemId(memId).orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
+    public ResultDto getDashboardInfo(Long memSeq, String date) {
+        Member member = memberRepository.findById(memSeq).orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
 
         HashMap<String, Object> data = new HashMap<>();
 
@@ -59,14 +62,31 @@ public class DashboardService {
         data.put("default", defaultData);
         data.put("menuList", menuStatsNativeVoList);
 
-        ResultDto resultDto =
-                ResultDto.builder()
-                        .code(HttpStatus.OK.value())
-                        .httpStatus(HttpStatus.OK)
-                        .message("Success")
-                        .data(data)
-                        .build();
+        ResultDto resultDto = buildResultDto(200, HttpStatus.OK, "조회 성공", data);
 
         return resultDto;
+    }
+
+    public ResultDto getRandomPositive() {
+        List<Positive> allPositive = positiveRepository.findAll();
+        Positive onePositive = null;
+        if (!allPositive.isEmpty()) {
+            Random random = new Random();
+            onePositive = allPositive.get(random.nextInt(allPositive.size()));
+        }
+
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("Positive", onePositive);
+        ResultDto resultDto = buildResultDto(200, HttpStatus.OK, "조회 성공", data);
+        return resultDto;
+    }
+
+    public ResultDto buildResultDto(int code, HttpStatus httpStatuss, String message, HashMap<String, Object> data) {
+        return ResultDto.builder()
+                .code(code)
+                .httpStatus(httpStatuss)
+                .message(message)
+                .data(data)
+                .build();
     }
 }
