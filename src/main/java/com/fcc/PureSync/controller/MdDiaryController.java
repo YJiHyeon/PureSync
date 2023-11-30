@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.*;
 public class MdDiaryController {
     private final MdDiaryService mdDiaryService;
     @GetMapping("/list/{memId}")
-    public ResultDto getMdDiaryList(@PathVariable("memId") String memId, Pageable pageable) {
-        return mdDiaryService.getMdDiaryList(memId, pageable);
+    public ResultDto getMdDiaryList(@PathVariable("memId") String memId) {
+        return mdDiaryService.getMdDiaryList(memId);
     }
 
     @GetMapping("{dySeq}")

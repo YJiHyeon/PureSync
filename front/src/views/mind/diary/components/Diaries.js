@@ -13,17 +13,11 @@ const Diaries = () => {
     const [diaries, setDiaries] = useState([]);
     useEffect(() => {
         // axios를 사용하여 데이터를 가져옴
-        axios.get('http://127.0.0.1:9000/api/mind/diary/list/aaa', {
-            params: {
-                page: '0',
-                size: '5'
-              }
-        })
+        axios.get('http://127.0.0.1:9000/api/mind/diary/list/aaa')
             .then(response => {
                 // 요청이 성공하면 데이터를 articles 상태로 설정
                 setDiaries(response.data.data.mdDiaryList);
                 setLoding(false);
-                console.log(response.data.data.mdDiaryList);
             })
             .catch(error => {
                 // 에러 처리
@@ -37,9 +31,8 @@ const Diaries = () => {
         navigate(
             `/mind/diary/view/${id}`
         )
-        console.log(id);
     }
-
+    
     return (
         <Loading loading={loading}>
         <div>
