@@ -5,18 +5,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface MemberRepository extends JpaRepository<Member, Long> {<<<<<<< hb13
+public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByMemSeq(Long memId);
     Optional<Member> findByMemId(String id);
 
     Optional<Member> findByMemNick(String memNick);
     Optional<Member> findByMemEmail(String memEmail);
-
-    Optional<Member> findByMemId(String memId);
-    Optional<Member> findByMemIdAndMemStatus(String memId, Integer memStatus);
-    Optional<Member> findByMemNickAndMemStatus(String memNick, Integer memStatus);
-    Optional<Member> findByMemEmailAndMemStatus(String memEmail, Integer memStatus);
-                                                                    
 
 
 }

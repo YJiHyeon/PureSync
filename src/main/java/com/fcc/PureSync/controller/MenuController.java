@@ -19,14 +19,8 @@ public class MenuController {
     // 서비스에서 예외처리
     private final MenuService menuService;
 
-    @GetMapping("/foodList")
-    public ResultDto getAllFoodList(String foodName) {
-        System.out.println("foodName  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + foodName );
-        return menuService.getAllFoods(foodName);
-    }
-
     @GetMapping("/list")
-    public ResultDto  getAllMenuList ( MenuDto menuTo ) {
+    public ResultDto  getAllMenuList (@RequestBody  MenuDto menuTo ) {
          return menuService.getMenuAllList(menuTo);
     }
 
@@ -40,7 +34,7 @@ public class MenuController {
         return menuService.updateMenu(menu);
     }
 
-    @PostMapping ("/delete")
+    @DeleteMapping ("/delete")
     public ResultDto menuDelete( @RequestBody Menu menu ) {
         return menuService.deleteMenu(menu);
     }

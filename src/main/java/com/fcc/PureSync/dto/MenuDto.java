@@ -16,7 +16,7 @@ public class  MenuDto {
     private Integer menu_when;
     private Long mem_seq;
     private Long food_seq;
-    private Double menu_kcal;
+    private Double menu_kacl;
     private  Double menu_total;
     private String menu_date;
     private String menu_gram;
@@ -27,8 +27,6 @@ public class  MenuDto {
     private  Double menu_total_sugar;
     private  Double menu_total_na;
     private  Double menu_total_cal;
-
-    private  Double when_total;
 
 
     private  String food_name;

@@ -19,10 +19,10 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
                     ") " +
                     "SELECT " +
                     "   DateRange.date, " +
-                    "   SUM(CASE WHEN ml.menu_when = 1 THEN ROUND(ml.menu_gram / 100 * food.food_kcal) ELSE 0 END) AS kcalBreakfast, " +
-                    "   SUM(CASE WHEN ml.menu_when = 2 THEN ROUND(ml.menu_gram / 100 * food.food_kcal) ELSE 0 END) AS kcalLunch, " +
-                    "   SUM(CASE WHEN ml.menu_when = 3 THEN ROUND(ml.menu_gram / 100 * food.food_kcal) ELSE 0 END) AS kcalDinner, " +
-                    "   SUM(CASE WHEN ml.menu_when = 4 THEN ROUND(ml.menu_gram / 100 * food.food_kcal) ELSE 0 END) AS kcalSnack, " +
+                    "   SUM(CASE WHEN ml.menu_when = 1 THEN ROUND(ml.menu_gram / 100 * food.food_car) ELSE 0 END) AS kcalBreakfast, " +
+                    "   SUM(CASE WHEN ml.menu_when = 2 THEN ROUND(ml.menu_gram / 100 * food.food_car) ELSE 0 END) AS kcalLunch, " +
+                    "   SUM(CASE WHEN ml.menu_when = 3 THEN ROUND(ml.menu_gram / 100 * food.food_car) ELSE 0 END) AS kcalDinner, " +
+                    "   SUM(CASE WHEN ml.menu_when = 4 THEN ROUND(ml.menu_gram / 100 * food.food_car) ELSE 0 END) AS kcalSnack, " +
                     "   ROUND(SUM(food.food_car), 2) as foodCar, " +
                     "   ROUND(SUM(food.food_pro), 2) as foodPro, " +
                     "   ROUND(SUM(food.food_fat), 2) as foodFat, " +

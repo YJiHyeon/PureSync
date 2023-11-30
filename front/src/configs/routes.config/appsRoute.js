@@ -10,7 +10,7 @@ const appsRoute = [
     {
         key: 'home.home',
         path: `/home`,
-        component: React.lazy(() => import('views/home/dashboard')),
+        component: React.lazy(() => import('views/Home')),
         authority: [ADMIN, USER],
     },
     // 신체

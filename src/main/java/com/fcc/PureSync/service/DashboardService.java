@@ -2,7 +2,6 @@ package com.fcc.PureSync.service;
 
 import com.fcc.PureSync.dto.ResultDto;
 import com.fcc.PureSync.entity.Member;
-import com.fcc.PureSync.entity.Positive;
 import com.fcc.PureSync.exception.CustomException;
 import com.fcc.PureSync.exception.CustomExceptionCode;
 import com.fcc.PureSync.repository.*;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -26,31 +24,22 @@ public class DashboardService {
     private final SleepRepository sleepRepository;
     private final MemberRepository memberRepository;
     private final MenuRepository menuRepository;
-    private final PositiveRepository positiveRepository;
 
     @Transactional
-    public ResultDto getDashboardInfo(Long memSeq, String date) {
-        Member member = memberRepository.findById(memSeq).orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
-
+    public ResultDto getDashboardInfo(String memId, String date) {
+        Member member = memberRepository.findByMemId(memId).orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
+        
         HashMap<String, Object> data = new HashMap<>();
 
-        List<ExerciseStatsNativeVo> exerciseStatsWeeklyList =  exerciseRepository.findLastDaysExerciseStats(member.getMemSeq(), date, 6);
-        List<ExerciseStatsNativeVo> exerciseStatsMonthlyList =  exerciseRepository.findLastDaysExerciseStats(member.getMemSeq(), date, 29);
-        List<ExerciseStatsNativeVo> exerciseStatsYearlyList =  exerciseRepository.findLastMonthsExerciseStats(member.getMemSeq(), date, 11);
+        List<ExerciseStatsNativeVo> exerciseStatsWeeklyList =  exerciseRepository.findLastDaysExerciseStats(member.getMemSeq(), date, 7);
 
         HashMap<String, Object> exerciseMap = new HashMap<>();
         exerciseMap.put("weekly", exerciseStatsWeeklyList);
-        exerciseMap.put("monthly", exerciseStatsMonthlyList);
-        exerciseMap.put("yearly", exerciseStatsYearlyList);
 
-        List<SleepStatsNativeVo> sleepStatsWeeklyList =  sleepRepository.findLastDaysSleepStats(member.getMemSeq(), date, 6);
-        List<SleepStatsNativeVo> sleepStatsMonthlyList =  sleepRepository.findLastDaysSleepStats(member.getMemSeq(), date, 29);
-        List<SleepStatsNativeVo> sleepStatsYearlyList =  sleepRepository.findLastMonthsSleepStats(member.getMemSeq(), date, 11);
+        List<SleepStatsNativeVo> sleepStatsWeeklyList =  sleepRepository.findLastDaysSleepStats(member.getMemSeq(), date, 7);
 
         HashMap<String, Object> sleepMap = new HashMap<>();
         sleepMap.put("weekly", sleepStatsWeeklyList);
-        sleepMap.put("monthly", sleepStatsMonthlyList);
-        sleepMap.put("yearly", sleepStatsYearlyList);
 
         List<EmotionNativeVo> emotionNativeVoList = mdDiaryRepository.findDataByMonth(member.getMemSeq(), date);
         Optional<DashboardDefaultNativeVo> defaultData = exerciseRepository.findDefaultData(member.getMemSeq(), date);
@@ -62,31 +51,46 @@ public class DashboardService {
         data.put("default", defaultData);
         data.put("menuList", menuStatsNativeVoList);
 
-        ResultDto resultDto = buildResultDto(200, HttpStatus.OK, "조회 성공", data);
+        ResultDto resultDto =
+                ResultDto.builder()
+                        .code(HttpStatus.OK.value())
+                        .httpStatus(HttpStatus.OK)
+                        .message("Success")
+                        .data(data)
+                        .build();
 
         return resultDto;
     }
 
-    public ResultDto getRandomPositive() {
-        List<Positive> allPositive = positiveRepository.findAll();
-        Positive onePositive = null;
-        if (!allPositive.isEmpty()) {
-            Random random = new Random();
-            onePositive = allPositive.get(random.nextInt(allPositive.size()));
+    @Transactional
+    public ResultDto getDashboardDetail(String type, String memId, String date, String target) {
+        Member member = memberRepository.findByMemId(memId).orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
+        HashMap<String, Object> data = new HashMap<>();
+        List<?> statsList = null;
+
+        if (type.equals("exercise") && target.equals("monthly")) {
+            statsList =  exerciseRepository.findLastDaysExerciseStats(member.getMemSeq(), date, 30);
+
+        } else if (type.equals("exercise") && target.equals("yearly")) {
+            statsList =  exerciseRepository.findLastMonthsExerciseStats(member.getMemSeq(), date, 12);
+
+        } else if (type.equals("sleep") && target.equals("monthly")) {
+            statsList =  sleepRepository.findLastDaysSleepStats(member.getMemSeq(), date, 30);
+
+        } else if (type.equals("sleep") && target.equals("yearly")) {
+            statsList =  sleepRepository.findLastMonthsSleepStats(member.getMemSeq(), date, 12);
         }
 
-        HashMap<String, Object> data = new HashMap<>();
-        data.put("Positive", onePositive);
-        ResultDto resultDto = buildResultDto(200, HttpStatus.OK, "조회 성공", data);
-        return resultDto;
-    }
+        data.put(type, statsList);
 
-    public ResultDto buildResultDto(int code, HttpStatus httpStatuss, String message, HashMap<String, Object> data) {
-        return ResultDto.builder()
-                .code(code)
-                .httpStatus(httpStatuss)
-                .message(message)
-                .data(data)
-                .build();
+        ResultDto resultDto =
+                ResultDto.builder()
+                        .code(HttpStatus.OK.value())
+                        .httpStatus(HttpStatus.OK)
+                        .message("Success")
+                        .data(data)
+                        .build();
+
+        return resultDto;
     }
 }

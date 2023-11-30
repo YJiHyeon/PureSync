@@ -23,6 +23,4 @@ public class Food {
     private Integer foodNa;
     private Double foodCol;
     private Integer foodKcal;
-    private String foodCheckbox;
-
 }

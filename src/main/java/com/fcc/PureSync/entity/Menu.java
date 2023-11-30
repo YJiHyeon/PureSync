@@ -26,7 +26,7 @@ public class Menu {
     @JoinColumn(name = "mem_seq")
     Member member;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "food_seq")
     Food food;
     //    private Long memSeq;

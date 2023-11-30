@@ -1,7 +1,8 @@
 package com.fcc.PureSync.controller;
 
-import com.fcc.PureSync.dto.*;
-import com.fcc.PureSync.jwt.CustomUserDetails;
+import com.fcc.PureSync.dto.LoginDto;
+import com.fcc.PureSync.dto.ResultDto;
+import com.fcc.PureSync.dto.SignupDto;
 import com.fcc.PureSync.service.MemberService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -24,12 +25,6 @@ public class MemberController {
         return memberService.signup(signupDto);
     }
 
-    @PostMapping("/body/signup")  // 회원가입 시 신체정보
-    public ResultDto bodySignup(@RequestBody BodySignupDto bodySignupDto) {
-
-        return memberService.bodySignup(bodySignupDto);
-    }
-
     @PostMapping("/login")  // 로그인
     public ResultDto login(@RequestBody LoginDto loginDto, HttpServletResponse response) {
 
@@ -43,30 +38,9 @@ public class MemberController {
     }
 
     @GetMapping("/token")
-    public HashMap<String, Object> token(@AuthenticationPrincipal CustomUserDetails userDetails) {
-        HashMap<String, Object> map = new HashMap<>();
-        String memId = userDetails.getUsername();
-        Long memSeq = userDetails.getMemSeq();
-        map.put("memId", memId);
-        map.put("memSeq", memSeq);
-        return map;
+    public String token(@AuthenticationPrincipal String memSeqStr) {
+
+        return memSeqStr;
     }
-
-    @GetMapping("/info")
-    public ResultDto getMemberInfo(@AuthenticationPrincipal CustomUserDetails userDetails) {
-
-        Long memSeq = userDetails.getMemSeq();
-        return memberService.getMemberInfo(memSeq);
-    }
-
-    @PutMapping("/info")
-    public ResultDto updateMemberInfo(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                      @RequestBody MemberInfoUpdateDto dto) {
-
-        Long memSeq = userDetails.getMemSeq();
-        return memberService.updateMemberInfo(dto, memSeq);
-    }
-
-
 
 }

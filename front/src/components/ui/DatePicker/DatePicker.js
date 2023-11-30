@@ -98,10 +98,8 @@ const DatePicker = forwardRef((props, ref) => {
     }
 
     useEffect(() => {
-        setValue(props.today);
         if (value === null && !focused) {
-            setInputState();
-           
+            setInputState('')
         }
 
         if (value instanceof Date && !focused) {
@@ -121,19 +119,13 @@ const DatePicker = forwardRef((props, ref) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [themeLocale])
 
-
-    //************* 날짜 세팅되는 부분  *********************/
     const handleValueChange = (date) => {
         setValue(date)
         setInputState(
             capitalize(dayjs(date).locale(finalLocale).format(dateFormat))
         )
         closePickerOnChange && closeDropdown()
-        window.setTimeout(() => inputRef.current?.focus(), 0);
-        //console.log( date );
-        //console.log(inputState);
-        props.DatePickerClick(capitalize(dayjs(date).locale(finalLocale).format(dateFormat)));
-        //alert("**");
+        window.setTimeout(() => inputRef.current?.focus(), 0)
     }
 
     const handleClear = () => {
@@ -202,8 +194,6 @@ const DatePicker = forwardRef((props, ref) => {
         } else {
             setInputState(event.target.value)
         }
-
-       
     }
 
     return (
@@ -224,7 +214,6 @@ const DatePicker = forwardRef((props, ref) => {
             clearable={
                 type === 'date' ? false : clearable && !!_value && !disabled
             }
-           
             clearButton={clearButton}
             onClear={handleClear}
             disabled={disabled}
