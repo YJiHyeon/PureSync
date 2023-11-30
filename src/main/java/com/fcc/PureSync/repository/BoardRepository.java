@@ -14,6 +14,8 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 
     Page<Board> findAll(Pageable pageable);
 
+    Page<Board> findByBoardStatus(boolean boardStatus,Pageable pageable);
+
     @Query("SELECT COUNT(a) FROM Likes a WHERE a.board = :board")
     Long countLikesByBoard(@Param("board") Board board);
 }
