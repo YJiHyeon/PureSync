@@ -42,7 +42,7 @@ const SummaryChart = (props) => {
                 },
                 tooltip: {
                     y: {
-                        formatter: (val) => `$${val} thousands`,
+                        formatter: (val) => `${val} kcal`,
                     },
                 },
             }}

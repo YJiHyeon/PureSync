@@ -124,7 +124,7 @@ function Menu(props) {
                 </div>
             </div>
             <div>
-                일일 총 섭취 칼로리 : {dailyTotalCalories} kcal
+                ✔️일일 총 섭취 칼로리 : {dailyTotalCalories} kcal
             </div>
 
             <br /><br />
@@ -132,9 +132,9 @@ function Menu(props) {
             {/* 아침 메뉴 */}
             <div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <h3>아침</h3>
+                    <h4>아침</h4>
                     <div>
-                        아침 총 칼로리: {breakfastTotalCalories} kcal
+                    📌아침 총 칼로리: {breakfastTotalCalories} kcal
                     </div>
                 </div>
                 <TableMenu menuData={menuData} deleteMenuItem={deleteMenuItem} menuWhen={1} />
@@ -144,9 +144,9 @@ function Menu(props) {
             {/* 점심 메뉴 */}
             <div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <h3>점심</h3>
+                    <h4>점심</h4>
                     <div>
-                        점심 총 칼로리 : {lunchTotalCalories} kcal
+                        📌점심 총 칼로리 : {lunchTotalCalories} kcal
                     </div>
                 </div>
                 <TableMenu menuData={menuData} deleteMenuItem={deleteMenuItem} menuWhen={2} />
@@ -156,9 +156,9 @@ function Menu(props) {
             {/* 저녁 메뉴 */}
             <div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <h3>저녁</h3>
+                    <h4>저녁</h4>
                     <div>
-                        저녁 총 칼로리 :{dinnerTotalCalories} kcal
+                        📌저녁 총 칼로리 :{dinnerTotalCalories} kcal
                     </div>
                 </div>
                 <TableMenu menuData={menuData} deleteMenuItem={deleteMenuItem} menuWhen={3} />
@@ -168,9 +168,9 @@ function Menu(props) {
             {/* 간식 메뉴 */}
             <div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <h3>간식</h3>
+                    <h4>간식</h4>
                     <div>
-                        간식 총 칼로리 : {snackTotalCalories} kcal
+                        📌간식 총 칼로리 : {snackTotalCalories} kcal
                     </div>
                 </div>
                 <TableMenu menuData={menuData} deleteMenuItem={deleteMenuItem} menuWhen={4} />
