@@ -17,4 +17,5 @@ public class MdDiaryResponseDto {
     String dyTitle;
     String dyContents;
     String emoState;
+    int emoField;
 }

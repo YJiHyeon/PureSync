@@ -6,15 +6,63 @@ import CloseButton from '../CloseButton';
 import { motion } from 'framer-motion';
 import { theme } from 'twin.macro';
 import useWindowSize from '../hooks/useWindowSize';
-import { Button } from 'components/ui';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { DndContext } from '@dnd-kit/core';
+import { useDraggable } from '@dnd-kit/core';
+import { useDroppable } from '@dnd-kit/core';
 
-const DialogTrashInsert = (props) => {
+export function Draggable(props) {
+    const { attributes, listeners, setNodeRef, transform } = useDraggable({
+        id: 'draggable',
+    });
+    const style = transform ? {
+        transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+    } : undefined;
+
+
+    return (
+        <button ref={setNodeRef} style={style} {...listeners} {...attributes}>
+            {props.children}
+        </button>
+    );
+}
+
+export function Droppable(props) {
+    const { isOver, setNodeRef } = useDroppable({
+        id: 'droppable',
+    });
+    
+    const defaultStyle = {
+        transition: 'box-shadow 0.3s',
+    };
+
+    const highlightedStyle = {
+        boxShadow: isOver ? '0 0 10px 5px #e13c63' : 'none',
+    };
+
+    const combinedStyle = {
+        ...defaultStyle,
+        ...highlightedStyle,
+    };
+
+    return (
+        <div ref={setNodeRef} style={combinedStyle}>
+            {props.children}
+        </div>
+    );
+}
+
+const DialogTrashIntoTrashbin = (props) => {
     // 현재 창 크기를 가져오는 커스텀 훅 사용
     const currentSize = useWindowSize();
 
+    //useNavigate
+    const navigate = useNavigate();
+
     const {
         goRegister,
+        tsSeq,
         className,
         closable,
         width,
@@ -33,7 +81,6 @@ const DialogTrashInsert = (props) => {
     // 닫기 버튼 클릭 이벤트 핸들러
     const onCloseClick = (e) => {
         onClose(e);
-        setTsContents('');
 
     }
 
@@ -78,31 +125,16 @@ const DialogTrashInsert = (props) => {
     // 기본 및 사용자 제공 콘텐츠 클래스 이름을 결합
     const dialogClass = classNames(defaultDialogContentClass, contentClassName);
 
-    const [tsContents, setTsContents] = useState('');
-
-    // 등록 버튼 클릭 핸들러
-    const handleRegisterClick = () => {
-        
-        const sendTrashData =
-            {   
-                tsContents: tsContents,
-                memId : 'aaa'
-            };
-        
-        axios.post('http://127.0.0.1:9000/api/mind/trash', sendTrashData)
-        .then((res) => {
-            console.log(res);
-            setTsContents('');
-            props.goRegister();
-            props.onClose();
-        })
-        .catch((res) => {
-            console.log('에러 : ');
-            console.log(res);
-        })
-    }
-
-
+    const [isDropped, setIsDropped] = useState(false);
+    const draggableMarkup = (
+        <div>
+           <Draggable>
+            <div className='flex ml-10 mt-10'>
+           <img src='/img/mind/trash.png' width={100} height={100} />
+           </div>
+           </Draggable>
+         </div>
+       );
 
     // 'react-modal'에서 Modal 컴포넌트를 사용하여 모달 대화상자 렌더링
     return (
@@ -135,31 +167,42 @@ const DialogTrashInsert = (props) => {
             >
                 {/* closable이 true인 경우 닫기 버튼 렌더링 */}
                 {closable && renderCloseButton}
-                <h4>버리고 싶은 감정을 적어주세요</h4><br />
-                    <div className="form-floating">
-                    <textarea value={tsContents} onChange={(e) => setTsContents(e.target.value)} style={{
-                        width: "100%",                       
-                        height: "200px",
-                        padding: "10px",
-                        border: "solid 2px #1E90FF",
-                        borderRadius: "5px",
-                        resize: "none"
-                        }}></textarea>
+                <h4>버릴 감정을 쓰레기통으로 드래그해 버려 주세요</h4><br />
+                <DndContext onDragEnd={handleDragEnd}>
+                    <div className="grid grid-cols-2 mt-10 pt-10" >
+                    {!isDropped ? draggableMarkup : null}
+                    <Droppable>
+                        <div>
+                       <img src='/img/mind/trashbin.png' width={300} height={300} />
+                       </div>
+                    </Droppable>
                     </div>
-                
-
-                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                    <Button onClick={handleRegisterClick} variant="solid">
-                        등록
-                    </Button>
-                </div>
+                </DndContext>
             </motion.div>
         </Modal>
     );
+
+    function handleDragEnd(event) {
+        if (event.over && event.over.id === 'droppable') {
+          setIsDropped(true);
+          //쓰레기 지우는 axios불러야함
+          axios.delete(`http://127.0.0.1:9000/api/mind/trash/${tsSeq}`)
+          .then((res) => {
+            console.log(res);
+            goRegister();
+            alert('감정 하나를 비워냈습니다.');
+            onClose();
+          })
+          .catch((res) => {
+            console.log('에러 : ');
+            console.log(res);
+        })
+        }
+      }
 }
 
 // 컴포넌트의 PropTypes 정의
-DialogTrashInsert.propTypes = {
+DialogTrashIntoTrashbin.propTypes = {
     className: PropTypes.string,
     closable: PropTypes.bool,
     width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -175,11 +218,12 @@ DialogTrashInsert.propTypes = {
 }
 
 // 컴포넌트의 기본 속성값 정의
-DialogTrashInsert.defaultProps = {
+DialogTrashIntoTrashbin.defaultProps = {
     closable: true,
     width: 520,
+    height: 400,
     closeTimeoutMS: 150,
 }
 
-export default DialogTrashInsert;
+export default DialogTrashIntoTrashbin;
 

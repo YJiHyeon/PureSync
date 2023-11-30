@@ -5,7 +5,7 @@ import {
     MediaSkeleton,
     TextBlockSkeleton,
 } from 'components/shared'
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Button } from 'components/ui'
 import { HiOutlineCog, HiOutlinePencil, HiOutlineInboxIn, HiOutlineTrash } from 'react-icons/hi'
@@ -18,6 +18,8 @@ const ArticleContent = () => {
     const id = path.split('/').pop();
     const [diary, setDiary] = useState([]);
     const [loading, setLoding] = useState(true);
+    const navigate = useNavigate();
+
     useEffect(() => {
         // axios를 사용하여 데이터를 가져옴
         axios.get(`http://127.0.0.1:9000/api/mind/diary/${id}`, {
@@ -32,6 +34,19 @@ const ArticleContent = () => {
                 console.error('데이터를 불러오는 중 에러 발생:', error);
             });
     }, []);
+
+    const onClickDelete = () => {
+        axios.delete(`http://127.0.0.1:9000/api/mind/diary/${id}`)
+        .then((res) => {
+            console.log('일기가 삭제되었습니다.')
+            navigate('/mind/diary');
+            
+        })
+    }
+
+    const onClickEdit = () => {
+        navigate('/mind/diary/update', {state: {editData: diary}});
+    }
 
     return (
         <Loading loading={loading}
@@ -49,10 +64,10 @@ const ArticleContent = () => {
                     <div className="my-6 max-w-[800px] w-full mx-auto">
                         <div className="flex justify-end gap-2">
 
-                            <Button className="mr-2" variant="twoTone" icon={<HiOutlinePencil />} size="xs">
+                            <Button onClick={onClickEdit} className="mr-2" variant="twoTone" icon={<HiOutlinePencil />} size="xs">
                                 <span>수정</span>
                             </Button>
-                            <Button className="mr-2" variant="solid" icon={<HiOutlineTrash />} size="xs">
+                            <Button onClick={onClickDelete} className="mr-2" variant="solid" icon={<HiOutlineTrash />} size="xs">
                                 <span>삭제</span>
                             </Button>
                         </div>
@@ -60,10 +75,10 @@ const ArticleContent = () => {
                         <div className="flex items-center mt-4 gap-4">
                             <div className="text-xs">
                                 <div className="mb-1">
-                                    Created by:
-                                    <span className="font-semibold text-gray-900 dark:text-gray-100">
+                                    Created by
+                                    <div className="font-semibold text-gray-900 dark:text-gray-100">
                                         {diary.dyDate}
-                                    </span>
+                                    </div>
                                 </div>
 
                             </div>

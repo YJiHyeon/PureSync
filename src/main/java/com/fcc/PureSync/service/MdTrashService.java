@@ -97,6 +97,7 @@ public class MdTrashService {
 
     private MdTrashResponseDto entityToDto(MdTrash mdTrash) {
         return MdTrashResponseDto.builder()
+                .tsSeq(mdTrash.getTsSeq())
                 .tsContents(mdTrash.getTsContents())
                 .build();
     }
