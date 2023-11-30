@@ -97,7 +97,7 @@ function Exercise(props) {
                 <DialogExercise isOpen={isDialogOpen} onClose={closeDialog} selectDate={props.selectDate} />
             </div>
             <div>
-                일일 총 소모 칼로리 : {totalCalories} kcal
+                ✔️일일 총 소모 칼로리 : {totalCalories} kcal
             </div>
             <br />
             {/* 운동 리스트 */}

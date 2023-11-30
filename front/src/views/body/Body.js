@@ -7,14 +7,7 @@ import Summry from 'components/body/summary'
 
 const BodyMenu = () => {
 
-    // 오늘날짜
-    let today = new Date();
-    
-    const [selectDate, setSelectDate] = useState(today);
-    // const [menuList, setMenuList] = useState([]);
-    // const [exerciseList, setExerciseList] = useState([]);
-    // const [summaryList, setSummaryList] = useState([]);
-
+    const [selectDate, setSelectDate] = useState('');
 
     const dataLoad = () => {
 
@@ -30,10 +23,6 @@ const BodyMenu = () => {
         setSelectDate(date);
         dataLoad();
     }
-
-    // useEffect(() => {
-    //     dataLoad();
-    // }, [selectDate] );
 
     return (
         <>

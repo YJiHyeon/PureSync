@@ -39,7 +39,7 @@ function Summary(props) {
           el_total = exerciseTotalList[0].el_total;
 
         let cbodyBaseData = getBodyBase[0].body_base;
-       
+
         setMenuWhenData(whenTotalData);
         setExTotal(el_total.toFixed(2));
         setBodyBaseData(cbodyBaseData.toFixed(2));
@@ -53,7 +53,22 @@ function Summary(props) {
 
   return (
     <div className="summary-container">
-      <h2>요약</h2><br />
+      <h2>요약</h2>
+      <div>
+        ✔️오늘의 칼로리 :                {(
+                (
+                  (menuWhenData[1] || 0) +
+                  (menuWhenData[2] || 0) +
+                  (menuWhenData[3] || 0) +
+                  (menuWhenData[4] || 0)
+                ).toFixed(2) -
+                (
+                  parseFloat(exTotal || 0) +
+                  parseFloat(bodyBaseData || 0)
+                ).toFixed(2)
+              ).toFixed(2)} kcal
+      </div>
+      <br />
       <div className="summary-content ">
 
         {/* 요약 박스 */}
@@ -106,7 +121,7 @@ function Summary(props) {
         {/* 차트 */}
         <div className="summary-chart grid grid-cols-3" >
           {
-            <SummaryChart 
+            <SummaryChart
               totalMenuKcal={((menuWhenData[1] || 0) + (menuWhenData[2] || 0) + (menuWhenData[3] || 0) + (menuWhenData[4] || 0)).toFixed(2)}
               exerciseTotal={exTotal}
               selectDate={props.selectDate}

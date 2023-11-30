@@ -30,7 +30,18 @@ const DialogExercise = (props) => {
         ...rest
     } = props;
 
+    // 변수들
+    const [searchValue, setSearchValue] = useState('');
+    const [searchResults, setSearchResults] = useState([]);
+    const [selectedItems, setSelectedItems] = useState([]);
+    const [loading, setLoding] = useState(false);
+    const [timeAmounts, setTimeAmounts] = useState([]);
+
     const onCloseClick = (e) => {
+        setSearchValue('');
+        setSearchResults([]);
+        setSelectedItems([]);
+        setTimeAmounts([]);
         onClose(e);
     }
 
@@ -67,12 +78,7 @@ const DialogExercise = (props) => {
 
     const dialogClass = classNames(defaultDialogContentClass, contentClassName);
 
-    // 변수들
-    const [searchValue, setSearchValue] = useState('');
-    const [searchResults, setSearchResults] = useState([]);
-    const [selectedItems, setSelectedItems] = useState([]);
-    const [loading, setLoding] = useState(false);
-    const [timeAmounts, setTimeAmounts] = useState([]);
+
 
     // 검색 입력 변경 핸들러
     const handleSearchChange = (e) => {
@@ -143,6 +149,10 @@ const DialogExercise = (props) => {
             Axios.post("http://127.0.0.1:9000/api/exercise/save", sendExerciseDatas[0])
                 .then((res) => {
                     console.log("운동 등록 후 res.data");
+                    setSearchValue('');
+                    setSearchResults([]);
+                    setSelectedItems([]);
+                    setTimeAmounts([]);
                     props.onClose();
                 })
                 .catch((res) => {
