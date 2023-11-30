@@ -5,11 +5,14 @@ import com.fcc.PureSync.dao.ExerciseDao;
 import com.fcc.PureSync.dto.ExerciseDto;
 import com.fcc.PureSync.dto.ResultDto;
 import com.fcc.PureSync.entity.Exercise;
+import com.fcc.PureSync.entity.ExerciseList;
+
 import com.fcc.PureSync.exception.CustomException;
 import com.fcc.PureSync.exception.CustomExceptionCode;
+import com.fcc.PureSync.repository.ExerciseListRepository;
 import com.fcc.PureSync.repository.ExerciseRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +26,26 @@ public class ExerciseService {
 
     private final ExerciseDao exerciseDao;
     private final ExerciseRepository exerciseRepository;
+    private final ExerciseListRepository exerciseListRepository;
 
+    // 전체 데이터
+    public ResultDto getAllExerciseList( String exerciseName ) {
+        try {
+            List<ExerciseList> allExercise = exerciseListRepository.findAllExercise(exerciseName);
+            HashMap<String, Object> data = new HashMap<String, Object>();
+            data.put("allExercise", allExercise);
+            ResultDto resultDto =  ResultDto.builder()
+                    .code(HttpStatus.OK.value())
+                    .httpStatus(HttpStatus.OK)
+                    .data(data)
+                    .build();
+            return resultDto;
+        } catch (CustomException e) {
+            throw new CustomException(CustomExceptionCode.NOT_FOUND_EXERCISE);
+        }
+    }
+
+    // 리스트
     public ResultDto getExerciseAllList(ExerciseDto exerciseTo) {
         if (exerciseTo.getMem_seq() == null ) {
             throw new CustomException(CustomExceptionCode.NOT_FOUND_SEQ);
@@ -33,10 +55,6 @@ public class ExerciseService {
         }
 
         List<ExerciseDto> exerciseList = exerciseDao.getExerciseList(exerciseTo);
-        // 잘못된 seq 전달
-        if (exerciseList.isEmpty()) {
-            throw new CustomException(CustomExceptionCode.NOT_FOUND_EXERCISE);
-        }
 
         try {
             HashMap<String, Object> data = new HashMap<>();
@@ -65,6 +83,7 @@ public class ExerciseService {
 
     @Transactional
     public ResultDto deleteExercise( Exercise exercise ) {
+        System.out.println("exercise delete service >> : " + exercise.getElSeq() );
         return performExerciseOperation( exercise, "운동 삭제에 성공하였습니다.", CustomExceptionCode.DELETE_FAIL );
     }
 

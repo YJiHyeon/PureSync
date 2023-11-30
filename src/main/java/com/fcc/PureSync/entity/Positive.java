@@ -14,5 +14,5 @@ public class Positive {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long pvSeq;
     private String pvContents;
-    private Double pvTalker;
+    private String pvTalker;
 }

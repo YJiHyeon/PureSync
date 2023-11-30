@@ -21,7 +21,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         //로그인한 아이디 값을 가지고 아이디가 존재하면 입력한 아이디의 회원정보를 db에서 불러온다.
-        Member member = memberRepository.findByMemId(username).orElse(null);
+        Member member = memberRepository.findByMemIdAndMemStatus(username, 1).orElse(null);
         //아이디가 존재하는지 여부 확인후 입력한 비밀번호와 아이디로 불러온 회원정보의 비밀번호 값을 대조
         if(member == null) {
             throw new UsernameNotFoundException(username); //아이디가 없을때 예외처리 403

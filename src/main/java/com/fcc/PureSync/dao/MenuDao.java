@@ -10,16 +10,17 @@ import java.util.List;
 
 @Repository
 public class MenuDao {
+
     @Autowired
     SqlSessionTemplate sm;
 
     public List<MenuDto> getMenuList( MenuDto menuTo ) {
         List<MenuDto> list = sm.selectList("getMenuAllList", menuTo );
-        System.out.println(list.size());
-        for(int i=0; i<list.size(); i++)
-        {
-            System.out.println(list.get(i));
-        }
+        return  list;
+    }
+
+    public List<MenuDto> getMenuWhenTotal ( MenuDto menuTo ) {
+        List<MenuDto> list = sm.selectList("getMenuTotalKcal", menuTo );
         return  list;
     }
 }

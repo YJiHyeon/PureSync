@@ -27,13 +27,15 @@ public class CustomUserDetails implements UserDetails {
     @Builder.Default
     private List<String> roles = new ArrayList<>();
 
-
-
     @Override   //사용자의 권한 목록 리턴
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles.stream()
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
+    }
+
+    public Long getMemSeq() {
+        return member.getMemSeq();
     }
     @Override
     public String getPassword() {

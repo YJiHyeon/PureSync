@@ -26,9 +26,9 @@ public class MdDiaryService {
     private final EmotionRepository emotionRepository;
     private final MemberRepository memberRepository;
 
-    public ResultDto getMdDiaryList(String memId, Pageable pageable) {
+    public ResultDto getMdDiaryList(String memId) {
         Member member = memberRepository.findByMemId(memId).orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
-        List<MdDiary> mdDiaryEntityList =  mdDiaryRepository.findAllByMemberOrderByDyDateDesc(member, pageable);
+        List<MdDiary> mdDiaryEntityList =  mdDiaryRepository.findAllByMemberOrderByDyDateDescDyWdateDesc(member, pageable);
         List<MdDiaryResponseDto> mdDiaryDtoList =  mdDiaryEntityList.stream().map(e -> entityToDto(e)).toList();
         HashMap<String, Object> data = new HashMap<>();
         data.put("mdDiaryList", mdDiaryDtoList);
@@ -110,6 +110,7 @@ public class MdDiaryService {
     //mdDiary entity -> dto 변환
     public MdDiaryResponseDto entityToDto(MdDiary mdDiary) {
         return MdDiaryResponseDto.builder()
+                .dySeq(mdDiary.getDySeq())
                 .dyDate(mdDiary.getDyDate())
                 .dyTitle(mdDiary.getDyTitle())
                 .dyContents(mdDiary.getDyContents())

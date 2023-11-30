@@ -16,8 +16,10 @@ public class ExerciseDao {
 
     public List<ExerciseDto> getExerciseList( ExerciseDto exerciseTo ) {
         return  sm.selectList("getExerciseAllList", exerciseTo );
-
     }
 
+    public List<ExerciseDto> getExerciseTotal( ExerciseDto exerciseTo ) {
+        return  sm.selectList("getExerciseTotal", exerciseTo );
+    }
 
 }
