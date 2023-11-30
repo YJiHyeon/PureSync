@@ -49,12 +49,9 @@ public class MenuService {
         if (menuTo.getMenu_date() == null ) {
             throw new CustomException(CustomExceptionCode.NOT_FOUND_DATE);
         }
-
         List<MenuDto> menuList= menuDao.getMenuList(menuTo);
-
         try {
             HashMap<String, Object> data = new HashMap<String, Object>();
-            System.out.println("dsdsdsdssd >>>> " +menuList.size());
             data.put("menuList", menuList);
             ResultDto resultDto =  ResultDto.builder()
                     .code(HttpStatus.OK.value())

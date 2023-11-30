@@ -12,7 +12,7 @@ import Axios from 'axios';
 
 import { useNavigate } from 'react-router-dom';
 
-const DialogMenu = (props) => {
+const DialogMenuModify = (props) => {
     // 현재 창 크기를 가져오는 커스텀 훅 사용
     const currentSize = useWindowSize();
 
@@ -337,7 +337,7 @@ const DialogMenu = (props) => {
 }
 
 // 컴포넌트의 PropTypes 정의
-DialogMenu.propTypes = {
+DialogMenuModify.propTypes = {
     className: PropTypes.string,
     closable: PropTypes.bool,
     width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -353,11 +353,11 @@ DialogMenu.propTypes = {
 }
 
 // 컴포넌트의 기본 속성값 정의
-DialogMenu.defaultProps = {
+DialogMenuModify.defaultProps = {
     closable: true,
     width: 520,
     closeTimeoutMS: 150,
 }
 
-export default DialogMenu;
+export default DialogMenuModify;
 

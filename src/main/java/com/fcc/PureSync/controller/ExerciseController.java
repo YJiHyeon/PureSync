@@ -18,7 +18,6 @@ public class ExerciseController {
 
     @GetMapping("/exerciseList")
     public ResultDto getAllExerciseList(String exerciseName) {
-        System.out.println("exerciseName >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + exerciseName );
         return exerciseService.getAllExerciseList(exerciseName);
     }
 
