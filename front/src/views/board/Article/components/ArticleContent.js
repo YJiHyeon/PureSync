@@ -10,10 +10,11 @@ import ArticleComment from './ArticleComment'
 import { getArticle } from '../store/dataSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import ReactHtmlParser from 'html-react-parser'
-import { useLocation } from 'react-router-dom'
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom'
+import axios from 'axios'
 import {Button} from 'components/ui'
+import { HiOutlineClock, HiOutlineCog, HiOutlinePencil, HiOutlineInboxIn, HiOutlineTrash } from 'react-icons/hi'
+
 const ArticleContent = ({ articleId }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch()
@@ -78,27 +79,26 @@ const ArticleContent = ({ articleId }) => {
                 <h3>{article.boardName}</h3>
             
                 
-                <Button onClick={handleDelete} variant="solid" style={{ width: '100px', height: '30px', fontSize: '14px', padding: '5px' }}>
-                    삭제하기</Button>
+                <Button onClick={handleDelete} variant="twoTone" icon={<HiOutlineTrash />} size="sm" color="red-600" >삭제하기</Button>
                    
             </div>
-            <div className="flex items-center mt-4 gap-4">
+            <div className="flex items-center mt-4">
                 <UsersAvatarGroup
                     avatarProps={{ size: 40 }}
                 //users={article.authors || []}
                 />
-                <div className="text-xs">
-                    <div className="mb-1">
-                        Created by:
-                        <span className="font-semibold text-gray-900 dark:text-gray-100">
-                            {article.boardWdate}
-                        </span>
-                    </div>
+                <div className="text-sm">
                     <div>
                         <span>작성자 : {article.memId}</span>
                         <span className="mx-2">•</span>
                         <span>좋아요 : {article.boardLikescount}</span>
 
+                    </div>
+                    <div className="mb-1">
+                        <span className="flex items-center gap-1">
+                            <HiOutlineClock className="text-lg" />
+                            작성일시 <span>{article.boardWdate}</span>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -106,7 +106,7 @@ const ArticleContent = ({ articleId }) => {
                 <p>{ReactHtmlParser(article.content || '')}</p>
                 <p>{article.boardContents}</p>
                 {article.boardfileName && (
-                    <img src={imageUrl} alt="Article Image" style={{ width: '500px', height: 'auto' }} />
+                    <img src={imageUrl} alt="image" style={{ width: '500px', height: 'auto' }} />
                 )}
             </div>
 
