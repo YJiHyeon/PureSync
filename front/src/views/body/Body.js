@@ -7,26 +7,26 @@ import Summry from 'components/body/summary'
 
 const BodyMenu = () => {
 
-    const [selectDate, setSelectDate] = useState('');
+    let today = new Date();
+    const [selectDate, setSelectDate] = useState(today);
 
-    const dataLoad = () => {
 
-        Axios.get(`http://127.0.0.1:9000/api/menu/list?mem_seq=1&menu_date=${selectDate}`)
-            .then((res) => {
-            })
-            .catch((res) => {
-                console.log(res);
-            })
-    }
+    useEffect(()=>{
+        setSelectDate(today);
+
+    }, []);
 
     const DatePickerClick = (date) => {
         setSelectDate(date);
-        dataLoad();
     }
 
     return (
         <>
-            <DatePicker placeholder="날짜를 선택하세요" DatePickerClick={DatePickerClick} />
+            <DatePicker
+                DatePickerClick={DatePickerClick}
+                placeholder={selectDate}
+                defaultValue={selectDate}
+            />
             <br />
             <Menu selectDate={selectDate} />
             <br /><br /><br />
@@ -36,7 +36,7 @@ const BodyMenu = () => {
             <br />
             <hr />
             <br />
-            <Summry selectDate={selectDate}/>
+            <Summry selectDate={selectDate} />
         </>
     )
 }

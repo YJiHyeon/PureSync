@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
-import Modal from 'react-modal';
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
-import CloseButton from '../CloseButton';
-import { motion } from 'framer-motion';
-import { theme } from 'twin.macro';
-import useWindowSize from '../hooks/useWindowSize';
+import React from 'react'
+import Modal from 'react-modal'
+import classNames from 'classnames'
+import PropTypes from 'prop-types'
+import CloseButton from '../CloseButton'
+import { motion } from 'framer-motion'
+import { theme } from 'twin.macro'
+import useWindowSize from '../hooks/useWindowSize'
 
 const Dialog = (props) => {
-    const currentSize = useWindowSize();
+    const currentSize = useWindowSize()
 
     const {
+        children,
         className,
         closable,
         width,
@@ -24,10 +25,10 @@ const Dialog = (props) => {
         contentClassName,
         closeTimeoutMS,
         ...rest
-    } = props;
+    } = props
 
     const onCloseClick = (e) => {
-        onClose(e);
+        onClose(e)
     }
 
     const renderCloseButton = (
@@ -36,42 +37,32 @@ const Dialog = (props) => {
             className="ltr:right-6 rtl:left-6"
             absolute
         />
-    );
+    )
 
     const contentStyle = {
         content: {
             inset: 'unset',
         },
         ...style,
-    };
+    }
 
     if (width !== undefined) {
-        contentStyle.content.width = width;
+        contentStyle.content.width = width
 
         if (
             currentSize.width <=
             parseInt(theme`screens.sm`.split(/ /)[0].replace(/[^\d]/g, ''))
         ) {
-            contentStyle.content.width = 'auto';
+            contentStyle.content.width = 'auto'
         }
     }
     if (height !== undefined) {
-        contentStyle.content.height = height;
+        contentStyle.content.height = height
     }
 
-    const defaultDialogContentClass = 'dialog-content';
+    const defaultDialogContentClass = 'dialog-content'
 
-    const dialogClass = classNames(defaultDialogContentClass, contentClassName);
-
-    const [mealType, setMealType] = useState('아침'); // 아침을 기본값으로 설정
-
-    const mealTypes = ['아침', '점심', '저녁', '간식'];
-
-    const handleMealTypeChange = (e) => {
-        setMealType(e.target.value);
-    }
-
-    // 아래에 음식 검색, 선택, 확인 기능을 추가할 수 있습니다.
+    const dialogClass = classNames(defaultDialogContentClass, contentClassName)
 
     return (
         <Modal
@@ -101,35 +92,23 @@ const Dialog = (props) => {
                 }}
             >
                 {closable && renderCloseButton}
-                <h2>음식 선택</h2>
-                <div>
-                    <select value={mealType} onChange={handleMealTypeChange}>
-                        {mealTypes.map((type) => (
-                            <option key={type} value={type}>
-                                {type}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-                {/* 아래에 음식 검색, 선택, 확인 기능을 추가할 수 있습니다. */}
+                {children}
             </motion.div>
         </Modal>
-    );
+    )
 }
 
 Dialog.propTypes = {
-    className: PropTypes.string,
     closable: PropTypes.bool,
+    isOpen: PropTypes.bool.isRequired,
+    overlayClassName: PropTypes.string,
     width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    style: PropTypes.object,
-    isOpen: PropTypes.bool.isRequired,
     onClose: PropTypes.func,
-    bodyOpenClassName: PropTypes.string,
     portalClassName: PropTypes.string,
-    overlayClassName: PropTypes.string,
     contentClassName: PropTypes.string,
     closeTimeoutMS: PropTypes.number,
+    bodyOpenClassName: PropTypes.string,
 }
 
 Dialog.defaultProps = {
@@ -138,4 +117,4 @@ Dialog.defaultProps = {
     closeTimeoutMS: 150,
 }
 
-export default Dialog;
+export default Dialog

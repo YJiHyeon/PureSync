@@ -23,12 +23,26 @@ function Exercise(props) {
         setLoading(true);
     }
 
+    //날짜
+    const toDate = (today)=>{
+ 
+        let year = today.getFullYear();
+         let month = today.getMonth() + 1;
+         let date = today.getDate();
+         
+         if(month<10)
+             month = '0'+month;
+         if(date<10)
+             date = '0'+date;
+         
+         return year+"-"+month+"-"+date;
+     }
+
     useEffect(() => {
-        console.log("exercise");
         Axios.get('http://127.0.0.1:9000/api/exercise/list', {
             params: {
                 mem_seq: 1,
-                el_date: props.selectDate,
+                el_date: toDate(props.selectDate),
             },
             withCredentials: true
         })
@@ -38,7 +52,6 @@ function Exercise(props) {
         .catch((error) => {
             console.error(error);
         });
-        console.log("exercise end -------------------");
 
     }, [props.selectDate, loading]);
 
@@ -50,8 +63,6 @@ function Exercise(props) {
             memSeq: 1
         })
             .then((res) => {
-                //console.log( menuData.filter((item)=> item.menu_seq !== menu_seq) );
-                // alert("삭제");
                 setExerciseData(exerciseData.filter((item) => item.el_seq !== el_seq));
             })
             .catch((error) => {

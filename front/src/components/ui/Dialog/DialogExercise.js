@@ -45,6 +45,20 @@ const DialogExercise = (props) => {
         onClose(e);
     }
 
+    const toDate = (today)=>{
+ 
+        let year = today.getFullYear();
+         let month = today.getMonth() + 1;
+         let date = today.getDate();
+         
+         if(month<10)
+             month = '0'+month;
+         if(date<10)
+             date = '0'+date;
+         
+         return year+"-"+month+"-"+date;
+     }
+
     const renderCloseButton = (
         <CloseButton
             onClick={onCloseClick}
@@ -137,7 +151,7 @@ const DialogExercise = (props) => {
         selectedItems.forEach((item) => {
             // console.log(item);
             const exerciseInfo = {
-                elDate : props.selectDate,
+                elDate : toDate(props.selectDate),
                 elTime : exerciseTimeValue,
                 memSeq: 1,
                 ecSeq : item.ecSeq
@@ -148,7 +162,6 @@ const DialogExercise = (props) => {
 
             Axios.post("http://127.0.0.1:9000/api/exercise/save", sendExerciseDatas[0])
                 .then((res) => {
-                    console.log("운동 등록 후 res.data");
                     setSearchValue('');
                     setSearchResults([]);
                     setSelectedItems([]);

@@ -17,13 +17,8 @@ function Menu(props) {
     const [snackTotalCalories, setSnackTotalCalories] = useState(0);
     const [dailyTotalCalories, setDailyTotalCalories] = useState(0);
 
-    const clearMenuData = () => {
-        setMenuData([]);
-    }
-
     const openDialog = () => {
         setDialogOpen(true);
-        clearMenuData();
         setLoading(false);
     }
 
@@ -33,17 +28,30 @@ function Menu(props) {
 
     }
 
+    const toDate = (today)=>{
+ 
+       let year = today.getFullYear();
+        let month = today.getMonth() + 1;
+        let date = today.getDate();
+        
+        if(month<10)
+            month = '0'+month;
+        if(date<10)
+            date = '0'+date;
+        
+        return year+"-"+month+"-"+date;
+    }
+
     // 리스트 불러오기
     useEffect(() => {
         Axios.get('http://127.0.0.1:9000/api/menu/list', {
             params: {
                 mem_seq: 1,
-                menu_date: props.selectDate,
+                menu_date: toDate(props.selectDate),
             },
             withCredentials: true
         })
         .then((res) => {
-            console.log("menu  stat -----------------------------------------");
             const menuList = res.data.data.menuList;
             let breakfastCalories = 0;
             let lunchCalories = 0;
@@ -84,8 +92,6 @@ function Menu(props) {
             console.error(error);
         });
 
-        console.log("menu end -------------------");
-
     }, [props.selectDate, loading]);
 
     // 삭제 버튼
@@ -93,12 +99,12 @@ function Menu(props) {
         Axios.post(`http://127.0.0.1:9000/api/menu/delete`, {
             menuSeq: menu_seq
         })
-            .then((res) => {
-                setMenuData(menuData.filter((item) => item.menu_seq !== menu_seq));
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+        .then((res) => {
+            setMenuData(menuData.filter((item) => item.menu_seq !== menu_seq));
+        })
+        .catch((error) => {
+            console.error(error);
+        });
     }
 
 

@@ -10,19 +10,32 @@ function Summary(props) {
   const [bodyBaseData, setBodyBaseData] = useState([]);   // 기초대사량
   const [loading, setLoading] = useState(false);
 
+  const toDate = (today)=>{
+ 
+    let year = today.getFullYear();
+     let month = today.getMonth() + 1;
+     let date = today.getDate();
+     
+     if(month<10)
+         month = '0'+month;
+     if(date<10)
+         date = '0'+date;
+     
+     return year+"-"+month+"-"+date;
+ }
+
 
   // 데이터 불러오기
   useEffect(() => {
     Axios.get('http://127.0.0.1:9000/api/summary/list', {
       params: {
         mem_seq: 1,
-        menu_date: props.selectDate,
-        el_date: props.selectDate,
+        menu_date: toDate(props.selectDate),
+        el_date: toDate(props.selectDate),
       },
       withCredentials: true,
     })
       .then((res) => {
-        console.log(res.data);
         const menuTotalWhenList = res.data.data.menuTotalWhenList;
         const getBodyBase = res.data.data.getBodyBase;
         const exerciseTotalList = res.data.data.exerciseTotalList;
@@ -69,10 +82,10 @@ function Summary(props) {
               ).toFixed(2)} kcal
       </div>
       <br />
-      <div className="summary-content ">
+      <div className="summary-content grid grid-cols-4 ">
 
         {/* 요약 박스 */}
-        <div class="summary-box checkbox-box grid-cols-2">
+        <div class="summary-box col-start-1 col-span-2 ">
           <h6>섭취 칼로리</h6>
           <div className="summary-item">
             <p>아침 + {menuWhenData[1] === 0 ? 0 : (menuWhenData[1] || 0)}</p>
@@ -119,7 +132,7 @@ function Summary(props) {
         </div>
 
         {/* 차트 */}
-        <div className="summary-chart grid grid-cols-3" >
+        <div className="summary-chart col-end-4 col-span-2 " >
           {
             <SummaryChart
               totalMenuKcal={((menuWhenData[1] || 0) + (menuWhenData[2] || 0) + (menuWhenData[3] || 0) + (menuWhenData[4] || 0)).toFixed(2)}
