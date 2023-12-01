@@ -31,8 +31,8 @@ const Trashes = (props) => {
         {count > 0 ? (<div className="grid lg:grid-cols-4 gap-4 md:grid-cols-3 sm:grid-cols-2">
             {trashes.map((trash, index) => (
                 <Card bordered key={trash.tsSeq}>
-                    <div className="min-h-[60px]">
-                        <TextEllipsis text={trash.tsContents} maxTextCount={120} />
+                    <div className="min-h-[130px] max-h-[60px]">
+                        <TextEllipsis text={trash.tsContents} maxTextCount={100} />
                     </div>
                     <div className="flex items-center justify-between mt-4">
                         <Tooltip title="감정 직접 비우기">
