@@ -189,9 +189,10 @@ const DialogTrashIntoTrashbin = (props) => {
           axios.delete(`http://127.0.0.1:9000/api/mind/trash/${tsSeq}`)
           .then((res) => {
             console.log(res);
-            goRegister();
+            console.log(tsSeq);
             alert('감정 하나를 비워냈습니다.');
             onClose();
+            goRegister();
           })
           .catch((res) => {
             console.log('에러 : ');
