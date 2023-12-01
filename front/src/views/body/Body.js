@@ -9,7 +9,7 @@ const BodyMenu = () => {
 
     let today = new Date();
     const toDate = (today)=>{
-        console.log( today );
+        //console.log( today );
         let year = today.getFullYear();
         let month = today.getMonth() + 1;
         let date = today.getDate();

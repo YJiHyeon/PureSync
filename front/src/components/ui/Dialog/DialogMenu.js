@@ -32,20 +32,6 @@ const DialogMenu = (props) => {
         ...rest
     } = props;
 
-    const toDate = (today)=>{
- 
-        let year = today.getFullYear();
-         let month = today.getMonth() + 1;
-         let date = today.getDate();
-         
-         if(month<10)
-             month = '0'+month;
-         if(date<10)
-             date = '0'+date;
-         
-         return year+"-"+month+"-"+date;
-     }
-
     // 닫기 버튼 클릭 이벤트 핸들러
     const onCloseClick = (e) => {
         setMealType('');
@@ -190,7 +176,7 @@ const DialogMenu = (props) => {
             // console.log(item);
             const foodInfo = {
                 menuWhen: menuWhenValue,
-                menuDate: toDate(props.selectDate),
+                menuDate: props.selectDate,
                 menuGram: menuGramValue,
                 member: { memSeq: 1 },
                 food: {
