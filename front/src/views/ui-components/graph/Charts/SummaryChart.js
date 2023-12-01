@@ -25,7 +25,7 @@ const SummaryChart = (props) => {
                         endingShape: 'rounded',
                     },
                 },
-                colors: COLORS,
+                colors: [COLORS[2], COLORS[3]],
                 dataLabels: {
                     enabled: false,
                 },
