@@ -151,14 +151,15 @@ const DialogMenu = (props) => {
 
     // 섭취 그람수를 변경하는 핸들러
     const handleGramAmountChange = (e) => {
-
+        const inputValue = e.target.value;
+        // 입력값이 0보다 작거나 같으면 1로 변경
+        if (inputValue <= 0) {
+            e.target.value = '1';
+        }
         setGramAmounts({
             ...gramAmounts,
             [e.target.id]: e.target.value
         });
-        // console.log( "***");
-        console.log(gramAmounts);
-
     }
 
 

@@ -26,7 +26,7 @@ const TableExercise = ({ exerciseData, deleteMenuItem }) => {
                                 <td style={{ textAlign: "left" }}>
                                     <Button
                                         onClick={() => {
-                                            deleteMenuItem(item.menu_seq);
+                                            deleteMenuItem(item.el_seq);
                                         }}
                                         variant="solid"
                                         style={{

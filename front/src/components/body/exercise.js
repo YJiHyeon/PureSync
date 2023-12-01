@@ -48,6 +48,7 @@ function Exercise(props) {
             memSeq: 1
         })
             .then((res) => {
+                // alert("삭제버튼 클릭");
                 setExerciseData(exerciseData.filter((item) => item.el_seq !== el_seq));
             })
             .catch((error) => {
