@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Card, Button, Tooltip } from 'components/ui'
 import { TextEllipsis } from 'components/shared'
 import {

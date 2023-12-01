@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, AdaptableCard } from 'components/shared'
+import { Container} from 'components/shared'
 import Trashes from './trash/components/Trashes'
 import axios from 'axios'
 import TrashHeader from './trash/components/TrashHeader';
