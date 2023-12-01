@@ -13,13 +13,14 @@ const Logo = (props) => {
             className={classNames('logo', className, gutter)}
             style={{
                 ...style,
-                ...{ width: logoWidth },
+                ...{ width: logoWidth }
             }}
         >
             <img
                 className={imgClass}
                 src={`${LOGO_SRC_PATH}logo-${mode}-${type}.png`}
                 alt={`${APP_NAME} logo`}
+                style={{maxWidth : "200px"}}
             />
         </div>
     )

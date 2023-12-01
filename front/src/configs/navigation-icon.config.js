@@ -31,7 +31,12 @@ import {
     BsHeart,
     BsPersonBoundingBox,
     BsBarChart,
-    BsClipboard 
+    BsClipboard,
+    BsTrash,
+    BsPencilSquare,
+    BsListUl,
+    BsMoonStars,
+    BsTable
  } from "react-icons/bs";
 
 const navigationIcon = {
@@ -65,7 +70,12 @@ const navigationIcon = {
     heart : <BsHeart />,
     body : <BsPersonBoundingBox />,
     dashboard : <BsBarChart />,
-    board : <BsClipboard />
+    board : <BsClipboard />,
+    trash : <BsTrash />,
+    write : <BsPencilSquare />,
+    list : <BsListUl />,
+    sleep: <BsMoonStars />,
+    table : <BsTable />
 }
 
 export default navigationIcon

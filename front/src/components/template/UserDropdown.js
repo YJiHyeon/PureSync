@@ -23,18 +23,18 @@ export const UserDropdown = ({ className }) => {
 
     const { signOut } = useAuth()
 
+    //  회원 프로필 수정되면 Avatar에 src={avatar} 추가, usename 주석 풀기
     const UserAvatar = (
         <div className={classNames(className, 'flex items-center gap-2')}>
-            <Avatar size={32} shape="circle" src={avatar} />
+            <Avatar size={32} shape="circle" icon={<HiOutlineUser />} />
             <div className="hidden md:block">
-                <div className="text-xs capitalize">
-                    {authority[0] || 'guest'}
-                </div>
-                <div className="font-bold">{userName}</div>
+                <div className="font-bold">Test</div>
+                {/* <div className="font-bold">{userName}</div> */}
             </div>
         </div>
     )
 
+    //  회원 프로필 수정되면 Avatar에 src={avatar} 추가
     return (
         <div>
             <Dropdown
@@ -44,12 +44,16 @@ export const UserDropdown = ({ className }) => {
             >
                 <Dropdown.Item variant="header">
                     <div className="py-2 px-3 flex items-center gap-2">
-                        <Avatar shape="circle" src={avatar} />
+                        <Avatar shape="circle" icon={<HiOutlineUser />} />
                         <div>
-                            <div className="font-bold text-gray-900 dark:text-gray-100">
+                            {/* <div className="font-bold text-gray-900 dark:text-gray-100">
                                 {userName}
+                            </div> */}
+                            <div className="font-bold text-gray-900 dark:text-gray-100">
+                                Test
                             </div>
-                            <div className="text-xs">{email}</div>
+                            <div className="text-xs">tester@test.com</div>
+                            {/* <div className="text-xs">{email}</div> */}
                         </div>
                     </div>
                 </Dropdown.Item>

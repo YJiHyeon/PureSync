@@ -22,9 +22,6 @@ const HeaderActionsStart = () => {
 const HeaderActionsEnd = () => {
     return (
         <>
-            <Search />
-            <LanguageSelector />
-            <Notification />
             <SidePanel />
             <UserDropdown hoverable={false} />
         </>

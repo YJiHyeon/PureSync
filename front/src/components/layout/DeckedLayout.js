@@ -6,6 +6,7 @@ import SecondaryHeader from 'components/template/SecondaryHeader'
 import MobileNav from 'components/template/MobileNav'
 import View from 'views'
 import ModeSwitcher from 'components/template/ThemeConfigurator/ModeSwitcher'
+import SidePanel from 'components/template/SidePanel'
 
 const HeaderActionsStart = () => {
     return (
@@ -20,6 +21,7 @@ const HeaderActionsEnd = () => {
     return (
         <>
             <ModeSwitcher />
+            <SidePanel />
             <UserDropdown hoverable={false} />
         </>
     )
