@@ -8,9 +8,23 @@ import Summry from 'components/body/summary'
 const BodyMenu = () => {
 
     let today = new Date();
-    const [selectDate, setSelectDate] = useState(today);
+    const toDate = (today)=>{
+        console.log( today );
+        let year = today.getFullYear();
+        let month = today.getMonth() + 1;
+        let date = today.getDate();
+        
+        if(month<10)
+            month = '0'+month;
+        if(date<10)
+            date = '0'+date;
+        
+        return year+"-"+month+"-"+date;
+    }
 
+    const [selectDate, setSelectDate] = useState(toDate(today));
 
+ 
     useEffect(()=>{
         setSelectDate(today);
 
@@ -25,7 +39,7 @@ const BodyMenu = () => {
             <DatePicker
                 DatePickerClick={DatePickerClick}
                 placeholder={selectDate}
-                defaultValue={selectDate}
+                defaultValue={new Date(selectDate)}
             />
             <br />
             <Menu selectDate={selectDate} />

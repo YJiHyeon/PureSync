@@ -1,7 +1,13 @@
 import React from 'react'
+import SleepCalendar from './Calendar/sleepCalender'
 
 const Sleep = () => {
-    return <div>Sleep</div>
+    return (<div>
+        <div>Sleep</div>
+
+        <SleepCalendar />
+    </div>
+    )
 }
 
 export default Sleep

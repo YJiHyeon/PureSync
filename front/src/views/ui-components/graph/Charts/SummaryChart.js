@@ -14,19 +14,6 @@ const SummaryChart = (props) => {
         },
 
     ]
-    const toDate = (today)=>{
- 
-        let year = today.getFullYear();
-         let month = today.getMonth() + 1;
-         let date = today.getDate();
-         
-         if(month<10)
-             month = '0'+month;
-         if(date<10)
-             date = '0'+date;
-         
-         return year+"-"+month+"-"+date;
-     }
 
     return (
         <Chart
@@ -48,7 +35,7 @@ const SummaryChart = (props) => {
                     colors: ['transparent'],
                 },
                 xaxis: {
-                    categories: [toDate(props.selectDate)], // 오늘 날짜
+                    categories: [props.selectDate], // 오늘 날짜
                 },
                 fill: {
                     opacity: 1,

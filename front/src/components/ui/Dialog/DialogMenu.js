@@ -140,14 +140,14 @@ const DialogMenu = (props) => {
             { params: { "foodName": searchValue } },
             { withCredentials: true }
         )
-            .then((res) => {
-                console.log(res.data.data.allFoods);
-                setSearchResults(res.data.data.allFoods);
-                setLoding(true);
-            })
-            .catch((res) => {
-                console.log(res);
-            })
+        .then((res) => {
+            console.log(res.data.data.allFoods);
+            setSearchResults(res.data.data.allFoods);
+            setLoding(true);
+        })
+        .catch((res) => {
+            console.log(res);
+        })
     }
 
 
@@ -177,7 +177,6 @@ const DialogMenu = (props) => {
 
 
     // 등록 버튼 클릭
-
     const handleRegisterClick = () => {
         const sendFoodDatas = [];
 
@@ -227,6 +226,30 @@ const DialogMenu = (props) => {
         });
 
     }
+
+    // 검색 기능을 수행하는 함수
+    const performSearch = () => {
+        Axios.get("http://127.0.0.1:9000/api/menu/foodList",
+            { params: { "foodName": searchValue } },
+            { withCredentials: true }
+        )
+        .then((res) => {
+            console.log(res.data.data.allFoods);
+            setSearchResults(res.data.data.allFoods);
+            setLoding(true);
+        })
+        .catch((res) => {
+            console.log(res);
+        })
+    }
+
+    // 검색 입력란에서 엔터 키를 눌렀을 때 검색 실행
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+        performSearch();
+        }
+    }
+
 
     // 'react-modal'에서 Modal 컴포넌트를 사용하여 모달 대화상자 렌더링
     return (
@@ -281,8 +304,9 @@ const DialogMenu = (props) => {
                             placeholder="식품을 입력하세요"
                             value={searchValue}
                             onChange={handleSearchChange}
+                            onKeyPress={handleKeyPress}
                         />
-                        <Button onClick={handleSearchClick} variant="solid">
+                        <Button onClick={handleSearchClick} onKeyPress={handleKeyPress} variant="solid">
                             검색
                         </Button>
                     </div>
