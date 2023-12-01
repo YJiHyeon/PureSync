@@ -4,50 +4,54 @@ import { TextEllipsis } from 'components/shared'
 import {
     HiOutlineTrash,
 } from 'react-icons/hi'
-import axios from 'axios'
+import DialogTrashIntoTrashbin from 'components/ui/Dialog/DialogTrashIntoTrashbin'
 
-const Trashes = () => {
-    const [trashes, setTrashes] = useState([]);
 
-    useEffect(() => {
-        // axios를 사용하여 데이터를 가져옴
-        axios.get('http://127.0.0.1:9000/api/mind/trash/list/aaa')
-            .then(response => {
-                // 요청이 성공하면 데이터를 articles 상태로 설정
-                setTrashes(response.data.data.mdTrashList);
-                console.log(trashes);
-            })
-            .catch(error => {
-                // 에러 처리
-                console.error('데이터를 불러오는 중 에러 발생:', error);
-            });
-    }, []);
-  
+const Trashes = (props) => {
+    const {
+        trashes,
+        goRegister
+    } = props;
+
+    const [isDialogOpen, setDialogOpen] = useState(false);
+
+    const openDialog = () => {
+        setDialogOpen(true);
+    }
+
+    const closeDialog = () => {
+        setDialogOpen(false);
+    }
+    //grid-cols-1 md:grid-cols-2 gap-4 lg:grid-cols-2 xl:grid-cols-2
     return (
-        <div className="mb-6 grid grid-cols-1 md:grid-cols-2 gap-4 lg:grid-cols-2 xl:grid-cols-2">
-        {trashes.map((trash, index) => (
-            <Card bordered key={index}>
-                <div className="min-h-[60px]">
-                    <TextEllipsis
-                        text={trash.tsContents}
-                        maxTextCount={120}
-                    />
-                </div>
-                <div className="flex items-center justify-between mt-4">
-                    <div className="flex">
-                        <Tooltip title="Delete">
+        <div className="mb-6 grid grid-cols-1 md:grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-4">
+            {trashes.map((trash, index) => (
+                <Card bordered key={index}>
+                    <div className="min-h-[60px]">
+                        <TextEllipsis
+                            text={trash.tsContents}
+                            maxTextCount={120}
+                        />
+                    </div>
+                    <div className="flex items-center justify-between mt-4">
+                        <Tooltip title="감정 직접 비우기">
                             <Button
+                                className="mr-2"
+                                onClick={openDialog}
                                 shape="circle"
-                                variant="plain"
+                                color="orange-600"
+                                variant="twoTone"
                                 size="sm"
                                 icon={<HiOutlineTrash />}
-                            />
+                            >
+                            </Button>
                         </Tooltip>
+                        <DialogTrashIntoTrashbin isOpen={isDialogOpen} onClose={closeDialog} tsSeq={trash.tsSeq} goRegister={goRegister} />
+
                     </div>
-                </div>
-            </Card>
-        ))}
-    </div>
+                </Card>
+            ))}
+        </div>
     )
 }
 

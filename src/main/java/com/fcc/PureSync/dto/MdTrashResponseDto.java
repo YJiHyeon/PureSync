@@ -10,5 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MdTrashResponseDto {
+    Long tsSeq;
     String tsContents;
 }

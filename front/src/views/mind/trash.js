@@ -1,32 +1,44 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, AdaptableCard } from 'components/shared'
 import Trashes from './trash/components/Trashes'
-import reducer from './trash/store'
-import { injectReducer } from 'store/index'
-import TrashBin from './trash/components/TrashBin';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-
-injectReducer('knowledgeBaseManageArticles', reducer)
+import axios from 'axios'
+import TrashHeader from './trash/components/TrashHeader';
+import {
+    Loading,
+} from 'components/shared'
 
 const Trash = () => {
-    const onDragEnd = (result) => {
-        // 드래그가 끝났을 때의 로직 처리 (드랍된 위치 등)
-        // 예: 요소를 버리는 처리 로직
-    };
+    const [trashes, setTrashes] = useState([]);
+    const [flag, setFlag] = useState(false);
+    const [loading, setLoding] = useState(true);
+
+    useEffect(() => {
+        // axios를 사용하여 데이터를 가져옴
+        axios.get('http://127.0.0.1:9000/api/mind/trash/list/aaa')
+            .then(response => {
+                // 요청이 성공하면 데이터를 articles 상태로 설정
+                setTrashes(response.data.data.mdTrashList);
+                setLoding(false);
+            })
+            .catch(error => {
+                // 에러 처리
+                console.error('데이터를 불러오는 중 에러 발생:', error);
+            });
+    }, [flag]);
+
+    const goRegister = () => {
+        setFlag(!flag)   
+    }
 
     return (
-        <DragDropContext onDragEnd={onDragEnd}>
+        <Loading loading={loading}>
         <Container>
-            <div style={{float: "left", overflowY: 'auto', maxHeight: '500px'}}>
+            <TrashHeader goRegister={goRegister}/>
             <AdaptableCard>
-                <Trashes />
+                <Trashes trashes={trashes} goRegister={goRegister}/>
             </AdaptableCard>
-            </div>
-            <div style={{float: "left"}}>
-                <TrashBin />
-            </div>
         </Container>
-        </DragDropContext>
+        </Loading>
     );
 };
 

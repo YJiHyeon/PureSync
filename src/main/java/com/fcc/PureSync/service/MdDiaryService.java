@@ -30,8 +30,10 @@ public class MdDiaryService {
         Member member = memberRepository.findByMemId(memId).orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
         List<MdDiary> mdDiaryEntityList =  mdDiaryRepository.findAllByMemberOrderByDyDateDescDyWdateDesc(member);
         List<MdDiaryResponseDto> mdDiaryDtoList =  mdDiaryEntityList.stream().map(e -> entityToDto(e)).toList();
+        int count = mdDiaryDtoList.size();
         HashMap<String, Object> data = new HashMap<>();
         data.put("mdDiaryList", mdDiaryDtoList);
+        data.put("count", count);
 
         ResultDto resultDto = buildResultDto(200, HttpStatus.OK, "success", data);
 
@@ -64,6 +66,7 @@ public class MdDiaryService {
     public ResultDto updateMdDiray(Long dySeq, MdDiaryRequestDto dto) {
         MdDiary mdDiary = mdDiaryRepository.findById(dySeq).orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_ARTICLE));
         Emotion updatedEmotion = emotionRepository.findByEmoState(dto.getEmoState());
+        System.out.println("***********************************" +  dto.getDyContents() + "************************");
         MdDiary updatedMdDiary =
                 MdDiary.builder()
                         .dySeq(mdDiary.getDySeq())
@@ -115,6 +118,7 @@ public class MdDiaryService {
                 .dyTitle(mdDiary.getDyTitle())
                 .dyContents(mdDiary.getDyContents())
                 .emoState(mdDiary.getEmotion().getEmoState())
+                .emoField(mdDiary.getEmotion().getEmoField())
                 .build();
     }
 

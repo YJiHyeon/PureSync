@@ -32,15 +32,6 @@ const appsRoute = [
         path: `/mind/diary`,
         component: React.lazy(() => import('views/mind/diary')),
         authority: [ADMIN, USER],
-        meta: {
-            header: '마음일기',
-            extraHeader: React.lazy(() =>
-                import(
-                    'views/mind/diary/components/DiaryHeader'
-                )
-            ),
-            headerContainer: true,
-        },
     },
     {
         key: 'mind.diaryView',
@@ -55,19 +46,16 @@ const appsRoute = [
         authority: [ADMIN, USER],
     },
     {
+        key: 'mind.diaryWrite',
+        path: `/mind/diary/update`,
+        component: React.lazy(() => import('views/mind/diary/components/DiaryUpdate')),
+        authority: [ADMIN, USER],
+    },
+    {
         key: 'mind.trash',
         path: `/mind/trash`,
         component: React.lazy(() => import('views/mind/trash')),
         authority: [ADMIN, USER],
-        meta: {
-            header: '마음쓰레기통',
-            extraHeader: React.lazy(() =>
-                import(
-                    'views/mind/trash/components/TrashHeader'
-                )
-            ),
-            headerContainer: true,
-        },
     },
     {
         key: 'mind.exam',
