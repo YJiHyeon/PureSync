@@ -7,6 +7,7 @@ import com.fcc.PureSync.service.BoardService;
 import com.fcc.PureSync.util.FileUploadUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,7 +25,7 @@ public class BoardController {
      * 등록
      */
     @PostMapping
-    public ResultDto createBoard(@RequestPart("boardDto") BoardDto boardDto, @AuthenticationPrincipal String memSeqStr, @RequestPart(value = "file", required = false) MultipartFile file) {
+    public ResultDto createBoard(BoardDto boardDto, String memSeqStr, MultipartFile file) {
         return boardService.createBoard(boardDto, memSeqStr, file);
     }
 

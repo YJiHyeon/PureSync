@@ -59,11 +59,13 @@ public class BoardService {
     }
 
     public ResultDto createBoard(BoardDto boardDto, String id, MultipartFile file) {
-        Long id2 = Long.parseLong(id);
+        //Long id2 = Long.parseLong(id);
         id = "aaa";//////////////////////////////////////////////
-        Member member = memberRepository.findByMemSeq(id2)
+        Member member = memberRepository.findByMemId(id)
                 .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
 
+        System.out.println("*******************" + boardDto.getBoardName());
+        System.out.println("*******************" + boardDto.getBoardContents());
         Board board = Board.builder()
                 .boardName(boardDto.getBoardName())
                 .boardContents(boardDto.getBoardContents())
@@ -71,10 +73,14 @@ public class BoardService {
                 .build();
 
         boardRepository.save(board);
+        Long board_seq = board.getBoardSeq();
+        System.out.println("board_seq : " + board_seq);
+
         /**
          * 파일 존재 o
          */
         if (file != null) {
+            System.out.println("********************************************");
             Path uploadDir = Paths.get(fileUploadPath);
             //업로드 폴더의 물리적 구조(절대경로확인)
             String uploadPath = uploadDir.toFile().getAbsolutePath();
@@ -102,6 +108,7 @@ public class BoardService {
             /**
              * 파일 존재 x
              */
+            System.out.println("222222222222222222222222222222");
             BoardDto boardDtoResult = toDto(board);
             HashMap<String, Object> map = new HashMap<>();
             map.put("board", boardDtoResult);
@@ -216,7 +223,7 @@ public class BoardService {
     }
 
     public ResultDto findAllBoard(Pageable pageable, String id) {
-        List<Board> boardPage = boardRepository.findByBoardStatus(true,pageable).getContent();
+        List<Board> boardPage = boardRepository.findByBoardStatusOrderByBoardWdateDesc(true,pageable).getContent();
         List<BoardDto> boardDetailDtoList = boardPage.stream()
                 .map(BoardDto::BoardAllDetailDto)
                 .toList();
