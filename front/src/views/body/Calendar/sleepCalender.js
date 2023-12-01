@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
-import { CalendarView, Container } from 'components/shared'
+import { Container } from 'components/shared'
+import CalendarViewSleep from 'components/shared/CalendarViewSleep'
 import EventDialog from './components/EventDialog'
 import reducer from './store'
 import { injectReducer } from 'store/index'
@@ -84,7 +85,7 @@ const SleepCalendar = () => {
 
     return (
         <Container className="h-full">
-            <CalendarView
+            <CalendarViewSleep
                 events={events}
                 eventClick={onEventClick}
                 select={onCellSelect}

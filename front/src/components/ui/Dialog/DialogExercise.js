@@ -117,14 +117,15 @@ const DialogExercise = (props) => {
 
     // 운동 시간을 변경하는 핸들러
     const handleTimeAmountChange = (e) => {
-
+        const inputValue = e.target.value;
+        // 입력값이 0보다 작거나 같으면 1로 변경
+        if (inputValue <= 0) {
+            e.target.value = '1';
+        }
         setTimeAmounts({
             ...timeAmounts,
             [e.target.id]: e.target.value
         });
-        // console.log( "***");
-        console.log(timeAmounts);
-
     }
 
     // 등록 버튼 클릭
