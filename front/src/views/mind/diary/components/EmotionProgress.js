@@ -1,5 +1,5 @@
 import { Progress, Card } from 'components/ui'
-import { HiEmojiHappy, HiEmojiSad, HiMusicNote, HiExclamationCircle } from "react-icons/hi";
+import { HiEmojiHappy, HiEmojiSad, HiMusicNote, HiChartBar } from "react-icons/hi";
 
 const EmotionProgress = (props) => {
     const {
@@ -15,7 +15,7 @@ const EmotionProgress = (props) => {
             (<div className='mb-4'>
             <span className="flex items-center rounded-full gap-1">
                 <span className='text-emerald-600 dark:text-emerald-100'>
-                <HiExclamationCircle />
+                <HiChartBar />
                 </span>
                 <span className='font-semibold text-emerald-600' >감정일기 분석을 위해 새로운 감정일기를 작성해 주세요</span>
                 </span>

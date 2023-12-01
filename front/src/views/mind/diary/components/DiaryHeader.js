@@ -18,7 +18,7 @@ const DiaryHeader = () => {
                 </div>
         <div className="flex items-center">
             <Button size="sm" variant="solid" onClick={goView}>
-                감정일기 쓰기
+                감정일기 작성
             </Button>
         </div>
         </div>
