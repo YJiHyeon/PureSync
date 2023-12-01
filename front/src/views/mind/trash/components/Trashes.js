@@ -5,10 +5,11 @@ import {
     HiOutlineTrash,
 } from 'react-icons/hi'
 import DialogTrashIntoTrashbin from 'components/ui/Dialog/DialogTrashIntoTrashbin'
+import TrashNull from './TrashNull'
 
 
 const Trashes = (props) => {
-    const { trashes, goRegister } = props;
+    const { trashes, goRegister, count } = props;
 
     // 다이얼로그 상태를 각 트래시에 대해 배열로 관리
     const [dialogStates, setDialogStates] = useState(trashes.map(() => false));
@@ -26,7 +27,8 @@ const Trashes = (props) => {
     };
 
     return (
-        <div className="grid grid-cols-4 gap-4">
+        <div>
+        {count > 0 ? (<div className="grid lg:grid-cols-4 gap-4 md:grid-cols-3 sm:grid-cols-2">
             {trashes.map((trash, index) => (
                 <Card bordered key={trash.tsSeq}>
                     <div className="min-h-[60px]">
@@ -54,6 +56,8 @@ const Trashes = (props) => {
                     </div>
                 </Card>
             ))}
+        </div>): (<TrashNull />)}
+        
         </div>
     );
 };

@@ -11,6 +11,7 @@ const Trash = () => {
     const [trashes, setTrashes] = useState([]);
     const [flag, setFlag] = useState(false);
     const [loading, setLoding] = useState(true);
+    const [count, setCount] = useState(0);
 
     useEffect(() => {
         // axios를 사용하여 데이터를 가져옴
@@ -18,6 +19,7 @@ const Trash = () => {
             .then(response => {
                 // 요청이 성공하면 데이터를 articles 상태로 설정
                 setTrashes(response.data.data.mdTrashList);
+                setCount(response.data.data.count);
                 setLoding(false);
             })
             .catch(error => {
@@ -35,7 +37,7 @@ const Trash = () => {
         <Container>
             <TrashHeader goRegister={goRegister}/>
             <div className="mt-8">
-                <Trashes trashes={trashes} goRegister={goRegister}/>
+                <Trashes trashes={trashes} goRegister={goRegister} count={count}/>
             </div>
         </Container>
         </Loading>

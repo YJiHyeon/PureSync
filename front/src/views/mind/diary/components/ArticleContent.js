@@ -61,8 +61,8 @@ const ArticleContent = () => {
         >
             <Container>
                 <AdaptableCard bodyClass="lg:flex gap-4">
-                    <div className="my-6 max-w-[800px] w-full mx-auto">
-                        <div className="flex justify-end gap-2">
+                    <div className="max-w-[800px] w-full mx-auto">
+                        <div className="flex justify-end gap-2 mb-4">
 
                             <Button onClick={onClickEdit} className="mr-2" variant="twoTone" icon={<HiOutlinePencil />} size="xs">
                                 <span>수정</span>

@@ -29,8 +29,10 @@ public class MdTrashService {
         Member member = memberRepository.findByMemId(memId).orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
         List<MdTrash> mdTrashList =  mdTrashRepository.findAllByMemberAndTsStatusOrderByTsWdateDesc(member, true);
         List<MdTrashResponseDto> mdTrashResponseDtoList = mdTrashList.stream().map(e -> entityToDto(e)).toList();
+        int count = mdTrashList.size();
         HashMap<String, Object> data = new HashMap<>();
         data.put("mdTrashList", mdTrashResponseDtoList);
+        data.put("count", count);
 
         return buildResultDto(200, HttpStatus.OK, "success", data);
     }
