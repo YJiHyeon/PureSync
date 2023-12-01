@@ -31,6 +31,7 @@ const BodyMenu = () => {
     }, []);
 
     const DatePickerClick = (date) => {
+        console.log( date );
         setSelectDate(date);
     }
 
