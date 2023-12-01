@@ -10,28 +10,13 @@ function Summary(props) {
   const [bodyBaseData, setBodyBaseData] = useState([]);   // 기초대사량
   const [loading, setLoading] = useState(false);
 
-  const toDate = (today)=>{
- 
-    let year = today.getFullYear();
-     let month = today.getMonth() + 1;
-     let date = today.getDate();
-     
-     if(month<10)
-         month = '0'+month;
-     if(date<10)
-         date = '0'+date;
-     
-     return year+"-"+month+"-"+date;
- }
-
-
   // 데이터 불러오기
   useEffect(() => {
     Axios.get('http://127.0.0.1:9000/api/summary/list', {
       params: {
         mem_seq: 1,
-        menu_date: toDate(props.selectDate),
-        el_date: toDate(props.selectDate),
+        menu_date: props.selectDate,
+        el_date: props.selectDate,
       },
       withCredentials: true,
     })

@@ -23,26 +23,11 @@ function Exercise(props) {
         setLoading(true);
     }
 
-    //날짜
-    const toDate = (today)=>{
- 
-        let year = today.getFullYear();
-         let month = today.getMonth() + 1;
-         let date = today.getDate();
-         
-         if(month<10)
-             month = '0'+month;
-         if(date<10)
-             date = '0'+date;
-         
-         return year+"-"+month+"-"+date;
-     }
-
     useEffect(() => {
         Axios.get('http://127.0.0.1:9000/api/exercise/list', {
             params: {
                 mem_seq: 1,
-                el_date: toDate(props.selectDate),
+                el_date: props.selectDate,
             },
             withCredentials: true
         })

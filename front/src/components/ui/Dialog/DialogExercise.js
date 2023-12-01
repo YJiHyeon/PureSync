@@ -176,6 +176,29 @@ const DialogExercise = (props) => {
     }
 
 
+    // 검색 기능을 수행하는 함수
+    const performSearch = () => {
+        Axios.get("http://127.0.0.1:9000/api/exercise/exerciseList", {
+        params: { "exerciseName": searchValue },
+        withCredentials: true
+        })
+        .then((res) => {
+            console.log(res.data.data.allExercise);
+            setSearchResults(res.data.data.allExercise);
+            setLoding(true);
+        })
+        .catch((res) => {
+            console.log(res);
+        });
+    }
+
+    // 검색 입력란에서 엔터 키를 눌렀을 때 검색 실행
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+        performSearch();
+        }
+    }
+
 
     return (
         <Modal
@@ -214,8 +237,9 @@ const DialogExercise = (props) => {
                             placeholder="운동을 입력하세요"
                             value={searchValue}
                             onChange={handleSearchChange}
+                            onKeyPress={handleKeyPress}
                         />
-                        <Button onClick={handleSearchClick} variant="solid">
+                        <Button onClick={handleSearchClick} onKeyPress={handleKeyPress} variant="solid">
                             검색
                         </Button>
                     </div>
