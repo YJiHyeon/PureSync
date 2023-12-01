@@ -15,10 +15,11 @@ const ArticleComment = ({ data }) => {
                 }}
               >
                 <div>
-                  <p>작성자: {data.memId}</p>
-                  <span>댓글: {comment.cmtContents}</span>              
+                  <p>작성자: {data.memId}</p><br></br>
+                  <span >댓글: {comment.cmtContents}</span>              
                 </div>
                 <span style={{ marginLeft: 'auto' }}>작성 시간: {comment.cmtWdate}</span>
+                
               </div>
               <hr />
             </div>

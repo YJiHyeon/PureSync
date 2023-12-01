@@ -11,9 +11,11 @@ import { getArticle } from '../store/dataSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import ReactHtmlParser from 'html-react-parser'
 import { useLocation } from 'react-router-dom'
-
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import {Button} from 'components/ui'
 const ArticleContent = ({ articleId }) => {
-   
+    const navigate = useNavigate();
     const dispatch = useDispatch()
 
     const article = useSelector(
@@ -38,6 +40,21 @@ const ArticleContent = ({ articleId }) => {
         }
     }
 
+    const handleDelete = async () => {
+        try {
+            if (!article.boardSeq) {
+                console.error('게시물 boardSeq를 찾을 수 없습니다.');
+                return;
+            }
+            await axios.delete(`http://localhost:9000/api/board/${article.boardSeq}`);
+            console.log('게시물 삭제 성공');
+            navigate('/board');
+        } catch (error) {
+            console.error('게시물 삭제 중 오류:', error);
+        } finally {
+          
+        }
+    };
     const commentRegister =()=>{
         //alert("댓글등록");
         //setRegister(true);
@@ -56,8 +73,15 @@ const ArticleContent = ({ articleId }) => {
                     <TextBlockSkeleton rowCount={8} />
                 </div>
             }
-        >
-            <h3>{article.boardName}</h3>
+        >   
+        <div className="flex items-center justify-between">
+                <h3>{article.boardName}</h3>
+            
+                
+                <Button onClick={handleDelete} variant="solid" style={{ width: '100px', height: '30px', fontSize: '14px', padding: '5px' }}>
+                    삭제하기</Button>
+                   
+            </div>
             <div className="flex items-center mt-4 gap-4">
                 <UsersAvatarGroup
                     avatarProps={{ size: 40 }}
