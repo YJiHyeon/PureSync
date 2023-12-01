@@ -1,5 +1,5 @@
 import React from 'react'
-import navigationConfig from 'configs/navigation.config'
+import navigationConfig from 'configs/navigation_tmp.config'
 import { Dropdown } from 'components/ui'
 import { AuthorityCheck } from 'components/shared'
 import HorizontalMenuItem from './HorizontalMenuItem'
