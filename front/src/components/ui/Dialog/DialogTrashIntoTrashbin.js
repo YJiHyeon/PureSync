@@ -167,7 +167,7 @@ const DialogTrashIntoTrashbin = (props) => {
             >
                 {/* closable이 true인 경우 닫기 버튼 렌더링 */}
                 {closable && renderCloseButton}
-                <h4>버릴 감정을 쓰레기통으로 드래그해 버려 주세요</h4><br />
+                <h5>버릴 감정을 쓰레기통으로 드래그해서 버려 주세요</h5>
                 <DndContext onDragEnd={handleDragEnd}>
                     <div className="grid grid-cols-2 mt-10 pt-10" >
                     {!isDropped ? draggableMarkup : null}
