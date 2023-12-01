@@ -8,51 +8,54 @@ import DialogTrashIntoTrashbin from 'components/ui/Dialog/DialogTrashIntoTrashbi
 
 
 const Trashes = (props) => {
-    const {
-        trashes,
-        goRegister
-    } = props;
+    const { trashes, goRegister } = props;
 
-    const [isDialogOpen, setDialogOpen] = useState(false);
+    // 다이얼로그 상태를 각 트래시에 대해 배열로 관리
+    const [dialogStates, setDialogStates] = useState(trashes.map(() => false));
 
-    const openDialog = () => {
-        setDialogOpen(true);
-    }
+    const openDialog = (index) => {
+        const updatedDialogStates = [...dialogStates];
+        updatedDialogStates[index] = true;
+        setDialogStates(updatedDialogStates);
+    };
 
-    const closeDialog = () => {
-        setDialogOpen(false);
-    }
-    //grid-cols-1 md:grid-cols-2 gap-4 lg:grid-cols-2 xl:grid-cols-2
+    const closeDialog = (index) => {
+        const updatedDialogStates = [...dialogStates];
+        updatedDialogStates[index] = false;
+        setDialogStates(updatedDialogStates);
+    };
+
     return (
-        <div className="mb-6 grid grid-cols-1 md:grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid grid-cols-4 gap-4">
             {trashes.map((trash, index) => (
-                <Card bordered key={index}>
+                <Card bordered key={trash.tsSeq}>
                     <div className="min-h-[60px]">
-                        <TextEllipsis
-                            text={trash.tsContents}
-                            maxTextCount={120}
-                        />
+                        <TextEllipsis text={trash.tsContents} maxTextCount={120} />
                     </div>
                     <div className="flex items-center justify-between mt-4">
                         <Tooltip title="감정 직접 비우기">
                             <Button
                                 className="mr-2"
-                                onClick={openDialog}
+                                onClick={() => openDialog(index)} // 해당 트래시의 인덱스를 전달
                                 shape="circle"
                                 color="orange-600"
                                 variant="twoTone"
                                 size="sm"
                                 icon={<HiOutlineTrash />}
-                            >
-                            </Button>
+                            />
                         </Tooltip>
-                        <DialogTrashIntoTrashbin isOpen={isDialogOpen} onClose={closeDialog} tsSeq={trash.tsSeq} goRegister={goRegister} />
-
+                        {/* 해당 다이얼로그 상태를 해당 트래시에 대해 전달 */}
+                        <DialogTrashIntoTrashbin
+                            isOpen={dialogStates[index]}
+                            onClose={() => closeDialog(index)}
+                            tsSeq={trash.tsSeq}
+                            goRegister={goRegister}
+                        />
                     </div>
                 </Card>
             ))}
         </div>
-    )
-}
+    );
+};
 
-export default Trashes
+export default Trashes;

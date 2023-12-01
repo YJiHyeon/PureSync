@@ -34,9 +34,9 @@ const Trash = () => {
         <Loading loading={loading}>
         <Container>
             <TrashHeader goRegister={goRegister}/>
-            <AdaptableCard>
+            <div className="mt-8">
                 <Trashes trashes={trashes} goRegister={goRegister}/>
-            </AdaptableCard>
+            </div>
         </Container>
         </Loading>
     );

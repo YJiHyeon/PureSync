@@ -15,7 +15,7 @@ const Diary = () => {
 
         <Container>
             <DiaryHeader />
-            <div className="mt-8 px-4">
+            <div className="mt-8">
                 <Diaries />
             </div>
         </Container>
