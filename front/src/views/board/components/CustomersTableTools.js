@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setTableData, setFilterData } from '../store/dataSlice';
 import cloneDeep from 'lodash/cloneDeep';
 import { useNavigate } from 'react-router-dom';
+import { HiExclamationCircle } from "react-icons/hi";
+
 
 const CustomersTableTools = () => {
     const dispatch = useDispatch();
@@ -36,14 +38,23 @@ const CustomersTableTools = () => {
     };
 
     return (
-        <div className="md:flex items-center justify-between">
-            <div className="md:flex items-center gap-4">
+        <div className="md:flex items-center justify-between mb-4">
+            <div>
+                <h3>자유게시판</h3>
+                <div className='mb-4'>
+                <span className="flex items-center rounded-full gap-1">
+                    <span className='text-emerald-600 dark:text-emerald-100'>
+                    <HiExclamationCircle />
+                    </span>
+                    <span className='font-semibold text-emerald-600' >상대방을 비하하는 글은 관리자에 의해 삭제될 수 있습니다.</span>
+                    </span>
+                </div>
             </div>
-            <div className="mb-4">
-                <Button size="sm" onClick={onClearAll}>
-                    글쓰기
-                </Button>
-            </div>
+            
+            <Button size="sm" onClick={onClearAll} variant="solid">
+                글쓰기
+            </Button>
+            
         </div>
     );
 };
