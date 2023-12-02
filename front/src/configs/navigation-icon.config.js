@@ -26,6 +26,7 @@ import {
     HiOutlineCode,
 } from 'react-icons/hi'
 
+import { LuHeartHandshake } from "react-icons/lu";
 
 import {
     BsHeart,
@@ -75,7 +76,8 @@ const navigationIcon = {
     write : <BsPencilSquare />,
     list : <BsListUl />,
     sleep: <BsMoonStars />,
-    table : <BsTable />
+    table : <BsTable />,
+    heart2 : <LuHeartHandshake />
 }
 
 export default navigationIcon

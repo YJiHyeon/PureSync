@@ -30,7 +30,7 @@ const heartNavigationConfig = [
                 path: `/mind/trash`,
                 title: '마음쓰레기통',
                 translateKey: 'nav.mind.trash',
-                icon: 'trash',
+                icon: 'heart2',
                 type: NAV_ITEM_TYPE_ITEM,
                 authority: [ADMIN, USER],
                 subMenu: [],
