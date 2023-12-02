@@ -1,26 +1,20 @@
 import React from 'react'
 import { IconWrapper } from '.'
 import {
-    GoOctoface,
     GoFlame,
-    GoMarkGithub,
     GoGitCompare,
     GoGitCommit,
     GoGitPullRequest,
     GoCode,
-    GoMarkdown,
     GoTerminal,
 } from 'react-icons/go'
 
 const renderIcon = [
-    { render: () => <GoOctoface /> },
     { render: () => <GoFlame /> },
-    { render: () => <GoMarkGithub /> },
     { render: () => <GoGitCompare /> },
     { render: () => <GoGitCommit /> },
     { render: () => <GoGitPullRequest /> },
     { render: () => <GoCode /> },
-    { render: () => <GoMarkdown /> },
     { render: () => <GoTerminal /> },
 ]
 
