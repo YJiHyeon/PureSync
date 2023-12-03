@@ -12,7 +12,7 @@ import {
     LOGO_X_GUTTER,
 } from 'constants/theme.constant'
 import Logo from 'components/template/Logo'
-import navigationConfig from 'configs/navigation_tmp.config'
+import navigationConfig from 'configs/navigation.config'
 import VerticalMenuContent from 'components/template/VerticalMenuContent'
 import useResponsive from 'utils/hooks/useResponsive'
 import { useSelector } from 'react-redux'

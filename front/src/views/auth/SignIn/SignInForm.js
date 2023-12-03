@@ -70,27 +70,27 @@ const SignInForm = (props) => {
                     <Form>
                         <FormContainer>
                             <FormItem
-                                label="User Name"
+                                label="아이디"
                                 invalid={errors.userName && touched.userName}
                                 errorMessage={errors.userName}
                             >
                                 <Field
                                     type="text"
                                     autoComplete="off"
-                                    name="userName"
-                                    placeholder="User Name"
+                                    name="memId"
+                                    placeholder=""
                                     component={Input}
                                 />
                             </FormItem>
                             <FormItem
-                                label="Password"
+                                label="비밀번호"
                                 invalid={errors.password && touched.password}
                                 errorMessage={errors.password}
                             >
                                 <Field
                                     autoComplete="off"
-                                    name="password"
-                                    placeholder="Password"
+                                    name="memPassword"
+                                    placeholder=""
                                     component={PasswordInput}
                                 />
                             </FormItem>
@@ -102,7 +102,7 @@ const SignInForm = (props) => {
                                     children="Remember Me"
                                 />
                                 <ActionLink to={forgotPasswordUrl}>
-                                    Forgot Password?
+                                    비밀번호를 잊어버리셨나요?
                                 </ActionLink>
                             </div>
                             <Button
@@ -111,11 +111,11 @@ const SignInForm = (props) => {
                                 variant="solid"
                                 type="submit"
                             >
-                                {isSubmitting ? 'Signing in...' : 'Sign In'}
+                                {isSubmitting ? 'Signing in...' : '로그인'}
                             </Button>
                             <div className="mt-4 text-center">
-                                <span>Don't have an account yet? </span>
-                                <ActionLink to={signUpUrl}>Sign up</ActionLink>
+                                <span>계정이 없으신가요? </span>
+                                <ActionLink to={signUpUrl}>회원가입</ActionLink>
                             </div>
                         </FormContainer>
                     </Form>
