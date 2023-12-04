@@ -5,7 +5,7 @@ import { Button } from 'components/ui';
 
 const { Tr, Th, Td, THead, TBody } = Table
 
-const TableMenu = ({ menuData, deleteMenuItem,menuWhen }) => {
+const TableMenu = ({ menuData, deleteMenuItem, menuWhen }) => {
     return (
         <div>
             <Table>
@@ -44,7 +44,7 @@ const TableMenu = ({ menuData, deleteMenuItem,menuWhen }) => {
                     <td style={{ textAlign: "left" }}>
                         <Button
                             onClick={() => {
-                                deleteMenuItem(item.menu_seq);
+                                 deleteMenuItem(item.menu_seq);
                             }}
                             variant="solid"
                             style={{
