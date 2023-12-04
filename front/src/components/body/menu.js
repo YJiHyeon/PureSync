@@ -68,6 +68,7 @@ function Menu(props) {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <h4>점심</h4>
                     <div>
+                        
                         📌점심 총 칼로리 : {props.lunchTotalCalories} kcal
                     </div>
                 </div>

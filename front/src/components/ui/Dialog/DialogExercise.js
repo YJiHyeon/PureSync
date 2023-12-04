@@ -8,8 +8,8 @@ import { theme } from 'twin.macro';
 import useWindowSize from '../hooks/useWindowSize';
 import { Button, Input } from 'components/ui';
 import Axios from 'axios';
+import { Alert } from 'components/ui'
 
-import { useNavigate } from 'react-router-dom';
 
 const DialogExercise = (props) => {
     const currentSize = useWindowSize();
@@ -35,14 +35,16 @@ const DialogExercise = (props) => {
     const [searchResults, setSearchResults] = useState([]);
     const [selectedItems, setSelectedItems] = useState([]);
     const [loading, setLoding] = useState(false);
-    const [timeAmounts, setTimeAmounts] = useState([]);
+    const [timeAmounts, setTimeAmounts] = useState(1);
+    const [inputError, setInputError] = useState(false);
 
 
     const onCloseClick = (e) => {
         setSearchValue('');
         setSearchResults([]);
         setSelectedItems([]);
-        setTimeAmounts([]);
+        setTimeAmounts(1);
+        setInputError(false);
         onClose(e);
     }
 
@@ -85,28 +87,12 @@ const DialogExercise = (props) => {
     const handleSearchChange = (e) => {
         const value = e.target.value;
         setSearchValue(value);
+        setInputError(value.length < 2); // 검색어 길이가 2자 미만인 경우 inputError를 true로 설정
     }
 
-    const handleSearchClick = () => {
-
-        Axios.get("http://127.0.0.1:9000/api/exercise/exerciseList",
-            { params: { "exerciseName" : searchValue } },
-            { withCredentials: true }
-        )
-            .then((res) => {
-                console.log(res.data.data.allExercise);
-                setSearchResults(res.data.data.allExercise);
-                setLoding(true);
-
-            })
-            .catch((res) => {
-                console.log(res);
-            })
-    }
 
     // 항목 선택/해제 핸들러  
     const handleItemToggle = (item) => {
-
         console.log(item);
         if (selectedItems.includes(item)) {
             setSelectedItems(selectedItems.filter((selectedItem) => selectedItem !== item));
@@ -118,76 +104,79 @@ const DialogExercise = (props) => {
 
     // 운동 시간을 변경하는 핸들러
     const handleTimeAmountChange = (e) => {
-        const inputValue = e.target.value;
-        // 입력값이 0보다 작거나 같으면 1로 변경
-        if (inputValue <= 0) {
-            e.target.value = '1';
+        const { value } = e.target;
+        setTimeAmounts(parseInt(value));
+    }
+
+    // 검색 기능을 수행하는 함수
+    const performSearch = () => {
+        if (searchValue.length < 2) {
+            setInputError(true); // 검색어 길이가 2자 미만인 경우 inputError를 true로 설정
+        } else {
+            setInputError(false); // 검색어 길이가 2자 이상인 경우 inputError를 false로 설정
+            
+            Axios.get("http://127.0.0.1:9000/api/exercise/exerciseList", {
+                params: { "exerciseName": searchValue },
+                withCredentials: true
+            })
+                .then((res) => {
+                    console.log(res.data.data.allExercise);
+                    setSearchResults(res.data.data.allExercise);
+                    setLoding(true);
+                })
+                .catch((res) => {
+                    console.log(res);
+                });
         }
-        setTimeAmounts({
-            ...timeAmounts,
-            [e.target.id]: e.target.value
-        });
+    }
+
+    // 검색 입력란에서 엔터 키를 눌렀을 때 검색 실행
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            performSearch();
+        }
     }
 
     // 등록 버튼 클릭
     const handleRegisterClick = () => {
         const sendExerciseDatas = [];
 
-        // 선택한 항목에 대한 정보를 배열에 추가
+        // 검색값, 선택된 항목, 운동 시간의 유효성
+        if (searchValue === '' || selectedItems.length === 0 || isNaN(timeAmounts) || timeAmounts <= 0) {
+            alert("모든 항목을 입력하세요.");
+            return;
+        }
+
+        // 선택된 항목을 루프하여 exerciseInfo 객체를 생성합니다.
         let i = 0;
-        const exerciseTimeValue = parseInt(timeAmounts[i]);
-        selectedItems.forEach((item) => {
-            // console.log(item);
+        selectedItems.forEach((item, index) => {
+            const exerciseTimeValue = parseInt(timeAmounts);
             const exerciseInfo = {
-                elDate : props.selectDate,
-                elTime : exerciseTimeValue,
+                elDate: props.selectDate,
+                elTime: exerciseTimeValue,
                 memSeq: 1,
-                ecSeq : item.ecSeq
+                ecSeq: item.ecSeq
             };
             i++;
             sendExerciseDatas.push(exerciseInfo);
             console.log(exerciseInfo);
-
-            Axios.post("http://127.0.0.1:9000/api/exercise/save", sendExerciseDatas[0])
-                .then((res) => {
-                    setSearchValue('');
-                    setSearchResults([]);
-                    setSelectedItems([]);
-                    setTimeAmounts([]);
-                    props.onClose();
-                    props.writeOK(2);
-                })
-                .catch((res) => {
-                    console.log('에러 : ');
-                    console.log(res);
-                })
         });
+
+        Axios.post("http://127.0.0.1:9000/api/exercise/save", sendExerciseDatas[0])
+            .then((res) => {
+                setSearchValue('');
+                setSearchResults([]);
+                setSelectedItems([]);
+                setTimeAmounts(1);
+                setInputError(false);
+                props.onClose();
+                props.writeOK(2);
+            })
+            .catch((res) => {
+                console.log('에러 : ');
+                console.log(res);
+            })
     }
-
-
-    // 검색 기능을 수행하는 함수
-    const performSearch = () => {
-        Axios.get("http://127.0.0.1:9000/api/exercise/exerciseList", {
-        params: { "exerciseName": searchValue },
-        withCredentials: true
-        })
-        .then((res) => {
-            console.log(res.data.data.allExercise);
-            setSearchResults(res.data.data.allExercise);
-            setLoding(true);
-        })
-        .catch((res) => {
-            console.log(res);
-        });
-    }
-
-    // 검색 입력란에서 엔터 키를 눌렀을 때 검색 실행
-    const handleKeyPress = (e) => {
-        if (e.key === 'Enter') {
-        performSearch();
-        }
-    }
-
 
     return (
         <Modal
@@ -227,11 +216,13 @@ const DialogExercise = (props) => {
                             value={searchValue}
                             onChange={handleSearchChange}
                             onKeyPress={handleKeyPress}
+                            className={inputError ? 'border-2 border-red-500' : ''}
                         />
-                        <Button onClick={handleSearchClick} onKeyPress={handleKeyPress} variant="solid">
+                        <Button onClick={performSearch} onKeyPress={handleKeyPress} variant="solid">
                             검색
                         </Button>
                     </div>
+                    {inputError && <p className="text-red-500">⚠️ 검색어를 2자 이상 입력하세요</p>}
                 </div>
 
                 <div>
@@ -247,6 +238,7 @@ const DialogExercise = (props) => {
                         </div>
                     )}
                 </div>
+
                 <br /><br />
                 <div style={{ maxHeight: '220px', overflowY: 'auto' }}>
                     <h5>운동 기록 추가</h5>
@@ -258,9 +250,8 @@ const DialogExercise = (props) => {
                                 <span style={{ flex: 1 }}>
                                     {item.ecName} - 운동 시간(분) :&nbsp;&nbsp;
                                     <Input
-                                        id={index}
                                         name="timeAmounts"
-                                        value={timeAmounts[index]}
+                                        value={timeAmounts}
                                         onChange={handleTimeAmountChange}
                                         type="number"
                                         style={{ width: '100px', height: '15px' }}
@@ -272,25 +263,20 @@ const DialogExercise = (props) => {
                     ) : (
                         <p>운동 기록에 항목을 추가하세요.</p>
                     )
-
-
                     }
                 </div>
-
-
                 <br /><br />
+
                 <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                     <Button onClick={handleRegisterClick} variant="solid">
                         등록
                     </Button>
                 </div>
-
-               
-                
             </motion.div>
         </Modal>
     );
 }
+
 
 DialogExercise.propTypes = {
     className: PropTypes.string,
