@@ -134,7 +134,7 @@ const BodyMenu = () => {
 
     };
 
-    //운동 삭제 버튼
+    //운동 삭제
     const exerciseDelete = (el_seq) => {
         Axios.post(`http://127.0.0.1:9000/api/exercise/delete`, {
             elSeq: el_seq,
