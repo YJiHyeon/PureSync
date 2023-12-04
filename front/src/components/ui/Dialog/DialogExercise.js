@@ -37,6 +37,7 @@ const DialogExercise = (props) => {
     const [loading, setLoding] = useState(false);
     const [timeAmounts, setTimeAmounts] = useState([]);
 
+
     const onCloseClick = (e) => {
         setSearchValue('');
         setSearchResults([]);
@@ -154,6 +155,7 @@ const DialogExercise = (props) => {
                     setSelectedItems([]);
                     setTimeAmounts([]);
                     props.onClose();
+                    props.writeOK(2);
                 })
                 .catch((res) => {
                     console.log('에러 : ');

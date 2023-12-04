@@ -205,6 +205,7 @@ const DialogMenu = (props) => {
                     setSelectedMealType('');
                     setGramAmounts('');
                     props.onClose();
+                    props.writeOK(1);
                 })
                 .catch((res) => {
                     console.log('에러 : ');

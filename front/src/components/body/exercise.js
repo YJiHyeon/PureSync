@@ -1,16 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button } from 'components/ui';
-import Axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import DialogExercise from 'components/ui/Dialog/DialogExercise';
 import TableExercise from 'components/ui/Table/TableExercise';
 
 
 function Exercise(props) {
     const [isDialogOpen, setDialogOpen] = useState(false);
-    const [exerciseData, setExerciseData] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [totalCalories, setTotalCalories] = useState(0);
 
     // 다이얼로그
     const openDialog = () => {
@@ -23,55 +19,11 @@ function Exercise(props) {
         setLoading(true);
     }
 
-    useEffect(() => {
-        Axios.get('http://127.0.0.1:9000/api/exercise/list', {
-            params: {
-                mem_seq: 1,
-                el_date: props.selectDate,
-            },
-            withCredentials: true
-        })
-        .then((res) => {
-            setExerciseData(res.data.data.exerciseList);
-        })
-        .catch((error) => {
-            console.error(error);
-        });
-
-    }, [props.selectDate, loading]);
-
-
     // 삭제 버튼
     const deleteMenuItem = (el_seq) => {
-        Axios.post(`http://127.0.0.1:9000/api/exercise/delete`, {
-            elSeq: el_seq,
-            memSeq: 1
-        })
-            .then((res) => {
-                // alert("삭제버튼 클릭");
-                setExerciseData(exerciseData.filter((item) => item.el_seq !== el_seq));
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+        props.exerciseDelete(el_seq);
+
     }
-
-    // 총 칼로리 계산 함수
-    const calculateTotalCalories = () => {
-        let total = 0;
-        exerciseData.forEach((item) => {
-            total += item.el_total;
-        });
-        return total.toFixed(2);
-    };
-
-    useEffect(() => {
-        // exerciseData가 변경될 때마다 총 칼로리 계산
-        const calculatedTotalCalories = calculateTotalCalories();
-        setTotalCalories(calculatedTotalCalories);
-    }, [exerciseData]);
-
-
 
     return (
         <div>
@@ -91,15 +43,15 @@ function Exercise(props) {
                 >
                     운동 등록
                 </Button>
-                <DialogExercise isOpen={isDialogOpen} onClose={closeDialog} selectDate={props.selectDate} />
+                <DialogExercise writeOK={props.writeOK} isOpen={isDialogOpen} onClose={closeDialog} selectDate={props.selectDate} />
             </div>
             <div>
-                ✔️일일 총 소모 칼로리 : {totalCalories} kcal
+                ✔️일일 총 소모 칼로리 : {props.totalExerciseCalories} kcal
             </div>
             <br />
             {/* 운동 리스트 */}
             <div>
-                <TableExercise exerciseData={exerciseData} deleteMenuItem={deleteMenuItem} />
+                <TableExercise exerciseData={props.exerciseData} deleteMenuItem={deleteMenuItem} />
             </div>
         </div>
     )
