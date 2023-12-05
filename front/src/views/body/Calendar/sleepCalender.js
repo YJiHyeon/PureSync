@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Container } from 'components/shared'
 import CalendarViewSleep from 'components/shared/CalendarViewSleep'
-import SleepDialog from './components/EventDialog'
+import EventDialog from './components/EventDialog'
 import reducer from './store'
 import { injectReducer } from 'store/index'
 import { getEvents, updateEvent } from './store/dataSlice'
@@ -93,7 +93,7 @@ const SleepCalendar = () => {
                 selectable
                 eventDrop={onEventChange}
             />
-            <SleepDialog submit={onSubmit} />
+            <EventDialog submit={onSubmit} />
         </Container>
     )
 }
