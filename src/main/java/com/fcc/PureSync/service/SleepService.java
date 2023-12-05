@@ -1,5 +1,6 @@
 package com.fcc.PureSync.service;
 
+import com.fcc.PureSync.dto.CommentDto;
 import com.fcc.PureSync.dto.ResultDto;
 import com.fcc.PureSync.dto.SleepDto;
 import com.fcc.PureSync.entity.Comment;
@@ -10,11 +11,13 @@ import com.fcc.PureSync.exception.CustomExceptionCode;
 import com.fcc.PureSync.repository.MemberRepository;
 import com.fcc.PureSync.repository.SleepRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 
 import static com.fcc.PureSync.dto.SleepDto.toDto;
 
@@ -86,5 +89,17 @@ public class SleepService {
     }
 
 
+    public ResultDto findAllMySleep(Pageable pageable, String id) {
+        id = "aaa";
+        Member member = memberRepository.findByMemId(id)
+                .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
+        List<Sleep> sleepList = sleepRepository.findByMember_MemSeq(member.getMemSeq());
+        List<SleepDto> sleepDtoList = sleepList.stream()
+                .map(SleepDto::toDto)
+                .toList();
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("sleepList", sleepDtoList);
+        return buildResultDto(HttpStatus.OK.value(), HttpStatus.OK, "수면기록 전체 조회 성공", map);
 
+    }
 }
