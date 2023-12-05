@@ -30,7 +30,7 @@ public class Board {
     @Builder.Default
     private boolean boardStatus=true;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "mem_seq")
     private Member member;
 
