@@ -19,7 +19,10 @@ public class Sleep {
     private LocalDateTime sleepWdate = LocalDateTime.now();
     private LocalDateTime sleepGodate;
     private LocalDateTime sleepWudate;
-    private Integer sleepWhen;
+    private Integer sleepColor;
+    private Integer sleepCategory;
+    private String sleepDate;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mem_seq")

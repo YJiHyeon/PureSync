@@ -25,9 +25,5 @@ public class SleepController {
         return sleepService.updateSleep(sleepSeq, sleepDto, id);
     }
 
-    @GetMapping("/{sleepSeq}")
-    public ResultDto detailSleep(@PathVariable Long sleepSeq, String id) {
-        return sleepService.detailSleep(sleepSeq, id);
-    }
 }
 

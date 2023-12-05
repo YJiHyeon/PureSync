@@ -19,8 +19,10 @@ public class SleepDto {
     private LocalDateTime sleepWdate;
     private LocalDateTime sleepGodate;
     private LocalDateTime sleepWudate;
-    private Integer sleepWhen;
     private Long memSeq;
+    private Integer sleepColor;
+    private Integer sleepCategory;
+    private String sleepDate;
 
     public static SleepDto toDto(Sleep sleep) {
         return SleepDto.builder()
@@ -28,8 +30,10 @@ public class SleepDto {
                 .sleepWdate(sleep.getSleepWdate())
                 .sleepGodate(sleep.getSleepGodate())
                 .sleepWudate(sleep.getSleepWudate())
-                .sleepWhen(sleep.getSleepWhen())
                 .memSeq(sleep.getMember().getMemSeq())
+                .sleepCategory(sleep.getSleepCategory())
+                .sleepColor(sleep.getSleepColor())
+                .sleepDate(sleep.getSleepDate())
                 .build();
     }
 }

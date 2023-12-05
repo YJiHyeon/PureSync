@@ -33,6 +33,8 @@ public class SleepService {
                 .data(map)
                 .build();
     }
+
+    // 쓰기 -----------------------------------------------------------
     public ResultDto createSleep(SleepDto sleepDto, String id) {
         id = "aaa";//////////////////////////////////////////////
         Member member = memberRepository.findByMemId(id)
@@ -43,7 +45,9 @@ public class SleepService {
         Sleep sleep = Sleep.builder()
                 .sleepGodate(godate)
                 .sleepWudate(wudate)
-                .sleepWhen(sleepDto.getSleepWhen())
+                .sleepCategory(sleepDto.getSleepCategory())
+                .sleepColor(sleepDto.getSleepColor())
+                .sleepDate(sleepDto.getSleepDate())
                 .member(member)
                 .build();
 
@@ -54,6 +58,7 @@ public class SleepService {
         return buildResultDto(HttpStatus.CREATED.value(), HttpStatus.CREATED, "수면 기록 생성 성공", map);
     }
 
+    // 업데이트 ------------------------------------------------------------------------
     public ResultDto updateSleep(Long sleepSeq, SleepDto sleepDto, String id) {
         id = "aaa";//////////////////////////////////////////////
         Member member = memberRepository.findByMemId(id)
@@ -67,8 +72,9 @@ public class SleepService {
                 .sleepSeq(sleepSeq)
                 .sleepGodate(godate)
                 .sleepWudate(wudate)
-                .sleepWhen(sleepDto.getSleepWhen())
-                .sleepWdate(sleep.getSleepWdate())
+                .sleepCategory(sleep.getSleepCategory())
+                .sleepColor(sleep.getSleepColor())
+                .sleepDate(sleep.getSleepDate())
                 .member(member)
                 .build();
 
@@ -79,12 +85,6 @@ public class SleepService {
         return buildResultDto(HttpStatus.CREATED.value(), HttpStatus.CREATED, "수면 기록 수정 성공", map);
     }
 
-    public ResultDto detailSleep(Long sleepSeq, String id) {
-        Sleep sleep = sleepRepository.findById(sleepSeq)
-                .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_SLEEP));
-        SleepDto sleepDto = toDto(sleep);
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("sleepDetailDto", sleepDto);
-        return buildResultDto(HttpStatus.OK.value(), HttpStatus.OK, "수면 기록 조회 성공", map);
-    }
+
+
 }
