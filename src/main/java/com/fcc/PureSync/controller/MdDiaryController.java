@@ -2,10 +2,13 @@ package com.fcc.PureSync.controller;
 
 import com.fcc.PureSync.dto.MdDiaryRequestDto;
 import com.fcc.PureSync.dto.ResultDto;
+import com.fcc.PureSync.dto.SentimentRequestDto;
 import com.fcc.PureSync.service.MdDiaryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,4 +39,5 @@ public class MdDiaryController {
     public ResultDto deleteMdDiary(@PathVariable("dySeq") Long dySeq) {
         return mdDiaryService.deleteMdDiary(dySeq);
     }
+
 }

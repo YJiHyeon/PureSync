@@ -9,7 +9,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Button } from 'components/ui'
 import { HiOutlineCog, HiOutlinePencil, HiOutlineInboxIn, HiOutlineTrash } from 'react-icons/hi'
-
+import { Progress } from 'components/ui'
+import { HiXCircle, HiCheckCircle } from 'react-icons/hi'
 
 
 const ArticleContent = () => {
@@ -17,6 +18,9 @@ const ArticleContent = () => {
     const path = location.pathname;
     const id = path.split('/').pop();
     const [diary, setDiary] = useState([]);
+    const [positive, setPositive] = useState(0);
+    const [negative, setNegative] = useState(0);
+    const [neutral, setNeutral] = useState(0);
     const [loading, setLoding] = useState(true);
     const navigate = useNavigate();
 
@@ -27,6 +31,9 @@ const ArticleContent = () => {
             .then(response => {
                 // 요청이 성공하면 데이터를 articles 상태로 설정
                 setDiary(response.data.data.mdDiary);
+                setPositive(response.data.data.positive);
+                setNegative(response.data.data.negative);
+                setNeutral(response.data.data.neutral);
                 setLoding(false);
             })
             .catch(error => {
@@ -37,15 +44,15 @@ const ArticleContent = () => {
 
     const onClickDelete = () => {
         axios.delete(`http://127.0.0.1:9000/api/mind/diary/${id}`)
-        .then((res) => {
-            console.log('일기가 삭제되었습니다.')
-            navigate('/mind/diary');
-            
-        })
+            .then((res) => {
+                console.log('일기가 삭제되었습니다.')
+                navigate('/mind/diary');
+
+            })
     }
 
     const onClickEdit = () => {
-        navigate('/mind/diary/update', {state: {editData: diary}});
+        navigate('/mind/diary/update', { state: { editData: diary } });
     }
 
     return (
@@ -60,7 +67,7 @@ const ArticleContent = () => {
             }
         >
             <Container>
-                <AdaptableCard bodyClass="lg:flex gap-4">
+                <AdaptableCard>
                     <div className="max-w-[800px] w-full mx-auto">
                         <div className="flex justify-end gap-2 mb-4">
 
@@ -91,10 +98,53 @@ const ArticleContent = () => {
                         </div>
                     </div>
 
+                    <div className="max-w-[800px] w-full mx-auto border-t-gray-100">
+                        <h3>Ai가 분석한 마음일기의 감정분석결과입니다.</h3>
+                        <div className='grid grid-cols-3'>
+                            <div>
+                                <span>긍정</span>
+                                <Progress
+                                    color="sky-500"
+                                    variant="circle"
+                                    percent={positive}
+                                    width={150}
+                                    customInfo={<CircleCustomInfo percent={positive} />}
+                                />
+                            </div>
+                            <div>
+                                <span>중립</span>
+                                <Progress
+                                    color="emerald-500"
+                                    variant="circle"
+                                    percent={neutral}
+                                    width={150}
+                                    customInfo={<CircleCustomInfo percent={neutral} />}
+                                />
+                            </div>
+                            <div>
+                                <span>부정</span>
+                                <Progress
+                                    color="red-500"
+                                    variant="circle"
+                                    percent={negative}
+                                    width={150}
+                                    customInfo={<CircleCustomInfo percent={negative} />}
+                                />
+                            </div>
+                        </div>
+                    </div>
                 </AdaptableCard>
             </Container>
 
         </Loading>
+    )
+}
+
+const CircleCustomInfo = ({ percent }) => {
+    return (
+        <div className="text-center">
+            <h3>{percent}%</h3>
+        </div>
     )
 }
 
