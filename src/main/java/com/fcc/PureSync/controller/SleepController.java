@@ -7,6 +7,7 @@ import com.fcc.PureSync.dto.SleepDto;
 import com.fcc.PureSync.service.SleepService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,7 +17,7 @@ public class SleepController {
 
     private final SleepService sleepService;
 
-    @PostMapping
+    @PostMapping("/save")
     public ResultDto createSleep(@RequestBody SleepDto sleepDto, String id) {
         return sleepService.createSleep(sleepDto, id);
     }
@@ -27,10 +28,16 @@ public class SleepController {
     }
 
 
-    @GetMapping
+    @GetMapping("/list")
     public ResultDto getAllMySleep(Pageable pageable , String id) {
         return sleepService.findAllMySleep(pageable,id);
 
+    }
+
+    @DeleteMapping("/delete/{sleepSeq}")
+    public ResultDto deleteSleep(@PathVariable Long sleepSeq, String id) {
+
+        return sleepService.deleteSleep(sleepSeq, id);
     }
 }
 

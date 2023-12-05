@@ -102,4 +102,16 @@ public class SleepService {
         return buildResultDto(HttpStatus.OK.value(), HttpStatus.OK, "수면기록 전체 조회 성공", map);
 
     }
+
+    public ResultDto deleteSleep(Long sleepSeq, String id) {
+        id = "aaa";
+        Member member = memberRepository.findByMemId(id)
+                .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
+        Sleep sleep = sleepRepository.findById(sleepSeq)
+                .orElseThrow(()->new CustomException(CustomExceptionCode.NOT_FOUND_SLEEP));
+
+        sleepRepository.delete(sleep);
+
+        return buildResultDto(HttpStatus.OK.value(), HttpStatus.OK, "수면기록 삭제 성공", null);
+    }
 }
