@@ -1,6 +1,9 @@
 package com.fcc.PureSync.service;
 
 
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.fcc.PureSync.dto.BoardDto;
 import com.fcc.PureSync.dto.BoardFileDto;
 import com.fcc.PureSync.dto.CommentDto;
@@ -15,6 +18,7 @@ import com.fcc.PureSync.repository.BoardFileRepository;
 import com.fcc.PureSync.repository.BoardRepository;
 import com.fcc.PureSync.repository.MemberRepository;
 import com.fcc.PureSync.util.FileUploadUtil;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
@@ -22,12 +26,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import static com.fcc.PureSync.dto.BoardDto.toDto;
 
@@ -40,6 +44,10 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final BoardFileRepository boardFileRepository;
     private final MemberRepository memberRepository;
+    private final AmazonS3Client amazonS3Client;
+
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucket;
 
     public ResultDto buildResultDto(int code, HttpStatus status, String msg, HashMap<String, Object> map) {
         return ResultDto.builder()
@@ -57,8 +65,8 @@ public class BoardService {
             throw new CustomException(CustomExceptionCode.ALREADY_DELETED_ARTICLE);
         }
     }
-
-    public ResultDto createBoard(BoardDto boardDto, String id, MultipartFile file) {
+    @Transactional
+    public ResultDto createBoard(BoardDto boardDto, String id, MultipartFile file) throws IOException {
         //Long id2 = Long.parseLong(id);
         id = "aaa";//////////////////////////////////////////////
         Member member = memberRepository.findByMemId(id)
@@ -73,6 +81,7 @@ public class BoardService {
                 .build();
 
         boardRepository.save(board);
+
         Long board_seq = board.getBoardSeq();
         System.out.println("board_seq : " + board_seq);
 
@@ -81,17 +90,35 @@ public class BoardService {
          */
         if (file != null) {
             System.out.println("********************************************");
-            Path uploadDir = Paths.get(fileUploadPath);
-            //업로드 폴더의 물리적 구조(절대경로확인)
-            String uploadPath = uploadDir.toFile().getAbsolutePath();
+            ObjectMetadata objectMetadata = new ObjectMetadata();
+            objectMetadata.setContentType(file.getContentType());
+            objectMetadata.setContentLength(file.getSize());
+            // 파일 크기 설정
 
-            String fileName = FileUploadUtil.upload(uploadPath, file);
-            long fileSize = file.getSize();
+            // 파일 이름
+            String originalFilename = file.getOriginalFilename();
+            int index = originalFilename.lastIndexOf(".");
+            String ext = originalFilename.substring(index + 1);
+
+            // 저장될 파일 이름
+            String storeFileName = UUID.randomUUID() + "." + ext;
+            // 저장할 디렉토리 경로 + 파일 이름
+            String key = "fileUpload/" + storeFileName;
+            //Path uploadDir = Paths.get(fileUploadPath);
+            InputStream inputStream = file.getInputStream();
+            amazonS3Client.putObject(new PutObjectRequest(bucket,key,inputStream,objectMetadata));
+            String storeFileUrl = amazonS3Client.getUrl(bucket, key).toString();
+            //File file2 = new File(originalFilename, storeFileUrl);
+            //업로드 폴더의 물리적 구조(절대경로확인)
+//            String uploadPath = uploadDir.toFile().getAbsolutePath();
+            //String fileName = FileUploadUtil.upload(uploadPath, file);
+//            long fileSize = file.getSize();
 
             BoardFile boardFile = BoardFile.builder()
-                    .boardfileName(fileName)
-                    .boardfileSize(fileSize)
+                    .boardfileName(storeFileName)
+                    .fileUrl(storeFileUrl)
                     .board(board)
+                    .boardfileSize(file.getSize())
                     .build();
 
             boardFileRepository.save(boardFile);
@@ -117,13 +144,15 @@ public class BoardService {
         }
     }
 
-    public ResultDto updateBoard(Long boardSeq, BoardDto boardDto, String id, MultipartFile file) {
+    public ResultDto updateBoard(Long boardSeq, BoardDto boardDto, String id, MultipartFile file) throws IOException {
         id = "aaa";//////////////////////////////////////////////
         Member member = memberRepository.findByMemId(id)
                 .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
         Board board = boardRepository.findById(boardSeq)
                 .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_ARTICLE));
         boardStatusChk(board);
+        BoardFile existingBoardFile = boardFileRepository.findByBoard_BoardSeq(boardSeq)
+                .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_ARTICLE));
 
         Board updatedBoard = Board.builder()
                 .boardSeq(board.getBoardSeq())
@@ -139,17 +168,31 @@ public class BoardService {
          */
         if (file != null) {
 
-            Path uploadDir = Paths.get(fileUploadPath);
-            //업로드 폴더의 물리적 구조(절대경로확인)
-            String uploadPath = uploadDir.toFile().getAbsolutePath();
+            ObjectMetadata objectMetadata = new ObjectMetadata();
+            objectMetadata.setContentType(file.getContentType());
+            objectMetadata.setContentLength(file.getSize());
+            // 파일 크기 설정
 
-            String fileName = FileUploadUtil.upload(uploadPath, file);
-            long fileSize = file.getSize();
+            // 파일 이름
+            String originalFilename = file.getOriginalFilename();
+            int index = originalFilename.lastIndexOf(".");
+            String ext = originalFilename.substring(index + 1);
+
+            // 저장될 파일 이름
+            String storeFileName = UUID.randomUUID() + "." + ext;
+            // 저장할 디렉토리 경로 + 파일 이름
+            String key = "fileUpload/" + storeFileName;
+            //Path uploadDir = Paths.get(fileUploadPath);
+            InputStream inputStream = file.getInputStream();
+            amazonS3Client.putObject(new PutObjectRequest(bucket,key,inputStream,objectMetadata));
+            String storeFileUrl = amazonS3Client.getUrl(bucket, key).toString();
 
             BoardFile boardFile = BoardFile.builder()
-                    .boardfileName(fileName)
-                    .boardfileSize(fileSize)
+                    .boardfileSeq(existingBoardFile.getBoardfileSeq())
+                    .boardfileName(storeFileName)
+                    .fileUrl(storeFileUrl)
                     .board(board)
+                    .boardfileSize(file.getSize())
                     .build();
 
             boardFileRepository.save(boardFile);

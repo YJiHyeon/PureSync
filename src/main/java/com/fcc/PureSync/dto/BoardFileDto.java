@@ -17,13 +17,14 @@ public class BoardFileDto {
     private String boardfileName;
     private Long boardfileSize;
     private Long boardSeq;
-
+    private String fileUrl;
     public static BoardFileDto toDto(BoardFile boardFile) {
         return BoardFileDto.builder()
                 .boardfileSeq(boardFile.getBoardfileSeq())
                 .boardfileName(boardFile.getBoardfileName())
                 .boardfileSize(boardFile.getBoardfileSize())
                 .boardSeq(boardFile.getBoard().getBoardSeq())
+                .fileUrl(boardFile.getFileUrl())
                 .build();
     }
 }

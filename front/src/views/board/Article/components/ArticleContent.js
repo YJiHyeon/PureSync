@@ -27,7 +27,7 @@ const ArticleContent = ({ articleId }) => {
     )
 
     const { search } = useLocation()
-    const imageUrl = `http://localhost:9000/fileUpload/${article.boardfileName}`;
+    const imageUrl = `https://fccbucket123.s3.ap-northeast-2.amazonaws.com/fileUpload/${article.boardfileName}`;
 
     useEffect(() => {
         fetchData()

@@ -16,6 +16,7 @@ import { useNavigate } from 'react-router-dom'
 import ReactHtmlParser from 'html-react-parser'
 import * as Yup from 'yup'
 import axios from 'axios'
+import Upload from 'components/ui/Upload'
 axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
 // const validationSchema = Yup.object().shape({
 //     title: Yup.string().required('Title required'),
@@ -121,7 +122,9 @@ const Editor = () => {
                   )}
                 </Field>
               </FormItem>
-              <FormItem label="파일 업로드">
+              <Upload  />
+              {/* <FormItem label="파일 업로드">
+                
                 <Field
                   type="file"
                   name="file"
@@ -132,7 +135,7 @@ const Editor = () => {
                       onChange={(val) => form.setFieldValue(field.name, val)}
                     />
                   )}
-              </FormItem>
+              </FormItem> */}
               <div className="mt-4 flex justify-end">
                 <Button loading={isSubmitting} variant="solid" type="submit">
                   등록
