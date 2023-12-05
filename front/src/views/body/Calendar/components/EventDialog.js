@@ -66,8 +66,8 @@ const CustomControl = ({ children, ...props }) => {
 // 폼 유효성 검사 스키마 정의
 const validationSchema = Yup.object().shape({
     category: Yup.string().required('⚠️수면 유형을 선택하세요.'), // 수면 유형 필드 검사
-    startDate: Yup.string().required('⚠️취침 시각을 입력하세요.'), // 취침 시각 필드 검사
-    endDate: Yup.string().required('⚠️기상 시각을 입력하세요.'), // 기상 시각 필드 검사
+    startDate: Yup.string().nullable().required('⚠️취침 시각을 입력하세요.'), // 취침 시각 필드 검사
+    endDate: Yup.string().nullable().required('⚠️기상 시각을 입력하세요.'), // 기상 시각 필드 검사
     color: Yup.string().required('⚠️색상을 선택하세요.'), // 색상 필드 검사
 });
 
@@ -192,6 +192,7 @@ const EventDialog = ({ submit }) => {
                                     <Field name="category">
                                         {({ field, form }) => (
                                             <Select
+                                                placeholder="수면 유형을 선택하세요"
                                                 field={field}
                                                 form={form}
                                                 options={categoryOptions}
