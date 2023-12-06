@@ -21,7 +21,7 @@ public class BoardFile {
     private Long boardfileSize;
     private String fileUrl;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_seq", nullable = false)
     private Board board;
 

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -28,7 +29,7 @@ public class BoardDto {
     private Long memSeq;
     private String memId;
     private boolean boardStatus;
-    private String boardfileName;
+    private List<BoardFileDto> boardFile;
     private List<CommentDto> comment;
 
 
@@ -53,6 +54,9 @@ public class BoardDto {
                 .map(CommentDto::toDto)
                 .sorted(Comparator.comparing(CommentDto::getCmtWdate).reversed())
                 .toList();
+        List<BoardFileDto> boardFileDtoList = board.getBoardFile().stream()
+                .map(BoardFileDto::toDto)
+                .toList();
         return BoardDto.builder()
                 .boardSeq(board.getBoardSeq())
                 .boardName(board.getBoardName())
@@ -62,7 +66,7 @@ public class BoardDto {
                 .memSeq(board.getMember().getMemSeq())
                 .memId(board.getMember().getMemId())
                 .boardStatus(board.isBoardStatus())
-                .boardfileName(Optional.ofNullable(board.getBoardFile()).map(BoardFile::getBoardfileName).orElse(null))
+                .boardFile(boardFileDtoList)
                 .comment(commentDtoList)
                 .build();
     }
