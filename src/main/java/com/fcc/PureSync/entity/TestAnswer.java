@@ -15,22 +15,16 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class TestAnswer {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ansSeq;
     private Long testSeq;
-    private int testAns;
-    @Builder.Default
-    private LocalDateTime ansWdate=LocalDateTime.now();
+    private String testAns;
 
+    @Builder.Default
+    private LocalDateTime ansWdate = LocalDateTime.now();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mem_seq")
     private Member member;
-
-    @OneToOne
-    @JoinColumn(name = "que_seq")
-    private TestQuestion testQuestion;
-
 }
