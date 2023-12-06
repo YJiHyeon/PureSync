@@ -1,5 +1,6 @@
 package com.fcc.PureSync.entity;
 
+import com.fcc.PureSync.common.constant.VerificationCodeConstant;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +17,8 @@ import java.time.LocalDateTime;
 @Builder
 public class Member {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memSeq;
     @Builder.Default
     private Integer memStatus = 1;
@@ -31,4 +33,13 @@ public class Member {
     private LocalDateTime memCreatedAt;
     @Builder.Default
     private LocalDateTime memLastLoginAt = LocalDateTime.now();
+
+
+    private Integer memLevel;
+
+    public void enabledMemberLevel() {
+        this.memLevel = VerificationCodeConstant.MEMBER_ENABLED_LEVEL;
+    }
+
+
 }
