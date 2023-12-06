@@ -16,5 +16,30 @@ public class AdminBoardController {
         return "adminBoardList";
     }
 
+    @GetMapping("/adminCmtList")
+    public String adminCmtList() {
+        return "adminCmtList";
+    }
+
+    @GetMapping("/userBoardView")
+    public String userBoardView() {
+        return "userBoardView";
+    }
+
+    @GetMapping("/adminBoardView")
+    public String adminBoardView() {
+        return "adminBoardView";
+    }
+
+    @GetMapping("/adminBoardWrite")
+    public String adminBoardWrite() {
+        return "adminBoardWrite";
+    }
+
+    @GetMapping("/adminBoardModify")
+    public String adminBoardModify() {
+        return "adminBoardModify";
+    }
+
 
 }
