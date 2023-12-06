@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 
 @RestController
@@ -27,7 +28,7 @@ public class BoardController {
      * 등록
      */
     @PostMapping
-    public ResultDto createBoard(BoardDto boardDto, String memSeqStr, MultipartFile file) throws IOException {
+    public ResultDto createBoard(BoardDto boardDto, String memSeqStr, List<MultipartFile> file) throws IOException {
         return boardService.createBoard(boardDto, memSeqStr, file);
     }
 
@@ -69,8 +70,8 @@ public class BoardController {
      * 파일 조회
      */
     @GetMapping("/{boardSeq}/file")
-    public ResultDto getBoardFile(@PathVariable Long boardSeq){
-        return boardService.findFileChk(boardSeq);
+    public ResultDto getBoardFile(@PathVariable Long boardSeq,Pageable pageable){
+        return boardService.findFileChk(boardSeq,pageable);
     }
 
 }
