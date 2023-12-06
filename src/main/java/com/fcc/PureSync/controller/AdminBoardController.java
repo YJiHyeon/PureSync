@@ -2,43 +2,46 @@ package com.fcc.PureSync.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class AdminBoardController {
 
-    @GetMapping("/userBoardList")
+    @GetMapping("/admin/user/list")
     public String userBoardList() {
-        return "userBoardList";
+        return "/userBoard/userList";
     }
 
-    @GetMapping("/adminBoardList")
-    public String adminBoardList() {
-        return "adminBoardList";
-    }
-
-    @GetMapping("/adminCmtList")
+    @GetMapping("/admin/cmt/list")
     public String adminCmtList() {
-        return "adminCmtList";
+        return "/userBoard/userCmtList";
     }
 
-    @GetMapping("/userBoardView")
+    @GetMapping("/admin/user/view")
     public String userBoardView() {
-        return "userBoardView";
+        return "/userBoard/userView";
     }
 
-    @GetMapping("/adminBoardView")
+    // notice --------------------------------------------------------------
+
+    @GetMapping("/admin/notice/list")
+    public String adminBoardList() {
+        return "/adminBoard/noticeList";
+    }
+
+    @GetMapping("/admin/notice/view")
     public String adminBoardView() {
-        return "adminBoardView";
+        return "/adminBoard/noticeView";
     }
 
-    @GetMapping("/adminBoardWrite")
+    @GetMapping("/admin/notice/write")
     public String adminBoardWrite() {
-        return "adminBoardWrite";
+        return "/adminBoard/noticeWrite";
     }
 
-    @GetMapping("/adminBoardModify")
+    @GetMapping("/admin/notice/modify")
     public String adminBoardModify() {
-        return "adminBoardModify";
+        return "/adminBoard/noticeModify";
     }
 
 
