@@ -10,7 +10,7 @@
             m.mem_id
         FROM
             tb_board AS b
-        JOIN
+        LEFT OUTER JOIN
             tb_member AS m
         ON
          b.mem_seq = m.mem_seq
@@ -21,18 +21,13 @@
     <select id="userBoardView" resultType="AdminBoardDto" parameterType="AdminBoardDto">
         SELECT
             b.board_seq, b.board_name, b.board_contents, b.board_wdate, b.board_likescount,
-            m.mem_id, m.mem_img,
-            bf.boardfile_name, bf.file_url
+            m.mem_id, m.mem_img
         FROM
             tb_board AS b
-        JOIN
+        LEFT OUTER JOIN
             tb_member AS m
         ON
         b.mem_seq = m.mem_seq
-        JOIN
-        tb_boardfile AS bf
-        ON
-        b.board_seq = bf.board_seq
         WHERE
         b.board_seq=#{board_seq}
     </select>
@@ -43,7 +38,7 @@
             m.mem_id
         FROM
             tb_comment AS c
-        JOIN
+        LEFT OUTER JOIN
             tb_member AS m
         ON
             c.mem_seq = m.mem_seq
@@ -51,15 +46,24 @@
             c.cmt_seq DESC
     </select>
 
-    <update id="cmtSoftDelete" parameterType="BoardDto">
+    <select id="getAllFiles" resultType="AdminBoardDto" parameterType="AdminBoardDto">
+        SELECT
+            boardfile_name
+        FROM
+            tb_boardfile
+        WHERE
+            board_seq = #{board_seq}
+    </select>
+
+    <update id="cmtSoftDelete" parameterType="AdminBoardDto">
         UPDATE tb_comment
         SET cmt_status = 2
         WHERE cmt_seq = #{cmt_seq};
     </update>
 
-    <update id="userBoardSoftDelete" parameterType="BoardDto">
+    <update id="userBoardSoftDelete" parameterType="AdminBoardDto">
         UPDATE tb_board
-        SET cmt_status = 2
+        SET board_status = 2
         WHERE board_seq = #{board_seq};
     </update>
 
