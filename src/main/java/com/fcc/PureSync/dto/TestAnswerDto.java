@@ -1,7 +1,6 @@
 package com.fcc.PureSync.dto;
 
 import com.fcc.PureSync.entity.TestAnswer;
-import com.fcc.PureSync.entity.TestQuestion;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,9 +16,8 @@ public class TestAnswerDto {
 
     private Long ansSeq;
     private Long testSeq;
-    private int testAns;
+    private String testAns;
     private Long memSeq;
-    private Long queSeq;
     private LocalDateTime ansWdate;
 
     public static TestAnswerDto toDto(TestAnswer testAnswer) {
@@ -28,7 +26,6 @@ public class TestAnswerDto {
                 .testSeq(testAnswer.getTestSeq())
                 .testAns(testAnswer.getTestAns())
                 .memSeq(testAnswer.getMember().getMemSeq())
-                .queSeq(testAnswer.getTestQuestion().getQueSeq())
                 .ansWdate(testAnswer.getAnsWdate())
                 .build();
     }
