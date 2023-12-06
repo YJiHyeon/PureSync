@@ -20,7 +20,7 @@ public class BoardDetailDto {
     private Long boardLikescount;
     private Long memSeq;
     private String memId;
-    private boolean boardStatus;
+    private Integer boardStatus;
 
     //@Builder.Default 시도해보기
     public static BoardDetailDto toDto(Board board) {
@@ -32,7 +32,7 @@ public class BoardDetailDto {
                 .boardLikescount(board.getBoardLikescount())
                 .memSeq(board.getMember().getMemSeq())
                 .memId(board.getMember().getMemId())
-                .boardStatus(board.isBoardStatus())
+                .boardStatus(board.getBoardStatus())
                 .build();
     }
 

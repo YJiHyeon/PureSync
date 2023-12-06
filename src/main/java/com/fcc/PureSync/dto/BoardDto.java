@@ -28,7 +28,7 @@ public class BoardDto {
     private Long boardLikescount;
     private Long memSeq;
     private String memId;
-    private boolean boardStatus;
+    private Integer boardStatus;
     private List<BoardFileDto> boardFile;
     private List<CommentDto> comment;
 
@@ -44,13 +44,13 @@ public class BoardDto {
                 .boardWdate(board.getBoardWdate())
                 .boardLikescount(board.getBoardLikescount())
                 .memSeq(board.getMember().getMemSeq())
-                .boardStatus(board.isBoardStatus())
+                .boardStatus(board.getBoardStatus())
                 .build();
     }
 
     public static BoardDto BoardDetailDto(Board board) {
         List<CommentDto> commentDtoList = board.getComments().stream()
-                .filter(Comment::isCmtStatus)
+                .filter(Comment-> Comment.getCmtStatus()== 1)
                 .map(CommentDto::toDto)
                 .sorted(Comparator.comparing(CommentDto::getCmtWdate).reversed())
                 .toList();
@@ -65,7 +65,7 @@ public class BoardDto {
                 .boardLikescount(board.getBoardLikescount())
                 .memSeq(board.getMember().getMemSeq())
                 .memId(board.getMember().getMemId())
-                .boardStatus(board.isBoardStatus())
+                .boardStatus(board.getBoardStatus())
                 .boardFile(boardFileDtoList)
                 .comment(commentDtoList)
                 .build();
@@ -81,7 +81,7 @@ public class BoardDto {
                 .boardLikescount(board.getBoardLikescount())
                 .memSeq(board.getMember().getMemSeq())
                 .memId(board.getMember().getMemId())
-                .boardStatus(board.isBoardStatus())
+                .boardStatus(board.getBoardStatus())
                 .build();
     }
 
