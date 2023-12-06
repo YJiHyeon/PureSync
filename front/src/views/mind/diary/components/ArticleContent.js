@@ -98,8 +98,10 @@ const ArticleContent = () => {
                         </div>
                     </div>
 
-                    <div className="max-w-[800px] w-full mx-auto border-t-gray-100">
+                    <div className="max-w-[800px] w-full mx-auto mt-8 border-t-gray-200 border-t">
+                        <div className='my-4'>
                         <h3>Ai가 분석한 마음일기의 감정분석결과입니다.</h3>
+                        </div>
                         <div className='grid grid-cols-3'>
                             <div>
                                 <span>긍정</span>
