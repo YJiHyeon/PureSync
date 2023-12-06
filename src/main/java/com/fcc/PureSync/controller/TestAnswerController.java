@@ -1,6 +1,5 @@
 package com.fcc.PureSync.controller;
 
-import com.fcc.PureSync.dto.BoardDto;
 import com.fcc.PureSync.dto.ResultDto;
 import com.fcc.PureSync.dto.TestAnswerDto;
 import com.fcc.PureSync.service.TestAnswerService;
@@ -15,15 +14,9 @@ public class TestAnswerController {
 
     private final TestAnswerService testAnswerService;
 
-    @PostMapping("/stress/{queSeq}")
-    public ResultDto stressAnswer(@PathVariable Long queSeq, @RequestBody TestAnswerDto testAnswerDto, String id) {
-        return testAnswerService.stressAnswer(testAnswerDto, id,queSeq);
-    }
-
-
-    @PostMapping("/depression/{queSeq}")
-    public ResultDto depressionAnswer(@PathVariable Long queSeq, @RequestBody TestAnswerDto testAnswerDto, String id) {
-        return testAnswerService.depressionAnswer(testAnswerDto, id,queSeq);
+    @PostMapping("/stress")
+    public ResultDto stressAnswer(@RequestBody TestAnswerDto testAnswerDto, String id) {
+        return testAnswerService.stressAnswer(testAnswerDto, id);
     }
 
     @GetMapping("/stress/answer")
