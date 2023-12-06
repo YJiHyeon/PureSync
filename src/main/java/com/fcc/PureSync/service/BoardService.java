@@ -62,7 +62,7 @@ public class BoardService {
      * boardStatus가 false면 NOT_FOUND_BOARD
      */
     private void boardStatusChk(Board board) {
-        if (!board.isBoardStatus()) {
+        if (board.getBoardStatus()==0) {
             throw new CustomException(CustomExceptionCode.ALREADY_DELETED_ARTICLE);
         }
     }
@@ -247,7 +247,7 @@ public class BoardService {
                 .boardName(board.getBoardName())
                 .boardContents(board.getBoardContents())
                 .boardWdate(board.getBoardWdate())
-                .boardStatus(false)
+                .boardStatus(0)
                 .member(member)
                 .build();
 
@@ -275,7 +275,7 @@ public class BoardService {
     }
 
     public ResultDto findAllBoard(Pageable pageable, String id) {
-        List<Board> boardPage = boardRepository.findByBoardStatusOrderByBoardWdateDesc(true,pageable).getContent();
+        List<Board> boardPage = boardRepository.findByBoardStatusOrderByBoardWdateDesc(1,pageable).getContent();
         List<BoardDto> boardDetailDtoList = boardPage.stream()
                 .map(BoardDto::BoardAllDetailDto)
                 .toList();

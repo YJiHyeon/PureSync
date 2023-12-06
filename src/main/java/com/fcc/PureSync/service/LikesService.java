@@ -35,7 +35,7 @@ public class LikesService {
     }
 
     private void boardStatusChk(Board board) {
-        if (!board.isBoardStatus()) {
+        if (board.getBoardStatus()==0) {
             throw new CustomException(CustomExceptionCode.ALREADY_DELETED_ARTICLE);
         }
     }

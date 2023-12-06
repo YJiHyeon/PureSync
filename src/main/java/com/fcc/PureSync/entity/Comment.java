@@ -23,7 +23,7 @@ public class Comment {
     @Builder.Default
     private LocalDateTime cmtWdate=LocalDateTime.now();
     @Builder.Default
-    private boolean cmtStatus=true;
+    private Integer cmtStatus=1;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
