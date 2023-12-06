@@ -5,7 +5,7 @@
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-   <title>PureSync Admin</title>
+   <title>유저 게시판 리스트</title>
    <th:block th:include="~{/fragments/styles :: styleFragment}"></th:block>
 </head>
 
@@ -25,7 +25,7 @@
                      <div class=" d-flex flex-wrap justify-content-center breadcrumb-main__wrapper">
 
                         <form action="/" class="d-flex align-items-center user-member__form my-sm-0 my-2">
-                           <img src="img/svg/search.svg" alt="search" class="svg">
+                           <img src="/img/svg/search.svg" alt="search" class="svg">
                            <input class="form-control me-sm-2 border-0 box-shadow-none" type="search" placeholder="Search by Name" aria-label="Search">
                         </form>
 
@@ -48,10 +48,13 @@
                                     <span class="userDatatable-title">id</span>
                                  </th>
                                  <th>
-                                    <span class="userDatatable-title">내용</span>
+                                    <span class="userDatatable-title">title</span>
                                  </th>
                                  <th>
                                     <span class="userDatatable-title">write date</span>
+                                 </th>
+                                 <th>
+                                    <span class="userDatatable-title">status</span>
                                  </th>
                               </tr>
                            </thead>
@@ -71,7 +74,7 @@
                                  </td>
                                  <td>
                                     <div class="userDatatable-content">
-                                       댓글 내용입니다
+                                       글 제목 입니다
                                     </div>
                                  </td>
                                  <td>
@@ -79,9 +82,22 @@
                                        2023-01-13
                                     </div>
                                  </td>
+                                 <td>
+                                    <div class="userDatatable-content d-inline-block">
+                                       <span class="bg-opacity-success  color-success rounded-pill userDatatable-content-status active">active</span>
+                                    </div>
+                                 </td>
+
+
 
                                  <td>
                                     <ul class="orderDatatable_actions mb-0 d-flex flex-wrap">
+                                       <li>
+                                          <a href="#" class="view">
+                                             <i class="uil uil-eye"></i>
+                                          </a>
+                                       </li>
+
                                        <li>
                                           <a href="#" class="remove">
                                              <i class="uil uil-trash-alt"></i>
@@ -91,6 +107,9 @@
                                  </td>
 
                               </tr>
+
+
+
 
                            </tbody>
                         </table>
