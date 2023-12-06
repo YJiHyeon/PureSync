@@ -19,6 +19,8 @@ public class AdminBoardDto {
     private Integer board_likescount;
     private Integer board_status;
     private  Long mem_seq;
+    private String mem_id;
+    private String mem_img;
 
     // 유저 댓글
     private  Long cmt_seq;

@@ -18,6 +18,11 @@ public class AdminBoardDao {
         return list;
     }
 
+    public List<AdminBoardDto> getAllFiles( AdminBoardDto adminBoardDto ) {
+        List<AdminBoardDto> list = sm.selectList("getAllFiles", adminBoardDto);
+        return list;
+    }
+
     public List<AdminBoardDto> getAllUserCmtList( AdminBoardDto adminBoardDto ) {
         List<AdminBoardDto> list = sm.selectList("getAllUserCmtList", adminBoardDto);
         return list;
@@ -25,6 +30,14 @@ public class AdminBoardDao {
 
     public AdminBoardDto getUserBoardView( AdminBoardDto adminBoardDto ) {
         return sm.selectOne("userBoardView", adminBoardDto );
+    }
+
+    public void cmtSoftDelete ( AdminBoardDto adminBoardDto ) {
+        sm.update("cmtSoftDelete", adminBoardDto );
+    }
+
+    public void userBoardSoftDelete ( AdminBoardDto adminBoardDto ) {
+        sm.update("userBoardSoftDelete", adminBoardDto );
     }
 
 }
