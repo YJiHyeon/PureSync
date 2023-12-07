@@ -7,6 +7,7 @@
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
    <title>PureSync Admin</title>
    <th:block th:include="~{/fragments/styles :: styleFragment}"></th:block>
+   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 
 <body class="layout-light side-menu">
@@ -48,11 +49,11 @@
                            <form>
                               <div class="form-group">
                                  <label>제목</label>
-                                 <input type="text" class="form-control" placeholder="제목을 입력하세요">
+                                 <input type="text" class="form-control" id="noticeTitle" placeholder="제목을 입력하세요">
                               </div>
                               <div class="form-group">
                                  <label>내용</label>
-                                 <textarea class="form-control" rows="3" placeholder="내용을 입력하세요"></textarea>
+                                 <textarea class="form-control" rows="3" id="noticeContents" placeholder="내용을 입력하세요"></textarea>
                               </div>
 
                               <div class="button-group d-flex justify-content-end pt-15">
@@ -89,3 +90,7 @@
 </body>
 
 </html>
+
+<script>
+
+</script>

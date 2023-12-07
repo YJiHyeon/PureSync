@@ -63,29 +63,4 @@ public class AdminBoardController {
     }
 
 
-
-
-    // notice --------------------------------------------------------------
-
-    @GetMapping("/admin/notice/list")
-    public String adminBoardList() {
-        return "/adminBoard/noticeList";
-    }
-
-    @GetMapping("/admin/notice/view")
-    public String adminBoardView() {
-        return "/adminBoard/noticeView";
-    }
-
-    @GetMapping("/admin/notice/write")
-    public String adminBoardWrite() {
-        return "/adminBoard/noticeWrite";
-    }
-
-    @GetMapping("/admin/notice/modify")
-    public String adminBoardModify() {
-        return "/adminBoard/noticeModify";
-    }
-
-
 }
