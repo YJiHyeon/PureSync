@@ -22,11 +22,15 @@ public class AdminBoardDto {
     private String mem_id;
     private String mem_img;
 
+    private String board_status_text;
+
     // 유저 댓글
     private  Long cmt_seq;
     private String cmt_contents;
     private String cmt_wdate;
     private Integer cmt_status;
+
+    private String cmt_status_text;
 
     // 유저 파일
     private Long boardfile_seq;

@@ -15,8 +15,7 @@ public class ExerciseDto {
     private String el_date;
     private String el_time;
     private Double el_total;
-    @Builder.Default
-    private LocalDateTime el_wdate = LocalDateTime.now() ;
+    private String el_wdate;
     private Long mem_seq;
     private Long ec_seq;
 

@@ -14,8 +14,7 @@ public class NoticeDto {
     private Long notice_seq;
     private String notice_title;
     private String notice_contents;
-    @Builder.Default
-    private LocalDateTime notice_wdate = LocalDateTime.now() ;
+    private String notice_wdate;
     private String notice_writer;
 
 
