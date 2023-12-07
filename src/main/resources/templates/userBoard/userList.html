@@ -83,7 +83,7 @@
 
                                     </div>
                                  </td>
-                                 <td th:text="${board.board_status}">
+                                 <td th:text="${board.board_status_text}">
                                     <div class="userDatatable-content d-inline-block">
                                        <span class="bg-opacity-success  color-success rounded-pill userDatatable-content-status active"> </span>
                                     </div>
@@ -164,14 +164,18 @@
 
 <script>
    function goDelete(board_seq) {
-      axios.get(`/admin/user/list/delete/${board_seq}`)
-         .then((res) => {
-            window.location.reload();
-            return false;
-         })
-         .catch( (error) => {
-            console.error('게시글 삭제 중 오류 발생:', error);
-         });
+   const confirmDelete = confirm("관리자의 권한으로 해당 게시물을 삭제하시겠습니까?");
+
+      if (confirmDelete) {
+         axios.get(`/admin/user/list/delete/${board_seq}`)
+            .then((res) => {
+               window.location.reload();
+               return false;
+            })
+            .catch( (error) => {
+               console.error('게시글 삭제 중 오류 발생:', error);
+            });
+      }
    }
 
 </script>

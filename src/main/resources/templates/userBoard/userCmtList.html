@@ -86,7 +86,7 @@
                                     </div>
                                  </td>
 
-                                 <td th:text="${cmt.cmt_status}" >
+                                 <td th:text="${cmt.cmt_status_text}" >
                                     <div class="userDatatable-content d-inline-block">
                                        <span class="bg-opacity-success  color-success rounded-pill userDatatable-content-status active"></span>
                                     </div>
@@ -159,6 +159,8 @@
 
 <script>
    function goDelete(cmt_seq) {
+   const confirmDelete = confirm("관리자의 권한으로 해당 댓글을 삭제하시겠습니까?");
+   if (confirmDelete) {
       axios.get(`/admin/cmt/list/delete/${cmt_seq}`)
          .then((res) => {
             window.location.reload();
@@ -167,6 +169,7 @@
          .catch( (error) => {
             console.error('댓글 삭제 중 오류 발생:', error);
          });
+       }
    }
 
 </script>

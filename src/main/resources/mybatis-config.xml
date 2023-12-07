@@ -8,7 +8,8 @@
         <typeAlias alias="ExerciseDto" type="com.fcc.PureSync.dto.ExerciseDto"/>
         <typeAlias alias="MenuDto"     type="com.fcc.PureSync.dto.MenuDto"/>
         <typeAlias alias="SummaryDto"     type="com.fcc.PureSync.dto.SummaryDto"/>
-        <!--typeAlias alias="AdminBoardDto"     type="com.fcc.PureSync.dto.AdminBoardDto"/ !-->
+        <typeAlias alias="AdminBoardDto"     type="com.fcc.PureSync.dto.AdminBoardDto"/>
+        <typeAlias alias="NoticeDto"     type="com.fcc.PureSync.dto.NoticeDto"/>
 
     </typeAliases>
 
@@ -17,7 +18,9 @@
         <mapper resource="mapper/Exercise.xml" />
         <mapper resource="mapper/Menu.xml" />
         <mapper resource="mapper/Summary.xml" />
-        <!-- mapper resource="mapper/adminBoard.xml" / -->
+        <mapper resource="mapper/adminBoard.xml" />
+        <mapper resource="mapper/Notice.xml" />
+
 
     </mappers>
 </configuration>
