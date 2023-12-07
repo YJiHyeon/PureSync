@@ -5,6 +5,7 @@ import { PERSIST_STORE_NAME } from 'constants/app.constant'
 import deepParseJson from 'utils/deepParseJson'
 import store from '../store'
 import { onSignOutSuccess } from '../store/auth/sessionSlice'
+import ApiService from './ApiService'
 
 const unauthorizedCode = [401]
 
@@ -51,4 +52,13 @@ BaseService.interceptors.response.use(
     }
 )
 
+export async function getboardFile (boardSeq) {
+    return ApiService.fetchData({
+        url: 'http://localhost:9000/api/board/${boardSeq}/file',
+        method: 'get'
+    })
+}
+
 export default BaseService
+
+

@@ -10,8 +10,6 @@ import useWindowSize from '../hooks/useWindowSize';
 import { Button, Select, Input } from 'components/ui';
 import Axios from 'axios';
 
-import { useNavigate } from 'react-router-dom';
-
 const DialogMenu = (props) => {
     // 현재 창 크기를 가져오는 커스텀 훅 사용
     const currentSize = useWindowSize();
@@ -32,6 +30,21 @@ const DialogMenu = (props) => {
         ...rest
     } = props;
 
+    // 식사 선택을 위한 상태 변수들
+    const [mealType, setMealType] = useState('');
+    const [searchValue, setSearchValue] = useState('');
+    const [searchResults, setSearchResults] = useState([]);
+    const [selectedItems, setSelectedItems] = useState([]);
+    const [selectedMealType, setSelectedMealType] = useState('');
+    const [inputError, setInputError] = useState(false);
+
+    const [loading, setLoding] = useState(false);
+
+    const mealTypes = [{ meal: '아침', value: 1 }, { meal: '점심', value: 2 }, { meal: '저녁', value: 3 }, { meal: '간식', value: 4 }];
+
+    // 섭취 그람수를 저장하는 상태 변수 추가
+    const [gramAmounts, setGramAmounts] = useState(1);
+
     // 닫기 버튼 클릭 이벤트 핸들러
     const onCloseClick = (e) => {
         setMealType('');
@@ -39,7 +52,8 @@ const DialogMenu = (props) => {
         setSearchResults([]);
         setSelectedItems([]);
         setSelectedMealType('');
-        setGramAmounts('');
+        setGramAmounts(1);
+        setInputError(false);
 
         onClose(e);
 
@@ -86,19 +100,6 @@ const DialogMenu = (props) => {
     // 기본 및 사용자 제공 콘텐츠 클래스 이름을 결합
     const dialogClass = classNames(defaultDialogContentClass, contentClassName);
 
-    // 식사 선택을 위한 상태 변수들
-    const [mealType, setMealType] = useState('');
-    const [searchValue, setSearchValue] = useState('');
-    const [searchResults, setSearchResults] = useState([]);
-    const [selectedItems, setSelectedItems] = useState([]);
-    const [selectedMealType, setSelectedMealType] = useState('');
-
-    const [loading, setLoding] = useState(false);
-
-    const mealTypes = [{ meal: '아침', value: 1 }, { meal: '점심', value: 2 }, { meal: '저녁', value: 3 }, { meal: '간식', value: 4 }];
-
-    // 섭취 그람수를 저장하는 상태 변수 추가
-    const [gramAmounts, setGramAmounts] = useState([]);
 
     // 식사 유형 선택 변경 핸들러
     const handleMealTypeChange = (value) => {
@@ -116,26 +117,37 @@ const DialogMenu = (props) => {
     const handleSearchChange = (e) => {
         const value = e.target.value;
         setSearchValue(value);
+        setInputError(value.length < 2);
     }
 
-
-    // 검색 버튼 클릭
-    const handleSearchClick = () => {
-
-        Axios.get("http://127.0.0.1:9000/api/menu/foodList",
-            { params: { "foodName": searchValue } },
-            { withCredentials: true }
-        )
-        .then((res) => {
-            console.log(res.data.data.allFoods);
-            setSearchResults(res.data.data.allFoods);
-            setLoding(true);
-        })
-        .catch((res) => {
-            console.log(res);
-        })
+    // 검색 기능을 수행하는 함수
+    const performSearch = () => {
+        if (searchValue.length < 2) {
+            setInputError(true); // 검색어 길이가 2자 미만인 경우 inputError를 true로 설정
+        } else {
+            setInputError(false); // 검색어 길이가 2자 이상인 경우 inputError를 false로 설정
+            
+            Axios.get("http://127.0.0.1:9000/api/menu/foodList",
+                { params: { "foodName": searchValue } },
+                { withCredentials: true }
+            )
+            .then((res) => {
+                console.log(res.data.data.allFoods);
+                setSearchResults(res.data.data.allFoods);
+                setLoding(true);
+            })
+            .catch((res) => {
+                console.log(res);
+            })
+        }
     }
 
+    // 검색 입력란에서 엔터 키를 눌렀을 때 검색 실행
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+        performSearch();
+        }
+    }
 
     // 항목 선택/해제 핸들러  
     const handleItemToggle = (item) => {
@@ -151,34 +163,29 @@ const DialogMenu = (props) => {
 
     // 섭취 그람수를 변경하는 핸들러
     const handleGramAmountChange = (e) => {
-        const inputValue = e.target.value;
-        // 입력값이 0보다 작거나 같으면 1로 변경
-        if (inputValue <= 0) {
-            e.target.value = '1';
-        }
-        setGramAmounts({
-            ...gramAmounts,
-            [e.target.id]: e.target.value
-        });
+        const { value } = e.target;
+        setGramAmounts(parseInt(value));
     }
-
 
     // 등록 버튼 클릭
     const handleRegisterClick = () => {
         const sendFoodDatas = [];
 
+        // 검색값, 선택된 항목, 운동 시간의 유효성
+        if (searchValue === '' || selectedItems.length === 0 || isNaN(gramAmounts) || gramAmounts <= 0) {
+            alert("모든 항목을 입력하세요.");
+            return;
+        }
+
         // 선택한 식사 유형의 "value" 값을 추출
         const menuWhenValue = selectedMealType ? selectedMealType.value : '';
 
         // 선택한 항목에 대한 정보를 배열에 추가
-        let i = 0;
-        const menuGramValue = parseInt(gramAmounts[i]);
         selectedItems.forEach((item) => {
-            // console.log(item);
             const foodInfo = {
                 menuWhen: menuWhenValue,
                 menuDate: props.selectDate,
-                menuGram: menuGramValue,
+                menuGram: parseInt(gramAmounts),
                 member: { memSeq: 1 },
                 food: {
                     foodSeq: item.foodSeq,
@@ -191,53 +198,28 @@ const DialogMenu = (props) => {
                     foodCol: item.foodCol,
                     foodKcal: item.foodKcal,
                 },
-
             };
-            i++;
             sendFoodDatas.push(foodInfo);
-
-            Axios.post("http://127.0.0.1:9000/api/menu/save", sendFoodDatas[0])
-                .then((res) => {
-                    setMealType('');
-                    setSearchValue('');
-                    setSearchResults([]);
-                    setSelectedItems([]);
-                    setSelectedMealType('');
-                    setGramAmounts('');
-                    props.onClose();
-                    props.writeOK(1);
-                })
-                .catch((res) => {
-                    console.log('에러 : ');
-                    console.log(res);
-                })
         });
 
-    }
+        Axios.post("http://127.0.0.1:9000/api/menu/save", sendFoodDatas[0])
+            .then((res) => {
+                setMealType('');
+                setSearchValue('');
+                setSearchResults([]);
+                setSelectedItems([]);
+                setSelectedMealType('');
+                setGramAmounts(1);
+                setInputError(false);
+                props.onClose();
+                props.writeOK(1);
+            })
+            .catch((error) => {
+                console.log('에러 : ');
+                console.log(error);
 
-    // 검색 기능을 수행하는 함수
-    const performSearch = () => {
-        Axios.get("http://127.0.0.1:9000/api/menu/foodList",
-            { params: { "foodName": searchValue } },
-            { withCredentials: true }
-        )
-        .then((res) => {
-            console.log(res.data.data.allFoods);
-            setSearchResults(res.data.data.allFoods);
-            setLoding(true);
-        })
-        .catch((res) => {
-            console.log(res);
-        })
+            });
     }
-
-    // 검색 입력란에서 엔터 키를 눌렀을 때 검색 실행
-    const handleKeyPress = (e) => {
-        if (e.key === 'Enter') {
-        performSearch();
-        }
-    }
-
 
     // 'react-modal'에서 Modal 컴포넌트를 사용하여 모달 대화상자 렌더링
     return (
@@ -285,6 +267,7 @@ const DialogMenu = (props) => {
                     />
                 </div>
                 <br />
+
                 <div>
                     {/* 항목 검색을 위한 Input 컴포넌트와 검색 버튼 */}
                     <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -293,11 +276,13 @@ const DialogMenu = (props) => {
                             value={searchValue}
                             onChange={handleSearchChange}
                             onKeyPress={handleKeyPress}
+                            className={inputError ? 'border-2 border-red-500' : ''}
                         />
-                        <Button onClick={handleSearchClick} onKeyPress={handleKeyPress} variant="solid">
+                        <Button onClick={performSearch} onKeyPress={handleKeyPress} variant="solid">
                             검색
                         </Button>
                     </div>
+                    {inputError && <p className="text-red-500">⚠️ 검색어를 2자 이상 입력하세요</p>}
                 </div>
 
                 <div>
@@ -314,38 +299,31 @@ const DialogMenu = (props) => {
                     )}
                 </div>
                 <br /><br />
+
                 <div style={{ maxHeight: '220px', overflowY: 'auto' }}>
                     <h5>식단 추가</h5>
                     {/* 선택한 항목을 표시 */}
 
                     {selectedItems.length > 0 ? (
                         selectedItems.map((item, index) => (
-
-
                             <div key={index} style={{ display: 'flex', alignItems: 'center' }}>
-
                                 <span style={{ flex: 1 }}>
                                     {item.foodName} - 섭취한 양(g) :&nbsp;&nbsp;
                                     <Input
-                                        id={index}
                                         name="gramAmounts"
-                                        value={gramAmounts[index]}
+                                        value={gramAmounts}
                                         onChange={handleGramAmountChange}
                                         type="number"
                                         style={{ width: '100px', height: '15px' }}
                                     />
                                 </span>
                             </div>
-
                         ))
-                    ) : (
-                        <p>식단에 항목을 추가하세요.</p>
-                    )
-
-
+                        ) : (
+                            <p>식단에 항목을 추가하세요.</p>
+                        )
                     }
                 </div>
-
 
                 <br /><br />
                 <div style={{ display: 'flex', justifyContent: 'flex-end' }}>

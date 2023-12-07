@@ -51,4 +51,5 @@ public interface SleepRepository extends JpaRepository<Sleep, Long> {
     List<SleepStatsNativeVo> findLastMonthsSleepStats(@Param("memSeq") Long memSeq, @Param("startDate") String startDate, @Param("monthInterval") int monthInterval);
 
 
+    List<Sleep> findByMember_MemSeq(Long memSeq);
 }

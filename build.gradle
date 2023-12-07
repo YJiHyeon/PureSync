@@ -47,6 +47,16 @@ dependencies {
 
 	// https://mvnrepository.com/artifact/org.bgee.log4jdbc-log4j2/log4jdbc-log4j2-jdbc4
 	implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4:1.16'
+
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+	//E-mail 인증
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '3.2.0'
+
+	//Redis
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
 }
 
 tasks.named('bootBuildImage') {

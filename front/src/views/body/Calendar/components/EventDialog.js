@@ -1,6 +1,5 @@
-import React from 'react'
+import React from 'react';
 import {
-    Input,
     Button,
     Select,
     DatePicker,
@@ -9,25 +8,29 @@ import {
     FormItem,
     Badge,
     hooks,
-} from 'components/ui'
-import { eventColors } from 'components/shared/CalendarView'
-import { useDispatch, useSelector } from 'react-redux'
-import { closeDialog } from '../store/stateSlice'
-import { Field, Form, Formik } from 'formik'
-import { HiCheck } from 'react-icons/hi'
-import { components } from 'react-select'
-import * as Yup from 'yup'
+} from 'components/ui';
+import { eventColors } from 'components/shared/CalendarView';
+import { useDispatch, useSelector } from 'react-redux';
+import { closeDialog } from '../store/stateSlice';
+import { Field, Form, Formik } from 'formik';
+import { HiCheck } from 'react-icons/hi';
+import { components } from 'react-select';
+import * as Yup from 'yup';
 
-const { Control } = components
+const { DateTimepicker } = DatePicker;
 
-const { useUniqueId } = hooks
+const { Control } = components;
 
-const colorKeys = Object.keys(eventColors)
+const { useUniqueId } = hooks;
+
+// 캘린더 이벤트 색상 목록 가져오기
+const colorKeys = Object.keys(eventColors);
 
 const colorOptions = colorKeys.map((color) => {
-    return { value: color, label: color, color: eventColors[color].dot }
-})
+    return { value: color, label: color, color: eventColors[color].dot };
+});
 
+// 커스텀 선택 옵션 컴포넌트
 const CustomSelectOption = ({ innerProps, label, data, isSelected }) => {
     return (
         <div
@@ -44,11 +47,12 @@ const CustomSelectOption = ({ innerProps, label, data, isSelected }) => {
             </div>
             {isSelected && <HiCheck className="text-emerald-500 text-xl" />}
         </div>
-    )
-}
+    );
+};
 
+// 커스텀 컨트롤 컴포넌트
 const CustomControl = ({ children, ...props }) => {
-    const selected = props.getValue()[0]
+    const selected = props.getValue()[0];
     return (
         <Control className="capitalize" {...props}>
             {selected && (
@@ -56,41 +60,57 @@ const CustomControl = ({ children, ...props }) => {
             )}
             {children}
         </Control>
-    )
-}
+    );
+};
 
+// 폼 유효성 검사 스키마 정의
 const validationSchema = Yup.object().shape({
-    title: Yup.string().required('Event title Required'),
-    startDate: Yup.string().required('Start Date Required'),
-    endDate: Yup.string(),
-    color: Yup.string().required('Color Required'),
-})
+    category: Yup.string().required('⚠️수면 유형을 선택하세요.'), // 수면 유형 필드 검사
+    startDate: Yup.string().nullable().required('⚠️취침 시각을 입력하세요.'), // 취침 시각 필드 검사
+    endDate: Yup.string().nullable().required('⚠️기상 시각을 입력하세요.'), // 기상 시각 필드 검사
+    color: Yup.string().required('⚠️색상을 선택하세요.'), // 색상 필드 검사
+});
+
+
 
 const EventDialog = ({ submit }) => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
-    const open = useSelector((state) => state.crmCalendar.state.dialogOpen)
-    const selected = useSelector((state) => state.crmCalendar.state.selected)
-    const newId = useUniqueId('event-')
+    // 다이얼로그 상태와 선택된 이벤트 정보를 가져오기
+    const open = useSelector((state) => state.crmCalendar.state.dialogOpen);
+    const selected = useSelector((state) => state.crmCalendar.state.selected);
+    const newId = useUniqueId('event-');
 
+    // 분류 옵션 정의
+    const categoryOptions = [
+        { value: 'nap', label: '낮잠' },
+        { value: 'night', label: '밤잠' },
+    ];
+
+    // 다이얼로그 닫기 핸들러
     const handleDialogClose = () => {
-        dispatch(closeDialog())
-    }
+        dispatch(closeDialog());
+    };
 
+    // 폼 제출 핸들러
     const handleSubmit = (values, setSubmitting) => {
-        setSubmitting(false)
+        setSubmitting(false);
+
+        // 이벤트 데이터 구성
         const eventData = {
-            id: selected.id || newId,
-            title: values.title,
-            start: values.startDate,
-            eventColor: values.color,
-        }
+            id: selected.id || newId, // 선택된 이벤트의 ID 또는 새로운 ID
+            title: values.title, // 제목
+            start: values.startDate, // 취침 시각
+            eventColor: values.color, // 이벤트 색상
+        };
         if (values.endDate) {
-            eventData.end = values.endDate
+            eventData.end = values.endDate; // 기상 시각 (선택적)
         }
-        submit?.(eventData, selected.type)
-        dispatch(closeDialog())
-    }
+
+        // 이벤트 제출 및 다이얼로그 닫기
+        submit?.(eventData, selected.type);
+        dispatch(closeDialog());
+    };
 
     return (
         <Dialog
@@ -99,40 +119,29 @@ const EventDialog = ({ submit }) => {
             onRequestClose={handleDialogClose}
         >
             <h5 className="mb-4">
-                {selected.type === 'NEW' ? 'Add New Event' : 'Edit Event'}
+                {selected.type === 'NEW'
+                    ? '수면 시간 등록😴'
+                    : '📌수면 시간 수정'}
             </h5>
             <div>
                 <Formik
                     enableReinitialize
                     initialValues={{
-                        title: selected.title || '',
-                        startDate: selected.start || '',
-                        endDate: selected.end || '',
-                        color: selected.eventColor || colorOptions[0].value,
+                        title: selected.title || '', // 제목
+                        startDate: selected.start || '', // 취침 시각
+                        endDate: selected.end || '', // 기상 시각
+                        color: selected.eventColor || colorOptions[0].value, // 색상
                     }}
                     validationSchema={validationSchema}
                     onSubmit={(values, { setSubmitting }) => {
-                        handleSubmit(values, setSubmitting)
+                        handleSubmit(values, setSubmitting);
                     }}
                 >
                     {({ values, touched, errors, resetForm }) => (
                         <Form>
                             <FormContainer>
                                 <FormItem
-                                    label="User Name"
-                                    invalid={errors.title && touched.title}
-                                    errorMessage={errors.title}
-                                >
-                                    <Field
-                                        type="text"
-                                        autoComplete="off"
-                                        name="title"
-                                        placeholder="Please enter title"
-                                        component={Input}
-                                    />
-                                </FormItem>
-                                <FormItem
-                                    label="Start Date"
+                                    label="취침 시각"
                                     invalid={
                                         errors.startDate && touched.startDate
                                     }
@@ -140,7 +149,7 @@ const EventDialog = ({ submit }) => {
                                 >
                                     <Field name="startDate" placeholder="Date">
                                         {({ field, form }) => (
-                                            <DatePicker
+                                            <DateTimepicker
                                                 field={field}
                                                 form={form}
                                                 value={field.value}
@@ -148,20 +157,20 @@ const EventDialog = ({ submit }) => {
                                                     form.setFieldValue(
                                                         field.name,
                                                         date
-                                                    )
+                                                    );
                                                 }}
                                             />
                                         )}
                                     </Field>
                                 </FormItem>
                                 <FormItem
-                                    label="End Date"
+                                    label="기상 시각"
                                     invalid={errors.endDate && touched.endDate}
                                     errorMessage={errors.endDate}
                                 >
                                     <Field name="endDate" placeholder="Date">
                                         {({ field, form }) => (
-                                            <DatePicker
+                                            <DateTimepicker
                                                 field={field}
                                                 form={form}
                                                 value={field.value}
@@ -169,14 +178,41 @@ const EventDialog = ({ submit }) => {
                                                     form.setFieldValue(
                                                         field.name,
                                                         date
-                                                    )
+                                                    );
                                                 }}
                                             />
                                         )}
                                     </Field>
                                 </FormItem>
                                 <FormItem
-                                    label="Prefered"
+                                    label="수면 유형"
+                                    invalid={errors.category && touched.category}
+                                    errorMessage={errors.category}
+                                >
+                                    <Field name="category">
+                                        {({ field, form }) => (
+                                            <Select
+                                                placeholder="수면 유형을 선택하세요"
+                                                field={field}
+                                                form={form}
+                                                options={categoryOptions}
+                                                value={categoryOptions.find(
+                                                    (option) =>
+                                                        option.value ===
+                                                        values.category
+                                                )}
+                                                onChange={(option) =>
+                                                    form.setFieldValue(
+                                                        field.name,
+                                                        option.value
+                                                    )
+                                                }
+                                            />
+                                        )}
+                                    </Field>
+                                </FormItem>
+                                <FormItem
+                                    label="색상 선택"
                                     asterisk={true}
                                     invalid={errors.color && touched.color}
                                     errorMessage={errors.color}
@@ -208,7 +244,7 @@ const EventDialog = ({ submit }) => {
                                 </FormItem>
                                 <FormItem className="mb-0 text-right rtl:text-left">
                                     <Button variant="solid" type="submit">
-                                        Submit
+                                        등록
                                     </Button>
                                 </FormItem>
                             </FormContainer>
@@ -217,7 +253,7 @@ const EventDialog = ({ submit }) => {
                 </Formik>
             </div>
         </Dialog>
-    )
-}
+    );
+};
 
-export default EventDialog
+export default EventDialog;

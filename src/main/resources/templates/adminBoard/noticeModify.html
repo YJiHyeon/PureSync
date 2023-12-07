@@ -1,0 +1,110 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" dir="ltr">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+   <title>PureSync Admin</title>
+   <th:block th:include="~{/fragments/styles :: styleFragment}"></th:block>
+</head>
+
+<body class="layout-light side-menu">
+   <div class="mobile-author-actions"></div>
+   <div th:replace="~{/fragments/header :: headerFragment}"></div>
+   <main class="main-content">
+      <div th:replace="~{/fragments/sidebar :: sidebarFragment}"></div>
+
+      <div class="contents">
+
+
+         <div class="job-apply mt-md-20">
+            <div class="container-fluid">
+               <div class="row">
+                  <div class="col-lg-12">
+
+                     <div class="breadcrumb-main">
+                        <h4 class="text-capitalize breadcrumb-title">공지 글 수정</h4>
+                        <div class="breadcrumb-action justify-content-center flex-wrap">
+                           <nav aria-label="breadcrumb">
+                              <ol class="breadcrumb">
+                                 <li class="breadcrumb-item"><a href="/index"><i class="uil uil-estate"></i>main</a></li>
+                                 <li class="breadcrumb-item"><a href="/userBoardList">userBoardList</a></li>
+                                 <li class="breadcrumb-item active" aria-current="page">adminBoardModify</li>
+                              </ol>
+                           </nav>
+                        </div>
+                     </div>
+
+                  </div>
+               </div>
+               <div class="row justify-content-center mt-md-25">
+                  <div class="col-xl-6">
+                     <div class="job-apply-wrapper">
+                        <div class="job-apply__content">
+                           <h1>
+                              공지 글 쓰기
+                           </h1>
+                           <form>
+                              <div class="form-group">
+                                 <label>제목</label>
+                                 <input type="text" class="form-control" placeholder="제목을 입력하세요">
+                              </div>
+                              <div class="form-group">
+                                 <label>내용</label>
+                                 <textarea class="form-control" rows="3" placeholder="내용을 입력하세요"></textarea>
+                              </div>
+
+                              <div class="form-group">
+                                 <label>파일 업로드</label>
+                                 <div class="dm-tag-wrap">
+
+                                    <div class="dm-upload">
+                                       <div class="dm-upload__button">
+                                          <a href="javascript:void(0)" class="btn btn-lg btn-outline-lighten btn-upload" onclick="$('#upload-1').click()"> <img class="svg" src="img/svg/paperclip.svg" alt="paperclip"> Browse</a>
+                                          <input type="file" name="upload-1" class="upload-one" id="upload-1">
+                                       </div>
+                                       <div class="dm-upload__file">
+                                          <ul>
+
+                                          </ul>
+                                       </div>
+                                    </div>
+
+                                 </div>
+                              </div>
+
+                              <div class="button-group d-flex justify-content-end pt-15">
+                                 <button class="btn btn-primary btn-default btn-squared">수정하기</button>
+                              </div>
+
+                           </form>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <!-- ends: .row -->
+            </div>
+         </div>
+
+      </div>
+      <div th:replace="~{/fragments/footer :: footerFragment}"></div>
+   </main>
+   <div id="overlayer">
+      <div class="loader-overlay">
+         <div class="dm-spin-dots spin-lg">
+            <span class="spin-dot badge-dot dot-primary"></span>
+            <span class="spin-dot badge-dot dot-primary"></span>
+            <span class="spin-dot badge-dot dot-primary"></span>
+            <span class="spin-dot badge-dot dot-primary"></span>
+         </div>
+      </div>
+   </div>
+   <div class="overlay-dark-sidebar"></div>
+   <div class="customizer-overlay"></div>
+   <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBgYKHZB_QKKLWfIRaYPCadza3nhTAbv7c"></script>
+
+   <th:block th:include="~{/fragments/scripts :: scriptFragment}"></th:block>
+</body>
+
+</html>

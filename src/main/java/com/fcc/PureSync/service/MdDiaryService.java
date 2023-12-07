@@ -1,8 +1,6 @@
 package com.fcc.PureSync.service;
 
-import com.fcc.PureSync.dto.MdDiaryRequestDto;
-import com.fcc.PureSync.dto.MdDiaryResponseDto;
-import com.fcc.PureSync.dto.ResultDto;
+import com.fcc.PureSync.dto.*;
 import com.fcc.PureSync.entity.Emotion;
 import com.fcc.PureSync.entity.MdDiary;
 import com.fcc.PureSync.entity.Member;
@@ -11,13 +9,17 @@ import com.fcc.PureSync.exception.CustomExceptionCode;
 import com.fcc.PureSync.repository.EmotionRepository;
 import com.fcc.PureSync.repository.MdDiaryRepository;
 import com.fcc.PureSync.repository.MemberRepository;
+import com.fcc.PureSync.util.NaverApi;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +27,7 @@ public class MdDiaryService {
     private final MdDiaryRepository mdDiaryRepository;
     private final EmotionRepository emotionRepository;
     private final MemberRepository memberRepository;
+    private final NaverApi naverApi;
 
     public ResultDto getMdDiaryList(String memId) {
         Member member = memberRepository.findByMemId(memId).orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
@@ -45,7 +48,15 @@ public class MdDiaryService {
         if(!mdDiary.getDyStatus()) throw new CustomException(CustomExceptionCode.ALREADY_DELETED_ARTICLE);
         MdDiaryResponseDto mdDiaryResponseDto = entityToDto(mdDiary);
         HashMap<String, Object> data = new HashMap<>();
+        SentimentRequestDto dto = SentimentRequestDto.builder().content(mdDiary.getDyContents()).build();
+        SentimentResponseDto.Confidence confidence = analyzeEmotion(dto);
+        int positive = (int) confidence.getPositive();
+        int neutral = (int) confidence.getNeutral();
+        int negative = (int) confidence.getNegative();
         data.put("mdDiary", mdDiaryResponseDto);
+        data.put("positive", positive);
+        data.put("negative", negative);
+        data.put("neutral", neutral);
 
         ResultDto resultDto = buildResultDto(200, HttpStatus.OK, "success", data);
 
@@ -66,7 +77,6 @@ public class MdDiaryService {
     public ResultDto updateMdDiray(Long dySeq, MdDiaryRequestDto dto) {
         MdDiary mdDiary = mdDiaryRepository.findById(dySeq).orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_ARTICLE));
         Emotion updatedEmotion = emotionRepository.findByEmoState(dto.getEmoState());
-        System.out.println("***********************************" +  dto.getDyContents() + "************************");
         MdDiary updatedMdDiary =
                 MdDiary.builder()
                         .dySeq(mdDiary.getDySeq())
@@ -107,6 +117,38 @@ public class MdDiaryService {
         ResultDto resultDto = buildResultDto(200, HttpStatus.OK, "delete Complete", data);
 
         return resultDto;
+    }
+
+    public SentimentResponseDto.Confidence analyzeEmotion(SentimentRequestDto dto) {
+        // webClient 기본 설정
+        WebClient webClient =
+                WebClient
+                        .builder()
+                        .baseUrl("https://naveropenapi.apigw.ntruss.com")
+                        .build();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("X-NCP-APIGW-API-KEY-ID", naverApi.getApiKeyID());
+        headers.set("X-NCP-APIGW-API-KEY", naverApi.getApiKey());
+
+        // api 요청
+        SentimentResponseDto response =
+                webClient
+                        .post()
+                        .uri("/sentiment-analysis/v1/analyze")
+                        .headers(httpHeaders -> httpHeaders.addAll(headers))
+                        .bodyValue(dto)
+                        .retrieve()
+                        .bodyToMono(SentimentResponseDto.class)
+                        .block();
+
+
+
+        SentimentResponseDto.Document document = response.getDocument();
+        SentimentResponseDto.Confidence confidence = document.getConfidence();
+
+        return confidence;
     }
 
 

@@ -28,14 +28,14 @@ public class Board {
     @Builder.Default
     private Long boardLikescount=0L;
     @Builder.Default
-    private boolean boardStatus=true;
+    private Integer boardStatus=1;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "mem_seq")
     private Member member;
 
-    @OneToOne(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private BoardFile boardFile;
+    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<BoardFile> boardFile;
 
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)

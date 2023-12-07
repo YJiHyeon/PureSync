@@ -5,16 +5,16 @@ import com.fcc.PureSync.dto.ResultDto;
 import com.fcc.PureSync.entity.Exercise;
 import com.fcc.PureSync.service.ExerciseService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
 @RequestMapping( value = "/api/exercise" )
-@RequiredArgsConstructor
+@RestController
 public class ExerciseController {
-
-    private final ExerciseService exerciseService;
+    @Autowired
+    private ExerciseService exerciseService;
 
     @GetMapping("/exerciseList")
     public ResultDto getAllExerciseList(String exerciseName) {

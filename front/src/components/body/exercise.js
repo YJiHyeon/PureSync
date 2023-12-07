@@ -3,7 +3,6 @@ import { Button } from 'components/ui';
 import DialogExercise from 'components/ui/Dialog/DialogExercise';
 import TableExercise from 'components/ui/Table/TableExercise';
 
-
 function Exercise(props) {
     const [isDialogOpen, setDialogOpen] = useState(false);
     const [loading, setLoading] = useState(false);

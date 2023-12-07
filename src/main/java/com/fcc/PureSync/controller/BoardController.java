@@ -12,6 +12,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/board")
@@ -25,7 +28,7 @@ public class BoardController {
      * 등록
      */
     @PostMapping
-    public ResultDto createBoard(BoardDto boardDto, String memSeqStr, MultipartFile file) {
+    public ResultDto createBoard(BoardDto boardDto, String memSeqStr, List<MultipartFile> file) throws IOException {
         return boardService.createBoard(boardDto, memSeqStr, file);
     }
 
@@ -33,7 +36,7 @@ public class BoardController {
      * 수정
      */
     @PutMapping("/{boardSeq}")
-    public ResultDto updateBoard(@PathVariable Long boardSeq, @RequestPart("boardDto") BoardDto boardDto, String id, @RequestPart(value = "file", required = false) MultipartFile file) {
+    public ResultDto updateBoard(@PathVariable Long boardSeq, BoardDto boardDto, String id, MultipartFile file) throws IOException {
         return boardService.updateBoard(boardSeq, boardDto, id, file);
     }
 
@@ -67,8 +70,8 @@ public class BoardController {
      * 파일 조회
      */
     @GetMapping("/{boardSeq}/file")
-    public ResultDto getBoardFile(@PathVariable Long boardSeq){
-        return boardService.findFileChk(boardSeq);
+    public ResultDto getBoardFile(@PathVariable Long boardSeq,Pageable pageable){
+        return boardService.findFileChk(boardSeq,pageable);
     }
 
 }

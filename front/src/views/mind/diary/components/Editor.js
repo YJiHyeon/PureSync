@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
     Input,
     FormItem,
     FormContainer,
     Select,
     Button,
+    DatePicker,
 } from 'components/ui'
 import { RichTextEditor } from 'components/shared'
 import { Field, Form, Formik } from 'formik'
@@ -37,13 +38,7 @@ const Editor = (props) => {
     //유저 아이디 받아와야함
     const memId = 'aaa';
 
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 1을 더하고 문자열로 변환
-    const day = String(today.getDate()).padStart(2, '0'); // 일을 문자열로 변환하고 2자리로 맞춤
-
-    const formattedDate = `${year}-${month}-${day}`;
-    const EmotionList = [
+    const emotionList = [
         { label: "좋음", value: "좋음" },
         { label: "행복", value: "행복" },
         { label: "상쾌", value: "상쾌" },
@@ -60,6 +55,18 @@ const Editor = (props) => {
         { label: "외로움", value: "외로움" },
         { label: "우울", value: "우울" }
     ]
+
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 1을 더하고 문자열로 변환
+    const day = String(today.getDate()).padStart(2, '0'); // 일을 문자열로 변환하고 2자리로 맞춤
+    const formattedDate = `${year}-${month}-${day}`;
+    const [selectDate, setSelectDate] = useState(formattedDate);
+
+    const DatePickerClick = (date) => {
+        setSelectDate(date);
+    }
+
 
     function stripHtmlUsingDOM(html) {
         const doc = new DOMParser().parseFromString(html, 'text/html');
@@ -80,11 +87,11 @@ const Editor = (props) => {
         console.log(data);
 
         try {
-            const response = diary ? 
-            await axios.put(`http://127.0.0.1:9000/api/mind/diary/${diary.dySeq}`, data,
-            ) : 
-            await axios.post('http://127.0.0.1:9000/api/mind/diary', data,
-            );
+            const response = diary ?
+                await axios.put(`http://127.0.0.1:9000/api/mind/diary/${diary.dySeq}`, data,
+                ) :
+                await axios.post('http://127.0.0.1:9000/api/mind/diary', data,
+                );
 
             // 요청이 성공하면 처리할 부분
             alert('일기저장이 완료 되었습니다.');
@@ -98,94 +105,107 @@ const Editor = (props) => {
 
 
     return (
-        <Formik
-            initialValues={{
-                dyTitle: diary.dyTitle ? diary.dyTitle : '',
-                dyContents: diary.dyContents ? diary.dyContents : '',
-                emoState: diary.emoState ? diary.emoState : '',
-                dyDate: diary.dyWdate ? diary.dyWdate : formattedDate,
-                memId: diary.memId ? diary.memId : memId
-            }}
-            onSubmit={(values, { setSubmitting }) => {
-                onComplete(values, setSubmitting)
-            }}
-        >
-            {({ values, touched, errors, isSubmitting }) => (
-                <Form>
+        <>
+            <Formik
+                initialValues={{
+                    dyTitle: diary.dyTitle ? diary.dyTitle : '',
+                    dyContents: diary.dyContents ? diary.dyContents : '',
+                    emoState: diary.emoState ? diary.emoState : '',
+                    dyDate: diary.dyDate ? diary.dyDate : selectDate,
+                    memId: diary.memId ? diary.memId : memId
+                }}
+                onSubmit={(values, { setSubmitting }) => {
+                    onComplete(values, setSubmitting)
+                }}
+            >
+                {({ values, touched, errors, isSubmitting }) => (
+                    <Form>
+                        <FormContainer>
+                            <FormItem label="날짜">
+                                <DatePicker
+                                    DatePickerClick={DatePickerClick}
+                                    placeholder={selectDate}
+                                    defaultValue={selectDate}
+                                >
 
-                    <FormContainer>
-                        <FormItem label="제목">
-                            <Field
-                                name="dyTitle"
-                                autoComplete="off"
-                                component={Input}
-                                value={values.dyTitle}
-                            />
-                        </FormItem>
-                        <FormItem label="감정">
-                            <Field name="emoState">
-                                {({ field, form }) => (
-                                    <Select
-                                        placeholder="Emotion"
-                                        field={field}
-                                        form={form}
-                                        options={EmotionList}
-                                        value={EmotionList.filter(
-                                            (emotion) =>
-                                                emotion.value ===
-                                                values.emoState
+                                </DatePicker>
+                            </FormItem>
+                            <FormItem label="제목">
+                                <Field
+                                    name="dyTitle"
+                                    autoComplete="off"
+                                    component={Input}
+                                    value={values.dyTitle}
+                                />
+                            </FormItem>
+                            <FormItem label="감정">
+                                    <Field name="emoState">
+                                        {({ field, form }) => (
+                                            <Select
+                                                placeholder="Emotion"
+                                                field={field}
+                                                form={form}
+                                                options={emotionList}
+                                                value={emotionList.filter(
+                                                    (emotion) =>
+                                                        emotion.value ===
+                                                        values.emoState
+                                                )}
+                                                onChange={(emotion) =>
+                                                    form.setFieldValue(
+                                                        field.name,
+                                                        emotion.value,
+                                                    )
+                                                }
+                                            />
                                         )}
-                                        onChange={(emotion) =>
-                                            form.setFieldValue(
-                                                field.name,
-                                                emotion.value,
-                                            )
-                                        }
-                                    />
-                                )}
-                            </Field>
-                        </FormItem>
-                        <FormItem
-                            label="내용"
-                            className="mb-0"
-                            labelClass="!justify-start"
-                            invalid={errors.content && touched.content}
-                            errorMessage={errors.content}
-                        >
-                            <Field name="dyContents">
-                                {({ field, form }) => (
+                                    </Field>
+                                </FormItem>
+                            <FormItem
+                                label="내용"
+                                className="mb-0"
+                                labelClass="!justify-start"
+                                invalid={errors.content && touched.content}
+                                errorMessage={errors.content}
+                            >
+                                <Field name="dyContents">
+                                    {({ field, form }) => (
 
-                                    <RichTextEditor
-                                        value={field.value}
-                                        onChange={(val) =>
-                                            form.setFieldValue(
-                                                field.name,
-                                                val
-                                            )
-                                        }
-                                        initialValue={field.value}
-                                    />
-                                )}
-                            </Field>
-                        </FormItem>
-                        <div className="mt-4 flex justify-end">
-                            {props.diary ? (
-                                <Button loading={isSubmitting} variant="solid">
-                                    수정하기
-                                </Button>
-                            ) :
-                                (
+                                        <RichTextEditor
+                                            value={field.value}
+                                            onChange={(val) =>
+                                                form.setFieldValue(
+                                                    field.name,
+                                                    val
+                                                )
+                                            }
+                                            initialValue={field.value}
+                                        />
+                                    )}
+                                </Field>
+                            </FormItem>
+                            <div className="mt-4 flex justify-end">
+                                {props.diary ? (
                                     <Button loading={isSubmitting} variant="solid">
-                                        등록하기
+                                        수정하기
                                     </Button>
-                                )
-                            }
+                                ) :
+                                    (
+                                        <Button loading={isSubmitting} variant="solid">
+                                            등록하기
+                                        </Button>
+                                    )
+                                }
 
-                        </div>
-                    </FormContainer>
-                </Form>
-            )}
-        </Formik>
+                            </div>
+                        </FormContainer>
+                    </Form>
+                )}
+
+            </Formik>
+
+        </>
+
     )
 }
 

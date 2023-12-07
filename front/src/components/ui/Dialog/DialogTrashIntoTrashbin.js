@@ -130,7 +130,7 @@ const DialogTrashIntoTrashbin = (props) => {
         <div>
            <Draggable>
             <div className='flex ml-10 mt-10'>
-           <img src='/img/mind/trash.png' width={100} height={100} />
+           <img src='/img/mind/trash.svg' width={100} height={100} />
            </div>
            </Draggable>
          </div>
@@ -173,7 +173,7 @@ const DialogTrashIntoTrashbin = (props) => {
                     {!isDropped ? draggableMarkup : null}
                     <Droppable>
                         <div>
-                       <img src='/img/mind/trashbin.png' width={300} height={300} />
+                       <img src='/img/mind/trashbin.svg' width={300} height={300} />
                        </div>
                     </Droppable>
                     </div>

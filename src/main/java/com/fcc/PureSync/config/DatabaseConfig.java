@@ -64,10 +64,11 @@ public class DatabaseConfig {
         return factory.getObject();
     }
 
-    @Bean
+    @Bean(name="sm")
     public SqlSessionTemplate makeSqlSession(
             SqlSessionFactory factory)
     {
+        System.out.println("************************ @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
         return new SqlSessionTemplate(factory);
     }
 
