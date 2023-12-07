@@ -19,6 +19,7 @@ public class TestAnswer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ansSeq;
     private Long testSeq;
+    private Integer ansInfo;
     private String testAns;
 
     @Builder.Default

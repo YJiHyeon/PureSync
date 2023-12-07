@@ -16,6 +16,7 @@ public class TestAnswerDto {
 
     private Long ansSeq;
     private Long testSeq;
+    private Integer ansInfo;
     private String testAns;
     private Long memSeq;
     private LocalDateTime ansWdate;
@@ -24,6 +25,7 @@ public class TestAnswerDto {
         return TestAnswerDto.builder()
                 .ansSeq(testAnswer.getAnsSeq())
                 .testSeq(testAnswer.getTestSeq())
+                .ansInfo(testAnswer.getAnsInfo())
                 .testAns(testAnswer.getTestAns())
                 .memSeq(testAnswer.getMember().getMemSeq())
                 .ansWdate(testAnswer.getAnsWdate())
