@@ -1,6 +1,6 @@
 package com.fcc.PureSync.dao;
 
-import com.fcc.PureSync.common.constant.VerificationCodeConstant;
+import com.fcc.PureSync.common.constant.EmailConstant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Repository;
@@ -15,7 +15,7 @@ public class VerificationCodeDao {
     public void saveVerificationCode(String email, String verificationCode){
         stringRedisTemplate.opsForValue()
                 .set(email,verificationCode,
-                        Duration.ofSeconds(VerificationCodeConstant.EMAIL_VERIFICATION_LIMIT_SECONDS));
+                        Duration.ofSeconds(EmailConstant.EMAIL_VERIFICATION_LIMIT_SECONDS));
     }
 
     public String getVerificationCode(String email){

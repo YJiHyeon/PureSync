@@ -21,23 +21,23 @@ public abstract class BaseEntity {
     //생성 시간
     @CreatedDate
     @Column(updatable = false, columnDefinition = "DATETIME")
-    private LocalDateTime createTime;
+    private LocalDateTime memCreatedAt;
     // insertable=false
 
     // 수정 시간
     @LastModifiedDate
     @Column(updatable = false,columnDefinition = "DATETIME")
-    private LocalDateTime updateTime;
+    private LocalDateTime memUpdatedAt;
 
     // 생성 이름
-    @CreatedBy
-    @Column(updatable = false, columnDefinition = "VARCHAR(40)")
-    private String createName;
+//    @CreatedBy
+//    @Column(updatable = false, columnDefinition = "VARCHAR(40)")
+//    private String createName;
 
     // 수정 이름
     @LastModifiedBy
-    @Column(columnDefinition = "VARCHAR(40)")
-    private String updateName;
+    @Column(columnDefinition = "VARCHAR(100)")
+    private String memUpdatedBy;
 
 
 }
