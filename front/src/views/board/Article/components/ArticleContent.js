@@ -1,4 +1,4 @@
-import React, { useEffect ,useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Loading,
     UsersAvatarGroup,
@@ -12,15 +12,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import ReactHtmlParser from 'html-react-parser'
 import { useLocation, useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import {Button} from 'components/ui'
+import { Button } from 'components/ui'
 import { HiOutlineClock, HiOutlineCog, HiOutlinePencil, HiOutlineInboxIn, HiOutlineTrash } from 'react-icons/hi'
-import {getboardFile} from 'services/DashboardService'
+import { getboardFile } from 'services/DashboardService'
 
 
 const ArticleContent = ({ articleId }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch()
-    const [flag, setFlag]=useState(false);
+    const [flag, setFlag] = useState(false);
     const article = useSelector(
         (state) => state.knowledgeBaseArticle.data.article
     )
@@ -32,9 +32,8 @@ const ArticleContent = ({ articleId }) => {
     //const imageUrl = `https://fccbucket123.s3.ap-northeast-2.amazonaws.com/fileUpload/${response.data.boardfileName}`;
 
     useEffect(() => {
-        setFlag(false);
         fetchData()
-        setFlag(true);
+        
         // eslint-disable-next-line react-hooks/exhaustive-deps
         console.log(article);
     }, [search])
@@ -43,6 +42,21 @@ const ArticleContent = ({ articleId }) => {
         if (articleId) {
             dispatch(getArticle({ id: articleId }))
         }
+        setFlag(true);
+    }
+    
+    const handleUpdate = () => {
+        // 필요한 데이터를 객체로 만들어 전달
+        const updateData = {
+            articleId: article.boardSeq, 
+            boardName: article.boardName, 
+            boardContents : article.boardContents,
+            boardFile: article.boardFile
+            
+        };
+        
+        // navigate를 사용하여 editor.js로 이동하면서 데이터 전달
+        navigate('/board/write', { state: { updateData } });
     }
 
     const handleDelete = async () => {
@@ -57,17 +71,17 @@ const ArticleContent = ({ articleId }) => {
         } catch (error) {
             console.error('게시물 삭제 중 오류:', error);
         } finally {
-          
+
         }
     };
-    const commentRegister =()=>{
+    const commentRegister = () => {
         //alert("댓글등록");
         //setRegister(true);
-        console.log( article.findBoardFile);
+        console.log(article.findBoardFile);
         fetchData()
     }
 
-    
+
 
     const [imageUrlList, setImageUrlList] = useState([]);
 
@@ -82,13 +96,13 @@ const ArticleContent = ({ articleId }) => {
                     <TextBlockSkeleton rowCount={8} />
                 </div>
             }
-        >   
-        <div className="flex items-center justify-between">
+        >
+            <div className="flex items-center justify-between">
                 <h3>{article.boardName}</h3>
-            
-                
-                <Button onClick={handleDelete} variant="twoTone" icon={<HiOutlineTrash />} size="sm" color="red-600" >삭제하기</Button>
-                   
+                <div className="gap-2 flex">
+                    <Button onClick={handleUpdate} variant="twoTone" icon={<HiOutlinePencil />} size="sm" color="green-600" >수정하기</Button>
+                    <Button onClick={handleDelete} variant="twoTone" icon={<HiOutlineTrash />} size="sm" color="red-600" >삭제하기</Button>
+                </div>
             </div>
             <div className="flex items-center mt-4">
                 <UsersAvatarGroup
@@ -113,16 +127,16 @@ const ArticleContent = ({ articleId }) => {
             <div className="mt-8 prose dark:prose-invert max-w-none">
                 <p>{ReactHtmlParser(article.content || '')}</p>
                 <p>{article.boardContents}</p>
-                {}
                 {
-                    flag==true? article.boardFile.map((item, index) => (
-    <img key={index} src={item.fileUrl} alt={`image-${index}`} style={{ width: '500px', height: 'auto' }} />
-            )):""
-                    }
+                    flag && article.boardFile
+                        ? article.boardFile.map((item, index) => (
+                            <img key={index} src={item.fileUrl} alt={`image-${index}`} style={{ width: '500px', height: 'auto' }} />
+                        ))
+                        : null
+                }
             </div>
 
-
-            <ArticleAction data={article.boardSeq} commentRegister={commentRegister}/>
+            <ArticleAction data={article.boardSeq} commentRegister={commentRegister} />
             <ArticleComment data={article} />
         </Loading>
     )

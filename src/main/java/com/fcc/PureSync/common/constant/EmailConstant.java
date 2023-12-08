@@ -1,6 +1,6 @@
 package com.fcc.PureSync.common.constant;
 
-public final class VerificationCodeConstant {
+public final class EmailConstant {
     public static final Integer EMAIL_VERIFICATION_CODE_LENGTH = 6;
     public static final Integer EMAIL_VERIFICATION_LIMIT_SECONDS = 300;
 
@@ -10,5 +10,6 @@ public final class VerificationCodeConstant {
     public static final String LOCAL_DOMAIN="http://localhost:9000";
     public static final String AWS_DOMAIN="";
 
-    public static final Integer MEMBER_ENABLED_LEVEL=2;
+    public static final Integer MEMBER_ENABLED_LEVEL=4;
+    public static final Integer MEMBER_DISABLED_LEVEL=0;
 }

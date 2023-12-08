@@ -15,7 +15,7 @@ public class RedisConfig {
     private int port;
 
     @Bean
-    public RedisConnectionFactory redisSendMailConnnectionFactory() {
+    public RedisConnectionFactory redisSendMailConnectionFactory() {
         return new LettuceConnectionFactory(host, port);
     }
 
@@ -23,7 +23,7 @@ public class RedisConfig {
     @Bean("redisTemplate")
     public StringRedisTemplate redisTemplate() {
         StringRedisTemplate stringRedisTemplate = new StringRedisTemplate();
-        stringRedisTemplate.setConnectionFactory(redisSendMailConnnectionFactory());
+        stringRedisTemplate.setConnectionFactory(redisSendMailConnectionFactory());
         return stringRedisTemplate;
     }
 }

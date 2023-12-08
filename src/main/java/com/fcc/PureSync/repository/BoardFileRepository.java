@@ -13,6 +13,7 @@ public interface BoardFileRepository extends JpaRepository<BoardFile, Long> {
 
     Optional<BoardFile> findByBoard_BoardSeq(Long aLong);
 
+    List<BoardFile> findAllByBoard_BoardSeq(Long aLong);
 
     Page<BoardFile> findAllByBoard_BoardSeq(Long boardSeq, Pageable pageable);
 }

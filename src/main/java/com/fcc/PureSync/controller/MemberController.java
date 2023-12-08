@@ -20,27 +20,29 @@ public class MemberController {
 
     @PostMapping("/signup") // 회원가입
     public ResultDto signup (@RequestBody SignupDto signupDto) {
-
         return memberService.signup(signupDto);
-    }
-
-    @PostMapping("/body/signup")  // 회원가입 시 신체정보
-    public ResultDto bodySignup(@RequestBody BodySignupDto bodySignupDto) {
-
-        return memberService.bodySignup(bodySignupDto);
     }
 
     @PostMapping("/login")  // 로그인
     public ResultDto login(@RequestBody LoginDto loginDto, HttpServletResponse response) {
-
         return memberService.login(loginDto, response);
     }
 
     @GetMapping("/check-duplicate/{field}/{value}") // 중복검사
     public ResultDto checkDuplicate(@PathVariable String field, @PathVariable String value) {
-
         return memberService.checkDuplicate(field, value);
     }
+
+    @PostMapping("/searchPassword")
+    public ResultDto searchPassword(@RequestBody FindPasswordDto findPasswordDto){
+    return memberService.searchPassword(findPasswordDto);
+    }
+
+    @GetMapping("/searchId")
+    public ResultDto searchId(@PathVariable("memEmail") String memEmail){
+        return memberService.searchId(memEmail);
+    }
+
 
     @GetMapping("/token")
     public HashMap<String, Object> token(@AuthenticationPrincipal CustomUserDetails userDetails) {
@@ -51,22 +53,6 @@ public class MemberController {
         map.put("memSeq", memSeq);
         return map;
     }
-
-    @GetMapping("/info")
-    public ResultDto getMemberInfo(@AuthenticationPrincipal CustomUserDetails userDetails) {
-
-        Long memSeq = userDetails.getMemSeq();
-        return memberService.getMemberInfo(memSeq);
-    }
-
-    @PutMapping("/info")
-    public ResultDto updateMemberInfo(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                      @RequestBody MemberInfoUpdateDto dto) {
-
-        Long memSeq = userDetails.getMemSeq();
-        return memberService.updateMemberInfo(dto, memSeq);
-    }
-
 
 
 }

@@ -1,6 +1,7 @@
 package com.fcc.PureSync.dto;
 
 
+import com.fcc.PureSync.common.BaseDto;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
 @Builder
 @Getter
 @Setter
-public class AdminBoardDto {
+public class AdminBoardDto extends BaseDto {
     // 유저 보드
     private Long board_seq;
     private String board_name;  // 제목
@@ -22,11 +23,15 @@ public class AdminBoardDto {
     private String mem_id;
     private String mem_img;
 
+    private String board_status_text;
+
     // 유저 댓글
     private  Long cmt_seq;
     private String cmt_contents;
     private String cmt_wdate;
     private Integer cmt_status;
+
+    private String cmt_status_text;
 
     // 유저 파일
     private Long boardfile_seq;

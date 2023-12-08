@@ -22,6 +22,14 @@ public class AdminBoardService {
         return  adminBoardDao.getAllUserBoardList(adminBoardDto);
     }
 
+    public int getBoardTotalcnt() {
+        return adminBoardDao.getBoardTotalcnt();
+    }
+
+    public int getCmtTotalcnt() {
+        return adminBoardDao.getCmtTotalcnt();
+    }
+
     public List<AdminBoardDto> getAllBoardFiles (AdminBoardDto adminBoardDto) {
         return  adminBoardDao.getAllFiles( adminBoardDto );
     }

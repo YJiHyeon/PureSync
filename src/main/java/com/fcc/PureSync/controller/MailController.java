@@ -16,11 +16,11 @@
 //
 //    private final MailService mailService;
 //
-//    @PostMapping("/mailCheck")
-//    public ResultDto signUpbyMailCheck(@RequestBody EmailVerificationRequest emailVerificationRequest) {
-//        ResultDto resultDto = mailService.signUpByVerificationCode(emailVerificationRequest.getMemEmail());
-//        return resultDto;
-//    }
+////    @PostMapping("/mailCheck")
+////    public ResultDto signUpbyMailCheck(@RequestBody EmailVerificationRequest emailVerificationRequest) {
+////        ResultDto resultDto = mailService.signUpByVerificationCode(emailVerificationRequest.getMemEmail());
+////        return resultDto;
+////    }
 //
 //    @GetMapping("/verify")
 //    public ResultDto CheckVerificationCode(@RequestParam("email") String email, @RequestParam("verificationCode") String verificationCode) {

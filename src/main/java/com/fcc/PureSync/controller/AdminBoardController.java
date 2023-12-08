@@ -1,8 +1,8 @@
 package com.fcc.PureSync.controller;
 
+import com.fcc.PureSync.common.Pager;
 import com.fcc.PureSync.dto.AdminBoardDto;
 import com.fcc.PureSync.service.AdminBoardService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,17 +19,26 @@ public class AdminBoardController {
 
     private final AdminBoardService adminBoardService;
 
-    @GetMapping("/admin/user/list")
-    public String userBoardList(Model model, AdminBoardDto adminBoardDto) {
+    @GetMapping("/admin/user/list/{pg}")
+    public String userBoardList(Model model, AdminBoardDto adminBoardDto , @PathVariable("pg") int pg) {
+        adminBoardDto.setStart(pg*10);
         List<AdminBoardDto> userBoardList = adminBoardService.getAllUserBoardList(adminBoardDto);
+
+        model.addAttribute("page", Pager.makePage(10, adminBoardService.getBoardTotalcnt(), pg));
         model.addAttribute("userBoardList", userBoardList);
         return "/userBoard/userList";
     }
 
-    @GetMapping("/admin/cmt/list")
-    public String adminCmtList(Model model, AdminBoardDto adminBoardDto) {
+    @GetMapping("/admin/cmt/list/{pg}")
+    public String adminCmtList(Model model, AdminBoardDto adminBoardDto , @PathVariable("pg") int pg) {
+
+        System.out.println("pg ===>"+ pg);
+        adminBoardDto.setStart(pg*10);
         List<AdminBoardDto> userCmtList = adminBoardService.getAllUserCmtList(adminBoardDto);
+
         model.addAttribute("userCmtList", userCmtList);
+        model.addAttribute("page", Pager.makePage(10, adminBoardService.getCmtTotalcnt(), pg));
+
         return "/userBoard/userCmtList";
     }
 
@@ -60,31 +69,6 @@ public class AdminBoardController {
         HashMap<String, Object> resultMap = new HashMap<>();
         resultMap.put("result", "success");
         return  resultMap;
-    }
-
-
-
-
-    // notice --------------------------------------------------------------
-
-    @GetMapping("/admin/notice/list")
-    public String adminBoardList() {
-        return "/adminBoard/noticeList";
-    }
-
-    @GetMapping("/admin/notice/view")
-    public String adminBoardView() {
-        return "/adminBoard/noticeView";
-    }
-
-    @GetMapping("/admin/notice/write")
-    public String adminBoardWrite() {
-        return "/adminBoard/noticeWrite";
-    }
-
-    @GetMapping("/admin/notice/modify")
-    public String adminBoardModify() {
-        return "/adminBoard/noticeModify";
     }
 
 
