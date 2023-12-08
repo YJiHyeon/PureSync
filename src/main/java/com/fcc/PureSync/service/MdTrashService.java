@@ -79,9 +79,8 @@ public class MdTrashService {
 
     public void deleteYesterdayMdTrashes(){
         LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
-        LocalDateTime yesterdayStart = LocalDateTime.of(yesterday.getYear(), yesterday.getMonth(), yesterday.getDayOfMonth(), 0,0,0);
         LocalDateTime yesterdayEnd = LocalDateTime.of(yesterday.getYear(), yesterday.getMonth(), yesterday.getDayOfMonth(), 23,59,59);
-        List<MdTrash> yesterdayMdTrashlist = mdTrashRepository.findAllByTsStatusAndTsWdateBetween(true, yesterdayStart, yesterdayEnd);
+        List<MdTrash> yesterdayMdTrashlist = mdTrashRepository.findAllByTsStatusAndTsWdateBefore(true, yesterdayEnd);
 
         yesterdayMdTrashlist.stream().forEach(e -> {
             MdTrash deletedMdTrash = MdTrash.builder()
