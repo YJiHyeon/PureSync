@@ -2,7 +2,7 @@ import ApiService from './ApiService'
 
 export async function apiSignIn(data) {
     return ApiService.fetchData({
-        url: 'http://localhost:9000/api/member/login',
+        url: '/sign-in',
         method: 'post',
         data,
     })
