@@ -10,20 +10,20 @@ const TableExercise = ({ exerciseData, deleteMenuItem }) => {
             <Table>
                 <THead>
                     <Tr>
-                        <Th>운동명</Th>
-                        <Th>운동 시간(분)</Th>
-                        <Th>소모 칼로리</Th>
-                        <Th></Th>
+                        <Th style={{ fontSize: '16px' }}>운동명</Th>
+                        <Th style={{ fontSize: '16px' }}>운동 시간(분)</Th>
+                        <Th style={{ fontSize: '16px' }}>소모 칼로리</Th>
+                        <Th style={{ fontSize: '16px' }}></Th>
                     </Tr>
                 </THead>
                 <TBody>
                     {exerciseData.map((item, index) => {
                         return (
                             <tr key={index}>
-                                <td style={{ textAlign: "left" }}>{item.ec_name}</td>
-                                <td style={{ textAlign: "left" }}>{item.el_time}</td>
-                                <td style={{ textAlign: "left" }}>{item.el_total.toFixed(2)}</td>
-                                <td style={{ textAlign: "left" }}>
+                                <td style={{ textAlign: "left", fontSize: '16px' }}>{item.ec_name}</td>
+                                <td style={{ textAlign: "left", fontSize: '16px' }}>{item.el_time}</td>
+                                <td style={{ textAlign: "left", fontSize: '16px' }}>{item.el_total.toFixed(2)}</td>
+                                <td style={{ textAlign: "left", fontSize: '16px' }}>
                                     <Button
                                         onClick={() => {
                                             deleteMenuItem(item.el_seq);

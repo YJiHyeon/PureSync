@@ -19,8 +19,8 @@ public class NoticeDao {
         return list;
     }
 
-    public int getNoticeTotalcnt() {
-        return sm.selectOne("Notice_getTotalCnt");
+    public int getNoticeTotalcnt(NoticeDto noticeDto) {
+        return sm.selectOne("Notice_getTotalCnt", noticeDto);
     }
 
     public NoticeDto noticeBoardView( NoticeDto noticeDto ) {

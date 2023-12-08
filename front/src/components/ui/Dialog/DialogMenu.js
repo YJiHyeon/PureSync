@@ -127,7 +127,7 @@ const DialogMenu = (props) => {
         } else {
             setInputError(false); // 검색어 길이가 2자 이상인 경우 inputError를 false로 설정
             
-            Axios.get("http://127.0.0.1:9000/api/menu/foodList",
+            Axios.get( process.env.REACT_APP_HOST_URL + '/api/menu/foodList',
                 { params: { "foodName": searchValue } },
                 { withCredentials: true }
             )
@@ -202,7 +202,7 @@ const DialogMenu = (props) => {
             sendFoodDatas.push(foodInfo);
         });
 
-        Axios.post("http://127.0.0.1:9000/api/menu/save", sendFoodDatas[0])
+        Axios.post(process.env.REACT_APP_HOST_URL + '/api/menu/save', sendFoodDatas[0])
             .then((res) => {
                 setMealType('');
                 setSearchValue('');

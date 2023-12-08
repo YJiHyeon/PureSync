@@ -4,6 +4,7 @@ import com.fcc.PureSync.common.constant.EmailConstant;
 import com.fcc.PureSync.dto.*;
 import com.fcc.PureSync.entity.Body;
 import com.fcc.PureSync.entity.Member;
+import com.fcc.PureSync.entity.MemberSearchCondition;
 import com.fcc.PureSync.entity.MpMemRole;
 import com.fcc.PureSync.exception.CustomException;
 import com.fcc.PureSync.jwt.JwtUtil;
@@ -13,6 +14,8 @@ import com.fcc.PureSync.repository.MemberRoleRepository;
 import com.fcc.PureSync.util.RandomStringGenerator;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -210,6 +213,10 @@ public class MemberService {
                 .message(msg)
                 .data(map)
                 .build();
+    }
+
+    public Page<AdminMemberDto> getMembers(MemberSearchCondition condition, Pageable pageable) {
+        return memberRepository.searchMemberList(condition, pageable);
     }
 
 }

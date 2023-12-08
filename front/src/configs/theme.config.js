@@ -6,7 +6,7 @@ import { THEME_ENUM } from 'constants/theme.constant'
  */
 
 export const themeConfig = {
-    themeColor: 'Lime',
+    themeColor: 'indigo',
     direction: THEME_ENUM.DIR_LTR,
     mode: THEME_ENUM.MODE_LIGHT,
     primaryColorLevel: 600,
@@ -15,7 +15,7 @@ export const themeConfig = {
     controlSize: 'md',
     navMode: THEME_ENUM.NAV_MODE_LIGHT,
     layout: {
-        type: THEME_ENUM.LAYOUT_TYPE_DECKED,
+        type: THEME_ENUM.LAYOUT_TYPE_MODERN,
         sideNavCollapse: false,
     },
 }
