@@ -22,12 +22,12 @@ public class AdminBoardService {
         return  adminBoardDao.getAllUserBoardList(adminBoardDto);
     }
 
-    public int getBoardTotalcnt() {
-        return adminBoardDao.getBoardTotalcnt();
+    public int getBoardTotalcnt(AdminBoardDto adminBoardDto) {
+        return adminBoardDao.getBoardTotalcnt(adminBoardDto);
     }
 
-    public int getCmtTotalcnt() {
-        return adminBoardDao.getCmtTotalcnt();
+    public int getCmtTotalcnt(AdminBoardDto adminBoardDto) {
+        return adminBoardDao.getCmtTotalcnt(adminBoardDto);
     }
 
     public List<AdminBoardDto> getAllBoardFiles (AdminBoardDto adminBoardDto) {

@@ -115,7 +115,7 @@ const DialogExercise = (props) => {
         } else {
             setInputError(false); // 검색어 길이가 2자 이상인 경우 inputError를 false로 설정
             
-            Axios.get("http://127.0.0.1:9000/api/exercise/exerciseList", {
+            Axios.get( process.env.REACT_APP_HOST_URL + '/api/exercise/exerciseList', {
                 params: { "exerciseName": searchValue },
                 withCredentials: true
             })
@@ -162,7 +162,7 @@ const DialogExercise = (props) => {
             console.log(exerciseInfo);
         });
 
-        Axios.post("http://127.0.0.1:9000/api/exercise/save", sendExerciseDatas[0])
+        Axios.post(process.env.REACT_APP_HOST_URL + '/api/exercise/save', sendExerciseDatas[0])
             .then((res) => {
                 setSearchValue('');
                 setSearchResults([]);

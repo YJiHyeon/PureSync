@@ -18,12 +18,12 @@ public class AdminBoardDao {
         return list;
     }
 
-    public int getBoardTotalcnt() {
-        return sm.selectOne("Board_getTotalCnt");
+    public int getBoardTotalcnt(AdminBoardDto adminBoardDto) {
+        return sm.selectOne("Board_getTotalCnt", adminBoardDto);
     }
 
-    public int getCmtTotalcnt() {
-        return sm.selectOne("Cmt_getTotalCnt");
+    public int getCmtTotalcnt(AdminBoardDto adminBoardDto) {
+        return sm.selectOne("Cmt_getTotalCnt", adminBoardDto);
     }
 
     public List<AdminBoardDto> getAllFiles( AdminBoardDto adminBoardDto ) {

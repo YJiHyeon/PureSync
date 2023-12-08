@@ -16,8 +16,8 @@ public class NoticeService {
         return  noticeDao.getAllNoticeList(noticeDto);
     }
 
-    public int getNoticeTotalcnt() {
-        return noticeDao.getNoticeTotalcnt();
+    public int getNoticeTotalcnt(NoticeDto noticeDto) {
+        return noticeDao.getNoticeTotalcnt(noticeDto);
     }
 
     public NoticeDto noticeBoardView(NoticeDto noticeDto ) {

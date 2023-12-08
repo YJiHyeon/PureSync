@@ -52,6 +52,7 @@ const SignInForm = (props) => {
                 </Alert>
             )}
             <Formik
+                // Remove this initial value
                 initialValues={{
                     userName: 'admin',
                     password: '123Qwe',
@@ -70,27 +71,27 @@ const SignInForm = (props) => {
                     <Form>
                         <FormContainer>
                             <FormItem
-                                label="아이디"
+                                label="User Name"
                                 invalid={errors.userName && touched.userName}
                                 errorMessage={errors.userName}
                             >
                                 <Field
                                     type="text"
                                     autoComplete="off"
-                                    name="memId"
-                                    placeholder=""
+                                    name="userName"
+                                    placeholder="User Name"
                                     component={Input}
                                 />
                             </FormItem>
                             <FormItem
-                                label="비밀번호"
+                                label="Password"
                                 invalid={errors.password && touched.password}
                                 errorMessage={errors.password}
                             >
                                 <Field
                                     autoComplete="off"
-                                    name="memPassword"
-                                    placeholder=""
+                                    name="password"
+                                    placeholder="Password"
                                     component={PasswordInput}
                                 />
                             </FormItem>
@@ -102,7 +103,7 @@ const SignInForm = (props) => {
                                     children="Remember Me"
                                 />
                                 <ActionLink to={forgotPasswordUrl}>
-                                    비밀번호를 잊어버리셨나요?
+                                    Forgot Password?
                                 </ActionLink>
                             </div>
                             <Button
@@ -111,11 +112,11 @@ const SignInForm = (props) => {
                                 variant="solid"
                                 type="submit"
                             >
-                                {isSubmitting ? 'Signing in...' : '로그인'}
+                                {isSubmitting ? 'Signing in...' : 'Sign In'}
                             </Button>
                             <div className="mt-4 text-center">
-                                <span>계정이 없으신가요? </span>
-                                <ActionLink to={signUpUrl}>회원가입</ActionLink>
+                                <span>Don't have an account yet? </span>
+                                <ActionLink to={signUpUrl}>Sign up</ActionLink>
                             </div>
                         </FormContainer>
                     </Form>
