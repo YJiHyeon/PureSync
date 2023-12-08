@@ -58,9 +58,33 @@ const appsRoute = [
         authority: [ADMIN, USER],
     },
     {
-        key: 'mind.exam',
-        path: `/mind/exam`,
-        component: React.lazy(() => import('views/mind/exam')),
+        key: 'mind.test',
+        path: `/mind/test`,
+        component: React.lazy(() => import('views/mind/test/test')),
+        authority: [ADMIN, USER],
+    },
+    {
+        key: 'mind.stress',
+        path: `/mind/test/stress`,
+        component: React.lazy(() => import('views/mind/test/stress')),
+        authority: [ADMIN, USER],
+    },
+    {
+        key: 'mind.test',
+        path: `/mind/test/depression`,
+        component: React.lazy(() => import('views/mind/test/depression')),
+        authority: [ADMIN, USER],
+    },
+    {
+        key: 'mind.stressResult',
+        path: `/mind/test/stressResult`,
+        component: React.lazy(() => import('views/mind/test/stressResult')),
+        authority: [ADMIN, USER],
+    },
+    {
+        key: 'mind.depressionResult',
+        path: `/mind/test/depressionResult`,
+        component: React.lazy(() => import('views/mind/test/depressionResult')),
         authority: [ADMIN, USER],
     },
     // 게시판

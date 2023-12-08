@@ -36,10 +36,10 @@ const pagesNavigationConfig = [
                 subMenu: [],
             },
             {
-                key: 'mind.exam',
-                path: `/mind/exam`,
+                key: 'mind.test',
+                path: `/mind/test`,
                 title: '심리검사',
-                translateKey: 'nav.mind.exam',
+                translateKey: 'nav.mind.test',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
                 authority: [ADMIN, USER],
