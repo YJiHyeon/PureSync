@@ -1,6 +1,5 @@
 package com.fcc.PureSync.entity;
 
-import com.fcc.PureSync.common.constant.VerificationCodeConstant;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,17 +28,17 @@ public class Member {
     private String memBirth;
     private String memGender;
     private String memImg;
-    private Long memImgsize;
+//    private Long memImgsize;
     private LocalDateTime memCreatedAt;
     @Builder.Default
     private LocalDateTime memLastLoginAt = LocalDateTime.now();
 
 
-    private Integer memLevel;
-
-    public void enabledMemberLevel() {
-        this.memLevel = VerificationCodeConstant.MEMBER_ENABLED_LEVEL;
-    }
+//    private Integer memLevel;
+//
+//    public void enabledMemberLevel() {
+//        this.memLevel = VerificationCodeConstant.MEMBER_ENABLED_LEVEL;
+//    }
 
 
 }
