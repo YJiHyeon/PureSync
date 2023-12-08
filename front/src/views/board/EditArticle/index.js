@@ -54,28 +54,7 @@ const EditArticle = () => {
             <AdaptableCard>
                 <div className="max-w-[800px] mx-auto">
                     <div className="flex justify-between items-center mb-4">
-                        <h3>
-                            {mode === 'edit' && <span>Edit Article</span>}
-                            {mode === 'add' && <span>글 쓰기</span>}
-                            {mode === 'preview' && <span>Preview Article</span>}
-                        </h3>
-                        {mode === 'preview' ? (
-                            <Button
-                                onClick={() =>
-                                    onModeChange(id ? 'edit' : 'add')
-                                }
-                                size="sm"
-                            >
-                                Back
-                            </Button>
-                        ) : (
-                            <Button
-                                onClick={() => onModeChange('preview')}
-                                size="sm"
-                            >
-                                Preview
-                            </Button>
-                        )}
+                        <h3>자유게시판</h3>
                     </div>
                     <Editor mode={mode} />
                 </div>
