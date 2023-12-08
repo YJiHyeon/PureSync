@@ -19,8 +19,7 @@ public class Member extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memSeq;
-    @Builder.Default
-    private Integer memStatus = 1;
+    private Integer memStatus;
     private String memId;
     private String memPassword;
     private String memNick;
