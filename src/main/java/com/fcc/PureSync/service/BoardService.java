@@ -1,6 +1,7 @@
 package com.fcc.PureSync.service;
 
 
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -58,14 +59,16 @@ public class BoardService {
                 .data(map)
                 .build();
     }
+
     /**
      * boardStatus가 false면 NOT_FOUND_BOARD
      */
     private void boardStatusChk(Board board) {
-        if (board.getBoardStatus()==0) {
+        if (board.getBoardStatus() == 0) {
             throw new CustomException(CustomExceptionCode.ALREADY_DELETED_ARTICLE);
         }
     }
+
     @Transactional
     public ResultDto createBoard(BoardDto boardDto, String id, List<MultipartFile> file) {
         //Long id2 = Long.parseLong(id);
@@ -161,15 +164,14 @@ public class BoardService {
         }
     }
 
-    public ResultDto updateBoard(Long boardSeq, BoardDto boardDto, String id, MultipartFile file) throws IOException {
+    public ResultDto updateBoard(Long boardSeq, BoardDto boardDto, String id, List<MultipartFile> file) throws IOException {
         id = "aaa";//////////////////////////////////////////////
         Member member = memberRepository.findByMemId(id)
                 .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
         Board board = boardRepository.findById(boardSeq)
                 .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_ARTICLE));
         boardStatusChk(board);
-        BoardFile existingBoardFile = boardFileRepository.findByBoard_BoardSeq(boardSeq)
-                .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_ARTICLE));
+
 
         Board updatedBoard = Board.builder()
                 .boardSeq(board.getBoardSeq())
@@ -180,53 +182,78 @@ public class BoardService {
                 .build();
 
         boardRepository.save(updatedBoard);
+        HashMap<String, Object> map = new HashMap<>();
         /**
          * 파일 존재 o
          */
         if (file != null) {
+            List<BoardFile> filesToDelete = boardFileRepository.findAllByBoard_BoardSeq(boardSeq);
+            for (BoardFile fileToDelete : filesToDelete) {
+                deleteFileFromS3(fileToDelete.getBoardfileName());
+                boardFileRepository.delete(fileToDelete);
+            }
 
-            ObjectMetadata objectMetadata = new ObjectMetadata();
-            objectMetadata.setContentType(file.getContentType());
-            objectMetadata.setContentLength(file.getSize());
-            // 파일 크기 설정
+            List<String> originalFileNameList = new ArrayList<>();
+            List<String> storedFileNameList = new ArrayList<>();
 
-            // 파일 이름
-            String originalFilename = file.getOriginalFilename();
-            int index = originalFilename.lastIndexOf(".");
-            String ext = originalFilename.substring(index + 1);
 
-            // 저장될 파일 이름
-            String storeFileName = UUID.randomUUID() + "." + ext;
-            // 저장할 디렉토리 경로 + 파일 이름
-            String key = "fileUpload/" + storeFileName;
-            //Path uploadDir = Paths.get(fileUploadPath);
-            InputStream inputStream = file.getInputStream();
-            amazonS3Client.putObject(new PutObjectRequest(bucket,key,inputStream,objectMetadata));
-            String storeFileUrl = amazonS3Client.getUrl(bucket, key).toString();
+            file.forEach(fileSave -> {
+                ObjectMetadata objectMetadata = new ObjectMetadata();
+                objectMetadata.setContentType(fileSave.getContentType());
+                objectMetadata.setContentLength(fileSave.getSize());
 
-            BoardFile boardFile = BoardFile.builder()
-                    .boardfileSeq(existingBoardFile.getBoardfileSeq())
-                    .boardfileName(storeFileName)
-                    .fileUrl(storeFileUrl)
-                    .board(board)
-                    .boardfileSize(file.getSize())
-                    .build();
+                String originalFilename = fileSave.getOriginalFilename();
 
-            boardFileRepository.save(boardFile);
+                int index = 0;
+                // file 형식이 잘못된 경우를 확인
+                try {
+                    assert originalFilename != null;
+                    index = originalFilename.lastIndexOf(".");
+                } catch (StringIndexOutOfBoundsException e) {
+                    //throw new
+                }
 
-            BoardFileDto boardFileDto = BoardFileDto.toDto(boardFile);
-            BoardDto boardDtoResult = toDto(board);
+                String ext = originalFilename.substring(index + 1);
 
-            HashMap<String, Object> map = new HashMap<>();
-            map.put("board", boardDtoResult);
-            map.put("boardFile", boardFileDto);
+                // 저장될 파일 이름
+                String storedFileName = UUID.randomUUID() + "." + ext;
 
+                // 저장할 디렉토리 경로 + 파일 이름
+                String key = "fileUpload/" + storedFileName;
+
+                try (InputStream inputStream = fileSave.getInputStream()) {
+                    amazonS3Client.putObject(new PutObjectRequest(bucket, key, inputStream, objectMetadata)
+                            .withCannedAcl(CannedAccessControlList.PublicRead));
+                } catch (IOException e) {
+                    //throw new
+                }
+
+                String storeFileUrl = amazonS3Client.getUrl(bucket, key).toString();
+
+                BoardFile boardFile = BoardFile.builder()
+                        .boardfileName(storedFileName)
+                        .fileUrl(storeFileUrl)
+                        .board(board)
+                        .boardfileSize(fileSave.getSize())
+                        .build();
+
+                boardFileRepository.save(boardFile);
+                storedFileNameList.add(storedFileName);
+                originalFileNameList.add(originalFilename);
+
+                BoardFileDto boardFileDto = BoardFileDto.toDto(boardFile);
+                BoardDto boardDtoResult = toDto(board);
+
+                map.put("board", boardDtoResult);
+                map.put("boardFile", storedFileNameList);
+
+            });
             return buildResultDto(HttpStatus.CREATED.value(), HttpStatus.CREATED, "게시판 수정 성공", map);
         } else {
             /**
              * 파일 존재 x
              */
-            HashMap<String, Object> map = new HashMap<>();
+
             map.put("updatedBoard", toDto(updatedBoard));
 
             return buildResultDto(HttpStatus.CREATED.value(), HttpStatus.CREATED, "게시판 수정 성공", map);
@@ -275,7 +302,7 @@ public class BoardService {
     }
 
     public ResultDto findAllBoard(Pageable pageable, String id) {
-        List<Board> boardPage = boardRepository.findByBoardStatusOrderByBoardWdateDesc(1,pageable).getContent();
+        List<Board> boardPage = boardRepository.findByBoardStatusOrderByBoardWdateDesc(1, pageable).getContent();
         List<BoardDto> boardDetailDtoList = boardPage.stream()
                 .map(BoardDto::BoardAllDetailDto)
                 .toList();
@@ -284,11 +311,11 @@ public class BoardService {
         return buildResultDto(HttpStatus.OK.value(), HttpStatus.OK, "게시판 전체 조회 성공", map);
     }
 
-    public ResultDto findFileChk(Long boardSeq,Pageable pageable) {
+    public ResultDto findFileChk(Long boardSeq, Pageable pageable) {
         Board board = boardRepository.findById(boardSeq)
-                .orElseThrow(()->new CustomException(CustomExceptionCode.NOT_FOUND_BOARD));
+                .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_BOARD));
         Long boardId = board.getBoardSeq();
-        List<BoardFile> boardFile = boardFileRepository.findAllByBoard_BoardSeq(boardId,pageable).getContent();
+        List<BoardFile> boardFile = boardFileRepository.findAllByBoard_BoardSeq(boardId, pageable).getContent();
         List<BoardFileDto> boardFileDtoList = boardFile.stream()
                 .map(BoardFileDto::toDto)
                 .toList();
@@ -296,5 +323,14 @@ public class BoardService {
         HashMap<String, Object> map = new HashMap<>();
         map.put("findBoardFile", boardFileDtoList);
         return buildResultDto(HttpStatus.OK.value(), HttpStatus.OK, "게시판 파일 조회 성공", map);
+    }
+
+    // S3에서 파일 삭제 메소드
+    private void deleteFileFromS3(String fileName) {
+        try {
+            amazonS3Client.deleteObject(bucket, "fileUpload/" + fileName);
+        } catch (AmazonServiceException e) {
+            // 파일 삭제 실패 처리 로직 추가
+        }
     }
 }
