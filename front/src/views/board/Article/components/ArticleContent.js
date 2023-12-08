@@ -13,7 +13,7 @@ import ReactHtmlParser from 'html-react-parser'
 import { useLocation, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { Button } from 'components/ui'
-import { HiOutlineClock, HiOutlineCog, HiOutlinePencil, HiOutlineInboxIn, HiOutlineTrash } from 'react-icons/hi'
+import { HiOutlineClock, HiOutlineCog, HiOutlinePencil, HiOutlineInboxIn, HiOutlineTrash,HiOutlineHeart} from 'react-icons/hi'
 import { getboardFile } from 'services/DashboardService'
 
 
@@ -27,7 +27,7 @@ const ArticleContent = ({ articleId }) => {
     const loading = useSelector(
         (state) => state.knowledgeBaseArticle.data.loading
     )
-
+    console.log(article);
     const { search } = useLocation()
     //const imageUrl = `https://fccbucket123.s3.ap-northeast-2.amazonaws.com/fileUpload/${response.data.boardfileName}`;
 
@@ -58,7 +58,17 @@ const ArticleContent = ({ articleId }) => {
         // navigate를 사용하여 editor.js로 이동하면서 데이터 전달
         navigate('/board/write', { state: { updateData } });
     }
-
+    const handleLike = async () => {
+        try {
+            // 서버에 좋아요 요청을 보냄
+            await axios.post(`http://localhost:9000/api/board/${article.boardSeq}/likes`);
+            
+            // 서버에서 좋아요 카운트를 업데이트했다면, 다시 데이터를 불러옴
+            fetchData();
+        } catch (error) {
+            console.error('좋아요 클릭 중 오류:', error);
+        }
+    };
     const handleDelete = async () => {
         try {
             if (!article.boardSeq) {
@@ -100,6 +110,7 @@ const ArticleContent = ({ articleId }) => {
             <div className="flex items-center justify-between">
                 <h3>{article.boardName}</h3>
                 <div className="gap-2 flex">
+                <Button onClick={handleLike} variant="twoTone" icon={<HiOutlineHeart fill={article.boardLikescount ? 'blue' : 'white'} />} size="sm" color="blue-600" >좋아요</Button>
                     <Button onClick={handleUpdate} variant="twoTone" icon={<HiOutlinePencil />} size="sm" color="green-600" >수정하기</Button>
                     <Button onClick={handleDelete} variant="twoTone" icon={<HiOutlineTrash />} size="sm" color="red-600" >삭제하기</Button>
                 </div>
@@ -134,6 +145,8 @@ const ArticleContent = ({ articleId }) => {
                         ))
                         : null
                 }
+
+
             </div>
 
             <ArticleAction data={article.boardSeq} commentRegister={commentRegister} />
