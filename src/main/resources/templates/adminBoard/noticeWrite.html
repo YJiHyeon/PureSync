@@ -29,7 +29,7 @@
                            <nav aria-label="breadcrumb">
                               <ol class="breadcrumb">
                                  <li class="breadcrumb-item"><a href="/index"><i class="uil uil-estate"></i>main</a></li>
-                                 <li class="breadcrumb-item"><a href="/admin/notice/list">userBoardList</a></li>
+                                 <li class="breadcrumb-item"><a href="/admin/notice/list/0">userBoardList</a></li>
                                  <li class="breadcrumb-item active" aria-current="page">adminBoardWrite</li>
                               </ol>
                            </nav>
@@ -83,7 +83,6 @@
    </div>
    <div class="overlay-dark-sidebar"></div>
    <div class="customizer-overlay"></div>
-   <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBgYKHZB_QKKLWfIRaYPCadza3nhTAbv7c"></script>
 
    <th:block th:include="~{/fragments/scripts :: scriptFragment}"></th:block>
 </body>
@@ -112,7 +111,7 @@
       axios.post("/admin/notice/save", requestData)
          .then((res) => {
             if (res.data.result === "success") {
-               window.location.href = '/admin/notice/list';
+               window.location.href = '/admin/notice/list/0';
             }
          })
          .catch( (error) => {
