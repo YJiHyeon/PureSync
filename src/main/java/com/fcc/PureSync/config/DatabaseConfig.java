@@ -43,7 +43,6 @@ public class DatabaseConfig {
     @Bean //객체 생성
     public SqlSessionFactory makeSqlSessionFactory(DataSource dataSource) throws Exception
     {
-        System.out.println("************************");
         //SqlSessionFactory -  Factory 공장객체를 먼저 만들어서 던진다
         final SqlSessionFactoryBean factory
                 = new SqlSessionFactoryBean();
@@ -68,7 +67,6 @@ public class DatabaseConfig {
     public SqlSessionTemplate makeSqlSession(
             SqlSessionFactory factory)
     {
-        System.out.println("************************ @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
         return new SqlSessionTemplate(factory);
     }
 
