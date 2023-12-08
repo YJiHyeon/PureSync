@@ -89,6 +89,14 @@ const appsRoute = [
         component: React.lazy(() => import('views/Mypage2')),
         authority: [ADMIN, USER],
     },
+    
+    {
+        key: 'signUp',
+        path: `/sign-up2`,
+        // component: React.lazy(() => import('views/auth/SignUp')),
+        component: React.lazy(() => import('views/member_jaegun/SignUp')),
+        authority: [],
+    },
 
 // 기존 -----------------------------------------------------------------------------------------
 
