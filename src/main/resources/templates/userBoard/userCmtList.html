@@ -107,29 +107,9 @@
                            </tbody>
                         </table>
                      </div>
-                     <div class="d-flex justify-content-end pt-30">
+                     <div class="d-flex justify-content-center pt-30" th:utext="${page}"></div>
 
-                        <nav class="dm-page ">
-                           <ul class="dm-pagination d-flex">
-                              <li class="dm-pagination__item">
-                                 <a href="#" class="dm-pagination__link pagination-control"><span class="la la-angle-left"></span></a>
-                                 <a href="#" class="dm-pagination__link"><span class="page-number">1</span></a>
-                                 <a href="#" class="dm-pagination__link active"><span class="page-number">2</span></a>
-                                 <a href="#" class="dm-pagination__link"><span class="page-number">3</span></a>
-                                 <a href="#" class="dm-pagination__link pagination-control"><span class="page-number">...</span></a>
-                                 <a href="#" class="dm-pagination__link"><span class="page-number">12</span></a>
-                                 <a href="#" class="dm-pagination__link pagination-control"><span class="la la-angle-right"></span></a>
-                                 <a href="#" class="dm-pagination__option">
-                                 </a>
-                              </li>
-                              <li class="dm-pagination__item">
-
-                              </li>
-                           </ul>
-                        </nav>
-
-
-                     </div>
+                  </div>
                   </div>
                </div>
             </div>
@@ -150,7 +130,6 @@
    </div>
    <div class="overlay-dark-sidebar"></div>
    <div class="customizer-overlay"></div>
-   <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBgYKHZB_QKKLWfIRaYPCadza3nhTAbv7c"></script>
    <!-- inject:js-->
    <th:block th:include="~{/fragments/scripts :: scriptFragment}"></th:block>
 </body>
@@ -172,4 +151,9 @@
        }
    }
 
+
+   function goPage(pg) {
+		var url = "/admin/cmt/list/" + pg; // 페이지 번호에 맞는 URL 생성
+		window.location.href = url; // 새로운 URL로 페이지 이동
+	}
 </script>

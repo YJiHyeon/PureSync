@@ -747,20 +747,7 @@ chartjsLineChart(
     "saleRevenueToday",
     "113",
     (data = [0, 28, 30, 45, 40, 50, 25, 70, 35, 40, 26, 58]),
-    labels = [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec"
-    ],
+    labels = ["2023-12-01", "2023-12-02", "2023-12-03", "2023-12-04", "2023-12-05", "2023-12-06", "2023-12-07"],
     "Current period",
     true
 );
@@ -770,7 +757,7 @@ $('#tl_revenue-week-tab').on("shown.bs.tab", function () {
         "saleRevenueWeek",
         "113",
         (data = [40, 30, 35, 20, 25, 40, 35]),
-        labels = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+        labels = ["2023-12-01", "2023-12-02", "2023-12-03", "2023-12-04", "2023-12-05", "2023-12-06", "2023-12-07"],
         "Current period",
         true
 
@@ -783,7 +770,7 @@ $('#tl_revenue-month-tab').on("shown.bs.tab", function () {
         "saleRevenueMonth",
         "113",
         (data = [20, 36, 25, 50, 40, 55, 40, 75, 35, 40, 35, 58]),
-        labels = ['2h', '4h', '6h', '8h', '10h', '12h', '14h', '16h', '18h', '20h', '22h', '24h'],
+        labels = ["2023-12-01", "2023-12-02", "2023-12-03", "2023-12-04", "2023-12-05", "2023-12-06", "2023-12-07"],
         "Current period",
         true
     );

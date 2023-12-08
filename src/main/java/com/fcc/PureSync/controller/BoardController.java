@@ -36,7 +36,7 @@ public class BoardController {
      * 수정
      */
     @PutMapping("/{boardSeq}")
-    public ResultDto updateBoard(@PathVariable Long boardSeq, BoardDto boardDto, String id, MultipartFile file) throws IOException {
+    public ResultDto updateBoard(@PathVariable Long boardSeq, BoardDto boardDto, String id, List<MultipartFile> file) throws IOException {
         return boardService.updateBoard(boardSeq, boardDto, id, file);
     }
 

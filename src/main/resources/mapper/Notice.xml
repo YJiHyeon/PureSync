@@ -11,6 +11,12 @@
             tb_notice
         ORDER BY
             notice_seq DESC
+        limit #{start}, 10
+    </select>
+
+    <select id="Notice_getTotalCnt" resultType="int">
+        SELECT COUNT(*) FROM
+        tb_notice
     </select>
 
     <select id="noticeBoardView" resultType="NoticeDto" parameterType="NoticeDto">

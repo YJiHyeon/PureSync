@@ -13,5 +13,5 @@ public interface MdTrashRepository extends JpaRepository<MdTrash, Long> {
     List<MdTrash> findAllByMemberOrderByTsWdateDesc(Member member);
     List<MdTrash> findAllByMemberAndTsStatusOrderByTsWdateDesc(Member member, boolean status);
 
-    List<MdTrash> findAllByTsStatusAndTsWdateBetween(boolean status, LocalDateTime startDate, LocalDateTime endDate);
+    List<MdTrash> findAllByTsStatusAndTsWdateBefore(boolean status, LocalDateTime endDate);
 }

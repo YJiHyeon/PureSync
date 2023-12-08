@@ -1,6 +1,7 @@
 package com.fcc.PureSync.dto;
 
 
+import com.fcc.PureSync.common.BaseDto;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
 @Builder
 @Getter
 @Setter
-public class NoticeDto {
+public class NoticeDto extends BaseDto {
     private Long notice_seq;
     private String notice_title;
     private String notice_contents;
