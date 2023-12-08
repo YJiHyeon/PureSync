@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect ,useState} from 'react'
 import {
     Loading,
     UsersAvatarGroup,
@@ -14,11 +14,13 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import {Button} from 'components/ui'
 import { HiOutlineClock, HiOutlineCog, HiOutlinePencil, HiOutlineInboxIn, HiOutlineTrash } from 'react-icons/hi'
+import {getboardFile} from 'services/DashboardService'
+
 
 const ArticleContent = ({ articleId }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch()
-
+    const [flag, setFlag]=useState(false);
     const article = useSelector(
         (state) => state.knowledgeBaseArticle.data.article
     )
@@ -27,10 +29,12 @@ const ArticleContent = ({ articleId }) => {
     )
 
     const { search } = useLocation()
-    const imageUrl = `https://fccbucket123.s3.ap-northeast-2.amazonaws.com/fileUpload/${article.boardfileName}`;
+    //const imageUrl = `https://fccbucket123.s3.ap-northeast-2.amazonaws.com/fileUpload/${response.data.boardfileName}`;
 
     useEffect(() => {
+        setFlag(false);
         fetchData()
+        setFlag(true);
         // eslint-disable-next-line react-hooks/exhaustive-deps
         console.log(article);
     }, [search])
@@ -59,9 +63,13 @@ const ArticleContent = ({ articleId }) => {
     const commentRegister =()=>{
         //alert("댓글등록");
         //setRegister(true);
-        
+        console.log( article.findBoardFile);
         fetchData()
     }
+
+    
+
+    const [imageUrlList, setImageUrlList] = useState([]);
 
     return (
         <Loading
@@ -105,9 +113,12 @@ const ArticleContent = ({ articleId }) => {
             <div className="mt-8 prose dark:prose-invert max-w-none">
                 <p>{ReactHtmlParser(article.content || '')}</p>
                 <p>{article.boardContents}</p>
-                {article.boardfileName && (
-                    <img src={imageUrl} alt="image" style={{ width: '500px', height: 'auto' }} />
-                )}
+                {}
+                {
+                    flag==true? article.boardFile.map((item, index) => (
+    <img key={index} src={item.fileUrl} alt={`image-${index}`} style={{ width: '500px', height: 'auto' }} />
+            )):""
+                    }
             </div>
 
 

@@ -24,13 +24,13 @@
                   <div class="col-lg-12">
 
                      <div class="breadcrumb-main">
-                        <h4 class="text-capitalize breadcrumb-title">공지 게시판 상세 보기</h4>
+                        <h4 class="text-capitalize breadcrumb-title">유저 게시판 상세 보기</h4>
                         <div class="breadcrumb-action justify-content-center flex-wrap">
                            <nav aria-label="breadcrumb">
                               <ol class="breadcrumb">
                                  <li class="breadcrumb-item"><a href="/index"><i class="uil uil-estate"></i>main</a></li>
-                                 <li class="breadcrumb-item"><a href="/adminBoardList">adminBoardList</a></li>
-                                 <li class="breadcrumb-item active" aria-current="page">adminBoardView</li>
+                                 <li class="breadcrumb-item"><a href="/admin/userBoard/userList/0">userBoardList</a></li>
+                                 <li class="breadcrumb-item active" aria-current="page">userBoardView</li>
                               </ol>
                            </nav>
                         </div>
@@ -42,25 +42,27 @@
                   <div class="col-lg-8 col-12">
                      <article class="blog-details">
                         <div class="blog-details-content">
-                           <h1 class="main-title mb-30">제목</h1>
+                           <h1 class="main-title mb-30" th:text="${userBoardView.board_name}" >제목</h1>
                            <ul class="blog-details-meta">
                               <li class="blog-author">
-                                    <span></span>
-                              </li>관리자
-                              <li class="author-name">
-                                 <a href="#" rel="bookmark">
-                                    <time class="entry-date published updated" datetime="2022-01-25T10:55:00+06:00">January 25, 2022</time> <!-- 작성일 -->
+                                   <!-- <img th:src="'https://fccbucket123.s3.ap-northeast-2.amazonaws.com/fileUpload/' + ${userBoardView.mem_img}">  --> <!-- 프사 -->
+                                 </a>
+                                    <span th:text="${userBoardView.mem_id}" >작성자</span>
                                  </a>
                               </li>
+                              <li class="author-name">
+                                 <time class="entry-date published updated" th:text="${userBoardView.board_wdate}"></time><!-- 작성일 -->
+                                 </a>
+                              </li>
+                              <li class="blog-read-time">좋아요 <span th:text="${userBoardView.board_likescount}"></span></li>
                            </ul>
                            <div class="blog-body">
-                              <p class="mb-20">
-                                    글의 내용
+                              <p class="mb-20" th:text="${userBoardView.board_contents}">
                               </p>
 
                               <div class="blog-block-image mb-30 pb-10">
-                                 <figure>
-                                    <img class="img-fluid" src="img/blog-details.png" alt="blog_details">
+                                 <figure th:each="file : ${fileList}">
+                                    <img class="img-fluid" th:src="'https://fccbucket123.s3.ap-northeast-2.amazonaws.com/fileUpload/' + ${file.boardfile_name}">
                                  </figure>
                               </div>
                               
@@ -86,7 +88,6 @@
    </div>
    <div class="overlay-dark-sidebar"></div>
    <div class="customizer-overlay"></div>
-   <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBgYKHZB_QKKLWfIRaYPCadza3nhTAbv7c"></script>
    <th:block th:include="~{/fragments/scripts :: scriptFragment}"></th:block>
 </body>
 

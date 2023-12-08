@@ -24,13 +24,13 @@
                   <div class="col-lg-12">
 
                      <div class="breadcrumb-main">
-                        <h4 class="text-capitalize breadcrumb-title">유저 게시판 상세 보기</h4>
+                        <h4 class="text-capitalize breadcrumb-title">공지 게시판 상세 보기</h4>
                         <div class="breadcrumb-action justify-content-center flex-wrap">
                            <nav aria-label="breadcrumb">
                               <ol class="breadcrumb">
                                  <li class="breadcrumb-item"><a href="/index"><i class="uil uil-estate"></i>main</a></li>
-                                 <li class="breadcrumb-item"><a href="/userBoardList">userBoardList</a></li>
-                                 <li class="breadcrumb-item active" aria-current="page">userBoardView</li>
+                                 <li class="breadcrumb-item"><a href="/admin/notice/list/0">adminBoardList</a></li>
+                                 <li class="breadcrumb-item active" aria-current="page">adminBoardView</li>
                               </ol>
                            </nav>
                         </div>
@@ -42,38 +42,27 @@
                   <div class="col-lg-8 col-12">
                      <article class="blog-details">
                         <div class="blog-details-content">
-                           <h1 class="main-title mb-30">제목</h1>
+                           <h1 class="main-title mb-30" th:text="${noticeView.notice_title}">제목</h1>
                            <ul class="blog-details-meta">
                               <li class="blog-author">
-                                 <a href="#">
-                                    <img src="img/tm4.png" alt="">   <!-- 프사 -->
-                                 </a>
-                                 <a href="#">
-                                    <span>작성자</span>
-                                 </a>
+                                    <span th:text="${noticeView.notice_writer}">관리자</span>
                               </li>
                               <li class="author-name">
                                  <a href="#" rel="bookmark">
-                                    <time class="entry-date published updated" datetime="2022-01-25T10:55:00+06:00">January 25, 2022</time> <!-- 작성일 -->
+                                    <time class="entry-date published updated" th:text="${noticeView.notice_wdate}">January 25, 2022</time> <!-- 작성일 -->
                                  </a>
                               </li>
-                              <li class="blog-read-time">좋아요 8</li>
                            </ul>
                            <div class="blog-body">
-                              <p class="mb-20">
+                              <p class="mb-20"  th:text="${noticeView.notice_contents}" >
                                     글의 내용
                               </p>
-
-                              <div class="blog-block-image mb-30 pb-10">
-                                 <figure>
-                                    <img class="img-fluid" src="img/blog-details.png" alt="blog_details">
-                                 </figure>
-                              </div>
                               
                      </article>
                   </div>
                </div>
                <!-- ends: .row -->
+
             </div>
          </div>
 
@@ -92,7 +81,6 @@
    </div>
    <div class="overlay-dark-sidebar"></div>
    <div class="customizer-overlay"></div>
-   <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBgYKHZB_QKKLWfIRaYPCadza3nhTAbv7c"></script>
    <th:block th:include="~{/fragments/scripts :: scriptFragment}"></th:block>
 </body>
 

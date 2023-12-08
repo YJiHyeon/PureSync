@@ -14,9 +14,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Member {
+public class Member extends BaseEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memSeq;
     @Builder.Default
     private Integer memStatus = 1;
@@ -27,8 +28,12 @@ public class Member {
     private String memBirth;
     private String memGender;
     private String memImg;
-    private Long memImgsize;
     private LocalDateTime memCreatedAt;
     @Builder.Default
     private LocalDateTime memLastLoginAt = LocalDateTime.now();
+
+    public void updatePassword(String memPassword) {
+        this.memPassword = memPassword;
+    }
+
 }
