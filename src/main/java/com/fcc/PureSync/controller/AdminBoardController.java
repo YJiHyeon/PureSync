@@ -1,47 +1,65 @@
 package com.fcc.PureSync.controller;
 
+import com.fcc.PureSync.dto.AdminBoardDto;
+import com.fcc.PureSync.service.AdminBoardService;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.HashMap;
+import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 public class AdminBoardController {
 
+    private final AdminBoardService adminBoardService;
+
     @GetMapping("/admin/user/list")
-    public String userBoardList() {
+    public String userBoardList(Model model, AdminBoardDto adminBoardDto) {
+        List<AdminBoardDto> userBoardList = adminBoardService.getAllUserBoardList(adminBoardDto);
+        model.addAttribute("userBoardList", userBoardList);
         return "/userBoard/userList";
     }
 
     @GetMapping("/admin/cmt/list")
-    public String adminCmtList() {
+    public String adminCmtList(Model model, AdminBoardDto adminBoardDto) {
+        List<AdminBoardDto> userCmtList = adminBoardService.getAllUserCmtList(adminBoardDto);
+        model.addAttribute("userCmtList", userCmtList);
         return "/userBoard/userCmtList";
     }
 
-    @GetMapping("/admin/user/view")
-    public String userBoardView() {
+    @GetMapping("/admin/user/view/{board_seq}")
+    public String userBoardView(Model model, @PathVariable("board_seq") long board_seq) {
+        AdminBoardDto adminBoardDto = new AdminBoardDto();
+        adminBoardDto.setBoard_seq(board_seq);
+        AdminBoardDto resultDto = adminBoardService.getUserBoardView(adminBoardDto);
+        List<AdminBoardDto> fileList = adminBoardService.getAllBoardFiles(adminBoardDto);
+        model.addAttribute("userBoardView", resultDto);
+        model.addAttribute("fileList", fileList);
         return "/userBoard/userView";
     }
 
-    // notice --------------------------------------------------------------
-
-    @GetMapping("/admin/notice/list")
-    public String adminBoardList() {
-        return "/adminBoard/noticeList";
+    @GetMapping("admin/user/list/delete/{board_seq}")
+    @ResponseBody
+    public HashMap<String, Object> userBoardSoftDelete( AdminBoardDto adminBoardDto) {
+        adminBoardService.userBoardSoftDelete(adminBoardDto);
+        HashMap<String, Object> resultMap = new HashMap<>();
+        resultMap.put("result", "success");
+        return  resultMap;
     }
 
-    @GetMapping("/admin/notice/view")
-    public String adminBoardView() {
-        return "/adminBoard/noticeView";
-    }
-
-    @GetMapping("/admin/notice/write")
-    public String adminBoardWrite() {
-        return "/adminBoard/noticeWrite";
-    }
-
-    @GetMapping("/admin/notice/modify")
-    public String adminBoardModify() {
-        return "/adminBoard/noticeModify";
+    @GetMapping("admin/cmt/list/delete/{cmt_seq}")
+    @ResponseBody
+    public HashMap<String, Object> cmtSoftDelete( AdminBoardDto adminBoardDto) {
+        adminBoardService.cmtSoftDelete(adminBoardDto);
+        HashMap<String, Object> resultMap = new HashMap<>();
+        resultMap.put("result", "success");
+        return  resultMap;
     }
 
 

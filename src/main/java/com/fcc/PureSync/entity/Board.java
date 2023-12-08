@@ -28,7 +28,7 @@ public class Board {
     @Builder.Default
     private Long boardLikescount=0L;
     @Builder.Default
-    private boolean boardStatus=true;
+    private Integer boardStatus=1;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "mem_seq")

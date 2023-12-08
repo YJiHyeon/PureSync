@@ -19,7 +19,7 @@ public class CommentDto {
     private String cmtContents;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime cmtWdate;
-    private Boolean cmtStatus;
+    private Integer cmtStatus;
     private Long memSeq;
     private Long boardSeq;
 
@@ -28,7 +28,7 @@ public class CommentDto {
                 .cmtSeq(comment.getCmtSeq())
                 .cmtContents(comment.getCmtContents())
                 .cmtWdate(comment.getCmtWdate())
-                .cmtStatus(comment.isCmtStatus())
+                .cmtStatus(comment.getCmtStatus())
                 .memSeq(comment.getMember().getMemSeq())
                 .boardSeq(comment.getBoard().getBoardSeq())
                 .build();

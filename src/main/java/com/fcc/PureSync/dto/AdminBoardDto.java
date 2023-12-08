@@ -19,12 +19,18 @@ public class AdminBoardDto {
     private Integer board_likescount;
     private Integer board_status;
     private  Long mem_seq;
+    private String mem_id;
+    private String mem_img;
+
+    private String board_status_text;
 
     // 유저 댓글
     private  Long cmt_seq;
     private String cmt_contents;
     private String cmt_wdate;
     private Integer cmt_status;
+
+    private String cmt_status_text;
 
     // 유저 파일
     private Long boardfile_seq;

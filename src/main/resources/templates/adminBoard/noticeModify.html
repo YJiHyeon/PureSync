@@ -7,6 +7,7 @@
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
    <title>PureSync Admin</title>
    <th:block th:include="~{/fragments/styles :: styleFragment}"></th:block>
+   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 
 <body class="layout-light side-menu">
@@ -29,7 +30,7 @@
                            <nav aria-label="breadcrumb">
                               <ol class="breadcrumb">
                                  <li class="breadcrumb-item"><a href="/index"><i class="uil uil-estate"></i>main</a></li>
-                                 <li class="breadcrumb-item"><a href="/userBoardList">userBoardList</a></li>
+                                 <li class="breadcrumb-item"><a href="/admin/notice/list">userBoardList</a></li>
                                  <li class="breadcrumb-item active" aria-current="page">adminBoardModify</li>
                               </ol>
                            </nav>
@@ -43,42 +44,24 @@
                      <div class="job-apply-wrapper">
                         <div class="job-apply__content">
                            <h1>
-                              공지 글 쓰기
+                              공지 글 수정하기
                            </h1>
                            <form>
                               <div class="form-group">
                                  <label>제목</label>
-                                 <input type="text" class="form-control" placeholder="제목을 입력하세요">
+                                 <input type="text" class="form-control" id="noticeTitle" th:value="${noticeModify.notice_title}">
                               </div>
                               <div class="form-group">
                                  <label>내용</label>
-                                 <textarea class="form-control" rows="3" placeholder="내용을 입력하세요"></textarea>
-                              </div>
-
-                              <div class="form-group">
-                                 <label>파일 업로드</label>
-                                 <div class="dm-tag-wrap">
-
-                                    <div class="dm-upload">
-                                       <div class="dm-upload__button">
-                                          <a href="javascript:void(0)" class="btn btn-lg btn-outline-lighten btn-upload" onclick="$('#upload-1').click()"> <img class="svg" src="img/svg/paperclip.svg" alt="paperclip"> Browse</a>
-                                          <input type="file" name="upload-1" class="upload-one" id="upload-1">
-                                       </div>
-                                       <div class="dm-upload__file">
-                                          <ul>
-
-                                          </ul>
-                                       </div>
-                                    </div>
-
-                                 </div>
-                              </div>
-
-                              <div class="button-group d-flex justify-content-end pt-15">
-                                 <button class="btn btn-primary btn-default btn-squared">수정하기</button>
+                                 <textarea class="form-control" rows="3" id="noticeContents" th:value="${noticeModify.notice_contents}"></textarea>
                               </div>
 
                            </form>
+
+                           <div class="button-group d-flex justify-content-end pt-15">
+                              <button id="submitBtn" class="btn btn-primary btn-default btn-squared">수정하기</button>
+                           </div>
+
                         </div>
                      </div>
                   </div>
@@ -108,3 +91,35 @@
 </body>
 
 </html>
+
+<script>
+   document.getElementById("submitBtn").addEventListener("click", () => {
+      modifyNotice();
+   });
+
+   const modifyNotice = () => {
+      const noticeTitle = document.getElementById("noticeTitle").value;
+      const noticeContents = document.getElementById("noticeContents").value;
+
+      if (!noticeTitle || !noticeContents) {
+         alert("제목과 내용을 모두 입력하세요.");
+         return;
+      }
+
+      const requestData = {
+         notice_title: noticeTitle,
+         notice_contents: noticeContents
+      };
+
+      axios.post("/admin/notice/modifyOk", requestData)
+         .then((res) => {
+            if (res.data.result === "success") {
+               window.location.href = '/admin/notice/list';
+            }
+         })
+         .catch( (error) => {
+            console.error('공지 등록 중 오류 발생:', error);
+      });
+   }
+
+</script>

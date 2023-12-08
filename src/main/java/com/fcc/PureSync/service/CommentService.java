@@ -40,13 +40,13 @@ public class CommentService {
     }
 
     private void boardStatusChk(Board board) {
-        if (!board.isBoardStatus()) {
+        if (board.getBoardStatus()==0) {
             throw new CustomException(CustomExceptionCode.ALREADY_DELETED_ARTICLE);
         }
     }
 
     private void commentStatusChk(Comment comment) {
-        if (!comment.isCmtStatus()) {
+        if (comment.getCmtStatus()==0) {
             throw new CustomException(CustomExceptionCode.ALREADY_DELETED_COMMENT);
         }
     }
@@ -113,7 +113,7 @@ public class CommentService {
         Comment updatedComment = Comment.builder()
                 .cmtSeq(comment.getCmtSeq())
                 .cmtContents(comment.getCmtContents())
-                .cmtStatus(false)
+                .cmtStatus(0)
                 .cmtWdate(comment.getCmtWdate())
                 .member(member)
                 .board(board)
@@ -128,7 +128,7 @@ public class CommentService {
 
 
     public ResultDto getComment(Pageable pageable, Long boardSeq) {
-        List<Comment> commentList = commentRepository.findByCmtStatusOrderByCmtWdateDesc(pageable,true);
+        List<Comment> commentList = commentRepository.findByCmtStatusOrderByCmtWdateDesc(pageable,1);
         List<CommentDto> commentDtoList = commentList.stream()
                 .map(CommentDto::toDto)
                 .toList();
