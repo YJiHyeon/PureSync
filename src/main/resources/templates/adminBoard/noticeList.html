@@ -24,15 +24,20 @@
 
                   <div class="breadcrumb-main user-member justify-content-sm-between ">
                      <div class="d-flex flex-wrap justify-content-center breadcrumb-main__wrapper">
+
                         <form action="/" class="d-flex align-items-center user-member__form my-sm-0 my-2">
                            <img src="/img/svg/search.svg" alt="search" class="svg">
-                           <input class="form-control me-sm-2 border-0 box-shadow-none" type="search" placeholder="제목으로 검색하세요🔍" aria-label="Search">
+                           <input type="hidden" id="page" th:value="${pg}" >
+                           <input class="form-control me-sm-2 border-0 box-shadow-none" id="searchText" type="search"
+                                  placeholder="유저 아이디로 검색하세요🔍" aria-label="Search" th:value="${noticeDto.searchText}"
+                                  onkeydown="if (event.keyCode === 13) onSearch()">
+                           
                         </form>
-                        <button type="button" id="searchBtn" class="btn btn-primary btn-default btn-squared">
+                        <button type="button" id="searchBtn" class="btn btn-primary btn-default btn-squared" onclick="onSearch()">
                            <img src="/img/svg/search.svg" alt="search" class="svg"> 검색
                         </button>
-                     </div>
 
+                     </div>
 
                      <div class="button-group d-flex pt-15">
                         <a href="/admin/notice/write" class="btn btn-primary btn-default btn-squared">글쓰기</a>
@@ -150,10 +155,21 @@
       }
    }
 
-    function goPage(pg) {
-		var url = "/admin/notice/list/" + pg; // 페이지 번호에 맞는 URL 생성
-		window.location.href = url; // 새로운 URL로 페이지 이동
-	}
+   function goPage(pg) {
+       const searchText = document.getElementById("searchText").value;
+       const url = `/admin/notice/list/${pg}?searchText=${encodeURIComponent(searchText)}`;
+       window.location.href = url;
+   }
 
+   function onSearch() {
+        let pg = document.getElementById("page").value;
+       const searchText = document.getElementById("searchText").value;
+       const url = `/admin/notice/list/${pg}?searchText=${encodeURIComponent(searchText)}`; // 검색어를 URL 파라미터로 인코딩하여 URL 생성
+
+       // 검색어를 업데이트하여 입력란에 설정
+       document.getElementById("searchText").value = searchText;
+
+       window.location.href = url;
+   }
 
 </script>

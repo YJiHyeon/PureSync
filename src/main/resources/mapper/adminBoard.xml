@@ -27,8 +27,6 @@
     LIMIT #{start}, 10;
     </select>
 
-
-
     <select id="userBoardView" resultType="AdminBoardDto" parameterType="AdminBoardDto">
         SELECT
             b.board_seq, b.board_name, b.board_contents, b.board_wdate, b.board_likescount,
@@ -60,7 +58,7 @@
         ON
             c.mem_seq = m.mem_seq
         WHERE
-            m.mem_id LIKE '%' || #{SearchText} || '%'
+            m.mem_id LIKE CONCAT('%', #{searchText}, '%')
         ORDER BY
             c.cmt_seq DESC
         limit #{start}, 10
@@ -68,11 +66,10 @@
 
     <select id="Board_getTotalCnt" resultType="int" parameterType="AdminBoardDto" >
         SELECT COUNT(*)
-        FROM
-            tb_board AS b
+        FROM tb_board AS b
         LEFT OUTER JOIN  tb_member AS m
         ON
-        b.mem_seq = m.mem_seq
+            b.mem_seq = m.mem_seq
         WHERE
             m.mem_id LIKE CONCAT('%', #{searchText}, '%')
     </select>
@@ -80,10 +77,9 @@
     <select id="Cmt_getTotalCnt" resultType="int" parameterType="AdminBoardDto">
         SELECT COUNT(*)
         FROM tb_comment b
-        LEFT OUTER JOIN
-        tb_member AS m
+        LEFT OUTER JOIN tb_member AS m
         ON
-        b.mem_seq = m.mem_seq
+            b.mem_seq = m.mem_seq
         WHERE
             m.mem_id LIKE CONCAT('%', #{searchText}, '%')
     </select>

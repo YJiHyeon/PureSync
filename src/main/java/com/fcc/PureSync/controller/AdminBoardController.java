@@ -22,13 +22,10 @@ public class AdminBoardController {
 
     @GetMapping("/admin/user/list/{pg}")
     public String userBoardList(Model model, AdminBoardDto adminBoardDto , @PathVariable("pg") int pg) {
-
         String searchText = URLDecoder.decode( adminBoardDto.getSearchText() );
-
-        if( searchText == null ) {
-            searchText = " ";
-        }
-
+            if( searchText == null ) {
+                searchText = " ";
+            }
         adminBoardDto.setSearchText(searchText);
         adminBoardDto.setStart(pg*10);
         List<AdminBoardDto> userBoardList = adminBoardService.getAllUserBoardList(adminBoardDto);
@@ -41,13 +38,17 @@ public class AdminBoardController {
 
     @GetMapping("/admin/cmt/list/{pg}")
     public String adminCmtList(Model model, AdminBoardDto adminBoardDto , @PathVariable("pg") int pg) {
+        String searchText = URLDecoder.decode( adminBoardDto.getSearchText() );
+        if( searchText == null ) {
+            searchText = " ";
+        }
 
-        System.out.println("pg ===>"+ pg);
         adminBoardDto.setStart(pg*10);
         List<AdminBoardDto> userCmtList = adminBoardService.getAllUserCmtList(adminBoardDto);
 
-        model.addAttribute("userCmtList", userCmtList);
         model.addAttribute("page", Pager.makePage(10, adminBoardService.getCmtTotalcnt(adminBoardDto), pg));
+        model.addAttribute("userCmtList", userCmtList);
+        model.addAttribute("pg", pg );
 
         return "/userBoard/userCmtList";
     }
