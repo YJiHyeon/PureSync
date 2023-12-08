@@ -1,8 +1,7 @@
 package com.fcc.PureSync.controller;
 
-import com.fcc.PureSync.dto.AdminBoardDto;
+import com.fcc.PureSync.common.Pager;
 import com.fcc.PureSync.dto.NoticeDto;
-import com.fcc.PureSync.service.AdminBoardService;
 import com.fcc.PureSync.service.NoticeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -18,10 +17,12 @@ public class AdminNoticeController {
 
     private final NoticeService noticeService;
 
-    @GetMapping("/admin/notice/list")
-    public String adminBoardList(Model model, NoticeDto noticeDto) {
+    @GetMapping("/admin/notice/list/{pg}")
+    public String adminBoardList(Model model, NoticeDto noticeDto , @PathVariable("pg") int pg) {
+        noticeDto.setStart(pg*10);
         List<NoticeDto> noticeList = noticeService.getAllNoticeList(noticeDto);
         model.addAttribute("noticeList", noticeList);
+        model.addAttribute("page", Pager.makePage(10, noticeService.getNoticeTotalcnt(), pg));
         return "/adminBoard/noticeList";
     }
 
