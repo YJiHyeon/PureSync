@@ -7,9 +7,6 @@ import SummaryChart from 'views/ui-components/graph/Charts/SummaryChart';
 function Summary(props) {
   const [loading, setLoading] = useState(false);
 
-
-
-
   return (
     <div className="summary-container">
       <h2>요약</h2>
