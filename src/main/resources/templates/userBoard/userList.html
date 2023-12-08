@@ -169,16 +169,16 @@
    }
 
 
-function onSearch() {
-     let pg = document.getElementById("page").value;
-    const searchText = document.getElementById("searchText").value;
-    const url = `/admin/user/list/${pg}?searchText=${encodeURIComponent(searchText)}`; // 검색어를 URL 파라미터로 인코딩하여 URL 생성
+   function onSearch() {
+        let pg = document.getElementById("page").value;
+       const searchText = document.getElementById("searchText").value;
+       const url = `/admin/user/list/${pg}?searchText=${encodeURIComponent(searchText)}`; // 검색어를 URL 파라미터로 인코딩하여 URL 생성
 
-    // 검색어를 업데이트하여 입력란에 설정
-    document.getElementById("searchText").value = searchText;
+       // 검색어를 업데이트하여 입력란에 설정
+       document.getElementById("searchText").value = searchText;
 
-    window.location.href = url;
-}
+       window.location.href = url;
+   }
 
 
 </script>

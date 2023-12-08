@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 
@@ -19,10 +20,19 @@ public class AdminNoticeController {
 
     @GetMapping("/admin/notice/list/{pg}")
     public String adminBoardList(Model model, NoticeDto noticeDto , @PathVariable("pg") int pg) {
+        String searchText = URLDecoder.decode( noticeDto.getSearchText() );
+        if( searchText == null ) {
+            searchText = " ";
+        }
+
+        noticeDto.setSearchText(searchText);
         noticeDto.setStart(pg*10);
         List<NoticeDto> noticeList = noticeService.getAllNoticeList(noticeDto);
+
         model.addAttribute("noticeList", noticeList);
-        model.addAttribute("page", Pager.makePage(10, noticeService.getNoticeTotalcnt(), pg));
+        model.addAttribute("page", Pager.makePage(10, noticeService.getNoticeTotalcnt(noticeDto), pg));
+        model.addAttribute("pg", pg );
+
         return "/adminBoard/noticeList";
     }
 
