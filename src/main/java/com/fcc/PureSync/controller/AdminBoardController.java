@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 
@@ -21,11 +22,20 @@ public class AdminBoardController {
 
     @GetMapping("/admin/user/list/{pg}")
     public String userBoardList(Model model, AdminBoardDto adminBoardDto , @PathVariable("pg") int pg) {
+
+        String searchText = URLDecoder.decode( adminBoardDto.getSearchText() );
+
+        if( searchText == null ) {
+            searchText = " ";
+        }
+
+        adminBoardDto.setSearchText(searchText);
         adminBoardDto.setStart(pg*10);
         List<AdminBoardDto> userBoardList = adminBoardService.getAllUserBoardList(adminBoardDto);
 
-        model.addAttribute("page", Pager.makePage(10, adminBoardService.getBoardTotalcnt(), pg));
+        model.addAttribute("page", Pager.makePage(10, adminBoardService.getBoardTotalcnt(adminBoardDto), pg));
         model.addAttribute("userBoardList", userBoardList);
+        model.addAttribute("pg", pg );
         return "/userBoard/userList";
     }
 
@@ -37,7 +47,7 @@ public class AdminBoardController {
         List<AdminBoardDto> userCmtList = adminBoardService.getAllUserCmtList(adminBoardDto);
 
         model.addAttribute("userCmtList", userCmtList);
-        model.addAttribute("page", Pager.makePage(10, adminBoardService.getCmtTotalcnt(), pg));
+        model.addAttribute("page", Pager.makePage(10, adminBoardService.getCmtTotalcnt(adminBoardDto), pg));
 
         return "/userBoard/userCmtList";
     }

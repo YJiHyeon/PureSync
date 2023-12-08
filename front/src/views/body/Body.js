@@ -39,7 +39,7 @@ const BodyMenu = () => {
 
     // 식단 리스트 불러오기
     const callMenu = () => {
-        Axios.get('http://127.0.0.1:9000/api/menu/list', {
+        Axios.get( process.env.REACT_APP_HOST_URL + '/api/menu/list', {
             params: {
                 mem_seq: 1,
                 menu_date: selectDate,
@@ -91,7 +91,7 @@ const BodyMenu = () => {
 
     // 식단 삭제
     const menuDelete = (menu_seq) => {
-        Axios.post(`http://127.0.0.1:9000/api/menu/delete`, {
+        Axios.post(process.env.REACT_APP_HOST_URL + '/api/menu/delete', {
             menuSeq: menu_seq
         })
         .then((res) => {
@@ -109,7 +109,7 @@ const BodyMenu = () => {
     const [exerciseRefresh, setExerciseRefresh] = useState(false);
 
     const callExercise = () => {
-        Axios.get('http://127.0.0.1:9000/api/exercise/list', {
+        Axios.get( process.env.REACT_APP_HOST_URL + '/api/exercise/list', {
             params: {
                 mem_seq: 1,
                 el_date: selectDate,
@@ -136,7 +136,7 @@ const BodyMenu = () => {
 
     //운동 삭제
     const exerciseDelete = (el_seq) => {
-        Axios.post(`http://127.0.0.1:9000/api/exercise/delete`, {
+        Axios.post(process.env.REACT_APP_HOST_URL +'/api/exercise/delete', {
             elSeq: el_seq,
             memSeq: 1
         })
@@ -157,7 +157,7 @@ const BodyMenu = () => {
 
     // 데이터 불러오기
     const callSummary = () => {
-        Axios.get('http://127.0.0.1:9000/api/summary/list', {
+        Axios.get( process.env.REACT_APP_HOST_URL + '/api/summary/list', {
             params: {
                 mem_seq: 1,
                 menu_date: selectDate,
