@@ -1,11 +1,16 @@
 import ApiService from './ApiService'
+import Axios from 'axios'
+
 
 export async function apiSignIn(data) {
-    return ApiService.fetchData({
-        url: '/sign-in',
-        method: 'post',
-        data,
-    })
+    const POST_URL = `http://localhost:9000/api/member/login`;
+    try {
+        const response = await Axios.post(POST_URL, data, {withCredentials: true});
+        return response.data;
+    } catch (error) {
+        console.error('Login error', error);
+        throw error;
+    }
 }
 
 export async function apiSignUp(data) {

@@ -23,8 +23,8 @@ const appsNavigationConfig = [
                 translateKey: 'nav.home',
                 icon: 'account',
                 type: NAV_ITEM_TYPE_ITEM,
-
-                authority: [ADMIN, USER],
+                authority: [],    
+                // authority: [ADMIN, USER],
                 subMenu: [
                     
                 ],

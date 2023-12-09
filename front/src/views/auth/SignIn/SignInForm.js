@@ -8,14 +8,17 @@ import {
     Alert,
 } from 'components/ui'
 import { PasswordInput, ActionLink } from 'components/shared'
+import { useNavigate } from "react-router-dom";
 import useTimeOutMessage from 'utils/hooks/useTimeOutMessage'
 import { Field, Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import useAuth from 'utils/hooks/useAuth'
+import Axios from 'axios'
+
 
 const validationSchema = Yup.object().shape({
-    userName: Yup.string().required('Please enter your user name'),
-    password: Yup.string().required('Please enter your password'),
+    memId: Yup.string().required('ID를 입력해주세요.'),
+    memPassword: Yup.string().required('PASSWORD를 입력해주세요.'),
     rememberMe: Yup.bool(),
 })
 
@@ -26,23 +29,34 @@ const SignInForm = (props) => {
         forgotPasswordUrl = '/forgot-password',
         signUpUrl = '/sign-up',
     } = props
+    const push = useNavigate()
 
     const [message, setMessage] = useTimeOutMessage()
+
 
     const { signIn } = useAuth()
 
     const onSignIn = async (values, setSubmitting) => {
-        const { userName, password } = values
-        setSubmitting(true)
-
-        const result = await signIn({ userName, password })
-
-        if (result.status === 'failed') {
-            setMessage(result.message)
+        // const POST_URL = `http://localhost:9000/api/member/login`
+        const { memId, memPassword } = values
+        
+        try {
+            const response = await signIn( { memId, memPassword });
+            setSubmitting(true);
+            setMessage(response.message);
+        } catch (err) {
+            setSubmitting(false)
+            setMessage(err.message)
         }
 
-        setSubmitting(false)
-    }
+        // const result = await signIn({ userName, password })
+
+        // if (result.status === 'failed') {
+        //     setMessage(result.message)
+        // }
+
+        // setSubmitting(false)
+    };
 
     return (
         <div className={className}>
@@ -52,10 +66,9 @@ const SignInForm = (props) => {
                 </Alert>
             )}
             <Formik
-                // Remove this initial value
                 initialValues={{
-                    userName: 'admin',
-                    password: '123Qwe',
+                    memId: '',
+                    memPassword: '',
                     rememberMe: true,
                 }}
                 validationSchema={validationSchema}
@@ -71,27 +84,25 @@ const SignInForm = (props) => {
                     <Form>
                         <FormContainer>
                             <FormItem
-                                label="User Name"
-                                invalid={errors.userName && touched.userName}
-                                errorMessage={errors.userName}
+                                label="아이디"
+                                invalid={errors.memId && touched.memId}
+                                errorMessage={errors.memId}
                             >
                                 <Field
                                     type="text"
                                     autoComplete="off"
-                                    name="userName"
-                                    placeholder="User Name"
+                                    name="memId"
                                     component={Input}
                                 />
                             </FormItem>
                             <FormItem
-                                label="Password"
-                                invalid={errors.password && touched.password}
-                                errorMessage={errors.password}
+                                label="비밀번호"
+                                invalid={errors.memPassword && touched.memPassword}
+                                errorMessage={errors.memPassword}
                             >
                                 <Field
                                     autoComplete="off"
-                                    name="password"
-                                    placeholder="Password"
+                                    name="memPassword"
                                     component={PasswordInput}
                                 />
                             </FormItem>
@@ -100,10 +111,10 @@ const SignInForm = (props) => {
                                     className="mb-0"
                                     name="rememberMe"
                                     component={Checkbox}
-                                    children="Remember Me"
+                                    children="로그인 정보 저장"
                                 />
                                 <ActionLink to={forgotPasswordUrl}>
-                                    Forgot Password?
+                                    비밀번호를 잊어버리셨나요?
                                 </ActionLink>
                             </div>
                             <Button
@@ -112,11 +123,11 @@ const SignInForm = (props) => {
                                 variant="solid"
                                 type="submit"
                             >
-                                {isSubmitting ? 'Signing in...' : 'Sign In'}
+                                {isSubmitting ? 'Signing in...' : '로그인'}
                             </Button>
                             <div className="mt-4 text-center">
-                                <span>Don't have an account yet? </span>
-                                <ActionLink to={signUpUrl}>Sign up</ActionLink>
+                                <span>계정이 없으신가요? </span>
+                                <ActionLink to={signUpUrl}>회원가입</ActionLink>
                             </div>
                         </FormContainer>
                     </Form>

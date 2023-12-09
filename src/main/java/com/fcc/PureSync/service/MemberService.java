@@ -101,7 +101,7 @@ public class MemberService {
     }
 
     //지금 가능하지만 추후 변경 필요. 헤더 토큰 사용 중임.
-    public ResultDto login(LoginDto loginDto, HttpServletResponse response) {
+    public ResultDto login(LoginDto loginDto) {
         Member member = memberRepository.findByMemIdAndMemStatus(loginDto.getMemId(), 1)
                 .orElseThrow(() -> new CustomException(NOT_FOUND_USER_ID));
 
@@ -113,13 +113,16 @@ public class MemberService {
                 new UsernamePasswordAuthenticationToken(loginDto.getMemId(), loginDto.getMemPassword());
         Authentication authentication = authenticationManager.authenticate(authToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        HashMap<String,Object> accessTokenMap = new HashMap<>();
         String accessToken = jwtUtil.createToken(member);
-        response.addHeader("Authorization", "Bearer " + accessToken);
+        accessTokenMap.put("access_token",accessToken);
+//        response.addHeader("Authorization", "Bearer " + accessToken);
 
         return ResultDto.builder()
                 .code(HttpStatus.OK.value())
                 .httpStatus(HttpStatus.OK)
                 .message("로그인 성공했습니다요.")
+                .data(accessTokenMap)
                 .build();
     }
 
