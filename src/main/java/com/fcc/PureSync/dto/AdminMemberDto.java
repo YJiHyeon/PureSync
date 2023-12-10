@@ -18,7 +18,6 @@ public class AdminMemberDto {
     private String memId;
     private String memNick;
     private String memEmail;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime memCreateAt;
     private String status;
 

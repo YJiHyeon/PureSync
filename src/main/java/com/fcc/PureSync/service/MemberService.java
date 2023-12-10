@@ -7,6 +7,7 @@ import com.fcc.PureSync.entity.Member;
 import com.fcc.PureSync.entity.MemberSearchCondition;
 import com.fcc.PureSync.entity.MpMemRole;
 import com.fcc.PureSync.exception.CustomException;
+import com.fcc.PureSync.exception.CustomExceptionCode;
 import com.fcc.PureSync.jwt.JwtUtil;
 import com.fcc.PureSync.repository.BodyRepository;
 import com.fcc.PureSync.repository.MemberRepository;
@@ -215,8 +216,34 @@ public class MemberService {
                 .build();
     }
 
+    // 어드민을 제외한 회원목록
     public Page<AdminMemberDto> getMembers(MemberSearchCondition condition, Pageable pageable) {
         return memberRepository.searchMemberList(condition, pageable);
     }
 
+    // 특정회원의 상세정보
+    public MemberDetailDto getMemberDetail(Long seq) {
+        return memberRepository.getMemberDetail(seq);
+    }
+
+    @Transactional
+    public ResultDto updateStatus(Long memSeq, Integer statusCode) {
+        HashMap<String, Object> map = new HashMap<>();
+        Member member = memberRepository.findByMemSeq(memSeq)
+                .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
+
+        member.updateStatus(statusCode);
+        member.updateModifyBy("admin"); // 로그인 구현완료후 수정 ===========================
+        memberRepository.save(member);
+        return buildResultDto(HttpStatus.CREATED.value(), HttpStatus.OK, "회원 상태 수정 성공", map);
+    }
+
+    public ResultDto buildResultDto(int code, HttpStatus status, String msg, HashMap<String, Object> map) {
+        return ResultDto.builder()
+                .code(code)
+                .httpStatus(status)
+                .message(msg)
+                .data(map)
+                .build();
+    }
 }

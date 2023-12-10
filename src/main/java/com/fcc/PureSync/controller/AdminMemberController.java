@@ -1,6 +1,8 @@
 package com.fcc.PureSync.controller;
 
 import com.fcc.PureSync.dto.AdminMemberDto;
+import com.fcc.PureSync.dto.MemberDetailDto;
+import com.fcc.PureSync.dto.ResultDto;
 import com.fcc.PureSync.entity.Member;
 import com.fcc.PureSync.entity.MemberSearchCondition;
 import com.fcc.PureSync.service.MemberService;
@@ -9,10 +11,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RequestMapping("/admin")
 @RequiredArgsConstructor
@@ -48,6 +49,26 @@ public class AdminMemberController {
         model.addAttribute("keyword", condition.getKeyword());
         model.addAttribute("category", condition.getCategory());
         model.addAttribute("status", condition.getStatus());
+    }
+
+    /*
+    * 회원목록 게시판 상세조회
+    * */
+    @GetMapping("/member/{seq}")
+    public String adminMemberDetails(@PathVariable("seq") Long seq, Model model) {
+        MemberDetailDto result = memberService.getMemberDetail(seq);
+        model.addAttribute("memberDetail", result);
+        return "users/memberView";
+    }
+
+    /*
+    * 회원정보 업데이트 (어드민)
+    * */
+    @PostMapping("/member/{seq}")
+    @ResponseBody
+    public ResultDto adminMemberUpdate(@PathVariable("seq") Long seq, @RequestBody Map<String, Integer> requestBody) {
+        int statusCode = requestBody.get("statusCode");
+        return memberService.updateStatus(seq, statusCode);
     }
 
 }
