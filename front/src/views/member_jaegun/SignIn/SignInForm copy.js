@@ -8,10 +8,12 @@ import {
     Alert,
 } from 'components/ui'
 import { PasswordInput, ActionLink } from 'components/shared'
+import { useNavigate } from "react-router-dom";
 import useTimeOutMessage from 'utils/hooks/useTimeOutMessage'
 import { Field, Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import useAuth from 'utils/hooks/useAuth'
+import Axios from 'axios'
 
 
 const validationSchema = Yup.object().shape({
@@ -27,6 +29,7 @@ const SignInForm = (props) => {
         forgotPasswordUrl = '/forgot-password',
         signUpUrl = '/sign-up',
     } = props
+    const push = useNavigate()
 
     const [message, setMessage] = useTimeOutMessage()
 
@@ -34,19 +37,25 @@ const SignInForm = (props) => {
     const { signIn } = useAuth()
 
     const onSignIn = async (values, setSubmitting) => {
-        // const POST_URL = `http://localhost:9000/api/member/login`
+        const POST_URL = "http://localhost:9000/api/member/login"
         const { memId, memPassword } = values
+        console.log(values);
         
         try {
-            const response = await signIn( { memId, memPassword });
+            await signIn(Axios.post(POST_URL, { memId, memPassword }));
             setSubmitting(true);
-            setMessage(response.message);
         } catch (err) {
             setSubmitting(false)
             setMessage(err.message)
         }
 
+        // const result = await signIn({ userName, password })
 
+        // if (result.status === 'failed') {
+        //     setMessage(result.message)
+        // }
+
+        // setSubmitting(false)
     };
 
     return (

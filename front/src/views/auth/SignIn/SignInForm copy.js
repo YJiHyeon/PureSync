@@ -13,10 +13,9 @@ import { Field, Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import useAuth from 'utils/hooks/useAuth'
 
-
 const validationSchema = Yup.object().shape({
-    memId: Yup.string().required('ID를 입력해주세요.'),
-    memPassword: Yup.string().required('PASSWORD를 입력해주세요.'),
+    userName: Yup.string().required('Please enter your user name'),
+    password: Yup.string().required('Please enter your password'),
     rememberMe: Yup.bool(),
 })
 
@@ -30,24 +29,20 @@ const SignInForm = (props) => {
 
     const [message, setMessage] = useTimeOutMessage()
 
-
     const { signIn } = useAuth()
 
     const onSignIn = async (values, setSubmitting) => {
-        // const POST_URL = `http://localhost:9000/api/member/login`
-        const { memId, memPassword } = values
-        
-        try {
-            const response = await signIn( { memId, memPassword });
-            setSubmitting(true);
-            setMessage(response.message);
-        } catch (err) {
-            setSubmitting(false)
-            setMessage(err.message)
+        const { userName, password } = values
+        setSubmitting(true)
+
+        const result = await signIn({ userName, password })
+
+        if (result.status === 'failed') {
+            setMessage(result.message)
         }
 
-
-    };
+        setSubmitting(false)
+    }
 
     return (
         <div className={className}>
@@ -57,9 +52,10 @@ const SignInForm = (props) => {
                 </Alert>
             )}
             <Formik
+                // Remove this initial value
                 initialValues={{
-                    memId: '',
-                    memPassword: '',
+                    userName: 'admin',
+                    password: '123Qwe',
                     rememberMe: true,
                 }}
                 validationSchema={validationSchema}
@@ -75,25 +71,27 @@ const SignInForm = (props) => {
                     <Form>
                         <FormContainer>
                             <FormItem
-                                label="아이디"
-                                invalid={errors.memId && touched.memId}
-                                errorMessage={errors.memId}
+                                label="User Name"
+                                invalid={errors.userName && touched.userName}
+                                errorMessage={errors.userName}
                             >
                                 <Field
                                     type="text"
                                     autoComplete="off"
-                                    name="memId"
+                                    name="userName"
+                                    placeholder="User Name"
                                     component={Input}
                                 />
                             </FormItem>
                             <FormItem
-                                label="비밀번호"
-                                invalid={errors.memPassword && touched.memPassword}
-                                errorMessage={errors.memPassword}
+                                label="Password"
+                                invalid={errors.password && touched.password}
+                                errorMessage={errors.password}
                             >
                                 <Field
                                     autoComplete="off"
-                                    name="memPassword"
+                                    name="password"
+                                    placeholder="Password"
                                     component={PasswordInput}
                                 />
                             </FormItem>
@@ -102,10 +100,10 @@ const SignInForm = (props) => {
                                     className="mb-0"
                                     name="rememberMe"
                                     component={Checkbox}
-                                    children="로그인 정보 저장"
+                                    children="Remember Me"
                                 />
                                 <ActionLink to={forgotPasswordUrl}>
-                                    비밀번호를 잊어버리셨나요?
+                                    Forgot Password?
                                 </ActionLink>
                             </div>
                             <Button
@@ -114,11 +112,11 @@ const SignInForm = (props) => {
                                 variant="solid"
                                 type="submit"
                             >
-                                {isSubmitting ? 'Signing in...' : '로그인'}
+                                {isSubmitting ? 'Signing in...' : 'Sign In'}
                             </Button>
                             <div className="mt-4 text-center">
-                                <span>계정이 없으신가요? </span>
-                                <ActionLink to={signUpUrl}>회원가입</ActionLink>
+                                <span>Don't have an account yet? </span>
+                                <ActionLink to={signUpUrl}>Sign up</ActionLink>
                             </div>
                         </FormContainer>
                     </Form>
