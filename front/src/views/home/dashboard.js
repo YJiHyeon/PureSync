@@ -27,9 +27,8 @@ const Dashboard = () => {
     const emotionList = useSelector((state) => state.memberDashboard.data.dashboardData.emotionList);
     const exerciseList = useSelector((state) => state.memberDashboard.data.dashboardData.exercise);
     const sleepList = useSelector((state) => state.memberDashboard.data.dashboardData.sleep);
-    
     const loading = useSelector((state) => state.memberDashboard.data.loading);
-
+    localStorage.removeItem("admin");
     useEffect(() => {
         fetchData();
         fetchPositiveData();
