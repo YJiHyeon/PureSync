@@ -118,7 +118,7 @@ public class QnaBoardService {
                 String storedFileName = UUID.randomUUID() + "." + ext;
 
                 // 저장할 디렉토리 경로 + 파일 이름
-                String key = "fileUpload/" + storedFileName;
+                String key = "qnaBoardImage/" + storedFileName;
 
                 try (InputStream inputStream = fileSave.getInputStream()) {
                     amazonS3Client.putObject(new PutObjectRequest(bucket, key, inputStream, objectMetadata)
@@ -216,7 +216,7 @@ public class QnaBoardService {
                 String storedFileName = UUID.randomUUID() + "." + ext;
 
                 // 저장할 디렉토리 경로 + 파일 이름
-                String key = "fileUpload/" + storedFileName;
+                String key = "qnaBoardImage/" + storedFileName;
 
                 try (InputStream inputStream = fileSave.getInputStream()) {
                     amazonS3Client.putObject(new PutObjectRequest(bucket, key, inputStream, objectMetadata)
@@ -324,7 +324,7 @@ public class QnaBoardService {
     // S3에서 파일 삭제 메소드
     private void deleteFileFromS3(String fileName) {
         try {
-            amazonS3Client.deleteObject(bucket, "fileUpload/" + fileName);
+            amazonS3Client.deleteObject(bucket, "qnaBoardImage/" + fileName);
         } catch (AmazonServiceException e) {
             // 파일 삭제 실패 처리 로직 추가
         }
