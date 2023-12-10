@@ -26,7 +26,7 @@ public abstract class BaseEntity {
 
     // 수정 시간
     @LastModifiedDate
-    @Column(updatable = false,columnDefinition = "DATETIME")
+    @Column(columnDefinition = "DATETIME")
     private LocalDateTime memUpdatedAt;
 
     // 생성 이름
@@ -39,5 +39,7 @@ public abstract class BaseEntity {
     @Column(columnDefinition = "VARCHAR(100)")
     private String memUpdatedBy;
 
-
+    public void updateModifyBy(String memUpdatedBy) {
+        this.memUpdatedBy = memUpdatedBy;
+    }
 }

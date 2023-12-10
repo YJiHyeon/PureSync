@@ -26,7 +26,7 @@
                   <div class="breadcrumb-action justify-content-center flex-wrap">
                      <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                           <li class="breadcrumb-item"><a href="#"><i class="uil uil-estate"></i>회원 관리</a></li>
+                           <li class="breadcrumb-item"><a href="#"><i class="uil uil-estate"></i>회원 목록</a></li>
                         </ol>
                      </nav>
                   </div>
@@ -163,7 +163,7 @@
                                  <td>
                                     <div class="d-flex">
                                        <div class="userDatatable-inline-title">
-                                          <a th:href="${memberList.memSeq}" class="text-dark">
+                                          <a th:href="@{/admin/member/{memSeq}(memSeq=${memberList.memSeq})}" class="text-dark">
                                              <h6 th:text="${memberList.memId}"></h6>
                                           </a>
                                        </div>
