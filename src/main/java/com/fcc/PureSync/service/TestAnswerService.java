@@ -12,7 +12,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.fcc.PureSync.dto.TestAnswerDto.toDto;
 
@@ -33,19 +36,19 @@ public class TestAnswerService {
     }
 
     public ResultDto stressAnswer(TestAnswerDto testAnswerDto, String id) {
-        Long testSeq = 1L;
+        int testSeq = 1;
         id = "aaa";
 
         Member member = memberRepository.findByMemId(id)
                 .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
 
-        if (testSeq != 1L) {
+        if (testSeq != 1) {
             throw new CustomException(CustomExceptionCode.NOT_FOUND_TEST);
         } else {
             TestAnswer testAnswer = TestAnswer.builder()
                     .testSeq(testSeq)
-                    .ansInfo(1)
                     .testAns(testAnswerDto.getTestAns())
+                    .total(calculateTotalScore(testAnswerDto.getTestAns()))
                     .member(member)
                     .build();
 
@@ -58,19 +61,19 @@ public class TestAnswerService {
     }
 
     public ResultDto depressionAnswer(TestAnswerDto testAnswerDto, String id) {
-        Long testSeq = 2L;
+        int testSeq = 2;
         id = "aaa";
 
         Member member = memberRepository.findByMemId(id)
                 .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
 
-        if (testSeq != 2L) {
+        if (testSeq != 2) {
             throw new CustomException(CustomExceptionCode.NOT_FOUND_TEST);
         } else {
             TestAnswer testAnswer = TestAnswer.builder()
                     .testSeq(testSeq)
-                    .ansInfo(2)
                     .testAns(testAnswerDto.getTestAns())
+                    .total(calculateTotalScore(testAnswerDto.getTestAns()))
                     .member(member)
                     .build();
 
@@ -82,41 +85,41 @@ public class TestAnswerService {
         }
     }
 
-    public ResultDto getAllStressAnswer(Long memSeq, Integer ansInfo) {
+    public ResultDto getAllStressAnswer(Long memSeq, int testSeq) {
         Member member = memberRepository.findById(memSeq)
                 .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
 
-        TestAnswer testAnswer = testAnswerRepository.findByMemberAndAnsInfo(member, ansInfo);
+        TestAnswer testAnswer = testAnswerRepository.findByMemberAndTestSeq(member, testSeq);
 
         HashMap<String, Object> map = new HashMap<>();
         map.put("allStressAnswer", testAnswer);
         return buildResultDto(HttpStatus.OK.value(), HttpStatus.OK, "스트레스 테스트 답변 조회 성공", map);
     }
 
-    public ResultDto getAllDepressionAnswer(Long memSeq, Integer ansInfo) {
+    public ResultDto getAllDepressionAnswer(Long memSeq, int testSeq) {
         Member member = memberRepository.findById(memSeq)
                 .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
 
-        TestAnswer testAnswer = testAnswerRepository.findByMemberAndAnsInfo(member, ansInfo);
+        TestAnswer testAnswer = testAnswerRepository.findByMemberAndTestSeq(member, testSeq);
 
         HashMap<String, Object> map = new HashMap<>();
         map.put("allDepressionAnswer", testAnswer);
         return buildResultDto(HttpStatus.OK.value(), HttpStatus.OK, "우울증 테스트 답변 조회 성공", map);
     }
 
-    public ResultDto updateStressAnswer(TestAnswerDto testAnswerDto, Long memSeq, Integer ansInfo) {
+    public ResultDto updateStressAnswer(TestAnswerDto testAnswerDto, Long memSeq, int testSeq) {
         Member member = memberRepository.findById(memSeq)
                 .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
 
         // 기존 데이터를 찾기
-        TestAnswer testAnswer = testAnswerRepository.findByMemberAndAnsInfo(member, ansInfo);
+        TestAnswer testAnswer = testAnswerRepository.findByMemberAndTestSeq(member, testSeq);
 
         // 기존 데이터 업데이트
         TestAnswer updatedTestAnswer = TestAnswer.builder()
                 .ansSeq(testAnswer.getAnsSeq())
                 .testSeq(testAnswer.getTestSeq())
-                .ansInfo(1)
                 .testAns(testAnswerDto.getTestAns())
+                .total(calculateTotalScore(testAnswerDto.getTestAns()))
                 .member(member)
                 .build();
 
@@ -128,17 +131,17 @@ public class TestAnswerService {
         return buildResultDto(HttpStatus.OK.value(), HttpStatus.OK, "스트레스 테스트 답변 수정 완료", map);
     }
 
-    public ResultDto updateDepressionAnswer(TestAnswerDto testAnswerDto, Long memSeq, Integer ansInfo) {
+    public ResultDto updateDepressionAnswer(TestAnswerDto testAnswerDto, Long memSeq, int testSeq) {
         Member member = memberRepository.findById(memSeq)
                 .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
 
-        TestAnswer testAnswer = testAnswerRepository.findByMemberAndAnsInfo(member, ansInfo);
+        TestAnswer testAnswer = testAnswerRepository.findByMemberAndTestSeq(member, testSeq);
 
         TestAnswer updatedTestAnswer = TestAnswer.builder()
                 .ansSeq(testAnswer.getAnsSeq())
                 .testSeq(testAnswer.getTestSeq())
-                .ansInfo(2)
                 .testAns(testAnswerDto.getTestAns())
+                .total(calculateTotalScore(testAnswerDto.getTestAns()))
                 .member(member)
                 .build();
 
@@ -148,5 +151,15 @@ public class TestAnswerService {
         map.put("depressionTestAnswer", toDto(updatedTestAnswer));
 
         return buildResultDto(HttpStatus.OK.value(), HttpStatus.OK, "우울증 테스트 답변 수정 완료", map);
+    }
+
+    private int calculateTotalScore(String testAns) {
+        List<Integer> testAnsValues = Arrays.stream(testAns.split(","))
+                .map(String::trim)
+                .map(Integer::parseInt)
+                .collect(Collectors.toList());
+
+        // 총합 계산
+        return testAnsValues.stream().mapToInt(Integer::intValue).sum();
     }
 }

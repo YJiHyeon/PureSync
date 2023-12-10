@@ -18,9 +18,9 @@ public class TestAnswer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ansSeq;
-    private Long testSeq;
-    private Integer ansInfo;
+    private int testSeq;
     private String testAns;
+    private int total;
 
     @Builder.Default
     private LocalDateTime ansWdate = LocalDateTime.now();

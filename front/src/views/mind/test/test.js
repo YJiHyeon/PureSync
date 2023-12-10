@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Button } from 'components/ui'
 import { useNavigate } from 'react-router-dom';
 import './test.css';
@@ -6,10 +7,35 @@ import './test.css';
 const Test = () => {
   const navigate = useNavigate();
   const [selectedTest, setSelectedTest] = useState(null);
+  const [stressScore, setStressScore] = useState(null);
+  const [depressionScore, setDepressionScore] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const memSeq = 2;
+        const testSeqStress = 1;
+        const testSeqDepression = 2;
+
+        // Stress API 호출
+        const stressResponse = await axios.get(`http://127.0.0.1:9000/api/test/stress/answer/${memSeq}/${testSeqStress}`);
+        const stressTotalScore = stressResponse.data.data.allStressAnswer.total;
+        setStressScore(stressTotalScore);
+
+        // Depression API 호출
+        const depressionResponse = await axios.get(`http://127.0.0.1:9000/api/test/depression/answer/${memSeq}/${testSeqDepression}`);
+        const depressionTotalScore = depressionResponse.data.data.allDepressionAnswer.total;
+        setDepressionScore(depressionTotalScore);
+      } catch (error) {
+        console.error('Error fetching scores:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleTest = (testType) => {
     setSelectedTest(testType);
-    navigate(`/mind/test/${testType}`);
   };
   
   return (
@@ -18,8 +44,13 @@ const Test = () => {
       <p>원하는 검사를 선택하세요:</p>
 
       <div className="test-buttons">
-        <button onClick={() => handleTest('stress')}>Stress 검사</button>
+        <button onClick={() => handleTest('stress')}>Stress 검사</button> <br />
         <button onClick={() => handleTest('depression')}>Depression 검사</button>
+      </div> <br />
+
+      <div>
+        {stressScore !== null && <p>스트레스 검사 결과: {stressScore}점</p>}
+        {depressionScore !== null && <p>우울증 검사 결과: {depressionScore}점</p>}
       </div>
 
       {selectedTest && (

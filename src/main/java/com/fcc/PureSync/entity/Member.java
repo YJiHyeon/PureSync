@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDateTime;
 
@@ -19,8 +20,7 @@ public class Member extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memSeq;
-    @Builder.Default
-    private Integer memStatus = 1;
+    private Integer memStatus;
     private String memId;
     private String memPassword;
     private String memNick;
@@ -34,6 +34,9 @@ public class Member extends BaseEntity {
 
     public void updatePassword(String memPassword) {
         this.memPassword = memPassword;
+    }
+    public void updateStatus(int memStatus) {
+        this.memStatus = memStatus;
     }
 
 }

@@ -15,9 +15,5 @@ public class AdminController {
         return "/member/login";
     }
 
-    @GetMapping("/users")
-    public String adminUsers() {
-        return "/users/main";
-    }
 
 }

@@ -23,23 +23,23 @@ public class TestAnswerController {
         return testAnswerService.depressionAnswer(testAnswerDto, id);
     }
 
-    @GetMapping("/stress/answer/{memSeq}/{ansInfo}")
-    public ResultDto getAllStressAnswer(@PathVariable Long memSeq, @PathVariable Integer ansInfo){
-        return testAnswerService.getAllStressAnswer(memSeq, ansInfo);
+    @GetMapping("/stress/answer/{memSeq}/{testSeq}")
+    public ResultDto getAllStressAnswer(@PathVariable Long memSeq, @PathVariable int testSeq){
+        return testAnswerService.getAllStressAnswer(memSeq, testSeq);
     }
 
-    @GetMapping("/depression/answer/{memSeq}/{ansInfo}")
-    public ResultDto getAllDepressionAnswer(@PathVariable Long memSeq, @PathVariable Integer ansInfo){
-        return testAnswerService.getAllDepressionAnswer(memSeq, ansInfo);
+    @GetMapping("/depression/answer/{memSeq}/{testSeq}")
+    public ResultDto getAllDepressionAnswer(@PathVariable Long memSeq, @PathVariable int testSeq){
+        return testAnswerService.getAllDepressionAnswer(memSeq, testSeq);
     }
 
-    @PutMapping("/stress/{memSeq}/{ansInfo}")
-    public ResultDto updateStressAnswer(@RequestBody TestAnswerDto testAnswerDto, @PathVariable Long memSeq, @PathVariable Integer ansInfo) {
-        return testAnswerService.updateStressAnswer(testAnswerDto, memSeq, ansInfo);
+    @PutMapping("/stress/{memSeq}/{testSeq}")
+    public ResultDto updateStressAnswer(@RequestBody TestAnswerDto testAnswerDto, @PathVariable Long memSeq, @PathVariable int testSeq) {
+        return testAnswerService.updateStressAnswer(testAnswerDto, memSeq, testSeq);
     }
 
-    @PutMapping("/depression/{memSeq}/{ansInfo}")
-    public ResultDto updateDepressionAnswer(@RequestBody TestAnswerDto testAnswerDto, @PathVariable Long memSeq, @PathVariable Integer ansInfo) {
-        return testAnswerService.updateDepressionAnswer(testAnswerDto, memSeq, ansInfo);
+    @PutMapping("/depression/{memSeq}/{testSeq}")
+    public ResultDto updateDepressionAnswer(@RequestBody TestAnswerDto testAnswerDto, @PathVariable Long memSeq, @PathVariable int testSeq) {
+        return testAnswerService.updateDepressionAnswer(testAnswerDto, memSeq, testSeq);
     }
 }

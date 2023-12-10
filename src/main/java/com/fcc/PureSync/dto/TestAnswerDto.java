@@ -15,9 +15,9 @@ import java.time.LocalDateTime;
 public class TestAnswerDto {
 
     private Long ansSeq;
-    private Long testSeq;
-    private Integer ansInfo;
+    private int testSeq;
     private String testAns;
+    private int total;
     private Long memSeq;
     private LocalDateTime ansWdate;
 
@@ -25,8 +25,8 @@ public class TestAnswerDto {
         return TestAnswerDto.builder()
                 .ansSeq(testAnswer.getAnsSeq())
                 .testSeq(testAnswer.getTestSeq())
-                .ansInfo(testAnswer.getAnsInfo())
                 .testAns(testAnswer.getTestAns())
+                .total(testAnswer.getTotal())
                 .memSeq(testAnswer.getMember().getMemSeq())
                 .ansWdate(testAnswer.getAnsWdate())
                 .build();
