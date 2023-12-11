@@ -5,11 +5,12 @@ import { HiOutlineHeart } from 'react-icons/hi';
 import { useDispatch } from 'react-redux';
 import { setArticle } from 'views/board/EditArticle/store/dataSlice';
 
-const LikeButton = ({ article }) => {
+const LikeButton = ({ article ,isLike}) => {
   const dispatch = useDispatch();
-  const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState(isLike);
   const [likesCount, setLikesCount] = useState(article.boardLikescount);
   
+ // const [findlikes, setfindlikes] = useState(false)
 
 
   const fetchData = useCallback(async () => {
@@ -28,12 +29,15 @@ const LikeButton = ({ article }) => {
   
       console.log(response2.data.data.findMyLikes);
       const findMyLikes = response2.data.data.findMyLikes;
-      setLiked(findMyLikes === 1);
+      setLiked(findMyLikes == 1);
+      console.log(liked);
     } catch (error) {
       console.error('게시물 정보 조회 중 오류:', error);
     }
   }, [article.boardSeq, dispatch]);
  
+  
+
   const handleLike = useCallback(async () => {
     try {
       // 서버에 좋아요 요청을 보냄

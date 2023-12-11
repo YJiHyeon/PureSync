@@ -21,6 +21,7 @@ const ArticleContent = ({ articleId }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch()
     const [flag, setFlag] = useState(false);
+    const [mylikes,setMylikes] = useState(0);
     const article = useSelector(
         (state) => state.knowledgeBaseArticle.data.article
     )
@@ -32,11 +33,14 @@ const ArticleContent = ({ articleId }) => {
     //const imageUrl = `https://fccbucket123.s3.ap-northeast-2.amazonaws.com/fileUpload/${response.data.boardfileName}`;
 
     useEffect(() => {
-        fetchData()
-        
+        fetchData();
+        fetchMylikes();
         // eslint-disable-next-line react-hooks/exhaustive-deps
+        
+        console.log("자잘봐" + mylikes);
         console.log(article);
-    }, [search])
+    }, [search, mylikes])
+    
 
     const fetchData = () => {
         if (articleId) {
@@ -44,7 +48,15 @@ const ArticleContent = ({ articleId }) => {
         }
         setFlag(true);
     }
-    
+    const fetchMylikes = async () => {
+        try {
+            const response = await axios.get(`http://localhost:9000/api/board/${article.boardSeq}/mylikes`)
+            setMylikes(response.data.data.findMyLikes);
+            
+        } catch (error) {
+            console.error("Error positive data:", error);
+        }
+    }
     const handleUpdate = () => {
         // 필요한 데이터를 객체로 만들어 전달
         const updateData = {
@@ -58,17 +70,7 @@ const ArticleContent = ({ articleId }) => {
         // navigate를 사용하여 editor.js로 이동하면서 데이터 전달
         navigate('/board/write', { state: { updateData } });
     }
-    const handleLike = async () => {
-        try {
-            // 서버에 좋아요 요청을 보냄
-            await axios.post(`http://localhost:9000/api/board/${article.boardSeq}/likes`);
-            
-            // 서버에서 좋아요 카운트를 업데이트했다면, 다시 데이터를 불러옴
-            fetchData();
-        } catch (error) {
-            console.error('좋아요 클릭 중 오류:', error);
-        }
-    };
+
     
     const handleDelete = async () => {
         try {
@@ -111,7 +113,7 @@ const ArticleContent = ({ articleId }) => {
             <div className="flex items-center justify-between">
                 <h3>{article.boardName}</h3>
                 <div className="gap-2 flex">
-                    <LikeButton article={article} fetchData={fetchData} />
+                    <LikeButton article={article} fetchData={fetchData} isLike={mylikes}/>
                 {/* <Button onClick={handleLike} variant="twoTone" icon={<HiOutlineHeart fill={article.boardLikescount ? 'blue' : 'white'} />} size="sm" color="blue-600" >좋아요</Button> */}
                     <Button onClick={handleUpdate} variant="twoTone" icon={<HiOutlinePencil />} size="sm" color="green-600" >수정하기</Button>
                     <Button onClick={handleDelete} variant="twoTone" icon={<HiOutlineTrash />} size="sm" color="red-600" >삭제하기</Button>
