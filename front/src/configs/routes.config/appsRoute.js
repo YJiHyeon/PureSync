@@ -11,7 +11,7 @@ const appsRoute = [
         key: 'home.home',
         path: `/home`,
         component: React.lazy(() => import('views/home/dashboard')),
-        authority: [ADMIN, USER],
+        authority: [],
     },
     // 신체
     {
@@ -113,7 +113,8 @@ const appsRoute = [
         component: React.lazy(() => import('views/Mypage2')),
         authority: [ADMIN, USER],
     },
-
+    //작업용
+   
 // 기존 -----------------------------------------------------------------------------------------
 
     {

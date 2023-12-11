@@ -50,11 +50,7 @@ public class MemberService {
         Member inputMemberInfo = buildMemberFromSignupDto(signupDto);
         //1. 회원 가입
         Member signupMember = memberRepository.save(inputMemberInfo);
-        //2. 회원 가입한 정보에서 mp_mem_role할 빌드
-//        MpMemRole mpMemRole = (signupMember != null) ? buildMpMemRoleFromMemberSeq(signupMember.getMemSeq()) : null;
-        //3. 매핑 테이블에 저장
-//        memberRoleRepository.save(mpMemRole);
-        //4. 바디 테이블 저장할 데이터 추출
+
         Body inputBody = buildBodyFromSignDtoAndSignupMember(signupDto, signupMember.getMemSeq());
         //5. 바디 테이블에 저장
         bodyRepository.save(inputBody);
@@ -105,8 +101,8 @@ public class MemberService {
     }
 
     //지금 가능하지만 추후 변경 필요. 헤더 토큰 사용 중임.
-    public ResultDto login(LoginDto loginDto, HttpServletResponse response) {
-        Member member = memberRepository.findByMemIdAndMemStatus(loginDto.getMemId(), 1)
+    public ResultDto login(LoginDto loginDto) {
+        Member member = memberRepository.findByMemId(loginDto.getMemId())
                 .orElseThrow(() -> new CustomException(NOT_FOUND_USER_ID));
 
         if (!passwordEncoder.matches(loginDto.getMemPassword(), member.getMemPassword())) {
@@ -117,13 +113,16 @@ public class MemberService {
                 new UsernamePasswordAuthenticationToken(loginDto.getMemId(), loginDto.getMemPassword());
         Authentication authentication = authenticationManager.authenticate(authToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        HashMap<String,Object> accessTokenMap = new HashMap<>();
         String accessToken = jwtUtil.createToken(member);
-        response.addHeader("Authorization", "Bearer " + accessToken);
+        accessTokenMap.put("access_token",accessToken);
+//        response.addHeader("Authorization", "Bearer " + accessToken);
 
         return ResultDto.builder()
                 .code(HttpStatus.OK.value())
                 .httpStatus(HttpStatus.OK)
                 .message("로그인 성공했습니다요.")
+                .data(accessTokenMap)
                 .build();
     }
 
@@ -131,7 +130,7 @@ public class MemberService {
         ResultDto resultDto;
         switch (field) {
             case "memId":
-                if (memberRepository.findByMemIdAndMemStatus(value, 1).isEmpty()) {
+                if (memberRepository.findByMemId(value).isEmpty()) {
                     resultDto = getResultDtoToDuplicate("사용가능한 아이디입니다.");
                 } else {
                     throw new CustomException(ALREADY_EXIST_ID);

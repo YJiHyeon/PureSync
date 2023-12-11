@@ -5,7 +5,7 @@ const SignIn = () => {
     return (
         <>
             <div className="mb-8">
-                <h3 className="mb-1">Welcome!</h3>
+                <h3 className="mb-1">욜로!</h3>
             </div>
             <SignInForm disableSubmit={false} />
         </>

@@ -1,34 +1,41 @@
-import React from 'react'
-import { Input, Button, FormItem, FormContainer, Alert } from 'components/ui'
+import React, { useState } from 'react'
+import { Input, InputGroup, Button, FormItem, FormContainer, Alert, Radio, SendCompareButton } from 'components/ui'
 import { PasswordInput, ActionLink } from 'components/shared'
 import useTimeOutMessage from 'utils/hooks/useTimeOutMessage'
 import { Field, Form, Formik } from 'formik'
 import * as Yup from 'yup' //유효성검사
 import useAuth from 'utils/hooks/useAuth'
 
+
+
+
 const validationSchema = Yup.object().shape({
-    userName: Yup.string().required('Please enter your user name'),
-    email: Yup.string()
-        .email('Invalid email')
+    memId: Yup.string().required('이름을 다시 확인해주세요.'),
+    memEmail: Yup.string()
+        .email('이메일을 입력해주세요.')
         .required('Please enter your email'),
-    password: Yup.string().required('Please enter your password'),
+    memGender: Yup.string().required('성별을 선택해주세요.'),
+    memPassword: Yup.string().required('비밀번호를 입력해주세요.'),
     confirmPassword: Yup.string().oneOf(
         [Yup.ref('password'), null],
         'Your passwords do not match'
     ),
 })
 
-const SignUpForm = (props) => {
+const SignUpForm = ({ onSubmit, ...props }) => {
     const { disableSubmit = false, className, signInUrl = '/sign-in' } = props
-
+    const FILED_MEM_ID = "memId";
+    const FILED_MEM_NICKNAME = "memNick";
+    const FILED_MEM_EMAIL = "memEmail";
     const { signUp } = useAuth()
+    const [duplicateCheckMessage, setDuplicateCheckMessage] = useState({});
 
     const [message, setMessage] = useTimeOutMessage()
 
     const onSignUp = async (values, setSubmitting) => {
-        const { userName, password, email } = values
+        const { memId, memNick, memPassword, memGender, memEmail } = values
         setSubmitting(true)
-        const result = await signUp({ userName, password, email })
+        const result = await signUp({ memId, memNick, memPassword, memGender, memEmail })
 
         if (result.status === 'failed') {
             setMessage(result.message)
@@ -36,6 +43,9 @@ const SignUpForm = (props) => {
 
         setSubmitting(false)
     }
+    const handleDuplicateCheck = (field, message) => {
+        setDuplicateCheckMessage({ ...duplicateCheckMessage, [field]: message });
+    };
 
     return (
         <div className={className}>
@@ -46,72 +56,117 @@ const SignUpForm = (props) => {
             )}
             <Formik
                 initialValues={{
-                    userName: 'admin1',
-                    password: '123Qwe1',
-                    confirmPassword: '123Qwe1',
-                    email: 'test@testmail.com',
+                    memId: '',
+                    memNick: '',
+                    memEmail: '',
+                    memBirth: '',
+                    memGender: '',
+                    memPassword: '',
+                    confirmMemPassword: '',
                 }}
                 validationSchema={validationSchema}
                 onSubmit={(values, { setSubmitting }) => {
                     if (!disableSubmit) {
-                        onSignUp(values, setSubmitting)
-                    } else {
+                        onSubmit(values)
+                        // onSignUp(values, setSubmitting)
+                        // } else {
                         setSubmitting(false)
                     }
                 }}
             >
-                {({ touched, errors, isSubmitting }) => (
+                {({ touched, errors, isSubmitting, values, setFieldError }) => (
                     <Form>
                         <FormContainer>
+                            {/* 아이디 인풋박스 -  */}
                             <FormItem
-                                label="User Ndme"
-                                invalid={errors.userName && touched.userName}
-                                errorMessage={errors.userName}
+                                label="아이디"
+                                invalid={errors.memId && touched.memId}
+                                errorMessage={errors.memId}
                             >
-                                <Field
-                                    type="text"
-                                    autoComplete="off"
-                                    name="userName"
-                                    placeholder="User Name"
-                                    component={Input}
-                                />
+                                <InputGroup className="mb-4">
+                                    <Field as={Input} placeholder="아이디를 입력해주세요" name="memId" />
+                                    <SendCompareButton type="button" field={FILED_MEM_ID} inputValue={values.memId} onDuplicateCheck={handleDuplicateCheck} setFieldError={setFieldError}>아이디 중복 검사</SendCompareButton>
+                                </InputGroup>
                             </FormItem>
+                            {/* 아이디 끝 */}
+                            {/* 닉네임 인풋박스 */}
+                            <FormItem
+                                label="닉네임"
+                                invalid={errors.memNick && touched.memNick}
+                                errorMessage={errors.memNick}
+                            >
+                                <InputGroup className="mb-4">
+                                    <Field as={Input} placeholder="닉네임을 입력해주세요" name="memNick" />
+                                    <SendCompareButton  type="button" field={FILED_MEM_NICKNAME} inputValue={values.memNick} onDuplicateCheck={handleDuplicateCheck} setFieldError={setFieldError}>닉네임 중복 검사</SendCompareButton>
+                                </InputGroup>
+                            </FormItem>
+                            {/* 이메일 */}
+                            {/* 이메일 중복검사 */}
                             <FormItem
                                 label="Email"
-                                invalid={errors.email && touched.email}
-                                errorMessage={errors.email}
+                                invalid={errors.memEmail && touched.memEmail}
+                                errorMessage={errors.memEmail}
+                            >
+                                <InputGroup className="mb-4">
+                                    <Field as={Input} placeholder="Email 중복 검사" name="memEmail" />
+                                    <SendCompareButton  type="button" field={FILED_MEM_EMAIL} inputValue={values.memEmail} onDuplicateCheck={handleDuplicateCheck} setFieldError={setFieldError}>이메일 중복 검사</SendCompareButton>
+                                </InputGroup>
+
+                            </FormItem>
+                            {/* 출생년도 */}
+                            <FormItem
+                                label="출생년도"
+                                invalid={errors.memBirth && touched.memBirth}
+                                errorMessage={errors.memBirth}
                             >
                                 <Field
-                                    type="email"
+                                    type="Date"
                                     autoComplete="off"
-                                    name="email"
-                                    placeholder="Email"
+                                    name="memBirth"
                                     component={Input}
                                 />
                             </FormItem>
+                            {/* 성별 */}
                             <FormItem
-                                label="Password"
-                                invalid={errors.password && touched.password}
-                                errorMessage={errors.password}
+                                label="성별"
+                                invalid={errors.memGender && touched.memGender}
+                                errorMessage={errors.memGender}>
+                                <Field as={Radio.Group} name="memGender">
+                                    <label>
+                                        <Field type="radio" name="memGender" value="M" />
+                                        남성
+                                    </label>
+                                    <label>
+                                        <Field type="radio" name="memGender" value="W" />
+                                        여성
+                                    </label>
+                                </Field>
+
+                            </FormItem>
+
+                            <FormItem
+                                label="비밀번호"
+                                invalid={errors.memPassword && touched.memPassword}
+                                errorMessage={errors.memPassword}
                             >
                                 <Field
                                     autoComplete="off"
-                                    name="password"
-                                    placeholder="Password"
+                                    name="memPassword"
+                                    placeholder="memPassword"
                                     component={PasswordInput}
                                 />
                             </FormItem>
                             <FormItem
-                                label="Confirm Password"
+                                label="비밀번호 재확인"
                                 invalid={
-                                    errors.confirmPassword &&
-                                    touched.confirmPassword
+                                    errors.confirmMemPassword &&
+                                    touched.confirmMemPassword
                                 }
-                                errorMessage={errors.confirmPassword}
+                                errorMessage={errors.confirmMemPassword}
                             >
                                 <Field
                                     autoComplete="off"
-                                    name="confirmPassword"
+                                    name="confirmMemPassword"
                                     placeholder="Confirm Password"
                                     component={PasswordInput}
                                 />
@@ -124,10 +179,10 @@ const SignUpForm = (props) => {
                             >
                                 {isSubmitting
                                     ? 'Creating Account...'
-                                    : 'Sign Up'}
+                                    : '건강 정보 입력하기'}
                             </Button>
                             <div className="mt-4 text-center">
-                                <span>Already have an account? </span>
+                                <span>회원가입 하셨나요? </span>
                                 <ActionLink to={signInUrl}>Sign in</ActionLink>
                             </div>
                         </FormContainer>
