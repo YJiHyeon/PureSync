@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Select } from 'components/ui'
 import { Button } from 'components/ui'
 import { useNavigate } from 'react-router-dom';
 import './test.css';
+
+const testOptions = [
+  { value: 'stress', label: '스트레스 검사' },
+  { value: 'depression', label: '우울증 검사' }
+];
 
 const Test = () => {
   const navigate = useNavigate();
@@ -34,19 +40,32 @@ const Test = () => {
     fetchData();
   }, []);
 
-  const handleTest = (testType) => {
-    setSelectedTest(testType);
+  // const handleTest = (testType) => {
+  //   setSelectedTest(testType);
+  // };
+
+  const handleSelectChange = (selectedOption) => {
+    console.log('Selected Option:', selectedOption);
+    setSelectedTest(selectedOption.value);
   };
   
   return (
     <div className="test-container">
       <h1>검사 선택</h1>
-      <p>원하는 검사를 선택하세요:</p>
+      {/* <p>원하는 검사를 선택하세요:</p>
 
       <div className="test-buttons">
         <button onClick={() => handleTest('stress')}>Stress 검사</button> <br />
         <button onClick={() => handleTest('depression')}>Depression 검사</button>
-      </div> <br />
+      </div> <br /> */}
+
+      <div>
+        <Select
+          placeholder="원하는 검사를 선택하세요"
+          options={testOptions}
+          onChange={handleSelectChange}
+        />
+      </div>
 
       <div>
         {stressScore !== null && <p>스트레스 검사 결과: {stressScore}점</p>}
@@ -55,9 +74,9 @@ const Test = () => {
 
       {selectedTest && (
         <div className="button-container">
-          <button onClick={() => navigate(`/mind/test/${selectedTest}`)}>
+          <Button variant="solid" onClick={() => navigate(`/mind/test/${selectedTest}`)}>
             <h3>선택한 검사 시작</h3>
-          </button>
+          </Button>
         </div>
       )}
     </div>
