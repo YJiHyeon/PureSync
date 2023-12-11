@@ -24,7 +24,7 @@ public class CustomUserDetails implements UserDetails {
     }
 
     @ElementCollection(fetch = FetchType.EAGER) //roles 컬렉션
-    @Builder.Default
+//    @Builder.Default
     private List<String> roles = new ArrayList<>();
 
     @Override   //사용자의 권한 목록 리턴

@@ -15,7 +15,6 @@
    <main class="main-content">
       <div th:replace="~{/fragments/sidebar :: sidebarFragment}"></div>
 
-
       <div class="contents">
 
          <div class="container-fluid">
@@ -25,11 +24,12 @@
                   <div class="breadcrumb-main user-member justify-content-sm-between ">
                      <div class=" d-flex flex-wrap justify-content-center breadcrumb-main__wrapper">
 
-                        <form action="/" class="d-flex align-items-center user-member__form my-sm-0 my-2">
+                        <form class="d-flex align-items-center user-member__form my-sm-0 my-2">
                            <img src="/img/svg/search.svg" alt="search" class="svg">
                            <input type="hidden" id="page" th:value="${pg}" >
                            <input class="form-control me-sm-2 border-0 box-shadow-none" id="searchText" type="search"
-                                  placeholder="유저 아이디로 검색하세요🔍" aria-label="Search" th:value="${adminBoardDto.searchText}">
+                                  placeholder="유저 아이디로 검색하세요🔍" aria-label="Search" th:value="${adminBoardDto.searchText}"
+                                  onkeydown="handleKeyDown(event)">
                         </form>
                         <button type="button" id="searchBtn" class="btn btn-primary btn-default btn-squared" onclick="onSearch()">
                            <img src="/img/svg/search.svg" alt="search" class="svg"> 검색
@@ -69,32 +69,41 @@
                               <tr th:each="cmt : ${userCmtList}"  >
                                  <td  th:text="${cmt.cmt_seq}" >
                                     <div class="d-flex">
-
                                     </div>
                                  </td>
 
                                  <td  th:text="${cmt.mem_id}" >
                                     <div class="userDatatable-content">
-
                                     </div>
                                  </td>
 
                                  <td th:text="${cmt.cmt_contents}" >
                                     <div class="userDatatable-content">
-
                                     </div>
                                  </td>
 
                                  <td th:text="${cmt.cmt_wdate}" >
                                     <div class="userDatatable-content">
-
                                     </div>
                                  </td>
 
-                                 <td th:text="${cmt.cmt_status_text}" >
-                                    <div class="userDatatable-content d-inline-block">
-                                       <span class="bg-opacity-success  color-success rounded-pill userDatatable-content-status active"></span>
-                                    </div>
+                                 <td th:switch="${cmt.cmt_status_text}" >
+                                    <th:block th:case="삭제">
+                                       <div class="userDatatable-content d-inline-block">
+                                          <span class="bg-opacity-warning  color-warning userDatatable-content-status active" th:text="${cmt.cmt_status_text}"></span>
+                                       </div>
+                                    </th:block>
+                                    <th:block th:case="게시">
+                                       <div class="userDatatable-content d-inline-block">
+                                          <span class="bg-opacity-success color-success userDatatable-content-status active" th:text="${cmt.cmt_status_text}"></span>
+                                       </div>
+                                    </th:block>
+                                    <th:block th:case="관리자삭제">
+                                       <div class="userDatatable-content d-inline-block">
+                                          <span class="bg-opacity-danger  color-danger userDatatable-content-status active" th:text="${cmt.cmt_status_text}"></span>
+                                       </div>
+                                    </th:block>
+
                                  </td>
 
                                  <td>
@@ -160,6 +169,13 @@
        const searchText = document.getElementById("searchText").value;
        const url = `/admin/user/list/${pg}?searchText=${encodeURIComponent(searchText)}`;
        window.location.href = url;
+   }
+
+   function handleKeyDown(event) {
+       if (event.key === "Enter") {
+           event.preventDefault(); // 폼 제출을 방지
+           onSearch();
+       }
    }
 
    function onSearch() {
