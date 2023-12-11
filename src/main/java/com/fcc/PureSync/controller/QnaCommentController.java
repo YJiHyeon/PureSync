@@ -28,17 +28,17 @@ public class QnaCommentController {
     /**
      * 수정
      */
-    @PutMapping("/{qnaBoardSeq}/comments/{cmtSeq}")
-    public ResultDto updateComment(@PathVariable Long qnaBoardSeq, @PathVariable Long cmtSeq, @RequestBody QnaCommentDto qnaCommentDto, String id) {
-        return commentService.updateQnaComment(qnaBoardSeq, cmtSeq, qnaCommentDto, id);
+    @PutMapping("/{qnaBoardSeq}/comments/{qnaCmtSeq}")
+    public ResultDto updateComment(@PathVariable Long qnaBoardSeq, @PathVariable Long qnaCmtSeq, @RequestBody QnaCommentDto qnaCommentDto, String id) {
+        return commentService.updateQnaComment(qnaBoardSeq, qnaCmtSeq, qnaCommentDto, id);
     }
 
     /**
      * 삭제
      */
-    @DeleteMapping("/{qnaBoardSeq}/comments/{cmtSeq}")
-    public ResultDto deleteComment(@PathVariable Long qnaBoardSeq, @PathVariable Long cmtSeq, String id) {
-        return commentService.deleteQnaComment(qnaBoardSeq, cmtSeq, id);
+    @DeleteMapping("/{qnaBoardSeq}/comments/{qnaCmtSeq}")
+    public ResultDto deleteComment(@PathVariable Long qnaBoardSeq, @PathVariable Long qnaCmtSeq, String id) {
+        return commentService.deleteQnaComment(qnaBoardSeq, qnaCmtSeq, id);
     }
     /**
      * 조회
