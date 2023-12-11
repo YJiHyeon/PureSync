@@ -1,28 +1,29 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { apiGetCrmCalendar } from 'services/CrmService'
+import { apiGetSleepCalendar } from 'services/BodyService'
 
 export const getEvents = createAsyncThunk(
-    'crmCalendar/data/getEvents',
-    async (data) => {
-        const response = await apiGetCrmCalendar(data)
-        return response.data
+    'sleepCalendar/data/getEvents',
+    async () => {
+        const response = await apiGetSleepCalendar()
+        console.log(response.data.data.sleepList);
+        return response.data.data.sleepList;
     }
 )
 
 const dataSlice = createSlice({
-    name: 'crmCalendar/data',
+    name: 'sleepCalendar/data',
     initialState: {
         loading: false,
         eventList: [],
     },
     reducers: {
         updateEvent: (state, action) => {
-            state.eventList = action.payload
+            state.eventList = action.payload.data
         },
     },
     extraReducers: {
         [getEvents.fulfilled]: (state, action) => {
-            state.eventList = action.payload
+            state.eventList = action.payload.data
         },
     },
 })
