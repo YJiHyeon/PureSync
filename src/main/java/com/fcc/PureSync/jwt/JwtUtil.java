@@ -92,7 +92,6 @@ public class JwtUtil {
     //JWT 토큰 유효성 검사: 만료일자 확인
     public boolean validateToken(String token) {
         boolean validate = false;
-
         try {
             JwtParser parser = Jwts.parser();
             parser.setSigningKey(secret.getBytes("UTF-8"));
