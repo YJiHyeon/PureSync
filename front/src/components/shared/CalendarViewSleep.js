@@ -14,7 +14,7 @@ export const eventColors = {
 
 const CalendarViewSleep = (props) => {
     const { wrapperClass, ...rest } = props;
-
+    console.log(props);
     return (
         <div className={classNames('calendar', wrapperClass)}>
             <FullCalendar
