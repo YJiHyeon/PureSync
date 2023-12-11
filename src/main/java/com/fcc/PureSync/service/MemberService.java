@@ -31,7 +31,6 @@ import java.util.HashMap;
 
 import static com.fcc.PureSync.exception.CustomExceptionCode.*;
 
-@Transactional
 @Service
 @RequiredArgsConstructor
 public class MemberService {
@@ -42,22 +41,17 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
     private final AuthenticationManager authenticationManager;
-//    private final MailService mailService;
+    private final MailService mailService;
 
     // 회원가입
+    @Transactional
     public ResultDto signup(SignupDto signupDto) {
-        //0.회원 정보만 추출해서 빌드
         Member inputMemberInfo = buildMemberFromSignupDto(signupDto);
-        //1. 회원 가입
         Member signupMember = memberRepository.save(inputMemberInfo);
-
         Body inputBody = buildBodyFromSignDtoAndSignupMember(signupDto, signupMember.getMemSeq());
-        //5. 바디 테이블에 저장
         bodyRepository.save(inputBody);
-        //6. 메일 전송
-//        mailService.signUpByVerificationCode(inputMemberInfo.getMemEmail());
-        ResultDto resultDto = handleResultDtoFromSignUp();
-        return resultDto;
+        mailService.signUpByVerificationCode(inputMemberInfo.getMemEmail());
+        return handleResultDtoFromSignUp();
     }
 
     //회원 정보 빌드
@@ -71,14 +65,6 @@ public class MemberService {
                 .memBirth(dto.getMemBirth())
                 .memGender(dto.getMemGender())
                 .memCreatedAt(LocalDateTime.now())
-                .build();
-    }
-
-    //회원 권한 정보 빌드
-    private MpMemRole buildMpMemRoleFromMemberSeq(Long memSeq) {
-        return MpMemRole.builder()
-                .memSeq(memSeq)
-                .roleSeq(EmailConstant.MEMBER_DISABLED_LEVEL)
                 .build();
     }
 
@@ -96,11 +82,10 @@ public class MemberService {
     private ResultDto handleResultDtoFromSignUp() {
         String msg = "회원가입 성공했습니다.";
         HashMap<String, Object> resultMap = new HashMap<>();
-        ResultDto resultDto = handleResultDto(msg, resultMap);
-        return resultDto;
+        return handleResultDto(msg, resultMap);
     }
 
-    //지금 가능하지만 추후 변경 필요. 헤더 토큰 사용 중임.
+    @Transactional
     public ResultDto login(LoginDto loginDto) {
         Member member = memberRepository.findByMemId(loginDto.getMemId())
                 .orElseThrow(() -> new CustomException(NOT_FOUND_USER_ID));
@@ -116,16 +101,16 @@ public class MemberService {
         HashMap<String,Object> accessTokenMap = new HashMap<>();
         String accessToken = jwtUtil.createToken(member);
         accessTokenMap.put("access_token",accessToken);
-//        response.addHeader("Authorization", "Bearer " + accessToken);
 
         return ResultDto.builder()
                 .code(HttpStatus.OK.value())
                 .httpStatus(HttpStatus.OK)
-                .message("로그인 성공했습니다요.")
+                .message("로그인 성공했습니다.")
                 .data(accessTokenMap)
                 .build();
     }
 
+    @Transactional(readOnly=true)
     public ResultDto checkDuplicate(String field, String value) {
         ResultDto resultDto;
         switch (field) {
@@ -156,6 +141,46 @@ public class MemberService {
         return resultDto;
     }
 
+
+
+
+    @Transactional(readOnly=true)
+    public ResultDto searchPassword(FindPasswordDto findPasswordDto) {
+        Member member = memberRepository.findByMemEmail(findPasswordDto.getMemEmail()).orElseThrow(() -> new CustomException(NOT_FOUND_EMAIL));
+        String newPassword = RandomStringGenerator.generateRandomPassword(12);
+        updateTemporaryPassword(member,newPassword);
+        mailService.sendTemporaryPassword(findPasswordDto.getMemEmail(), newPassword);
+        return handleResultDtoFromFindPassword();
+    }
+
+
+    private ResultDto handleResultDtoFromFindPassword() {
+        String msg = "임시 메일을 전송했습니다.";
+        HashMap<String, Object> resultMap = new HashMap<>();
+        return handleResultDto(msg, resultMap);
+    }
+
+    @Transactional
+    private void updateTemporaryPassword(Member member, String newPassword) {
+        member.updatePassword(passwordEncoder.encode(newPassword));
+        memberRepository.save(member);
+    }
+
+    @Transactional(readOnly=true)
+    public ResultDto searchId(String memEmail) {
+        Member member = memberRepository.findByMemEmail(memEmail).orElseThrow(() -> new CustomException(NOT_FOUND_EMAIL));
+        String memberId = member.getMemId();
+        return handleResultDtoFromsearchId(memberId);
+    }
+
+    @Transactional(readOnly=true)
+    private ResultDto handleResultDtoFromsearchId(String memberId) {
+        String msg = "아이디 찾기 성공";
+        HashMap<String, Object> resultMap = new HashMap<>();
+        resultMap.put("memId",memberId);
+        return handleResultDto(msg, resultMap);
+    }
+
     private ResultDto getResultDtoToDuplicate(String msg) {
         return ResultDto.builder()
                 .code(HttpStatus.OK.value())
@@ -164,49 +189,8 @@ public class MemberService {
                 .build();
     }
 
-    //아이디로 객체 정보 찾고
-    //임시 비밀번호 생성 하고
-    //임시 비밀번호 주입하고
-    //임시 비밀번호 이메일로 전송
-    //임시 비밀번호 링크 클릭시 로그인 페이지로 이동.
-    public ResultDto searchPassword(FindPasswordDto findPasswordDto) {
-        Member member = memberRepository.findByMemEmail(findPasswordDto.getMemEmail()).orElseThrow(() -> new RuntimeException());
-        String newPassword = RandomStringGenerator.generateRandomPassword(12);
-        updateTemporaryPassword(member,newPassword);
-//        mailService.sendTemporaryPassword(findPasswordDto.getMemEmail(), newPassword);
-        ResultDto resultDto = handleResultDtoFromFindPassword();
-        return resultDto;
-    }
-
-    private ResultDto handleResultDtoFromFindPassword() {
-        String msg = "임시 메일을 전송했습니다.";
-        HashMap<String, Object> resultMap = new HashMap<>();
-        ResultDto resultDto = handleResultDto(msg, resultMap);
-        return resultDto;
-    }
-
-    private void updateTemporaryPassword(Member member, String newPassword) {
-        member.updatePassword(passwordEncoder.encode(newPassword));
-        memberRepository.save(member);
-    }
-
-    public ResultDto searchId(String memEmail) {
-        Member member = memberRepository.findByMemEmail(memEmail).orElseThrow(() -> new RuntimeException());
-        String memberId = member.getMemId();
-        return handleResultDtoFromsearchId(memberId);
-    }
-
-    private ResultDto handleResultDtoFromsearchId(String memberId) {
-        String msg = "아이디 찾기 성공";
-        HashMap<String, Object> resultMap = new HashMap<>();
-        resultMap.put("memId",memberId);
-        ResultDto resultDto = handleResultDto(msg, resultMap);
-        return resultDto;
-    }
-
     private ResultDto handleResultDto(String msg, HashMap<String, Object> map) {
-        ResultDto resultDto = new ResultDto();
-        return resultDto
+        return ResultDto
                 .builder()
                 .code(HttpStatus.OK.value())
                 .httpStatus(HttpStatus.OK)

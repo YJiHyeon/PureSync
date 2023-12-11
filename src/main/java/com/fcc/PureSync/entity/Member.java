@@ -1,5 +1,6 @@
 package com.fcc.PureSync.entity;
 
+import com.fcc.PureSync.common.constant.EmailConstant;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,6 +38,10 @@ public class Member extends BaseEntity {
     }
     public void updateStatus(int memStatus) {
         this.memStatus = memStatus;
+    }
+
+    public void enabledMemberLevel() {
+        this.memStatus = EmailConstant.MEMBER_ENABLED_LEVEL;
     }
 
 }
