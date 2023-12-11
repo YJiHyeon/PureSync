@@ -15,7 +15,7 @@ import axios from 'axios'
 import { Button } from 'components/ui'
 import { HiOutlineClock, HiOutlineCog, HiOutlinePencil, HiOutlineInboxIn, HiOutlineTrash,HiOutlineHeart} from 'react-icons/hi'
 import { getboardFile } from 'services/DashboardService'
-
+import LikeButton from './LikeButton';
 
 const ArticleContent = ({ articleId }) => {
     const navigate = useNavigate();
@@ -69,6 +69,7 @@ const ArticleContent = ({ articleId }) => {
             console.error('좋아요 클릭 중 오류:', error);
         }
     };
+    
     const handleDelete = async () => {
         try {
             if (!article.boardSeq) {
@@ -110,7 +111,8 @@ const ArticleContent = ({ articleId }) => {
             <div className="flex items-center justify-between">
                 <h3>{article.boardName}</h3>
                 <div className="gap-2 flex">
-                <Button onClick={handleLike} variant="twoTone" icon={<HiOutlineHeart fill={article.boardLikescount ? 'blue' : 'white'} />} size="sm" color="blue-600" >좋아요</Button>
+                    <LikeButton article={article} fetchData={fetchData} />
+                {/* <Button onClick={handleLike} variant="twoTone" icon={<HiOutlineHeart fill={article.boardLikescount ? 'blue' : 'white'} />} size="sm" color="blue-600" >좋아요</Button> */}
                     <Button onClick={handleUpdate} variant="twoTone" icon={<HiOutlinePencil />} size="sm" color="green-600" >수정하기</Button>
                     <Button onClick={handleDelete} variant="twoTone" icon={<HiOutlineTrash />} size="sm" color="red-600" >삭제하기</Button>
                 </div>

@@ -4,10 +4,7 @@ import com.fcc.PureSync.dto.ResultDto;
 import com.fcc.PureSync.repository.MemberRepository;
 import com.fcc.PureSync.service.LikesService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/board")
@@ -23,6 +20,16 @@ public class LikesController {
     public ResultDto createLike(@PathVariable Long boardSeq, String id) {
 
         return likeService.createLike(boardSeq, id);
+    }
+
+    @GetMapping("{boardSeq}/likes")
+    public ResultDto findLike(@PathVariable Long boardSeq, String id ){
+        return likeService.findLike(boardSeq,id);
+    }
+
+    @GetMapping("{boardSeq}/mylikes")
+    public ResultDto findMyLike(@PathVariable Long boardSeq, String id ){
+        return likeService.findMyLike(boardSeq,id);
     }
 
 

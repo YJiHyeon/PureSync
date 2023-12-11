@@ -35,7 +35,7 @@ public class LikesService {
     }
 
     private void boardStatusChk(Board board) {
-        if (board.getBoardStatus()==0) {
+        if (board.getBoardStatus() == 0) {
             throw new CustomException(CustomExceptionCode.ALREADY_DELETED_ARTICLE);
         }
     }
@@ -88,5 +88,28 @@ public class LikesService {
             map.put("likes", dto);
             return buildResultDto(HttpStatus.CREATED.value(), HttpStatus.CREATED, "좋아요 등록 성공", map);
         }
+    }
+
+    public ResultDto findLike(Long boardSeq, String id) {
+        Board board = boardRepository.findById(boardSeq)
+                .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_ARTICLE));
+        Long findLikes = boardRepository.countLikesByBoard(board);
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("findLikes", findLikes);
+        return buildResultDto(HttpStatus.CREATED.value(), HttpStatus.CREATED, "좋아요 개수 확인", map);
+    }
+
+
+    public ResultDto findMyLike(Long boardSeq, String id) {
+        id = "aaa";
+        Member member = memberRepository.findByMemId(id)
+                .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
+        Board board = boardRepository.findById(boardSeq)
+                .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_ARTICLE));
+        Long findMyLikes = likesRepository.countByMemberAndBoard(member, board);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("findMyLikes", findMyLikes);
+        return buildResultDto(HttpStatus.CREATED.value(), HttpStatus.CREATED, "좋아요 개수 확인", map);
     }
 }
