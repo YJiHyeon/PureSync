@@ -79,7 +79,6 @@ public class MenuService {
 
     @Transactional
     public ResultDto deleteMenu( Menu menu ) {
-        System.out.println("delete service >> : " + menu.getMenuSeq() );
         return performMenuOperation( menu, "식단 삭제에 성공했습니다.", CustomExceptionCode.DELETE_FAIL );
     }
 
