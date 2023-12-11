@@ -27,6 +27,16 @@ const authNavigationConfig = [
                 subMenu: [],
             },
             {
+                key: 'qnaBoard',
+                path: `/qnaBoard`,
+                title: '문의 게시판',
+                translateKey: 'qnaBoard',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [ADMIN, USER],
+                subMenu: [],
+            },
+            {
                 key: 'authentication.signIn',
                 path: '',
                 title: 'Sign In',

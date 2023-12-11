@@ -106,6 +106,25 @@ const appsRoute = [
         component: React.lazy(() => import('views/board/EditArticle')),
         authority: [ADMIN, USER],
     },
+    // 문의게시판
+    {
+        key: 'qnaBoard',
+        path: `/qnaBoard`,
+        component: React.lazy(() => import('views/qnaBoard/index')),
+        authority: [ADMIN, USER],
+    },
+    {
+        key: 'qnaBoard.detail',
+        path: `/qnaBoard/view`,
+        component: React.lazy(() => import('views/qnaBoard/Article/index')),
+        authority: [ADMIN, USER],
+    },
+    {
+        key: 'qnaBoard.write',
+        path: `/qnaBoard/write`,
+        component: React.lazy(() => import('views/qnaBoard/EditArticle')),
+        authority: [ADMIN, USER],
+    },
     // 마이페이지
     {
         key: 'mypage',
