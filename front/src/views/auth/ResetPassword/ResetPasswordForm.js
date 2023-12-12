@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, FormItem, FormContainer, Alert,Input } from 'components/ui'
+import { Button, FormItem, FormContainer, Alert, Input } from 'components/ui'
 import { PasswordInput, ActionLink } from 'components/shared'
 import { apiResetPassword } from 'services/AuthService'
 import useTimeOutMessage from 'utils/hooks/useTimeOutMessage'
@@ -10,7 +10,7 @@ import * as Yup from 'yup'
 const validationSchema = Yup.object().shape({
     memId: Yup.string().required('아이디를 제대로 입력해주세요.'),
     memEmail: Yup.string().required('Email을 제대로 입력해주세요.')
-    
+
 })
 
 const ResetmemIdForm = (props) => {
@@ -23,10 +23,10 @@ const ResetmemIdForm = (props) => {
     const navigate = useNavigate()
 
     const onSubmit = async (values, setSubmitting) => {
-        const { memId } = values
+        const { memId, memEmail } = values
         setSubmitting(true)
         try {
-            const resp = await apiResetPassword({ memId })
+            const resp = await apiResetPassword({ memId, memEmail })
             if (resp.data) {
                 setSubmitting(false)
                 setResetComplete(true)
@@ -46,8 +46,8 @@ const ResetmemIdForm = (props) => {
             <div className="mb-6">
                 {resetComplete ? (
                     <>
-                        <h3 className="mb-1">Reset done</h3>
-                        <p>Your memId has been successfully reset</p>
+                        <h3 className="mb-1">비밀번호가 임시비밀번호로 변경되었습니다.</h3>
+                        <p>입력하신 이메일로 임시 비밀번호가 전송되었습니다.</p>
                     </>
                 ) : (
                     <>
@@ -89,24 +89,17 @@ const ResetmemIdForm = (props) => {
                                         }
                                         errorMessage={errors.memId}
                                     >
-                                        <Field
-                                            autoComplete="off"
-                                            name="memId"
-                                            placeholder="아이디를 입력해주세요."
-                                        />
+                                        <Field as={Input} placeholder="아이디 입력해주세요." name="memId" />
                                     </FormItem>
                                     <FormItem
                                         label="Email"
-                                        
                                         invalid={
                                             errors.memEmail &&
                                             touched.memEmail
                                         }
                                         errorMessage={errors.memEmail}
                                     >
-                                 <InputGroup className="mb-4">
-                                    <Field as={Input} placeholder="Email 중복 검사" name="memEmail" />
-                                </InputGroup>
+                                        <Field as={Input} placeholder="Email 입력해주세요." name="memEmail" />
                                     </FormItem>
                                     <Button
                                         block
@@ -126,7 +119,7 @@ const ResetmemIdForm = (props) => {
                                     type="button"
                                     onClick={onContinue}
                                 >
-                                    Continue
+                                    로그인 이동
                                 </Button>
                             )}
 

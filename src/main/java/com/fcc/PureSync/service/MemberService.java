@@ -121,14 +121,14 @@ public class MemberService {
                 }
                 break;
             case "memNick":
-                if (memberRepository.findByMemNickAndMemStatus(value, 1).isEmpty()) {
+                if (memberRepository.findByMemNick(value).isEmpty()) {
                     resultDto = getResultDtoToDuplicate("사용가능한 닉네임입니다.");
                 } else {
                     throw new CustomException(ALREADY_EXIST_NICK);
                 }
                 break;
             case "memEmail":
-                if (memberRepository.findByMemEmailAndMemStatus(value, 1).isEmpty()) {
+                if (memberRepository.findByMemEmail(value).isEmpty()) {
                     resultDto = getResultDtoToDuplicate("사용가능한 이메일입니다.");
                 } else {
                     throw new CustomException(ALREADY_EXIST_EMAIL);
@@ -143,7 +143,7 @@ public class MemberService {
 
 
 
-    @Transactional(readOnly=true)
+    @Transactional
     public ResultDto searchPassword(FindPasswordDto findPasswordDto) {
         Member member = memberRepository.findByMemEmail(findPasswordDto.getMemEmail()).orElseThrow(() -> new CustomException(NOT_FOUND_EMAIL));
         String newPassword = RandomStringGenerator.generateRandomPassword(12);
