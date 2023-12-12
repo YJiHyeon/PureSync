@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import Axios from 'axios';
 import './summary.css';
 import SummaryChart from 'views/ui-components/graph/Charts/SummaryChart';
 
-
 function Summary(props) {
-  const [loading, setLoading] = useState(false);
 
   return (
     <div className="summary-container">

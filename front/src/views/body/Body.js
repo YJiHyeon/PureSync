@@ -5,9 +5,14 @@ import Exercise from 'components/body/exercise'
 import Axios from 'axios'
 import Summry from 'components/body/summary'
 import getHeaderCookie from 'utils/hooks/getHeaderCookie'
-import {parseJwt, getMemInfoFromToken} from 'utils/hooks/parseToken'
+import { parseJwt, getMemInfoFromToken } from 'utils/hooks/parseToken'
 
 const BodyMenu = () => {
+
+    //Header Cookie
+    const access_token = getHeaderCookie();
+    let parse_token = parseJwt(access_token);
+    let { memId, memSeq } = getMemInfoFromToken(parse_token);
 
     // 날짜 계산 ----------------------------------------------------------------
     let today = new Date();
@@ -30,12 +35,8 @@ const BodyMenu = () => {
 
     // Mneu -------------------------------------------------------------------------------------------------
     const [menuData, setMenuData] = useState([]);
-    //Header Cookie
-    const access_token = getHeaderCookie();
-    let parse_token = parseJwt(access_token);
-    let  { memId, memSeq } = getMemInfoFromToken(parse_token);
-    console.log("memId:::::::::::::::::::::::::::::", memId);
-    console.log("memSeq:::::::::::::::::::::::::::::", memSeq);
+
+
     //식사 유형에 대한 총 칼로리
     const [breakfastTotalCalories, setBreakfastTotalCalories] = useState(0);
     const [lunchTotalCalories, setLunchTotalCalories] = useState(0);
@@ -47,13 +48,12 @@ const BodyMenu = () => {
     // 식단 리스트 불러오기
     const callMenu = () => {
         if (access_token === "") return;
-        console.log(access_token);
-        console.log("memId:::::::::::::::::::::::::::::", memId);
-        console.log("memSeq:::::::::::::::::::::::::::::", memSeq);
         Axios.get(process.env.REACT_APP_HOST_URL + '/api/menu/list', {
             params: {
                 menu_date: selectDate,
-            }, withCredentials: false, headers: {
+                mem_seq: memSeq,
+            },
+            headers: {
                 Authorization: `Bearer ${access_token}`
             }
         })
@@ -103,9 +103,19 @@ const BodyMenu = () => {
 
     // 식단 삭제
     const menuDelete = (menu_seq) => {
+        console.log("menuDelete 호출");
+        console.log(menu_seq);
         Axios.post(process.env.REACT_APP_HOST_URL + '/api/menu/delete', {
-            menuSeq: menu_seq
-        })
+            menuSeq: menu_seq,
+            memSeq: memSeq,
+        }, 
+        {
+            headers: {
+                Authorization: `Bearer ${access_token}`
+            }
+        }
+
+        )
             .then((res) => {
                 //alert("삭제 메뉴" + menu_seq);
                 setMenuRefresh(!menuRefresh);
@@ -123,11 +133,16 @@ const BodyMenu = () => {
     const callExercise = () => {
         Axios.get(process.env.REACT_APP_HOST_URL + '/api/exercise/list', {
             params: {
-                mem_seq: 1,
+                mem_seq: memSeq,
                 el_date: selectDate,
             },
-            withCredentials: true
-        })
+            headers: {
+                Authorization: `Bearer ${access_token}`
+            }
+        }
+        
+
+        )
             .then((res) => {
                 setExerciseData(res.data.data.exerciseList);
 
@@ -150,8 +165,15 @@ const BodyMenu = () => {
     const exerciseDelete = (el_seq) => {
         Axios.post(process.env.REACT_APP_HOST_URL + '/api/exercise/delete', {
             elSeq: el_seq,
-            memSeq: 1
-        })
+            memSeq: memSeq,
+        },
+        {
+            headers: {
+                Authorization: `Bearer ${access_token}`
+            }
+        }
+        
+        )
             .then((res) => {
                 setExerciseRefresh(!exerciseRefresh);
             })
@@ -171,11 +193,13 @@ const BodyMenu = () => {
     const callSummary = () => {
         Axios.get(process.env.REACT_APP_HOST_URL + '/api/summary/list', {
             params: {
-                mem_seq: 1,
+                mem_seq: memSeq,
                 menu_date: selectDate,
                 el_date: selectDate,
             },
-            withCredentials: true,
+            headers: {
+                Authorization: `Bearer ${access_token}`
+            }
         })
             .then((res) => {
                 const menuTotalWhenList = res.data.data.menuTotalWhenList;
