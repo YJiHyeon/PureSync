@@ -6,11 +6,19 @@ import CloseButton from '../CloseButton';
 import { motion } from 'framer-motion';
 import { theme } from 'twin.macro';
 import useWindowSize from '../hooks/useWindowSize';
+import getHeaderCookie from 'utils/hooks/getHeaderCookie'
+import {parseJwt, getMemInfoFromToken} from 'utils/hooks/parseToken'
 
 import { Button, Select, Input } from 'components/ui';
 import Axios from 'axios';
 
 const DialogMenu = (props) => {
+
+    //Header Cookie
+    const access_token = getHeaderCookie();
+    let parse_token = parseJwt(access_token);
+    let  { memId, memSeq } = getMemInfoFromToken(parse_token);
+
     // 현재 창 크기를 가져오는 커스텀 훅 사용
     const currentSize = useWindowSize();
 
@@ -129,7 +137,6 @@ const DialogMenu = (props) => {
             
             Axios.get( process.env.REACT_APP_HOST_URL + '/api/menu/foodList',
                 { params: { "foodName": searchValue } },
-                { withCredentials: true }
             )
             .then((res) => {
                 console.log(res.data.data.allFoods);
@@ -186,7 +193,7 @@ const DialogMenu = (props) => {
                 menuWhen: menuWhenValue,
                 menuDate: props.selectDate,
                 menuGram: parseInt(gramAmounts),
-                member: { memSeq: 1 },
+                member: { memSeq: memSeq },
                 food: {
                     foodSeq: item.foodSeq,
                     foodName: item.foodName,
@@ -202,7 +209,14 @@ const DialogMenu = (props) => {
             sendFoodDatas.push(foodInfo);
         });
 
-        Axios.post(process.env.REACT_APP_HOST_URL + '/api/menu/save', sendFoodDatas[0])
+        Axios.post(process.env.REACT_APP_HOST_URL + '/api/menu/save', sendFoodDatas[0],
+        {
+            headers: {
+                Authorization: `Bearer ${access_token}`
+            }
+        }
+        
+        )
             .then((res) => {
                 setMealType('');
                 setSearchValue('');
