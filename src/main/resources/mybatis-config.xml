@@ -9,6 +9,7 @@
         <typeAlias alias="MenuDto"     type="com.fcc.PureSync.dto.MenuDto"/>
         <typeAlias alias="SummaryDto"     type="com.fcc.PureSync.dto.SummaryDto"/>
         <typeAlias alias="AdminBoardDto"     type="com.fcc.PureSync.dto.AdminBoardDto"/>
+        <typeAlias alias="AdminQnaBoardDto"     type="com.fcc.PureSync.dto.AdminQnaBoardDto"/>
         <typeAlias alias="NoticeDto"     type="com.fcc.PureSync.dto.NoticeDto"/>
 
     </typeAliases>
@@ -19,6 +20,7 @@
         <mapper resource="mapper/Menu.xml" />
         <mapper resource="mapper/Summary.xml" />
         <mapper resource="mapper/adminBoard.xml" />
+        <mapper resource="mapper/adminQnaBoard.xml" />
         <mapper resource="mapper/Notice.xml" />
 
 
