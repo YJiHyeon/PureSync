@@ -32,11 +32,16 @@ export async function apiSignOut(data) {
 }
 
 export async function apiForgotPassword(data) {
-    return ApiService.fetchData({
-        url: '/forgot-password',
-        method: 'post',
-        data,
-    })
+    console.log(data.email);
+    const GET_URL = `http://localhost:9000/api/member/searchId/${data.email}`;
+    try{
+        const response = await Axios.get(GET_URL)
+        console.log("responmse",response.data);
+        return response;
+    }catch(e){
+        console.log("searchId"+e);
+        return e;
+    }
 }
 
 export async function apiResetPassword(data) {

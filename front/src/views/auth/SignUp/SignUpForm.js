@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Input, InputGroup, Button, FormItem, FormContainer, Alert, Radio, SendCompareButton } from 'components/ui'
+import { Input, Button, FormItem, FormContainer, Alert, Radio, SendCompareButton } from 'components/ui'
 import { PasswordInput, ActionLink } from 'components/shared'
 import useTimeOutMessage from 'utils/hooks/useTimeOutMessage'
 import { Field, Form, Formik } from 'formik'
@@ -83,10 +83,10 @@ const SignUpForm = ({ onSubmit, ...props }) => {
                                 invalid={errors.memId && touched.memId}
                                 errorMessage={errors.memId}
                             >
-                                <InputGroup className="mb-4">
+                                {/* <InputGroup className="mb-4"> */}
                                     <Field as={Input} placeholder="아이디를 입력해주세요" name="memId" />
                                     <SendCompareButton type="button" field={FILED_MEM_ID} inputValue={values.memId} onDuplicateCheck={handleDuplicateCheck} setFieldError={setFieldError}>아이디 중복 검사</SendCompareButton>
-                                </InputGroup>
+                                {/* </InputGroup> */}
                             </FormItem>
                             {/* 아이디 끝 */}
                             {/* 닉네임 인풋박스 */}
@@ -95,10 +95,10 @@ const SignUpForm = ({ onSubmit, ...props }) => {
                                 invalid={errors.memNick && touched.memNick}
                                 errorMessage={errors.memNick}
                             >
-                                <InputGroup className="mb-4">
+                                {/* <InputGroup className="mb-4"> */}
                                     <Field as={Input} placeholder="닉네임을 입력해주세요" name="memNick" />
                                     <SendCompareButton  type="button" field={FILED_MEM_NICKNAME} inputValue={values.memNick} onDuplicateCheck={handleDuplicateCheck} setFieldError={setFieldError}>닉네임 중복 검사</SendCompareButton>
-                                </InputGroup>
+                                {/* </InputGroup> */}
                             </FormItem>
                             {/* 이메일 */}
                             {/* 이메일 중복검사 */}
@@ -107,11 +107,9 @@ const SignUpForm = ({ onSubmit, ...props }) => {
                                 invalid={errors.memEmail && touched.memEmail}
                                 errorMessage={errors.memEmail}
                             >
-                                <InputGroup className="mb-4">
+                                {/* <InputGroup className="mb-4"> */}
                                     <Field as={Input} placeholder="Email 중복 검사" name="memEmail" />
-                                    <SendCompareButton  type="button" field={FILED_MEM_EMAIL} inputValue={values.memEmail} onDuplicateCheck={handleDuplicateCheck} setFieldError={setFieldError}>이메일 중복 검사</SendCompareButton>
-                                </InputGroup>
-
+                                {/* </InputGroup> */}
                             </FormItem>
                             {/* 출생년도 */}
                             <FormItem

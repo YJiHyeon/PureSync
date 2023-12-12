@@ -44,7 +44,7 @@ const ForgotPasswordForm = (props) => {
                     </>
                 ) : (
                     <>
-                        <h3 className="mb-1">Forgot Password</h3>
+                        <h3 className="mb-1">비밀번호를 잊으셨나요?</h3>
                         <p>
                             Please enter your email address to receive a
                             verification code

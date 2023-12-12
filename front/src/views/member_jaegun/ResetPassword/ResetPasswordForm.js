@@ -53,9 +53,9 @@ const ResetPasswordForm = (props) => {
                     </>
                 ) : (
                     <>
-                        <h3 className="mb-1">Set new password</h3>
+                        <h3 className="mb-1">비밀 번호 찾기</h3>
                         <p>
-                            Your new password must different to previos password
+                            회원 가입 시 등록한 이메일과 아이디를 적어주세요.
                         </p>
                     </>
                 )}
@@ -67,8 +67,8 @@ const ResetPasswordForm = (props) => {
             )}
             <Formik
                 initialValues={{
-                    password: '123Qwe1',
-                    confirmPassword: '123Qwe1',
+                    password: '',
+                    confirmPassword: '',
                 }}
                 validationSchema={validationSchema}
                 onSubmit={(values, { setSubmitting }) => {
