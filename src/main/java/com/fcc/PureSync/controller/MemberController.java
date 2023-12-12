@@ -28,9 +28,7 @@ public class MemberController {
 
     @PostMapping("/login")  // 로그인
     public ResultDto login(@RequestBody LoginDto loginDto, HttpServletResponse response) {
-        System.out.println(loginDto.getMemId());
-        ResultDto resultDto = memberService.login(loginDto);
-        return resultDto;
+        return memberService.login(loginDto);
     }
 
     @GetMapping("/check-duplicate/{field}/{value}") // 중복검사
