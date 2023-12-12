@@ -9,19 +9,28 @@ import { setSelected, openDialog } from './store/stateSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import cloneDeep from 'lodash/cloneDeep'
 
-injectReducer('crmCalendar', reducer)
+injectReducer('sleepCalendar', reducer)
 
 const SleepCalendar = () => {
-    const dispatch = useDispatch()
-    const events = useSelector((state) => state.crmCalendar.data.eventList)
+    const dispatch = useDispatch();
 
+    
+    let events = useSelector((state) => state.sleepCalendar.data.eventList.data);
+    if( events == undefined)
+        events = [];
+    else 
+        events = events.sleepList;
+    console.log("************************");
+    console.log(events);
+    
     useEffect(() => {
         dispatch(getEvents())
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const onCellSelect = (event) => {
-        const { start, end } = event
+      
+        const { start, end , sleepGodate, sleepWudate} = event
         dispatch(
             setSelected({
                 type: 'NEW',
@@ -33,12 +42,15 @@ const SleepCalendar = () => {
     }
 
     const onEventClick = (arg) => {
-        const { start, end, id, title, extendedProps } = arg.event
-
+        console.log( "@@@@@@@@@@@@@", arg.event );
+        const { start, end, id, title, extendedProps, sleepGodate, sleepWudate } = arg.event
+        console.log( sleepGodate , sleepWudate, start, end );
         dispatch(
             setSelected({
                 type: 'EDIT',
                 eventColor: extendedProps.eventColor,
+                sleepGodate:extendedProps.sleepGodate,
+                sleepWudate:extendedProps.sleepWudate,
                 title,
                 start,
                 end,
@@ -51,6 +63,7 @@ const SleepCalendar = () => {
     const onSubmit = (data, type) => {
         let newEvents = cloneDeep(events)
 
+        
         if (type === 'NEW') {
             newEvents.push(data)
         }
@@ -67,16 +80,21 @@ const SleepCalendar = () => {
     }
 
     const onEventChange = (arg) => {
+        console.log( "**** arg : " , arg );
         const newEvents = cloneDeep(events).map((event) => {
             if (arg.event.id === event.id) {
-                const { id, extendedProps, start, end, title } = arg.event
+                const { id, extendedProps, start, end, title} = arg.event
                 event = {
                     id,
                     start,
                     end,
                     title,
+                    sleepGodate:extendedProps.sleepGodate,
+                    sleepWudate:extendedProps.sleepWudate,
                     eventColor: extendedProps.eventColor,
                 }
+
+                console.log( "!!!!!!!!!!!!!!!!!!!!!!!!!", event);
             }
             return event
         })
