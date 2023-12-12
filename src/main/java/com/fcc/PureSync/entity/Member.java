@@ -44,4 +44,8 @@ public class Member extends BaseEntity {
         this.memStatus = EmailConstant.MEMBER_ENABLED_LEVEL;
     }
 
+    public void updateNick(String memNick) { this.memNick = memNick;}
+    public void updateProfileImg(String img) { this.memImg = img; }
+
+
 }

@@ -14,4 +14,5 @@ public interface MemberRepository extends JpaRepository<Member, Long>, MemberRep
 
     Optional<Member> findByMemEmail(String email);
 
+    Member findByMemSeqAndMemStatus(Long memSeq, Integer i);
 }

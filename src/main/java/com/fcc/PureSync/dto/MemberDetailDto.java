@@ -21,6 +21,7 @@ public class MemberDetailDto {
     private String status;
     private String memBirth;
     private String memGender;
+    private String memImg;
     private LocalDateTime memCreateAt;
     private LocalDateTime memLastLoginAt;
 
@@ -32,7 +33,8 @@ public class MemberDetailDto {
     private LocalDateTime bodyWdate;
 
     @QueryProjection
-    public MemberDetailDto(Long memSeq, String memId, String memNick, String memEmail, String status, String memBirth, String memGender, LocalDateTime memCreateAt, LocalDateTime memLastLoginAt, Double bodyHeight, Double bodyWeight, Double bodyWishWeight, Double bodyWishConsCal, Double bodyWishBurnCal, LocalDateTime bodyWdate) {
+
+    public MemberDetailDto(Long memSeq, String memId, String memNick, String memEmail, String status, String memBirth, String memGender, String memImg, LocalDateTime memCreateAt, LocalDateTime memLastLoginAt, Double bodyHeight, Double bodyWeight, Double bodyWishWeight, Double bodyWishConsCal, Double bodyWishBurnCal, LocalDateTime bodyWdate) {
         this.memSeq = memSeq;
         this.memId = memId;
         this.memNick = memNick;
@@ -40,6 +42,7 @@ public class MemberDetailDto {
         this.status = status;
         this.memBirth = memBirth;
         this.memGender = memGender;
+        this.memImg = memImg;
         this.memCreateAt = memCreateAt;
         this.memLastLoginAt = memLastLoginAt;
         this.bodyHeight = bodyHeight;
