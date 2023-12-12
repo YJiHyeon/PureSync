@@ -65,6 +65,44 @@ export default function knowledgeBaseFakeApi(server, apiPrefix) {
         }
     )
 
+    server.get(
+        `${apiPrefix}/knowledge-base/qna-article`,
+        (schema, { queryParams }) => {
+            const { id } = queryParams
+
+            const article = schema.db.helpCenterArticleListData.find(id)
+
+            return article
+        }
+    )
+
+    server.get(
+        `${apiPrefix}/knowledge-base/others-qna-article`,
+        (schema, { queryParams }) => {
+            const { id } = queryParams
+
+            const article = schema.db.helpCenterArticleListData.find(id)
+            let articles = schema.db.helpCenterArticleListData
+            const category = article.category
+            const sameCategoryArticle =
+                schema.db.helpCenterArticleListData.where({ category })
+            const relatedArticle = sameCategoryArticle.filter(
+                (article) => article.id !== id
+            )
+            articles = articles.filter((article) => article.id !== id)
+            const popularArticle = [
+                articles[0],
+                articles[4],
+                articles[7],
+                articles[11],
+            ]
+            return {
+                relatedArticle,
+                popularArticle,
+            }
+        }
+    )
+
     server.get(`${apiPrefix}/knowledge-base/categorized-articles`, (schema) => {
         let articles = schema.db.helpCenterArticleListData
         const categorizedArticles = categories.map((category) => {
@@ -80,6 +118,46 @@ export default function knowledgeBaseFakeApi(server, apiPrefix) {
 
     server.post(
         `${apiPrefix}/knowledge-base/article`,
+        (schema, { requestBody }) => {
+            const { id, category, categoryLabel, ...rest } =
+                JSON.parse(requestBody)
+            let articles = schema.db.helpCenterArticleListData
+            const articleExist = articles.some((article) => article.id === id)
+
+            if (!categories.some((cat) => cat.value === category)) {
+                categories.unshift({
+                    label: categoryLabel,
+                    value: category,
+                })
+            }
+
+            if (articleExist) {
+                schema.db.helpCenterArticleListData.update({ id }, rest)
+            } else {
+                schema.db.helpCenterArticleListData.insert({
+                    id,
+                    category,
+                    authors: [
+                        {
+                            name: 'Carolyn Perkins',
+                            img: '/img/avatars/thumb-1.jpg',
+                        },
+                    ],
+                    starred: true,
+                    updateTime: '6 months ago',
+                    createdBy: 'Carolyn Perkins',
+                    timeToRead: 2,
+                    viewCount: 0,
+                    ...rest,
+                })
+            }
+
+            return true
+        }
+    )
+
+    server.post(
+        `${apiPrefix}/knowledge-base/qna-article`,
         (schema, { requestBody }) => {
             const { id, category, categoryLabel, ...rest } =
                 JSON.parse(requestBody)
