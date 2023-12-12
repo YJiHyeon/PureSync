@@ -34,8 +34,6 @@ const BodyMenu = () => {
     const access_token = getHeaderCookie();
     let parse_token = parseJwt(access_token);
     let  { memId, memSeq } = getMemInfoFromToken(parse_token);
-    console.log("memId:::::::::::::::::::::::::::::", memId);
-    console.log("memSeq:::::::::::::::::::::::::::::", memSeq);
     //식사 유형에 대한 총 칼로리
     const [breakfastTotalCalories, setBreakfastTotalCalories] = useState(0);
     const [lunchTotalCalories, setLunchTotalCalories] = useState(0);
@@ -48,12 +46,10 @@ const BodyMenu = () => {
     const callMenu = () => {
         if (access_token === "") return;
         console.log(access_token);
-        console.log("memId:::::::::::::::::::::::::::::", memId);
-        console.log("memSeq:::::::::::::::::::::::::::::", memSeq);
         Axios.get(process.env.REACT_APP_HOST_URL + '/api/menu/list', {
             params: {
                 menu_date: selectDate,
-            }, withCredentials: false, headers: {
+            },  headers: {
                 Authorization: `Bearer ${access_token}`
             }
         })

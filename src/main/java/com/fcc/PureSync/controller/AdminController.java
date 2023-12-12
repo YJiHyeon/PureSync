@@ -10,6 +10,7 @@ public class AdminController {
         return "index";
     }
 
+    //로그인 기능.
     @GetMapping("/login")
     public String adminLogin() {
         return "/member/login";
