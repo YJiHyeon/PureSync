@@ -1,11 +1,13 @@
 package com.fcc.PureSync.controller;
 
+import com.fcc.PureSync.common.HeaderInfo;
 import com.fcc.PureSync.dto.MenuDto;
 import com.fcc.PureSync.dto.ResultDto;
 import com.fcc.PureSync.entity.Menu;
 
 import com.fcc.PureSync.service.MenuService;
 import lombok.RequiredArgsConstructor;
+import org.apache.http.HttpEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +28,7 @@ public class MenuController {
     }
 
     @GetMapping("/list")
-    public ResultDto  getAllMenuList ( MenuDto menuTo ) {
+    public ResultDto  getAllMenuList (MenuDto menuTo) {
          return menuService.getMenuAllList(menuTo);
     }
 

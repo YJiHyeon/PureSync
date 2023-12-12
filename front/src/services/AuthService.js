@@ -1,11 +1,13 @@
 import ApiService from './ApiService'
 import Axios from 'axios'
+import TokenCookie from './tokenCookie'
 
 
 export async function apiSignIn(data) {
     const POST_URL = `http://localhost:9000/api/member/login`;
     try {
         const response = await Axios.post(POST_URL, data, {withCredentials: true});
+        TokenCookie(response.data.data.access_token);
         return response.data;
     } catch (error) {
         console.error('Login error', error);
