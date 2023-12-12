@@ -15,7 +15,6 @@
    <main class="main-content">
       <div th:replace="~{/fragments/sidebar :: sidebarFragment}"></div>
 
-
       <div class="contents">
 
          <div class="container-fluid">
@@ -25,13 +24,12 @@
                   <div class="breadcrumb-main user-member justify-content-sm-between ">
                      <div class="d-flex flex-wrap justify-content-center breadcrumb-main__wrapper">
 
-                        <form action="/" class="d-flex align-items-center user-member__form my-sm-0 my-2">
+                        <form  class="d-flex align-items-center user-member__form my-sm-0 my-2">
                            <img src="/img/svg/search.svg" alt="search" class="svg">
                            <input type="hidden" id="page" th:value="${pg}" >
                            <input class="form-control me-sm-2 border-0 box-shadow-none" id="searchText" type="search"
-                                  placeholder="유저 아이디로 검색하세요🔍" aria-label="Search" th:value="${noticeDto.searchText}"
-                                  onkeydown="if (event.keyCode === 13) onSearch()">
-                           
+                                  placeholder="공지 제목으로 검색하세요🔍" aria-label="Search" th:value="${noticeDto.searchText}"
+                                  onkeydown="handleKeyDown(event)">
                         </form>
                         <button type="button" id="searchBtn" class="btn btn-primary btn-default btn-squared" onclick="onSearch()">
                            <img src="/img/svg/search.svg" alt="search" class="svg"> 검색
@@ -159,6 +157,13 @@
        const searchText = document.getElementById("searchText").value;
        const url = `/admin/notice/list/${pg}?searchText=${encodeURIComponent(searchText)}`;
        window.location.href = url;
+   }
+
+   function handleKeyDown(event) {
+       if (event.key === "Enter") {
+           event.preventDefault(); // 폼 제출을 방지
+           onSearch();
+       }
    }
 
    function onSearch() {

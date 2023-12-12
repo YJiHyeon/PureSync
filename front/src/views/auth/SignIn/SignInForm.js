@@ -34,7 +34,6 @@ const SignInForm = (props) => {
     const { signIn } = useAuth()
 
     const onSignIn = async (values, setSubmitting) => {
-        // const POST_URL = `http://localhost:9000/api/member/login`
         const { memId, memPassword } = values
         
         try {

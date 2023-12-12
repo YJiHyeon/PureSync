@@ -151,8 +151,9 @@ export const eventsData = [
     {
         id: '3',
         groupId: '999',
-        title: 'Repeating Event',
+        title: 'kikakakakakak 한국',
         start: getDate('YEAR-MONTH-16T16:00:00+00:00'),
+        end: getDate('YEAR-MONTH-17T17:00:10+00:00'),
         eventColor: 'blue',
     },
     {
@@ -164,7 +165,7 @@ export const eventsData = [
     },
     {
         id: '5',
-        title: 'Meeting',
+        title: '123',
         start: getDate('YEAR-MONTH-18T10:30:00+00:00'),
         end: getDate('YEAR-MONTH-18T12:30:00+00:00'),
         eventColor: 'blue',
