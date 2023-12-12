@@ -16,7 +16,7 @@ import { Field, Form, Formik } from 'formik';
 import { HiCheck } from 'react-icons/hi';
 import { components } from 'react-select';
 import * as Yup from 'yup';
-
+import axios from 'axios';
 const { DateTimepicker } = DatePicker;
 
 const { Control } = components;
@@ -77,23 +77,25 @@ const EventDialog = ({ submit }) => {
     const dispatch = useDispatch();
 
     // 다이얼로그 상태와 선택된 이벤트 정보를 가져오기
-    const open = useSelector((state) => state.crmCalendar.state.dialogOpen);
-    const selected = useSelector((state) => state.crmCalendar.state.selected);
-    const newId = useUniqueId('event-');
+     const open = useSelector((state) => state.sleepCalendar.state.dialogOpen);
+     const selected = useSelector((state) => state.sleepCalendar.state.selected);
+
+     console.log( selected );
+     const newId = useUniqueId('event-');
 
     // 분류 옵션 정의
     const categoryOptions = [
-        { value: 'nap', label: '낮잠' },
-        { value: 'night', label: '밤잠' },
+        { value: 0, label: '낮잠' },
+        { value: 1, label: '밤잠' },
     ];
 
     // 다이얼로그 닫기 핸들러
     const handleDialogClose = () => {
         dispatch(closeDialog());
     };
-
+    
     // 폼 제출 핸들러
-    const handleSubmit = (values, setSubmitting) => {
+    const handleSubmit  = async (values, setSubmitting) => {
         setSubmitting(false);
 
         // 이벤트 데이터 구성
@@ -106,7 +108,16 @@ const EventDialog = ({ submit }) => {
         if (values.endDate) {
             eventData.end = values.endDate; // 기상 시각 (선택적)
         }
-
+        try {
+            // Axios 요청 수행
+            const response = await axios.post('http://localhost:9000/api/sleep/save', eventData);
+    
+            // 응답을 필요에 맞게 처리
+            console.log('Axios 응답:', response.data);
+        } catch (error) {
+            // 에러 처리
+            console.error('Axios 에러:', error);
+        }
         // 이벤트 제출 및 다이얼로그 닫기
         submit?.(eventData, selected.type);
         dispatch(closeDialog());
@@ -128,9 +139,9 @@ const EventDialog = ({ submit }) => {
                     enableReinitialize
                     initialValues={{
                         title: selected.title || '', // 제목
-                        startDate: selected.start || '', // 취침 시각
-                        endDate: selected.end || '', // 기상 시각
-                        color: selected.eventColor || colorOptions[0].value, // 색상
+                        startDate: new Date(selected.sleepGodate) || '', // 취침 시각
+                        endDate: new Date(selected.sleepWudate) || '', // 기상 시각
+                        color: selected.eventColor || colorOptions[0].value, // 색상te
                     }}
                     validationSchema={validationSchema}
                     onSubmit={(values, { setSubmitting }) => {
@@ -222,18 +233,15 @@ const EventDialog = ({ submit }) => {
                                             <Select
                                                 field={field}
                                                 form={form}
-                                                options={colorOptions}
-                                                value={colorOptions.filter(
-                                                    (option) =>
-                                                        option.value ===
-                                                        values.color
-                                                )}
-                                                onChange={(option) =>
-                                                    form.setFieldValue(
-                                                        field.name,
-                                                        option.value
-                                                    )
-                                                }
+                                                options={[
+                                                    { value: 'red', label: '빨강' },
+                                                    { value: 'blue', label: '파랑' },
+                                                    { value: 'green', label: '초록' },
+                                                    // ... 다른 색상 옵션들
+                                                ]}
+                                                // 선택된 값이 현재 색상인지 확인
+                                                value={values.color && values.color !== '' ? { value: values.color, label: values.color } : null}
+                                                onChange={(option) => form.setFieldValue(field.name, option.value)}
                                                 components={{
                                                     Option: CustomSelectOption,
                                                     Control: CustomControl,
@@ -243,7 +251,7 @@ const EventDialog = ({ submit }) => {
                                     </Field>
                                 </FormItem>
                                 <FormItem className="mb-0 text-right rtl:text-left">
-                                    <Button variant="solid" type="submit">
+                                    <Button variant="solid" type="submit" onClick={() => handleSubmit(values)}>
                                         등록
                                     </Button>
                                 </FormItem>
