@@ -41,9 +41,12 @@ public enum CustomExceptionCode {
      * 404
      */
     NOT_FOUND_USER_SEQ(HttpStatus.NOT_FOUND, "일치하는 회원 일련번호가 없습니다."),
+    NOT_FOUND_USER_LINK_CODE(HttpStatus.NOT_FOUND, "인증코드가 정확하지 않습니다.."),
     NOT_FOUND_USER_ID(HttpStatus.NOT_FOUND, "아이디가 일치하지 않습니다."),
     NOT_FOUND_USER_PW(HttpStatus.NOT_FOUND, "비밀번호가 일치하지 않습니다."),
     NOT_FOUND_USER(HttpStatus.NOT_FOUND, "해당 사용자를 찾을 수 없습니다."),
+    NOT_FOUND_EMAIL(HttpStatus.NOT_FOUND, "해당 이메일을 찾을 수 없습니다."),
+    SEND_ERROR(HttpStatus.NOT_FOUND, "인증 코드 전송에 실패 했습니다.."),
     USER_ROLE_NOT_EXIST(HttpStatus.NOT_FOUND, "권한이 존재하지 않습니다."),
     USER_ROLE_INVALID(HttpStatus.NOT_FOUND, "옳은 권한이 아닙니다."),
     REFRESH_TOKEN_NOT_EXISTS(HttpStatus.NOT_FOUND, "다시 로그인 해주시기 바랍니다."),

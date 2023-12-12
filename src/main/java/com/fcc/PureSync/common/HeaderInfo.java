@@ -1,6 +1,9 @@
 package com.fcc.PureSync.common;
 
+import com.fcc.PureSync.common.constant.Constant;
 import com.fcc.PureSync.entity.Member;
+import com.fcc.PureSync.exception.CustomException;
+import com.fcc.PureSync.exception.CustomExceptionCode;
 import com.fcc.PureSync.jwt.JwtAuthenticationFilter;
 import com.fcc.PureSync.jwt.JwtUtil;
 import lombok.NoArgsConstructor;
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 @RequiredArgsConstructor
 @Component
 public class HeaderInfo {
@@ -27,39 +31,35 @@ public class HeaderInfo {
     private final JwtUtil jwtUtil;
 
     public Long getMemSeqFromHeader(HttpEntity httpEntity) {
-        String accessToken = "";
-        Long memSeq= null;
-        List<String> accessTokenList;
-        for (Map.Entry<String, List<String>> entry : httpEntity.getHeaders().entrySet()) {
-            if ("authorization".equals(entry.getKey())){
-                accessTokenList = entry.getValue();
-                if(!accessTokenList.isEmpty()){
-                    accessToken=accessTokenList.get(0);
-                }
-            }
-        }
-            String compareToken = accessToken.substring(7);
-        if (jwtUtil.validateToken(compareToken)) {
-            memSeq = jwtUtil.getMemSeq(compareToken);
+        String accessToken = splitToken(httpEntity);
+        Long memSeq = null;
+        if (jwtUtil.validateToken(accessToken)) {
+            memSeq = jwtUtil.getMemSeq(accessToken);
         }
         return memSeq;
     }
 
-    public  String getMemIdFromHeader(HttpEntity httpEntity) {
-        String accessToken = "";
-        String memId= null;
-        List<String> accessTokenList;
-        for (Map.Entry<String, List<String>> entry : httpEntity.getHeaders().entrySet()) {
-            if ("authorization".equals(entry.getKey())){
-                accessTokenList = entry.getValue();
-                if(!accessTokenList.isEmpty()){
-                    accessToken=accessTokenList.get(0);
-                }
-            }
-        }
-        String compareToken = accessToken.substring(7);
-        if (jwtUtil.validateToken(compareToken))
-            memId = jwtUtil.getMemId(compareToken);
+    public String getMemIdFromHeader(HttpEntity httpEntity) {
+        String accessToken = splitToken(httpEntity);
+        String memId = "";
+        if (jwtUtil.validateToken(accessToken))
+            memId = jwtUtil.getMemId(accessToken);
         return memId;
     }
+
+    private String splitToken(HttpEntity httpEntity) {
+        if(httpEntity==null)
+            throw new CustomException(CustomExceptionCode.INVALID_JWT);
+        for (Map.Entry<String, List<String>> entry : httpEntity.getHeaders().entrySet()) {
+            if (Constant.AUTHORIZATION_HEADER.equalsIgnoreCase(entry.getKey())) {
+                List<String> headerValue = entry.getValue();
+                if (!headerValue.isEmpty()) {
+                    return headerValue.get(0).substring(7);
+                }
+                break;
+            }
+        }
+        throw new CustomException(CustomExceptionCode.UNSUPPORTED_JWT);
+    }
+
 }
