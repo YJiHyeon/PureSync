@@ -10,10 +10,10 @@ function useAuth() {
     const query = useQuery();
 
     const signIn = async (values) => {
-        console.log("useAuths 호출"+values)
         try {
             const resp = await apiSignIn(values);
-            if (resp.data) {
+           
+            if (resp!=null) {
                 // const { token } = resp.data;
                 // Cookies.set('auth_token', token, { expires: 1 }); 
                 const redirectUrl = query.get(REDIRECT_URL_KEY);
@@ -36,12 +36,12 @@ function useAuth() {
 
     const signOut = async () => {
         await apiSignOut();
-        Cookies.remove('accessToken');
+        Cookies.remove('access_token');
         navigate(appConfig.unAuthenticatedEntryPath);
     };
 
     const isAuthenticated = () => {
-        return !!Cookies.get('accessToken');
+        return !!Cookies.get('access_token');
     };
 
     return {

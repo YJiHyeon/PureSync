@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class  MenuDto {
-    private Long menu_seq;
+//    private Long menu_seq;
     private String  menu_wdate;
     private Integer menu_when;
     private Long mem_seq;

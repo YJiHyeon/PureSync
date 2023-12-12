@@ -14,6 +14,7 @@ public class MdTrashController {
 
     @GetMapping("/list/{memId}")
     public ResultDto getMdTrashList(@PathVariable String memId) {
+
         return mdTrashService.getMdTrashList(memId);
     }
 

@@ -1,12 +1,13 @@
 package com.fcc.PureSync.controller;
 
-import com.fcc.PureSync.dto.*;
+import com.fcc.PureSync.dto.FindPasswordDto;
+import com.fcc.PureSync.dto.LoginDto;
+import com.fcc.PureSync.dto.ResultDto;
+import com.fcc.PureSync.dto.SignupDto;
 import com.fcc.PureSync.jwt.CustomUserDetails;
 import com.fcc.PureSync.service.MemberService;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,8 +28,8 @@ public class MemberController {
 
     @PostMapping("/login")  // 로그인
     public ResultDto login(@RequestBody LoginDto loginDto, HttpServletResponse response) {
+        System.out.println(loginDto.getMemId());
         ResultDto resultDto = memberService.login(loginDto);
-        createCookie(resultDto,response);
         return resultDto;
     }
 
@@ -58,16 +59,6 @@ public class MemberController {
         return map;
     }
 
-    private void createCookie( ResultDto resultDto, HttpServletResponse response){
-        String accessToken = resultDto.getData().values().iterator().next().toString();
-        Cookie cookie = new Cookie("accessToken",accessToken); //
-        cookie.setMaxAge(1 * 24 * 60 * 60);
-//        cookie.setHttpOnly(true); https에서만 사용
-//        cookie.setSecure(true);
-        cookie.setPath("/");
-        System.out.println(cookie);
-        response.addCookie(cookie);
-    }
 
 
 }
