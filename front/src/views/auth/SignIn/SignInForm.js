@@ -25,6 +25,7 @@ const SignInForm = (props) => {
         disableSubmit = false,
         className,
         forgotPasswordUrl = '/forgot-password',
+        resetPasswordUrl = '/reset-password',
         signUpUrl = '/sign-up',
     } = props
 
@@ -35,9 +36,9 @@ const SignInForm = (props) => {
 
     const onSignIn = async (values, setSubmitting) => {
         const { memId, memPassword } = values
-        
+
         try {
-            const response = await signIn( { memId, memPassword });
+            const response = await signIn({ memId, memPassword });
             setSubmitting(true);
             setMessage(response.message);
         } catch (err) {
@@ -96,17 +97,17 @@ const SignInForm = (props) => {
                                     component={PasswordInput}
                                 />
                             </FormItem>
-                            <div className="flex justify-between mb-6">
+                            <div className="ml-auto">
                                 <Field
                                     className="mb-0"
                                     name="rememberMe"
                                     component={Checkbox}
                                     children="로그인 정보 저장"
                                 />
-                                <ActionLink to={forgotPasswordUrl}>
-                                    비밀번호를 잊어버리셨나요?
-                                </ActionLink>
                             </div>
+                            <br></br>
+                    
+
                             <Button
                                 block
                                 loading={isSubmitting}
@@ -116,6 +117,18 @@ const SignInForm = (props) => {
                                 {isSubmitting ? 'Signing in...' : '로그인'}
                             </Button>
                             <div className="mt-4 text-center">
+                            <div className="flex justify-between">
+                                <div>
+                                    <ActionLink to={forgotPasswordUrl}>
+                                        아이디 찾기
+                                    </ActionLink>
+                                </div>
+                                <div>
+                                    <ActionLink to={resetPasswordUrl}>
+                                        비밀번호 찾기
+                                    </ActionLink>
+                                </div>
+                            </div>
                                 <span>계정이 없으신가요? </span>
                                 <ActionLink to={signUpUrl}>회원가입</ActionLink>
                             </div>

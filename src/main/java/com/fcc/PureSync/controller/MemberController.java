@@ -41,7 +41,7 @@ public class MemberController {
     return memberService.searchPassword(findPasswordDto);
     }
 
-    @GetMapping("/searchId")
+    @GetMapping("/searchId/{memEmail}")
     public ResultDto searchId(@PathVariable("memEmail") String memEmail){
         return memberService.searchId(memEmail);
     }

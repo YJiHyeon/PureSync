@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, FormItem, FormContainer, Alert } from 'components/ui'
+import { Button, FormItem, FormContainer, Alert,Input } from 'components/ui'
 import { PasswordInput, ActionLink } from 'components/shared'
 import { apiResetPassword } from 'services/AuthService'
 import useTimeOutMessage from 'utils/hooks/useTimeOutMessage'
@@ -8,14 +8,12 @@ import { Field, Form, Formik } from 'formik'
 import * as Yup from 'yup'
 
 const validationSchema = Yup.object().shape({
-    password: Yup.string().required('Please enter your password'),
-    confirmPassword: Yup.string().oneOf(
-        [Yup.ref('password'), null],
-        'Your passwords do not match'
-    ),
+    memId: Yup.string().required('아이디를 제대로 입력해주세요.'),
+    memEmail: Yup.string().required('Email을 제대로 입력해주세요.')
+    
 })
 
-const ResetPasswordForm = (props) => {
+const ResetmemIdForm = (props) => {
     const { disableSubmit = false, className, signInUrl = '/sign-in' } = props
 
     const [resetComplete, setResetComplete] = useState(false)
@@ -25,10 +23,10 @@ const ResetPasswordForm = (props) => {
     const navigate = useNavigate()
 
     const onSubmit = async (values, setSubmitting) => {
-        const { password } = values
+        const { memId } = values
         setSubmitting(true)
         try {
-            const resp = await apiResetPassword({ password })
+            const resp = await apiResetPassword({ memId })
             if (resp.data) {
                 setSubmitting(false)
                 setResetComplete(true)
@@ -49,13 +47,13 @@ const ResetPasswordForm = (props) => {
                 {resetComplete ? (
                     <>
                         <h3 className="mb-1">Reset done</h3>
-                        <p>Your password has been successfully reset</p>
+                        <p>Your memId has been successfully reset</p>
                     </>
                 ) : (
                     <>
-                        <h3 className="mb-1">Set new password</h3>
+                        <h3 className="mb-1">비밀 번호 찾기</h3>
                         <p>
-                            Your new password must different to previos password
+                            회원 가입 시 등록한 이메일과 아이디를 적어주세요.
                         </p>
                     </>
                 )}
@@ -67,8 +65,8 @@ const ResetPasswordForm = (props) => {
             )}
             <Formik
                 initialValues={{
-                    password: '123Qwe1',
-                    confirmPassword: '123Qwe1',
+                    memId: '',
+                    memEmail: '',
                 }}
                 validationSchema={validationSchema}
                 onSubmit={(values, { setSubmitting }) => {
@@ -85,33 +83,30 @@ const ResetPasswordForm = (props) => {
                             {!resetComplete ? (
                                 <>
                                     <FormItem
-                                        label="Password"
+                                        label="ID"
                                         invalid={
-                                            errors.password && touched.password
+                                            errors.memId && touched.memId
                                         }
-                                        errorMessage={errors.password}
+                                        errorMessage={errors.memId}
                                     >
                                         <Field
                                             autoComplete="off"
-                                            name="password"
-                                            placeholder="Password"
-                                            component={PasswordInput}
+                                            name="memId"
+                                            placeholder="아이디를 입력해주세요."
                                         />
                                     </FormItem>
                                     <FormItem
-                                        label="Confirm Password"
+                                        label="Email"
+                                        
                                         invalid={
-                                            errors.confirmPassword &&
-                                            touched.confirmPassword
+                                            errors.memEmail &&
+                                            touched.memEmail
                                         }
-                                        errorMessage={errors.confirmPassword}
+                                        errorMessage={errors.memEmail}
                                     >
-                                        <Field
-                                            autoComplete="off"
-                                            name="confirmPassword"
-                                            placeholder="Confirm Password"
-                                            component={PasswordInput}
-                                        />
+                                 <InputGroup className="mb-4">
+                                    <Field as={Input} placeholder="Email 중복 검사" name="memEmail" />
+                                </InputGroup>
                                     </FormItem>
                                     <Button
                                         block
@@ -120,8 +115,8 @@ const ResetPasswordForm = (props) => {
                                         type="submit"
                                     >
                                         {isSubmitting
-                                            ? 'Submiting...'
-                                            : 'Submit'}
+                                            ? '전송 중입니다.'
+                                            : '전송'}
                                     </Button>
                                 </>
                             ) : (
@@ -147,4 +142,4 @@ const ResetPasswordForm = (props) => {
     )
 }
 
-export default ResetPasswordForm
+export default ResetmemIdForm
