@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const stateSlice = createSlice({
-    name: 'crmCalendar/state',
+    name: 'sleepCalendar/state',
     initialState: {
         dialogOpen: false,
         selected: {

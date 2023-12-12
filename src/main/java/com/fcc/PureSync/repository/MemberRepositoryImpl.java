@@ -118,7 +118,11 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom  {
                             .when(member.memStatus.eq(5)).then("어드민")
                             .otherwise("알 수 없음")
                         ,member.memBirth
-                        ,member.memGender
+                        ,new CaseBuilder()
+                            .when(member.memGender.eq("M")).then("남")
+                            .when(member.memGender.eq("W")).then("여")
+                            .otherwise("알 수 없음")
+                        ,member.memImg
                         ,member.memCreatedAt
                         ,member.memLastLoginAt
                         ,body.bodyHeight

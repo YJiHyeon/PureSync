@@ -130,8 +130,8 @@ export const crmDashboardData = {
 export const eventsData = [
     {
         id: '0',
-        title: 'All Day Event',
-        start: getDate('YEAR-MONTH-01'),
+        title: 'Day Event***',
+        start: getDate('YEAR-MONTH-19'),
         eventColor: 'orange',
     },
     {

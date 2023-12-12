@@ -36,6 +36,19 @@ const bodyNavigationConfig = [
                 authority: [ADMIN, USER],
                 subMenu: [],
             },
+            {
+                key: 'landing',
+                path: `/landing/landing`,
+                title: '랜딩페이지',
+                translateKey: 'nav.landing',
+                icon: 'table',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [ADMIN, USER],
+                subMenu: [],
+                meta: {
+                    layout: 'blank'
+                }
+            },
         ],
     },
 ]
