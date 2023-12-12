@@ -8,10 +8,18 @@ import { theme } from 'twin.macro';
 import useWindowSize from '../hooks/useWindowSize';
 import { Button, Input } from 'components/ui';
 import Axios from 'axios';
-import { Alert } from 'components/ui'
+import getHeaderCookie from 'utils/hooks/getHeaderCookie'
+import {parseJwt, getMemInfoFromToken} from 'utils/hooks/parseToken'
+
 
 
 const DialogExercise = (props) => {
+
+    //Header Cookie
+    const access_token = getHeaderCookie();
+    let parse_token = parseJwt(access_token);
+    let  { memId, memSeq } = getMemInfoFromToken(parse_token);
+
     const currentSize = useWindowSize();
 
     const {
@@ -154,7 +162,7 @@ const DialogExercise = (props) => {
             const exerciseInfo = {
                 elDate: props.selectDate,
                 elTime: exerciseTimeValue,
-                memSeq: 1,
+                memSeq: memSeq,
                 ecSeq: item.ecSeq
             };
             i++;
@@ -162,7 +170,13 @@ const DialogExercise = (props) => {
             console.log(exerciseInfo);
         });
 
-        Axios.post(process.env.REACT_APP_HOST_URL + '/api/exercise/save', sendExerciseDatas[0])
+        Axios.post(process.env.REACT_APP_HOST_URL + '/api/exercise/save', sendExerciseDatas[0],
+        {
+            headers: {
+                Authorization: `Bearer ${access_token}`
+            }
+        }
+        )
             .then((res) => {
                 setSearchValue('');
                 setSearchResults([]);
