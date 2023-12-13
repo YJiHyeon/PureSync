@@ -18,9 +18,10 @@ export function getMemInfoFromToken() {
 
     if (decodedToken) {
         const memId = decodedToken.memId;
-        const memSeq = decodedToken.memSeq; 
+        const memSeq = decodedToken.memSeq;
+        const memEmail = decodedToken.memEmail; 
 
-        return { memId, memSeq };
+        return { memId, memSeq, memEmail};
     }
 
     return null;
@@ -28,6 +29,6 @@ export function getMemInfoFromToken() {
 
 export const memInfo = getMemInfoFromToken();
 if (memInfo) {
-    console.log('memId:', memInfo.memId, 'memSeq:', memInfo.memSeq);
+    console.log('memId:', memInfo.memId, 'memSeq:', memInfo.memSeq, 'memEmail:',memInfo.memEmail);
 }
 

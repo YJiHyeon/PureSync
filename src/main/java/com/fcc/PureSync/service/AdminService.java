@@ -31,11 +31,10 @@ public class AdminService {
     3. 로그인 성공 시 멤버 권한 레벨이 맞지 않으면 예외 처리
     4.스프링 시큐리티에 멤버 정보 저장
     */
+
     public Member adminLogin(LoginDto loginDto) {
         String memId = loginDto.getMemId();
         String password = loginDto.getMemPassword();
-//        if(!UserRoleConfig.ADMIN_ID.equals(memId))
-//            throw new CustomException(CustomExceptionCode.UNAUTHORIZED_ACCESS);
         Member member = memberRepository.findByMemId(memId).orElseThrow(()->new CustomException(CustomExceptionCode.NOT_FOUND_USER_ID));
         if(!passwordEncoder.matches(member.getMemPassword(), password))
             throw  new CustomException(CustomExceptionCode.NOT_FOUND_USER_PW);
@@ -44,6 +43,8 @@ public class AdminService {
         handleSecurity(memId,password);
         return member;
     }
+    //관리자 아이디 - 시퀀스까지
+    //
     private void handleSecurity(String memId, String password) {
         UsernamePasswordAuthenticationToken authToken =
                 new UsernamePasswordAuthenticationToken(memId, password);

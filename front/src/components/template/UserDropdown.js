@@ -7,6 +7,13 @@ import { Link } from 'react-router-dom'
 import classNames from 'classnames'
 import { HiOutlineUser, HiOutlineCog, HiOutlineLogout } from 'react-icons/hi'
 import { FiActivity } from 'react-icons/fi'
+import getHeaderCookie from 'utils/hooks/getHeaderCookie'
+import {parseJwt, getMemInfoFromToken} from 'utils/hooks/parseToken'
+
+
+const access_token = getHeaderCookie();
+let parse_token = parseJwt(access_token);
+let  { memId, memEmail } = getMemInfoFromToken(parse_token);
 
 const dropdownItemList = [
     {
@@ -28,7 +35,7 @@ export const UserDropdown = ({ className }) => {
         <div className={classNames(className, 'flex items-center gap-2')}>
             <Avatar size={32} shape="circle" icon={<HiOutlineUser />} />
             <div className="hidden md:block">
-                <div className="font-bold">Test</div>
+                <div className="font-bold">{memId}</div>
                 {/* <div className="font-bold">{userName}</div> */}
             </div>
         </div>
@@ -50,12 +57,12 @@ export const UserDropdown = ({ className }) => {
                                 {userName}
                             </div> */}
                             <div className="font-bold text-gray-900 dark:text-gray-100">
-                                Test
+                            {memId}
                             </div>
-                            <div className="text-xs">tester@test.com</div>
+                            <div className="text-xs">{memEmail}</div>
                             {/* <div className="text-xs">{email}</div> */}
                         </div>
-                    </div>
+                    </div> 
                 </Dropdown.Item>
                 <Dropdown.Item variant="divider" />
                 {dropdownItemList.map((item) => (

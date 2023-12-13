@@ -38,6 +38,7 @@ public class JwtUtil {
             builder.setExpiration(new Date(new Date().getTime() + tokenValidityInMilliseconds));
             builder.claim("memId", member.getMemId()); //토큰에 저장되는 데이터
             builder.claim("memSeq", member.getMemSeq()); //토큰에 저장되는 데이터
+            builder.claim("memEmail",member.getMemEmail());//토큰에 추가되는 데이터
             builder.signWith(SignatureAlgorithm.HS256, secret.getBytes("UTF-8")); //비밀키
             token = builder.compact(); //모든 내용을 묶기
         } catch (UnsupportedEncodingException e) {
@@ -73,6 +74,19 @@ public class JwtUtil {
             throw new CustomException(FAIL_CREATE_TOKEN);
         }
         return id;
+    }
+    public String getMemEmail(String token) {
+        String memEmail;
+        try {
+            JwtParser parser = Jwts.parser();
+            parser.setSigningKey(secret.getBytes("UTF-8"));
+            Jws<Claims> jws = parser.parseClaimsJws(token);
+            Claims claims = jws.getBody();
+            memEmail = claims.get("memEmail", String.class);
+        } catch (Exception e) {
+            throw new CustomException(FAIL_CREATE_TOKEN);
+        }
+        return memEmail;
     }
 
     public Long getMemSeq(String token) {

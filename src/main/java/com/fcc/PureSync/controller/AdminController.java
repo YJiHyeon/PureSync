@@ -9,14 +9,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
-@RequestMapping("/admin")
 @Controller
 public class AdminController {
     private final AdminService adminService;
     //로그인 페이지
     @GetMapping("/login")
     public String adminMain() {
-        return "/admin";
+        return "/member/login";
     }
 
     //로그인 기능
@@ -24,7 +23,7 @@ public class AdminController {
     public String adminLogin(Model model, @RequestBody LoginDto loginDto) {
         Member member= adminService.adminLogin(loginDto);
         model.addAttribute("adminInfo",member);
-        return "/admin";
+        return "/";
     }
 
 
