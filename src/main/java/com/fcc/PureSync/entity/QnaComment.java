@@ -21,10 +21,7 @@ public class QnaComment {
     private String qnaCmtContents;
     @Builder.Default
     private LocalDateTime qnaCmtWdate = LocalDateTime.now();
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "mem_seq")
-    private Member member;
+    private String qnaCmtWriter;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "qna_board_seq")
