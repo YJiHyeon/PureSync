@@ -24,9 +24,9 @@ public class AdminQnaBoardDto extends BaseDto {
 
     // 유저 댓글
     private Long qna_cmt_seq;
+    private String qna_cmt_writer;
     private String qna_cmt_contents;
     private String qna_cmt_wdate;
-    private Integer qna_cmt_status;
 
     // 유저 파일
     private Long qna_board_file_seq;
