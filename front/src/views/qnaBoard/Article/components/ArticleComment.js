@@ -48,33 +48,27 @@ const cmtModify = async (qnaCmtSeq, modifiedContents) => {
           {data.qnaComment.map((qnaComment) => (
             <div style={{ marginBottom: '10px' }}>
                 <div className="flex items-center justify-between mb-4">
-                  <p>작성자: {data.memId}</p>
+                  <p>작성자 : 관리자</p>
                   <div className="flex gap-2">
                     <span className="flex items-center gap-2">
                       <HiOutlineClock className="text-lg" />
                       <span>{qnaComment.cmtWdate}</span>
                 </span>
                 {editingComment === qnaComment.qnaCmtSeq ? (
+                  // 수정, 삭제 버튼 쓰려면 주석풀기
                   <>
-                    {/* 수정 중일 때는 수정할 내용을 입력하는 Input */}
-                    {/* <Input
-                      type="text"
-                      value={qnaComment.qnaCmtContents}
-                      onChange={(e) => setEditingComment(e.target.value)}
-                    /> */}
-                    <Button
+                    {/* <Button
                       variant="twoTone"
                       size="xs"
                       color="blue-600"
                       onClick={() => cmtModify(qnaComment.qnaCmtSeq, editingComment)}
                     >
                       완료
-                    </Button>
+                    </Button> */}
                   </>
                 ) : (
                   <>
-                    {/* 수정 중이 아닐 때는 수정 버튼 */}
-                    <Button
+                    {/* <Button
                       variant="twoTone"
                       size="xs"
                       color="green-600"
@@ -82,7 +76,6 @@ const cmtModify = async (qnaCmtSeq, modifiedContents) => {
                     >
                       수정
                     </Button>
-                    {/* 삭제 버튼 */}
                     <Button
                       variant="twoTone"
                       size="xs"
@@ -90,7 +83,7 @@ const cmtModify = async (qnaCmtSeq, modifiedContents) => {
                       onClick={() => cmtDelete(qnaComment.qnaCmtSeq)}
                     >
                       삭제
-                    </Button>
+                    </Button> */}
                   </>
                 )}
               </div>
