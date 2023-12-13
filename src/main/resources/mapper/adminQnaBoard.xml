@@ -42,27 +42,13 @@
     </select>
 
     <select id="getAllQnaCmtList" resultType="AdminQnaBoardDto" parameterType="AdminQnaBoardDto">
-        SELECT
-            c.qna_cmt_seq, c.qna_cmt_contents, c.qna_cmt_wdate, c.qna_cmt_status, c.mem_seq,
-            m.mem_id,
-        CASE
-                WHEN c.qna_cmt_status = 0 THEN '삭제'
-                WHEN c.qna_cmt_status = 1 THEN '게시'
-                WHEN c.qna_cmt_status = 2 THEN '관리자삭제'
-                ELSE '알 수 없음'
-            END AS qna_cmt_status_text
-        FROM
-            tb_qna_comment AS c
-        LEFT OUTER JOIN
-            tb_member AS m
-        ON
-            c.mem_seq = m.mem_seq
-        WHERE
-            m.mem_id LIKE CONCAT('%', #{searchText}, '%')
-        ORDER BY
-            c.qna_cmt_seq DESC
-        limit #{start}, 10
+        SELECT c.qna_cmt_seq, c.qna_cmt_contents, c.qna_cmt_wdate, c.qna_board_seq
+        FROM tb_qna_comment AS c
+        WHERE qna_board_seq=#{qna_board_seq}
+        ORDER BY c.qna_cmt_seq DESC
+        LIMIT 0, 10;
     </select>
+
 
     <select id="QnaBoard_getTotalCnt" resultType="int" parameterType="AdminQnaBoardDto" >
         SELECT COUNT(*)
@@ -77,13 +63,8 @@
     <select id="QnaCmt_getTotalCnt" resultType="int" parameterType="AdminQnaBoardDto">
         SELECT COUNT(*)
         FROM tb_qna_comment b
-        LEFT OUTER JOIN tb_member AS m
-        ON
-            b.mem_seq = m.mem_seq
-        WHERE
-            m.mem_id LIKE CONCAT('%', #{searchText}, '%')
+        WHERE b.qna_cmt_writer LIKE CONCAT('%', #{searchText}, '%')
     </select>
-
 
     <select id="getAllQnaFiles" resultType="AdminQnaBoardDto" parameterType="AdminQnaBoardDto">
         SELECT
@@ -106,4 +87,8 @@
         WHERE qna_board_seq = #{qna_board_seq};
     </update>
 
+    <insert id="qnaCommentWrite" parameterType="AdminQnaBoardDto">
+        INSERT INTO tb_qna_comment (qna_cmt_contents, qna_cmt_wdate, qna_board_seq)
+        VALUES (#{qna_cmt_contents}, NOW(), #{qna_board_seq});
+    </insert>
 </mapper>
