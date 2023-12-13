@@ -13,12 +13,13 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class AdminController {
     private final AdminService adminService;
+    //로그인 페이지
     @GetMapping("/login")
     public String adminMain() {
         return "/admin";
     }
 
-    //로그인 기능.
+    //로그인 기능
     @PostMapping("/login")
     public String adminLogin(Model model, @RequestBody LoginDto loginDto) {
         Member member= adminService.adminLogin(loginDto);
