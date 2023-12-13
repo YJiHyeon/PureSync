@@ -656,7 +656,7 @@ function chartjsLineChart(selector, height, dataCur, labels, labelName, fill) {
                                 if (context.parsed.y !== null) {
                                     label += new Intl.NumberFormat().format(context.parsed.y);
                                 }
-                                return `<span class="data-label">${label}k</span>`;
+                                return `<span class="data-label">${label}</span>`;
                             }
                         },
                     },
@@ -707,11 +707,10 @@ function chartjsLineChart(selector, height, dataCur, labels, labelName, fill) {
                             },
                             color: '#747474',
                             padding: 15,
-                            max: 80,
                             min: 0,
-                            stepSize: 20,
+                            stepSize: 5,
                             callback(value, index, values) {
-                                return `${value}k`;
+                                return `${value}`;
                             },
                         },
                     },
@@ -722,7 +721,7 @@ function chartjsLineChart(selector, height, dataCur, labels, labelName, fill) {
                             zeroLineColor: "transparent",
                             color: "transparent",
                             z: 1,
-                            tickMarkLength: 10,
+                            tickMarkLength: 7,
                             drawTicks: true,
                             drawBorder: false,
                         },
@@ -742,35 +741,38 @@ function chartjsLineChart(selector, height, dataCur, labels, labelName, fill) {
     }
 }
 /* Demo 2 */
+let visitorConut2 = [8, 8, 15, 8, 8, 8, 8];
+let rMemberCount2 = [40, 30, 35, 20, 25, 40, 35];
+let dMemberCount2 = [20, 36, 25, 50, 40, 55, 40];
+let chartLabel2 = ["2023-12-01", "2023-12-02", "2023-12-03", "2023-12-04", "2023-12-05", "2023-12-06", "2023-12-07"];
 // Total Revenue Chart
 chartjsLineChart(
-    "saleRevenueToday",
+    "visitor2",
     "113",
-    (data = [0, 28, 30, 45, 40, 50, 25, 70, 35, 40, 26, 58]),
-    labels = ["2023-12-01", "2023-12-02", "2023-12-03", "2023-12-04", "2023-12-05", "2023-12-06", "2023-12-07"],
+    data = visitorConut2,
+    labels = chartLabel2,
     "Current period",
     true
 );
 
 $('#tl_revenue-week-tab').on("shown.bs.tab", function () {
     chartjsLineChart(
-        "saleRevenueWeek",
+        "rMember2",
         "113",
-        (data = [40, 30, 35, 20, 25, 40, 35]),
-        labels = ["2023-12-01", "2023-12-02", "2023-12-03", "2023-12-04", "2023-12-05", "2023-12-06", "2023-12-07"],
+        data = rMemberCount2,
+        labels = chartLabel2,
         "Current period",
         true
-
     );
     $('#tl_revenue-week-tab').off();
 });
 
 $('#tl_revenue-month-tab').on("shown.bs.tab", function () {
     chartjsLineChart(
-        "saleRevenueMonth",
+        "saleRevenueMonth2",
         "113",
-        (data = [20, 36, 25, 50, 40, 55, 40, 75, 35, 40, 35, 58]),
-        labels = ["2023-12-01", "2023-12-02", "2023-12-03", "2023-12-04", "2023-12-05", "2023-12-06", "2023-12-07"],
+        data = dMemberCount2,
+        labels = chartLabel2,
         "Current period",
         true
     );
