@@ -1,6 +1,7 @@
-
 package com.fcc.PureSync.service;
+
 import com.fcc.PureSync.dao.AdminQnaBoardDao;
+import com.fcc.PureSync.dao.QnaCommentDao;
 import com.fcc.PureSync.dto.AdminQnaBoardDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import java.util.List;
 public class AdminQnaBoardService {
 
     private final AdminQnaBoardDao adminQnaBoardDao;
+    private final QnaCommentDao qnaCommentDao;
 
     // 유저 게시판 리스트
     public List<AdminQnaBoardDto> getAllQnaBoardList (AdminQnaBoardDto adminQnaBoardDto) {
@@ -22,9 +24,9 @@ public class AdminQnaBoardService {
         return adminQnaBoardDao.getQnaBoardTotalcnt(adminQnaBoardDto);
     }
 
-    public int getQnaCmtTotalcnt(AdminQnaBoardDto adminQnaBoardDto) {
-        return adminQnaBoardDao.getQnaCmtTotalcnt(adminQnaBoardDto);
-    }
+//    public int getQnaCmtTotalcnt(AdminQnaBoardDto adminQnaBoardDto) {
+//        return adminQnaBoardDao.getQnaCmtTotalcnt(adminQnaBoardDto);
+//    }
 
     public List<AdminQnaBoardDto> getAllQnaBoardFiles (AdminQnaBoardDto adminQnaBoardDto) {
         return  adminQnaBoardDao.getAllQnaFiles( adminQnaBoardDto );
@@ -51,6 +53,16 @@ public class AdminQnaBoardService {
         adminQnaBoardDao.qnaBoardSoftDelete(adminQnaBoardDto);
     }
 
+    public void qnaCommentWrite(AdminQnaBoardDto adminQnaBoardDto) {
+        qnaCommentDao.qnaCommentWrite(adminQnaBoardDto);
+    }
 
+    public void qnaCommentUpdate(AdminQnaBoardDto adminQnaBoardDto) {
+        qnaCommentDao.qnaCommentUpdate(adminQnaBoardDto);
+    }
+
+//    public void qnaCommentDelete(AdminQnaBoardDto adminQnaBoardDto) {
+//        qnaCommentDao.qnaCommentDelete(adminQnaBoardDto);
+//    }
 
 }

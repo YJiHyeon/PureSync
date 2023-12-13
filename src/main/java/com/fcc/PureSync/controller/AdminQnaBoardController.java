@@ -6,9 +6,7 @@ import com.fcc.PureSync.service.AdminQnaBoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URLDecoder;
 import java.util.HashMap;
@@ -27,7 +25,7 @@ public class AdminQnaBoardController {
             searchText = " ";
         }
         adminQnaBoardDto.setSearchText(searchText);
-        adminQnaBoardDto.setStart(pg*10);
+        adminQnaBoardDto.setStart(pg * 10);
         List<AdminQnaBoardDto> qnaBoardList = adminQnaBoardService.getAllQnaBoardList(adminQnaBoardDto);
 
         model.addAttribute("page", Pager.makePage(10, adminQnaBoardService.getQnaBoardTotalcnt(adminQnaBoardDto), pg));
@@ -36,22 +34,6 @@ public class AdminQnaBoardController {
         return "/qnaBoard/qnaUserList";
     }
 
-    @GetMapping("/admin/qnaCmt/list/{pg}")
-    public String adminCmtList(Model model, AdminQnaBoardDto adminQnaBoardDto , @PathVariable("pg") int pg) {
-        String searchText = URLDecoder.decode( adminQnaBoardDto.getSearchText() );
-        if( searchText == null ) {
-            searchText = " ";
-        }
-
-        adminQnaBoardDto.setStart(pg*10);
-        List<AdminQnaBoardDto> qnaCmtList = adminQnaBoardService.getAllQnaCmtList(adminQnaBoardDto);
-
-        model.addAttribute("page", Pager.makePage(10, adminQnaBoardService.getQnaCmtTotalcnt(adminQnaBoardDto), pg));
-        model.addAttribute("qnaCmtList", qnaCmtList);
-        model.addAttribute("pg", pg );
-
-        return "/qnaBoard/qnaUserCmtList";
-    }
 
     @GetMapping("/admin/qna/view/{qna_board_seq}")
     public String qnaBoardView(Model model, @PathVariable("qna_board_seq") long qna_board_seq) {
@@ -59,12 +41,35 @@ public class AdminQnaBoardController {
         adminQnaBoardDto.setQna_board_seq(qna_board_seq);
         AdminQnaBoardDto resultDto = adminQnaBoardService.getQnaBoardView(adminQnaBoardDto);
         List<AdminQnaBoardDto> fileList = adminQnaBoardService.getAllQnaBoardFiles(adminQnaBoardDto);
+        List<AdminQnaBoardDto> qnaCmtList = adminQnaBoardService.getAllQnaCmtList(adminQnaBoardDto);
+
         model.addAttribute("qnaBoardView", resultDto);
         model.addAttribute("fileList", fileList);
+        model.addAttribute("qnaCmtList", qnaCmtList);
         return "/qnaBoard/qnaUserView";
     }
 
-    @GetMapping("admin/qna/list/delete/{qna_board_seq}")
+    @PostMapping("/admin/qnaCmt/save")
+    @ResponseBody
+    public HashMap<String, Object> adminQnaCmtSave(@RequestBody AdminQnaBoardDto adminQnaBoardDto) {
+        adminQnaBoardService.qnaCommentWrite(adminQnaBoardDto);
+        HashMap<String, Object> resultMap = new HashMap<>();
+        resultMap.put("result", "success");
+
+        return resultMap;
+    }
+
+    @PostMapping("/admin/qnaCmt/modifyOk")
+    @ResponseBody
+    public HashMap<String, Object> adminQnaCmtModifyOk( @RequestBody AdminQnaBoardDto adminQnaBoardDto) {
+        adminQnaBoardService.qnaCommentUpdate(adminQnaBoardDto);
+        HashMap<String, Object> resultMap = new HashMap<>();
+        resultMap.put("result", "success");
+
+        return resultMap;
+    }
+
+    @GetMapping("/admin/qna/list/delete/{qna_board_seq}")
     @ResponseBody
     public HashMap<String, Object> qnaBoardSoftDelete(AdminQnaBoardDto adminQnaBoardDto) {
         adminQnaBoardService.qnaBoardSoftDelete(adminQnaBoardDto);
@@ -73,7 +78,7 @@ public class AdminQnaBoardController {
         return  resultMap;
     }
 
-    @GetMapping("admin/qnaCmt/list/delete/{qna_cmt_seq}")
+    @GetMapping("/admin/qnaCmt/list/delete/{qna_cmt_seq}")
     @ResponseBody
     public HashMap<String, Object> qnaCmtSoftDelete(AdminQnaBoardDto adminQnaBoardDto) {
         adminQnaBoardService.qnaCmtSoftDelete(adminQnaBoardDto);
