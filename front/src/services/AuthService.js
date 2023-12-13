@@ -10,6 +10,7 @@ export async function apiSignIn(data) {
     try {
         const response = await Axios.post(POST_URL, data, {withCredentials: true});
         TokenCookie(response.data.data.access_token);
+        console.log("responseData",response.data);
         return response.data;
     } catch (error) {
         console.error('Login error', error);
@@ -26,11 +27,13 @@ export async function apiSignUp(data) {
 }
 
 export async function apiSignOut(data) {
-    return ApiService.fetchData({
-        url: '/sign-out',
-        method: 'post',
-        data,
-    })
+    // const POST_URL = `http://localhost:9000/api/member/logout`;
+    try{
+        // const response = await Axios.post(POST_URL, data, {withCredentials: false});
+        // return response.data;
+    }catch(e){
+        console.log(e);
+    }
 }
 
 export async function apiForgotPassword(data) {

@@ -35,7 +35,8 @@ public class JwtAuthenticationFilter  extends OncePerRequestFilter {
                 // userId 가져오기. 위조된 경우 예외 처리된다.
                 String userId = jwtUtil.getMemId(token);
                 Long memSeq = jwtUtil.getMemSeq(token);
-                Member member = Member.builder().memId(userId).memSeq(memSeq).build();
+                String memEmail = jwtUtil.getMemEmail(token);
+                Member member = Member.builder().memId(userId).memSeq(memSeq).memEmail(memEmail).build();
 
                 //인증 완료. SecurityContextHolder에 등록해야 인증된 사용자라고 생가한다.
                 AbstractAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
