@@ -29,6 +29,7 @@
     "d3-geo": "^3.0.1",
     "d3-scale": "^3.2.3",
     "dayjs": "^1.11.5",
+    "dompurify": "^3.0.6",
     "formik": "^2.2.9",
     "framer-motion": "^4.1.17",
     "history": "^5.0.0",

@@ -8,9 +8,11 @@ import {
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Button } from 'components/ui'
-import { HiOutlineCog, HiOutlinePencil, HiOutlineInboxIn, HiOutlineTrash } from 'react-icons/hi'
+import { HiOutlinePencil, HiOutlineTrash } from 'react-icons/hi'
 import { Progress } from 'components/ui'
-import { HiXCircle, HiCheckCircle } from 'react-icons/hi'
+import getHeaderCookie from 'utils/hooks/getHeaderCookie'
+import { parseJwt, getMemInfoFromToken } from 'utils/hooks/parseToken'
+
 
 
 const ArticleContent = () => {
@@ -24,9 +26,15 @@ const ArticleContent = () => {
     const [loading, setLoding] = useState(true);
     const navigate = useNavigate();
 
+    //Header Cookie
+    const access_token = getHeaderCookie();
+
     useEffect(() => {
         // axios를 사용하여 데이터를 가져옴
-        axios.get(`http://127.0.0.1:9000/api/mind/diary/${id}`, {
+        axios.get(process.env.REACT_APP_HOST_URL + `/api/mind/diary/${id}`, {
+            headers: {
+                Authorization: `Bearer ${access_token}`
+            }
         })
             .then(response => {
                 // 요청이 성공하면 데이터를 articles 상태로 설정
@@ -43,9 +51,8 @@ const ArticleContent = () => {
     }, []);
 
     const onClickDelete = () => {
-        axios.delete(`http://127.0.0.1:9000/api/mind/diary/${id}`)
+        axios.delete(process.env.REACT_APP_HOST_URL + `/api/mind/diary/${id}`)
             .then((res) => {
-                console.log('일기가 삭제되었습니다.')
                 navigate('/mind/diary');
 
             })
@@ -92,15 +99,13 @@ const ArticleContent = () => {
                         </div>
                         <div className="mt-8 prose dark:prose-invert max-w-none">
                             {/* static display text to be remove */}
-                            <p>
-                                {diary.dyContents}
-                            </p>
+                            <div dangerouslySetInnerHTML={{ __html: diary.dyContents }} />
                         </div>
                     </div>
 
                     <div className="max-w-[800px] w-full mx-auto mt-8 border-t-gray-200 border-t">
                         <div className='my-4'>
-                        <h3>Ai가 분석한 마음일기의 감정분석결과입니다.</h3>
+                            <h3>Ai가 분석한 마음일기의 감정분석결과입니다.</h3>
                         </div>
                         <div className='grid grid-cols-3'>
                             <div>
