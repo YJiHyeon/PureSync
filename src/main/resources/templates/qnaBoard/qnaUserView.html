@@ -7,6 +7,7 @@
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
    <title>PureSync Admin</title>
    <th:block th:include="~{/fragments/styles :: styleFragment}"></th:block>
+   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 
 <body class="layout-light side-menu">
@@ -67,13 +68,42 @@
                               </div>
 
                      </article>
+                     <form>
+                        <div class="form-group col-12">
+                           <input type="hidden" id="qnaBoardSeq" th:value="${qnaBoardView.qna_board_seq}" >
+                           <textarea name="reply-text" class="form-control mb-4" id="qnaCmtContents" th:text="${qnaBoardView.qna_cmt_contents}"></textarea>
+
+                        </div>
+                     </form>
+
+                     <div class="button-group d-flex justify-content-end pt-15">
+                        <button id="submitBtn" class="btn btn-primary btn-default btn-squared">작성하기</button>
+                     </div>
+
                   </div>
+
+                  <figure th:each="cmt : ${qnaCmtList}">
+                     <div class="dm-comment-box media">
+                        <div class="dm-comment-box__author">
+                        </div>
+                        <div class="dm-comment-box__content media-body">
+                           <div class="comment-content-inner cci">
+                              <span class="cci__author-info"> 관리자  </span>
+                              <span th:text="${cmt.qna_cmt_wdate}"></span>
+                              <p class="cci__comment-text" th:text="${cmt.qna_cmt_contents}">.</p>
+                              <div class="cci__comment-actions">
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </figure>
+
                </div>
-               <!-- ends: .row -->
             </div>
          </div>
 
       </div>
+
       <div th:replace="~{/fragments/footer :: footerFragment}"></div>
    </main>
    <div id="overlayer">
@@ -92,3 +122,35 @@
 </body>
 
 </html>
+
+<script>
+   document.getElementById("submitBtn").addEventListener("click", () => {
+      createQnaCmt();
+   });
+
+   const createQnaCmt = () => {
+      const qnaCmtContents = document.getElementById("qnaCmtContents").value;
+      const qnaBoardSeq = document.getElementById("qnaBoardSeq").value;
+
+      if (!qnaCmtContents) {
+         alert("내용을 입력하세요.");
+         return;
+      }
+
+      const requestData = {
+         qna_cmt_contents: qnaCmtContents,
+         qna_board_seq : qnaBoardSeq
+      };
+
+      axios.post("/admin/qnaCmt/save", requestData)
+              .then((res) => {
+                 if (res.data.result === "success") {
+                    window.location.href = '/admin/qna/view/' + qnaBoardSeq;
+                 }
+              })
+              .catch((error) => {
+                 console.error('댓글 등록 중 오류 발생:', error);
+              });
+   }
+
+</script>
