@@ -60,8 +60,8 @@ const Diaries = (props) => {
                     </div>
                     
                     <div className="min-h-[60px]">
-                            <TextEllipsis text={diary.dyContents} maxTextCount={120} />
-                        </div>
+                     <TextEllipsis text={diary.dyContents.replace(/<[^>]*>/g, '')} maxTextCount={120} />
+                    </div>
                     
                     <div className="flex items-center justify-between mt-6">
                         <div className="flex items-center gap-4">

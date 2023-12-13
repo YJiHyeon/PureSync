@@ -8,6 +8,8 @@ import { theme } from 'twin.macro';
 import useWindowSize from '../hooks/useWindowSize';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { Notification, toast } from 'components/ui'
+import getHeaderCookie from 'utils/hooks/getHeaderCookie'
 import { DndContext } from '@dnd-kit/core';
 import { useDraggable } from '@dnd-kit/core';
 import { useDroppable } from '@dnd-kit/core';
@@ -60,6 +62,8 @@ const DialogTrashIntoTrashbin = (props) => {
     //useNavigate
     const navigate = useNavigate();
 
+    const access_token = getHeaderCookie();
+
     const {
         goRegister,
         tsSeq,
@@ -77,6 +81,13 @@ const DialogTrashIntoTrashbin = (props) => {
         closeTimeoutMS,
         ...rest
     } = props;
+
+    //토스트
+    const openNotification = (placement) => {
+        toast.push(<Notification type="success" title="감정하나를 비워냈습니다" />, {
+            placement: placement,
+        })
+    }
 
     // 닫기 버튼 클릭 이벤트 핸들러
     const onCloseClick = (e) => {
@@ -186,11 +197,13 @@ const DialogTrashIntoTrashbin = (props) => {
         if (event.over && event.over.id === 'droppable') {
           setIsDropped(true);
           //쓰레기 지우는 axios불러야함
-          axios.delete(`http://127.0.0.1:9000/api/mind/trash/${tsSeq}`)
+          axios.delete(process.env.REACT_APP_HOST_URL + `/api/mind/trash/${tsSeq}`, {
+            headers: {
+                Authorization: `Bearer ${access_token}`
+            }
+          })
           .then((res) => {
-            console.log(res);
-            console.log(tsSeq);
-            alert('감정 하나를 비워냈습니다.');
+            openNotification('top-center');
             onClose();
             goRegister();
           })
