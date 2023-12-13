@@ -101,7 +101,6 @@ const DialogExercise = (props) => {
 
     // 항목 선택/해제 핸들러  
     const handleItemToggle = (item) => {
-        console.log(item);
         if (selectedItems.includes(item)) {
             setSelectedItems(selectedItems.filter((selectedItem) => selectedItem !== item));
         }
@@ -128,7 +127,6 @@ const DialogExercise = (props) => {
                 withCredentials: true
             })
                 .then((res) => {
-                    console.log(res.data.data.allExercise);
                     setSearchResults(res.data.data.allExercise);
                     setLoding(true);
                 })
@@ -167,7 +165,6 @@ const DialogExercise = (props) => {
             };
             i++;
             sendExerciseDatas.push(exerciseInfo);
-            console.log(exerciseInfo);
         });
 
         Axios.post(process.env.REACT_APP_HOST_URL + '/api/exercise/save', sendExerciseDatas[0],

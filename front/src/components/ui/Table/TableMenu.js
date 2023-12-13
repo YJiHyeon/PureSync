@@ -44,7 +44,7 @@ const TableMenu = ({ menuData, deleteMenuItem, menuWhen }) => {
                     <td style={{ textAlign: "left", fontSize: '16px' }}>
                         <Button
                             onClick={() => {
-                                 deleteMenuItem(item.menu_seq);
+                                deleteMenuItem(item.menu_seq);
                             }}
                             variant="solid"
                             style={{

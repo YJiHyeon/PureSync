@@ -111,7 +111,6 @@ const DialogMenu = (props) => {
 
     // 식사 유형 선택 변경 핸들러
     const handleMealTypeChange = (value) => {
-        console.log("Selected meal type:", value);
         setMealType(value);
         setSelectedMealType(value);
     }
@@ -139,7 +138,6 @@ const DialogMenu = (props) => {
                 { params: { "foodName": searchValue } },
             )
             .then((res) => {
-                console.log(res.data.data.allFoods);
                 setSearchResults(res.data.data.allFoods);
                 setLoding(true);
             })
@@ -159,7 +157,6 @@ const DialogMenu = (props) => {
     // 항목 선택/해제 핸들러  
     const handleItemToggle = (item) => {
 
-        console.log(item);
         if (selectedItems.includes(item)) {
             setSelectedItems(selectedItems.filter((selectedItem) => selectedItem !== item));
         }

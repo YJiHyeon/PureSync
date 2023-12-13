@@ -19,6 +19,7 @@ public class  MenuDto {
     private  Double menu_total;
     private String menu_date;
     private String menu_gram;
+    private Long menu_seq;
 
     private  Double menu_total_car;
     private  Double menu_total_pro;
