@@ -45,14 +45,17 @@ public class MemberService {
     // 회원가입
     @Transactional
     public ResultDto signup(SignupDto signupDto) {
+        long beforeTime = System.currentTimeMillis(); // 코드 실행 전
+        long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
+        long secDiffTime = (afterTime - beforeTime)/1000; //두 시간에 차 계산
         Member inputMemberInfo = buildMemberFromSignupDto(signupDto);
         Member signupMember = memberRepository.save(inputMemberInfo);
         Body inputBody = buildBodyFromSignDtoAndSignupMember(signupDto, signupMember.getMemSeq());
         bodyRepository.save(inputBody);
         mailService.signUpByVerificationCode(inputMemberInfo.getMemEmail());
+        System.out.println("시간차이(m) : "+secDiffTime);
         return handleResultDtoFromSignUp();
     }
-
     //회원 정보 빌드
     private Member buildMemberFromSignupDto(SignupDto dto) {
         String encoPassword = passwordEncoder.encode(dto.getMemPassword());
