@@ -26,6 +26,15 @@ const appsRoute = [
         component: React.lazy(() => import('views/body/Sleep')),
         authority: [ADMIN, USER],
     },
+    {
+        key: 'landing',
+        path: `/landing/landing`,
+        component: React.lazy(() => import('views/landing/landing')),
+        authority: [ADMIN, USER],
+        meta: {
+            layout: 'blank'
+        }
+    },
     // 마음
     {
         key: 'mind.diary',

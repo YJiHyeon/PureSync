@@ -181,9 +181,17 @@ const SendCompareButtons = React.forwardRef((props, ref) => {
             console.log("sendCompareButton" + response.data.message);
             onDuplicateCheck(field, response.data.message);
             setFieldError(field, response.data.message);
-
         } catch (e) {
-            console.error(e);
+            let errorMsg = `이미 사용 중인 아이디 입니다.`
+            
+            if (`${field}` == "memNick") {
+                errorMsg = `이미 사용 중인 닉네임 입니다.`
+            }
+            if (`${field}` == "memEmail") {
+                errorMsg = `이미 사용 중인 Email 입니다.`
+            }
+            onDuplicateCheck(field, errorMsg);
+            setFieldError(field, errorMsg);
         }
         onClick?.(e)
     }

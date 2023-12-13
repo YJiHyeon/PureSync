@@ -15,6 +15,7 @@ const ArticleAction = (props) => {
 
     const onCommentSubmit = () => {
       console.log(comment);
+      console.log(props.data);
       axios.post(`http://localhost:9000/api/board/${props.data}/comments`,  { cmtContents: comment } 
       , {
         headers: {

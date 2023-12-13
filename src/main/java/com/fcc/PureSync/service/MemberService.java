@@ -37,7 +37,6 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final BodyRepository bodyRepository;
-    private final MemberRoleRepository memberRoleRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
     private final AuthenticationManager authenticationManager;
@@ -46,14 +45,17 @@ public class MemberService {
     // 회원가입
     @Transactional
     public ResultDto signup(SignupDto signupDto) {
+        long beforeTime = System.currentTimeMillis(); // 코드 실행 전
+        long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
+        long secDiffTime = (afterTime - beforeTime)/1000; //두 시간에 차 계산
         Member inputMemberInfo = buildMemberFromSignupDto(signupDto);
         Member signupMember = memberRepository.save(inputMemberInfo);
         Body inputBody = buildBodyFromSignDtoAndSignupMember(signupDto, signupMember.getMemSeq());
         bodyRepository.save(inputBody);
         mailService.signUpByVerificationCode(inputMemberInfo.getMemEmail());
+        System.out.println("시간차이(m) : "+secDiffTime);
         return handleResultDtoFromSignUp();
     }
-
     //회원 정보 빌드
     private Member buildMemberFromSignupDto(SignupDto dto) {
         String encoPassword = passwordEncoder.encode(dto.getMemPassword());
@@ -122,14 +124,14 @@ public class MemberService {
                 }
                 break;
             case "memNick":
-                if (memberRepository.findByMemNickAndMemStatus(value, 1).isEmpty()) {
+                if (memberRepository.findByMemNick(value).isEmpty()) {
                     resultDto = getResultDtoToDuplicate("사용가능한 닉네임입니다.");
                 } else {
                     throw new CustomException(ALREADY_EXIST_NICK);
                 }
                 break;
             case "memEmail":
-                if (memberRepository.findByMemEmailAndMemStatus(value, 1).isEmpty()) {
+                if (memberRepository.findByMemEmail(value).isEmpty()) {
                     resultDto = getResultDtoToDuplicate("사용가능한 이메일입니다.");
                 } else {
                     throw new CustomException(ALREADY_EXIST_EMAIL);
@@ -144,7 +146,7 @@ public class MemberService {
 
 
 
-    @Transactional(readOnly=true)
+    @Transactional
     public ResultDto searchPassword(FindPasswordDto findPasswordDto) {
         Member member = memberRepository.findByMemEmail(findPasswordDto.getMemEmail()).orElseThrow(() -> new CustomException(NOT_FOUND_EMAIL));
         String newPassword = RandomStringGenerator.generateRandomPassword(12);

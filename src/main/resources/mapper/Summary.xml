@@ -22,5 +22,10 @@
         tb_body ON tb_member.mem_seq = tb_body.mem_seq
         WHERE
         tb_member.mem_seq = #{mem_seq}
+        AND tb_body.body_wdate = (
+        SELECT MAX(body_wdate)
+        FROM tb_body s2
+        WHERE s2.mem_seq = tb_member.mem_seq
+        )
     </select>
 </mapper>

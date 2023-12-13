@@ -7,15 +7,17 @@ import { Field, Form, Formik } from 'formik'
 import * as Yup from 'yup'
 
 const validationSchema = Yup.object().shape({
-    email: Yup.string().required('Please enter your email'),
+    email: Yup.string().required('이메일을 다시 확인해주세요.'),
 })
 
 const ForgotPasswordForm = (props) => {
     const { disableSubmit = false, className, signInUrl = '/sign-in' } = props
 
-    const [emailSent, setEmailSent] = useState(false)
+    const [emailSent, setEmailSent] = useState(false);
 
-    const [message, setMessage] = useTimeOutMessage()
+    const [message, setMessage] = useTimeOutMessage();
+    
+    const [responseData, setResponseData] = useState(null);
 
     const onSendMail = async (values, setSubmitting) => {
         setSubmitting(true)
@@ -24,6 +26,7 @@ const ForgotPasswordForm = (props) => {
             if (resp.data) {
                 setSubmitting(false)
                 setEmailSent(true)
+                setResponseData(resp.data);
             }
         } catch (errors) {
             setMessage(errors?.response?.data?.message || errors.toString())
@@ -36,18 +39,16 @@ const ForgotPasswordForm = (props) => {
             <div className="mb-6">
                 {emailSent ? (
                     <>
-                        <h3 className="mb-1">Check your email</h3>
-                        <p>
-                            We have sent a password recovery instruction to your
-                            email
-                        </p>
+                        <h3 className="mb-1">당신의 아이디는</h3>
+                        <h2>
+                        {JSON.stringify(responseData.data.memId)} 입니다.
+                        </h2>
                     </>
                 ) : (
                     <>
-                        <h3 className="mb-1">Forgot Password</h3>
+                        <h3 className="mb-1">아디디를 잊으셨나요?</h3>
                         <p>
-                            Please enter your email address to receive a
-                            verification code
+                            회원가입 시 등록한 이메일을 입력해주세요.
                         </p>
                     </>
                 )}
@@ -59,7 +60,7 @@ const ForgotPasswordForm = (props) => {
             )}
             <Formik
                 initialValues={{
-                    email: 'admin@mail.com',
+                    email: '',
                 }}
                 validationSchema={validationSchema}
                 onSubmit={(values, { setSubmitting }) => {
@@ -82,22 +83,23 @@ const ForgotPasswordForm = (props) => {
                                         type="email"
                                         autoComplete="off"
                                         name="email"
-                                        placeholder="Email"
+                                        placeholder="Email을 입력하세요."
                                         component={Input}
                                     />
                                 </FormItem>
                             </div>
+                            {!emailSent && (
                             <Button
                                 block
                                 loading={isSubmitting}
                                 variant="solid"
                                 type="submit"
                             >
-                                {emailSent ? 'Resend Email' : 'Send Email'}
+                                 이메일을 입력하세요
                             </Button>
+                            )}
                             <div className="mt-4 text-center">
-                                <span>Back to </span>
-                                <ActionLink to={signInUrl}>Sign in</ActionLink>
+                                <ActionLink to={signInUrl}>로그인 하러 가기</ActionLink>
                             </div>
                         </FormContainer>
                     </Form>

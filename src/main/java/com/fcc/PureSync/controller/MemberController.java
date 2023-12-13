@@ -31,7 +31,7 @@ public class MemberController {
         return memberService.login(loginDto);
     }
 
-    @GetMapping("/check-duplicate/{field}/{value}") // 중복검사
+    @GetMapping("/check-duplicate/{field}/{value}")
     public ResultDto checkDuplicate(@PathVariable String field, @PathVariable String value) {
         return memberService.checkDuplicate(field, value);
     }
@@ -41,7 +41,7 @@ public class MemberController {
     return memberService.searchPassword(findPasswordDto);
     }
 
-    @GetMapping("/searchId")
+    @GetMapping("/searchId/{memEmail}")
     public ResultDto searchId(@PathVariable("memEmail") String memEmail){
         return memberService.searchId(memEmail);
     }

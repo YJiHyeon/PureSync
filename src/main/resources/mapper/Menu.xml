@@ -9,7 +9,6 @@
 -->
 <mapper namespace="Menu">
     <select id="getMenuAllList" resultType="MenuDto" parameterType="MenuDto">
-
         select
             a.menu_seq, a.menu_date, a.menu_when, a.menu_gram, a.mem_seq,
             a.food_name, a.food_car, a.food_pro, a.food_fat, a.food_sugar, a.food_na, a.food_col, a.food_kcal, a.food_seq,

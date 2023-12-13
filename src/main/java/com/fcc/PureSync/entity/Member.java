@@ -21,7 +21,7 @@ public class Member extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memSeq;
-    private Integer memStatus;
+    private Integer memStatus= 0;
     private String memId;
     private String memPassword;
     private String memNick;
@@ -43,5 +43,9 @@ public class Member extends BaseEntity {
     public void enabledMemberLevel() {
         this.memStatus = EmailConstant.MEMBER_ENABLED_LEVEL;
     }
+
+    public void updateNick(String memNick) { this.memNick = memNick;}
+    public void updateProfileImg(String img) { this.memImg = img; }
+
 
 }

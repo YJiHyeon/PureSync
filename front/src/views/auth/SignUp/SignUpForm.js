@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Input, InputGroup, Button, FormItem, FormContainer, Alert, Radio, SendCompareButton } from 'components/ui'
+import { InputGroup,Input, Button, FormItem, FormContainer, Alert, Radio, SendCompareButton } from 'components/ui'
 import { PasswordInput, ActionLink } from 'components/shared'
 import useTimeOutMessage from 'utils/hooks/useTimeOutMessage'
 import { Field, Form, Formik } from 'formik'
@@ -111,7 +111,6 @@ const SignUpForm = ({ onSubmit, ...props }) => {
                                     <Field as={Input} placeholder="Email 중복 검사" name="memEmail" />
                                     <SendCompareButton  type="button" field={FILED_MEM_EMAIL} inputValue={values.memEmail} onDuplicateCheck={handleDuplicateCheck} setFieldError={setFieldError}>이메일 중복 검사</SendCompareButton>
                                 </InputGroup>
-
                             </FormItem>
                             {/* 출생년도 */}
                             <FormItem
@@ -124,6 +123,7 @@ const SignUpForm = ({ onSubmit, ...props }) => {
                                     autoComplete="off"
                                     name="memBirth"
                                     component={Input}
+                                    
                                 />
                             </FormItem>
                             {/* 성별 */}
