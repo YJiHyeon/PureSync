@@ -20,7 +20,6 @@ import java.util.List;
 
 import static com.fcc.PureSync.dto.QnaCommentDto.toDto;
 
-
 @Service
 @RequiredArgsConstructor
 public class QnaCommentService {
@@ -54,7 +53,7 @@ public class QnaCommentService {
 
         QnaComment qnaComment = QnaComment.builder()
                 .qnaCmtContents(qnaCommentDto.getQnaCmtContents())
-                .member(member)
+                .qnaCmtWriter(qnaCommentDto.getQnaCmtWriter())
                 .qnaBoard(qnaBoard)
                 .build();
 
@@ -79,7 +78,7 @@ public class QnaCommentService {
                 .qnaCmtSeq(qnaComment.getQnaCmtSeq())
                 .qnaCmtContents(qnaCommentDto.getQnaCmtContents())
                 .qnaCmtWdate(qnaComment.getQnaCmtWdate())
-                .member(member)
+                .qnaCmtWriter(qnaCommentDto.getQnaCmtWriter())
                 .qnaBoard(qnaBoard)
                 .build();
 
@@ -105,7 +104,7 @@ public class QnaCommentService {
                 .qnaCmtSeq(qnaComment.getQnaCmtSeq())
                 .qnaCmtContents(qnaComment.getQnaCmtContents())
                 .qnaCmtWdate(qnaComment.getQnaCmtWdate())
-                .member(member)
+                .qnaCmtWriter(qnaComment.getQnaCmtWriter())
                 .qnaBoard(qnaBoard)
                 .build();
 

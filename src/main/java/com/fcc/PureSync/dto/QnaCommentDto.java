@@ -1,7 +1,6 @@
 package com.fcc.PureSync.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fcc.PureSync.entity.Comment;
 import com.fcc.PureSync.entity.QnaComment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,7 +18,7 @@ public class QnaCommentDto {
     private String qnaCmtContents;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime qnaCmtWdate;
-    private Long memSeq;
+    private String qnaCmtWriter;
     private Long qnaBoardSeq;
 
     public static QnaCommentDto toDto(QnaComment qnaComment) {
@@ -27,7 +26,7 @@ public class QnaCommentDto {
                 .qnaCmtSeq(qnaComment.getQnaCmtSeq())
                 .qnaCmtContents(qnaComment.getQnaCmtContents())
                 .qnaCmtWdate(qnaComment.getQnaCmtWdate())
-                .memSeq(qnaComment.getMember().getMemSeq())
+                .qnaCmtWriter(qnaComment.getQnaCmtWriter())
                 .qnaBoardSeq(qnaComment.getQnaBoard().getQnaBoardSeq())
                 .build();
     }
