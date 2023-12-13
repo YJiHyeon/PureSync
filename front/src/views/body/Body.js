@@ -17,7 +17,6 @@ const BodyMenu = () => {
     // 날짜 계산 ----------------------------------------------------------------
     let today = new Date();
     const toDate = (today) => {
-        //console.log( today );
         let year = today.getFullYear();
         let month = today.getMonth() + 1;
         let date = today.getDate();
@@ -103,8 +102,6 @@ const BodyMenu = () => {
 
     // 식단 삭제
     const menuDelete = (menu_seq) => {
-        console.log("menuDelete 호출");
-        console.log(menu_seq);
         Axios.post(process.env.REACT_APP_HOST_URL + '/api/menu/delete', {
             menuSeq: menu_seq,
             memSeq: memSeq,
