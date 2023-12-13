@@ -4,6 +4,8 @@ import Menu from 'components/body/menu'
 import Exercise from 'components/body/exercise'
 import Axios from 'axios'
 import Summry from 'components/body/summary'
+import getHeaderCookie from 'utils/hooks/getHeaderCookie'
+import {parseJwt, getMemInfoFromToken} from 'utils/hooks/parseToken'
 
 const BodyMenu = () => {
 
@@ -27,7 +29,12 @@ const BodyMenu = () => {
 
     // Mneu -------------------------------------------------------------------------------------------------
     const [menuData, setMenuData] = useState([]);
-
+    //Header Cookie
+    const access_token = getHeaderCookie();
+    let parse_token = parseJwt(access_token);
+    let  { memId, memSeq } = getMemInfoFromToken(parse_token);
+    console.log("memId:::::::::::::::::::::::::::::", memId);
+    console.log("memSeq:::::::::::::::::::::::::::::", memSeq);
     //식사 유형에 대한 총 칼로리
     const [breakfastTotalCalories, setBreakfastTotalCalories] = useState(0);
     const [lunchTotalCalories, setLunchTotalCalories] = useState(0);
@@ -35,33 +42,22 @@ const BodyMenu = () => {
     const [snackTotalCalories, setSnackTotalCalories] = useState(0);
     const [dailyTotalCalories, setDailyTotalCalories] = useState(0);
     const [menuRefresh, setMenuRefresh] = useState(false);
-    //유재건 쿠키 보내기
-    //유재건
-    const [accessToken, setAccessToken] = useState('');
-    
 
     // 식단 리스트 불러오기
     const callMenu = () => {
-        const cookies = document.cookie.split(';');
-        let access_token = "";
-        for (const cookie of cookies) {
-            const [name, value] = cookie.trim().split('=');
-            if (name == 'access_token') {
-                access_token = value;
-                break;
-            }
-        }
+        if (access_token === "") return;
         console.log(access_token);
-        if(access_token==="") return;
+        console.log("memId:::::::::::::::::::::::::::::", memId);
+        console.log("memSeq:::::::::::::::::::::::::::::", memSeq);
         Axios.get(process.env.REACT_APP_HOST_URL + '/api/menu/list', {
             params: {
+                mem_seq: memSeq,
                 menu_date: selectDate,
-            },
-            withCredentials: true,
-            headers: {
-                Authorization: `Bearer ${access_token}`,
+            }, withCredentials: false, headers: {
+                Authorization: `Bearer ${access_token}`
             }
         })
+
             .then((res) => {
                 const menuList = res.data.data.menuList;
                 let breakfastCalories = 0;
@@ -107,16 +103,25 @@ const BodyMenu = () => {
 
     // 식단 삭제
     const menuDelete = (menu_seq) => {
+        if (access_token === "") return;
+        console.log(access_token);
+        console.log("memId:::::::::::::::::::::::::::::", memId);
+        console.log("memSeq:::::::::::::::::::::::::::::", memSeq);
         Axios.post(process.env.REACT_APP_HOST_URL + '/api/menu/delete', {
+            mem_seq: memSeq,
             menuSeq: menu_seq
-        })
-        .then((res) => {
-            //alert("삭제 메뉴" + menu_seq);
-            setMenuRefresh(!menuRefresh);
-        })
-        .catch((error) => {
-            console.error(error);
-        });
+        }, {
+            withCredentials: true, // Include credentials (cookies)
+            headers: {
+                Authorization: `Bearer ${access_token}`
+            }})
+            .then((res) => {
+                //alert("삭제 메뉴" + menu_seq);
+                setMenuRefresh(!menuRefresh);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     }
 
     // Exercise ----------------------------------------------------------------------------------------------
@@ -125,12 +130,17 @@ const BodyMenu = () => {
     const [exerciseRefresh, setExerciseRefresh] = useState(false);
 
     const callExercise = () => {
-        Axios.get( process.env.REACT_APP_HOST_URL + '/api/exercise/list', {
+        if (access_token === "") return;
+        console.log(access_token);
+        console.log("memId:::::::::::::::::::::::::::::", memId);
+        console.log("memSeq:::::::::::::::::::::::::::::", memSeq);
+        Axios.get(process.env.REACT_APP_HOST_URL + '/api/exercise/list', {
             params: {
-                mem_seq: 1,
+                mem_seq: memSeq,
                 el_date: selectDate,
-            },
-            withCredentials: true
+            }, withCredentials: false, headers: {
+                Authorization: `Bearer ${access_token}`
+            }
         })
             .then((res) => {
                 setExerciseData(res.data.data.exerciseList);
@@ -140,7 +150,7 @@ const BodyMenu = () => {
                 res.data.data.exerciseList.forEach((item) => {
                     total += item.el_total;
                 });
-        
+
                 setTotalExerciseCalories(total.toFixed(2));
 
             })
@@ -152,10 +162,18 @@ const BodyMenu = () => {
 
     //운동 삭제
     const exerciseDelete = (el_seq) => {
-        Axios.post(process.env.REACT_APP_HOST_URL +'/api/exercise/delete', {
+        if (access_token === "") return;
+        console.log(access_token);
+        console.log("memId:::::::::::::::::::::::::::::", memId);
+        console.log("memSeq:::::::::::::::::::::::::::::", memSeq);
+        Axios.post(process.env.REACT_APP_HOST_URL + '/api/exercise/delete', {
             elSeq: el_seq,
-            memSeq: 1
-        })
+            mem_seq: memSeq,
+        } ,{
+            withCredentials: true, // Include credentials (cookies)
+            headers: {
+                Authorization: `Bearer ${access_token}`
+            }})
             .then((res) => {
                 setExerciseRefresh(!exerciseRefresh);
             })
@@ -164,7 +182,7 @@ const BodyMenu = () => {
             });
     }
 
- 
+
 
     //summary ----------------------------------------------------------------------------------------------------
     const [exTotal, setExTotal] = useState("");             // 운동 총 칼로리
@@ -173,13 +191,18 @@ const BodyMenu = () => {
 
     // 데이터 불러오기
     const callSummary = () => {
-        Axios.get( process.env.REACT_APP_HOST_URL + '/api/summary/list', {
+        if (access_token === "") return;
+        console.log(access_token);
+        console.log("memId:::::::::::::::::::::::::::::", memId);
+        console.log("memSeq:::::::::::::::::::::::::::::", memSeq);
+        Axios.get(process.env.REACT_APP_HOST_URL + '/api/summary/list', {
             params: {
-                mem_seq: 1,
+                mem_seq: memSeq,
                 menu_date: selectDate,
                 el_date: selectDate,
-            },
-            withCredentials: true,
+            }, withCredentials: false, headers: {
+                Authorization: `Bearer ${access_token}`
+            }
         })
             .then((res) => {
                 const menuTotalWhenList = res.data.data.menuTotalWhenList;
