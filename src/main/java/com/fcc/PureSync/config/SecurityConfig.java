@@ -48,8 +48,8 @@ public class SecurityConfig {
                 //.antMatchers(HttpMethod.GET, "/board/list").hasAuthority("ROLE_USER") //ROLE_생략하면 안됨
                 //.antMatchers(HttpMethod.POST, "/board/create").hasAnyRole("USER") //ROLE_ 붙이면 안됨
                 //그 이외의 모든 경로 허가
-                .anyRequest().permitAll()); //위에 사이트 외에는 권한다 허용
-
+                .anyRequest().permitAll())
+                .logout(logout ->logout.deleteCookies().logoutUrl("/api/member/logout").logoutSuccessUrl("/")); //위에 사이트 외에는 권한다 허용
         return http.build();
     }
     @Bean

@@ -24,6 +24,7 @@ const SignUpBodyForm = ({formData, className, signInUrl}) => {
         try{
             const response = await Axios.post('http://localhost:9000/api/member/signup', finalData);
             console.log(response.data);
+            alert("회원 가입 성공했습니다.");
             window.location.href = signInUrl;
             //추후 변경 필요 지금 급해서.
         } catch(e){

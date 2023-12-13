@@ -3,8 +3,10 @@ import Axios from 'axios'
 import TokenCookie from './tokenCookie'
 
 
+
 export async function apiSignIn(data) {
     const POST_URL = `http://localhost:9000/api/member/login`;
+    
     try {
         const response = await Axios.post(POST_URL, data, {withCredentials: true});
         TokenCookie(response.data.data.access_token);
@@ -45,9 +47,13 @@ export async function apiForgotPassword(data) {
 }
 
 export async function apiResetPassword(data) {
-    return ApiService.fetchData({
-        url: '/reset-password',
-        method: 'post',
-        data,
-    })
+    console.log(data)
+    const POST_URL = `http://localhost:9000/api/member/searchPassword`
+   try{
+    const response = await Axios.post(POST_URL,data);
+    return response
+   }catch(e){
+    console.log(e);
+    return e;
+   }
 }
