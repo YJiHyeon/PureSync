@@ -18,7 +18,10 @@ import * as Yup from 'yup'
 import axios from 'axios'
 import Upload from 'components/ui/Upload'
 import { useLocation } from 'react-router-dom';
+import getHeaderCookie from 'utils/hooks/getHeaderCookie'
+import { parseJwt, getMemInfoFromToken } from 'utils/hooks/parseToken'
 axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
+
 // const validationSchema = Yup.object().shape({
 //     title: Yup.string().required('Title required'),
 //     category: Yup.string().required('Category required'),
@@ -28,16 +31,21 @@ axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
 
 const Editor = () => {
   const navigate = useNavigate();
-  const memId = 'aaa';
+
+  const access_token = getHeaderCookie();
+    let parse_token = parseJwt(access_token);
+    let { memId } = getMemInfoFromToken(parse_token);
+
   const { state } = useLocation();
   const { updateData } = state || {};
   console.log(updateData);
+  
   //const updateData = location.state && location.state.updateData;
   const onUpload = (files) => {
 
     console.log(files);
   }
-
+  
 
   function stripHtmlUsingDOM(html) {
     const doc = new DOMParser().parseFromString(html, 'text/html');
@@ -76,7 +84,7 @@ const Editor = () => {
         const response = await axios.post('http://localhost:9000/api/board', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
-
+            Authorization: `Bearer ${access_token}`
           },
           data: formData,
         });
@@ -90,7 +98,7 @@ const Editor = () => {
         const response = await axios.put(`http://localhost:9000/api/board/${updateData.articleId}`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
-
+            Authorization: `Bearer ${access_token}`
           },
           data: formData,
         });
@@ -122,6 +130,7 @@ const Editor = () => {
     >
       {({ values, touched, errors, isSubmitting, setFieldValue }) => (
         <Form enctype="multipart/form-data" name="myform">
+          <input type='hidden' value={memId} name="memId" />
           <FormContainer>
             <FormItem label="제목">
               <Field autoComplete="off" name="boardName" component={Input} />
