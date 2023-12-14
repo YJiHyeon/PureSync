@@ -2,6 +2,7 @@ package com.fcc.PureSync.dao;
 
 import com.fcc.PureSync.dto.AdminBoardDto;
 import com.fcc.PureSync.dto.NoticeDto;
+import jakarta.annotation.Resource;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -11,7 +12,7 @@ import java.util.List;
 @Repository
 public class NoticeDao {
 
-    @Autowired
+    @Resource(name="sm")
     SqlSessionTemplate sm;
 
     public List<NoticeDto> getAllNoticeList( NoticeDto noticeDto ) {

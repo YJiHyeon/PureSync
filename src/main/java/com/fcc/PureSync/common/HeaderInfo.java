@@ -25,7 +25,8 @@ public class HeaderInfo {
     2. 컨트롤러에서 HttpEntity를 받아서 보내주면 끝입니다.
 
     3. 프론트 측에서 memSeq, memId를 보내줄 필요가 없습니다.
-
+    
+    HttpEntity랑 폼데이터랑 충돌
     */
 
     private final JwtUtil jwtUtil;

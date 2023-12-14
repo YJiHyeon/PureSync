@@ -1,6 +1,7 @@
 package com.fcc.PureSync.dao;
 
 import com.fcc.PureSync.dto.AdminBoardDto;
+import jakarta.annotation.Resource;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -10,7 +11,7 @@ import java.util.List;
 @Repository
 public class AdminBoardDao {
 
-    @Autowired
+    @Resource(name="sm")
     SqlSessionTemplate sm;
 
     public List<AdminBoardDto> getAllUserBoardList( AdminBoardDto adminBoardDto ) {

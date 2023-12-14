@@ -22,8 +22,6 @@ public class QQnaComment extends EntityPathBase<QnaComment> {
 
     public static final QQnaComment qnaComment = new QQnaComment("qnaComment");
 
-    public final QMember member;
-
     public final QQnaBoard qnaBoard;
 
     public final StringPath qnaCmtContents = createString("qnaCmtContents");
@@ -31,6 +29,8 @@ public class QQnaComment extends EntityPathBase<QnaComment> {
     public final NumberPath<Long> qnaCmtSeq = createNumber("qnaCmtSeq", Long.class);
 
     public final DateTimePath<java.time.LocalDateTime> qnaCmtWdate = createDateTime("qnaCmtWdate", java.time.LocalDateTime.class);
+
+    public final StringPath qnaCmtWriter = createString("qnaCmtWriter");
 
     public QQnaComment(String variable) {
         this(QnaComment.class, forVariable(variable), INITS);
@@ -50,7 +50,6 @@ public class QQnaComment extends EntityPathBase<QnaComment> {
 
     public QQnaComment(Class<? extends QnaComment> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.member = inits.isInitialized("member") ? new QMember(forProperty("member")) : null;
         this.qnaBoard = inits.isInitialized("qnaBoard") ? new QQnaBoard(forProperty("qnaBoard"), inits.get("qnaBoard")) : null;
     }
 
