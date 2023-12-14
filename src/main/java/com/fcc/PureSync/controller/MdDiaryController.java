@@ -16,8 +16,8 @@ import java.util.HashMap;
 public class MdDiaryController {
     private final MdDiaryService mdDiaryService;
     @GetMapping("/list/{memId}")
-    public ResultDto getMdDiaryList(@PathVariable("memId") String memId) {
-        return mdDiaryService.getMdDiaryList(memId);
+    public ResultDto getMdDiaryList(@PathVariable("memId") String memId, Pageable pageable) {
+        return mdDiaryService.getMdDiaryList(memId, pageable);
     }
 
     @GetMapping("{dySeq}")
