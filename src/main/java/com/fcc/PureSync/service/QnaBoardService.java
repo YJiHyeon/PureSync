@@ -27,13 +27,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import static com.fcc.PureSync.dto.QnaBoardDto.toDto;
-
 
 @Service
 @RequiredArgsConstructor
@@ -67,10 +63,8 @@ public class QnaBoardService {
     }
 
     @Transactional
-    public ResultDto createQnaBoard(QnaBoardDto qnaBoardDto, String id, List<MultipartFile> file) {
-        //Long id2 = Long.parseLong(id);
-        id = "aaa";
-        Member member = memberRepository.findByMemId(id)
+    public ResultDto createQnaBoard(QnaBoardDto qnaBoardDto, List<MultipartFile> file) {
+        Member member = memberRepository.findByMemId(qnaBoardDto.getMemId())
                 .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
 
         System.out.println("*******************" + qnaBoardDto.getQnaBoardName());
@@ -161,9 +155,8 @@ public class QnaBoardService {
         }
     }
 
-    public ResultDto updateQnaBoard(Long qnaBoardSeq, QnaBoardDto qnaBoardDto, String id, List<MultipartFile> file) throws IOException {
-        id = "aaa";//////////////////////////////////////////////
-        Member member = memberRepository.findByMemId(id)
+    public ResultDto updateQnaBoard(Long qnaBoardSeq, QnaBoardDto qnaBoardDto, List<MultipartFile> file) throws IOException {
+        Member member = memberRepository.findByMemId(qnaBoardDto.getMemId())
                 .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
         QnaBoard qnaBoard = qnaBoardRepository.findById(qnaBoardSeq)
                 .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_ARTICLE));
@@ -258,10 +251,7 @@ public class QnaBoardService {
 
     }
 
-    public ResultDto deleteQnaBoard(Long qnaBoardSeq, String id) {
-        id = "aaa";//////////////////////////////////////////////
-        Member member = memberRepository.findByMemId(id)
-                .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
+    public ResultDto deleteQnaBoard(Long qnaBoardSeq) {
         QnaBoard qnaBoard = qnaBoardRepository.findById(qnaBoardSeq)
                 .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_ARTICLE));
         qnaBoardStatusChk(qnaBoard);
@@ -272,7 +262,7 @@ public class QnaBoardService {
                 .qnaBoardContents(qnaBoard.getQnaBoardContents())
                 .qnaBoardWdate(qnaBoard.getQnaBoardWdate())
                 .qnaBoardStatus(0)
-                .member(member)
+                .member(qnaBoard.getMember())
                 .build();
 
         qnaBoardRepository.save(updatedQnaBoard);
@@ -287,7 +277,7 @@ public class QnaBoardService {
                 .build();
     }
 
-    public ResultDto detailQnaBoard(Long qnaBoardSeq, String id) {
+    public ResultDto detailQnaBoard(Long qnaBoardSeq) {
         QnaBoard qnaBoard = qnaBoardRepository.findById(qnaBoardSeq)
                 .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_ARTICLE));
         QnaBoardDto qnaBoardDetailDto = QnaBoardDto.QnaBoardDetailDto(qnaBoard);
@@ -297,7 +287,7 @@ public class QnaBoardService {
         return buildResultDto(HttpStatus.OK.value(), HttpStatus.OK, "게시판 조회 성공", map);
     }
 
-    public ResultDto findAllQnaBoard(Pageable pageable, String id) {
+    public ResultDto findAllQnaBoard(Pageable pageable) {
         List<QnaBoard> qnaBoardPage = qnaBoardRepository.findByQnaBoardStatusOrderByQnaBoardWdateDesc(1, pageable).getContent();
         List<QnaBoardDto> qnaBoardDetailDtoList = qnaBoardPage.stream()
                 .map(QnaBoardDto::QnaBoardAllDetailDto)
