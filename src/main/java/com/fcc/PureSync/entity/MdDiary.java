@@ -28,7 +28,7 @@ public class MdDiary {
     @Builder.Default
     LocalDateTime dyWdate=LocalDateTime.now();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "mem_seq")
     Member member;
 
