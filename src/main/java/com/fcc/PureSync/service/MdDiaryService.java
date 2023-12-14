@@ -11,10 +11,13 @@ import com.fcc.PureSync.repository.MdDiaryRepository;
 import com.fcc.PureSync.repository.MemberRepository;
 import com.fcc.PureSync.util.NaverApi;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.HashMap;
@@ -23,15 +26,16 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class MdDiaryService {
     private final MdDiaryRepository mdDiaryRepository;
     private final EmotionRepository emotionRepository;
     private final MemberRepository memberRepository;
     private final NaverApi naverApi;
 
-    public ResultDto getMdDiaryList(String memId) {
+    public ResultDto getMdDiaryList(String memId, Pageable pageable) {
         Member member = memberRepository.findByMemId(memId).orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
-        List<MdDiary> mdDiaryEntityList =  mdDiaryRepository.findAllByMemberOrderByDyDateDescDyWdateDesc(member);
+        List<MdDiary> mdDiaryEntityList =  mdDiaryRepository.findAllByMemberOrderByDyDateDescDyWdateDesc(member, pageable);
         List<MdDiaryResponseDto> mdDiaryDtoList =  mdDiaryEntityList.stream().map(e -> entityToDto(e)).toList();
         int count = mdDiaryDtoList.size();
         HashMap<String, Object> data = new HashMap<>();

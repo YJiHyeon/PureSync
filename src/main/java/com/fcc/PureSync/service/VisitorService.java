@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -14,6 +15,7 @@ import java.util.HashMap;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class VisitorService {
     private final VisitorRepository visitorRepository;
     public ResultDto addVisitor(HttpServletRequest request)
