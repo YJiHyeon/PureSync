@@ -26,7 +26,7 @@ public class QnaBoard {
     @Builder.Default
     private Integer qnaBoardStatus = 1;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mem_seq")
     private Member member;
 
