@@ -38,6 +38,7 @@ public class AdminBoardController {
 
     @GetMapping("/admin/cmt/list/{pg}")
     public String adminCmtList(Model model, AdminBoardDto adminBoardDto , @PathVariable("pg") int pg) {
+        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
         String searchText = URLDecoder.decode( adminBoardDto.getSearchText() );
         if( searchText == null ) {
             searchText = " ";
@@ -45,7 +46,7 @@ public class AdminBoardController {
 
         adminBoardDto.setStart(pg*10);
         List<AdminBoardDto> userCmtList = adminBoardService.getAllUserCmtList(adminBoardDto);
-
+        System.out.println(userCmtList);
         model.addAttribute("page", Pager.makePage(10, adminBoardService.getCmtTotalcnt(adminBoardDto), pg));
         model.addAttribute("userCmtList", userCmtList);
         model.addAttribute("pg", pg );

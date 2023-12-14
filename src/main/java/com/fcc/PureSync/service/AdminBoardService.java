@@ -7,12 +7,14 @@ import com.fcc.PureSync.exception.CustomExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class AdminBoardService {
 
     private final AdminBoardDao adminBoardDao;
