@@ -40,6 +40,7 @@ import static com.fcc.PureSync.dto.BoardDto.toDto;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class BoardService {
     @Value("${fileUploadPath}")
     String fileUploadPath;
