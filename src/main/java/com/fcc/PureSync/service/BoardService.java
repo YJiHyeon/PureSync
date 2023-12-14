@@ -20,7 +20,7 @@ import com.fcc.PureSync.repository.BoardFileRepository;
 import com.fcc.PureSync.repository.BoardRepository;
 import com.fcc.PureSync.repository.MemberRepository;
 import com.fcc.PureSync.util.FileUploadUtil;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
@@ -289,7 +289,7 @@ public class BoardService {
                 .data(map)
                 .build();
     }
-
+    @Transactional(readOnly = true)
     public ResultDto detailBoard(Long boardSeq, String id) {
         Board board = boardRepository.findById(boardSeq)
                 .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_ARTICLE));
