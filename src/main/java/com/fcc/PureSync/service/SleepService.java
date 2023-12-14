@@ -76,7 +76,7 @@ public class SleepService {
                 .sleepSeq(sleepSeq)
                 .sleepGodate(godate)
                 .sleepWudate(wudate)
-                .sleepCategory(sleep.getSleepCategory())
+                .sleepCategory(sleepDto.getSleepCategory())
                 .sleepColor(sleep.getSleepColor())
                 .sleepDate(sleep.getSleepDate())
                 .member(member)

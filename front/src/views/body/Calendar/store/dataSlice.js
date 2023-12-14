@@ -9,7 +9,7 @@ export const getEvents = createAsyncThunk(
         let sleepList = response.data.data.sleepList;
        
         sleepList.map(element => {
-            element.eventColor = 'blue';
+            element.eventColor = element.sleepCategory===1 ? 'purple' : 'yellow';
             element.id = element.sleepSeq;
             element.start= element.sleepGodate.substr(0, 10);
             element.end= element.sleepWudate.substr(0, 10);

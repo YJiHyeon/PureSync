@@ -8,12 +8,13 @@ import { getEvents, updateEvent } from './store/dataSlice'
 import { setSelected, openDialog } from './store/stateSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import cloneDeep from 'lodash/cloneDeep'
+import axios from 'axios';
 
 injectReducer('sleepCalendar', reducer)
 
 const SleepCalendar = () => {
     const dispatch = useDispatch();
-
+    
     
     let events = useSelector((state) => state.sleepCalendar.data.eventList.data);
     if( events == undefined)
@@ -34,8 +35,8 @@ const SleepCalendar = () => {
         dispatch(
             setSelected({
                 type: 'NEW',
-                start,
-                end,
+                sleepGodate:start,
+                sleepWudate:end,
             })
         )
         dispatch(openDialog())
@@ -60,15 +61,18 @@ const SleepCalendar = () => {
         dispatch(openDialog())
     }
 
-    const onSubmit = (data, type) => {
+    const onSubmit = async (data, type) => {
         let newEvents = cloneDeep(events)
-
-        
+        let response;
         if (type === 'NEW') {
+            console.log(data);
             newEvents.push(data)
+            response = await axios.post('http://localhost:9000/api/sleep/save', data);
+            // 여가 ㅛㅔㄹ이브
         }
 
         if (type === 'EDIT') {
+            // ㅑㅇ기 스정
             newEvents = newEvents.map((event) => {
                 if (data.id === event.id) {
                     event = data

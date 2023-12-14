@@ -17,6 +17,7 @@ public class SleepDto {
 
     private Long sleepSeq;
     private LocalDateTime sleepWdate;
+
     private LocalDateTime sleepGodate;
     private LocalDateTime sleepWudate;
     private Long memSeq;
