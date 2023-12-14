@@ -61,12 +61,6 @@ const Editor = (props) => {
         setSelectDate(date);
     }
 
-
-    function stripHtmlUsingDOM(html) {
-        const doc = new DOMParser().parseFromString(html, 'text/html');
-        return doc.body.textContent || "";
-    }
-    
     const onComplete = async (values, setSubmitting) => {
         setSubmitting(true);
         values.dyContents =  DOMPurify.sanitize(values.dyContents);
@@ -77,8 +71,6 @@ const Editor = (props) => {
             emoState: values.emoState,
             memId: values.memId
         }
-
-        console.log(data);
 
         try {
             const response = diary ?
