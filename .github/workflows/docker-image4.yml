@@ -15,5 +15,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build Docker image
-      run: docker build . --file front/Dockerfile --tag my-image-name:latest
+      run: docker build front/ --file front/Dockerfile --tag my-image-name:latest
+
 
