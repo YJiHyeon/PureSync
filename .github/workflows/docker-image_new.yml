@@ -25,9 +25,9 @@ jobs:
     - name: build and release to DockerHub
       env:
         NAME: yoonjihyeon
-        REPO: frontend
+        REPO: front
       run: |
-        docker build -t $REPO . 
+        docker build -t $REPO --file front/Dockerfile . 
         docker tag $REPO:latest $NAME/$REPO:latest 
         docker push $NAME/$REPO:latest
 
