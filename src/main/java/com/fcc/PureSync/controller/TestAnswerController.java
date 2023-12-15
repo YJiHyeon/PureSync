@@ -1,9 +1,11 @@
 package com.fcc.PureSync.controller;
 
+import com.fcc.PureSync.common.HeaderInfo;
 import com.fcc.PureSync.dto.ResultDto;
 import com.fcc.PureSync.dto.TestAnswerDto;
 import com.fcc.PureSync.service.TestAnswerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -12,34 +14,40 @@ import org.springframework.web.bind.annotation.*;
 public class TestAnswerController {
 
     private final TestAnswerService testAnswerService;
-
+    private final HeaderInfo headerInfo;
     @PostMapping("/stress")
-    public ResultDto stressAnswer(@RequestBody TestAnswerDto testAnswerDto, String id) {
-        return testAnswerService.stressAnswer(testAnswerDto, id);
+    public ResultDto stressAnswer(HttpEntity httpEntity, @RequestBody TestAnswerDto testAnswerDto) {
+        Long memSeq = headerInfo.getMemSeqFromHeader(httpEntity);
+        return testAnswerService.stressAnswer(memSeq, testAnswerDto);
     }
 
     @PostMapping("/depression")
-    public ResultDto depressionAnswer(@RequestBody TestAnswerDto testAnswerDto, String id) {
-        return testAnswerService.depressionAnswer(testAnswerDto, id);
+    public ResultDto depressionAnswer(HttpEntity httpEntity, @RequestBody TestAnswerDto testAnswerDto) {
+        Long memSeq = headerInfo.getMemSeqFromHeader(httpEntity);
+        return testAnswerService.depressionAnswer(memSeq, testAnswerDto);
     }
 
-    @GetMapping("/stress/answer/{memSeq}/{testSeq}")
-    public ResultDto getAllStressAnswer(@PathVariable Long memSeq, @PathVariable int testSeq){
+    @GetMapping("/stress/answer/{testSeq}")
+    public ResultDto getAllStressAnswer(HttpEntity httpEntity, @PathVariable int testSeq){
+        Long memSeq = headerInfo.getMemSeqFromHeader(httpEntity);
         return testAnswerService.getAllStressAnswer(memSeq, testSeq);
     }
 
-    @GetMapping("/depression/answer/{memSeq}/{testSeq}")
-    public ResultDto getAllDepressionAnswer(@PathVariable Long memSeq, @PathVariable int testSeq){
+    @GetMapping("/depression/answer/{testSeq}")
+    public ResultDto getAllDepressionAnswer(HttpEntity httpEntity, @PathVariable int testSeq){
+        Long memSeq = headerInfo.getMemSeqFromHeader(httpEntity);
         return testAnswerService.getAllDepressionAnswer(memSeq, testSeq);
     }
 
-    @PutMapping("/stress/{memSeq}/{testSeq}")
-    public ResultDto updateStressAnswer(@RequestBody TestAnswerDto testAnswerDto, @PathVariable Long memSeq, @PathVariable int testSeq) {
-        return testAnswerService.updateStressAnswer(testAnswerDto, memSeq, testSeq);
+    @PutMapping("/stress/{testSeq}")
+    public ResultDto updateStressAnswer(HttpEntity httpEntity, @RequestBody TestAnswerDto testAnswerDto, @PathVariable int testSeq) {
+        Long memSeq = headerInfo.getMemSeqFromHeader(httpEntity);
+        return testAnswerService.updateStressAnswer(memSeq, testAnswerDto, testSeq);
     }
 
-    @PutMapping("/depression/{memSeq}/{testSeq}")
-    public ResultDto updateDepressionAnswer(@RequestBody TestAnswerDto testAnswerDto, @PathVariable Long memSeq, @PathVariable int testSeq) {
-        return testAnswerService.updateDepressionAnswer(testAnswerDto, memSeq, testSeq);
+    @PutMapping("/depression/{testSeq}")
+    public ResultDto updateDepressionAnswer(HttpEntity httpEntity, @RequestBody TestAnswerDto testAnswerDto, @PathVariable int testSeq) {
+        Long memSeq = headerInfo.getMemSeqFromHeader(httpEntity);
+        return testAnswerService.updateDepressionAnswer(memSeq, testAnswerDto, testSeq);
     }
 }
