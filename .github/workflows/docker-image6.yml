@@ -3,9 +3,9 @@ name: Docker Image CI
 
 on:
   push:
-    branches: ["main",  "dev3-setting" ]
+    branches: ["main"]
   pull_request:
-    branches: ["main", "dev3-setting" ]
+    branches: ["dev3-setting"]
 
 jobs:
 
