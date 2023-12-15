@@ -8,7 +8,7 @@ WORKDIR /app
 # the dependencies. This is a separate step so the dependencies 
 # will be cached unless changes to one of those two files 
 # are made.....##############
-COPY /front/package.json package-lock.json ./
+COPY /front/package.json /front/package-lock.json ./
 RUN npm install
 # Copy the main application .........
 COPY /front/. ./
