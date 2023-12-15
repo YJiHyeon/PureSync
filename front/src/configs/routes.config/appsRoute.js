@@ -139,7 +139,7 @@ const appsRoute = [
         key: 'mypage',
         path: `${APP_PREFIX_PATH}/mypage`,
         component: React.lazy(() => import('views/Mypage2')),
-        authority: [ADMIN, USER],
+        authority: [],
     },
     //작업용
    
@@ -338,11 +338,13 @@ const appsRoute = [
     },
     {
         key: 'appsAccount.settings',
-        path: `${APP_PREFIX_PATH}/account/settings/:tab`,
+        // path: `${APP_PREFIX_PATH}/account/settings/:tab`,
+        path: `/account/settings/:tab`,
         component: React.lazy(() => import('views/account/Settings')),
-        authority: [ADMIN, USER],
+        // authority: [ADMIN, USER],
+        authority : [],
         meta: {
-            header: 'Settings',
+            header: '회원 정보',
             headerContainer: true,
         },
     },
@@ -350,12 +352,6 @@ const appsRoute = [
         key: 'appsAccount.invoice',
         path: `${APP_PREFIX_PATH}/account/invoice/:id`,
         component: React.lazy(() => import('views/account/Invoice')),
-        authority: [ADMIN, USER],
-    },
-    {
-        key: 'appsAccount.activityLog',
-        path: `${APP_PREFIX_PATH}/account/activity-log`,
-        component: React.lazy(() => import('views/account/ActivityLog')),
         authority: [ADMIN, USER],
     },
     {

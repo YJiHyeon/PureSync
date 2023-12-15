@@ -4,21 +4,23 @@ import { AdaptableCard, Container } from 'components/shared'
 import { useNavigate, useLocation } from 'react-router-dom'
 import isEmpty from 'lodash/isEmpty'
 import { apiGetAccountSettingData } from 'services/AccountServices'
-import { HiUser, HiLockClosed, HiPencilAlt, HiHeart    } from 'react-icons/hi'
 
 const Profile = lazy(() => import('./components/Profile'))
-const ProfileBody = lazy(() => import('./components/ProfileBody'))
 const Password = lazy(() => import('./components/Password'))
-const Posts = lazy(() => import('./components/Posts'))
-const Likes = lazy(() => import('./components/Likes'))
+const NotificationSetting = lazy(() =>
+    import('./components/NotificationSetting')
+)
+const Integration = lazy(() => import('./components/Integration'))
+const Billing = lazy(() => import('./components/Billing'))
 
 const { TabNav, TabList } = Tabs
 
 const settingsMenu = {
-    profile: { label: '내 정보', path: 'profile', icon: <HiUser /> },
-    password: { label: '비밀번호 변경', path: 'password', icon: <HiLockClosed /> },
-    posts: { label: '내가 작성한 글', path: 'posts', icon: <HiPencilAlt />  },
-    likes: { label: '내가 좋아하는 글', path: 'likes', icon: <HiHeart />  },
+    profile: { label: 'Profile', path: 'profile' },
+    password: { label: 'Password', path: 'password' },
+    notification: { label: 'Notification', path: 'notification' },
+    integration: { label: 'Integration', path: 'integration' },
+    billing: { label: 'Billing', path: 'billing' },
 }
 
 const Settings = () => {
@@ -35,12 +37,12 @@ const Settings = () => {
 
     const onTabChange = (val) => {
         setCurrentTab(val)
-        navigate(`/account/settings/${val}`)
+        navigate(`/app/account/settings/${val}`)
     }
 
     const fetchData = async () => {
         const response = await apiGetAccountSettingData()
-        setData(response.data.data.memberInfo)
+        setData(response.data)
     }
 
     useEffect(() => {
@@ -48,30 +50,8 @@ const Settings = () => {
         if (isEmpty(data)) {
             fetchData()
         }
-        console.log(data);
-    }, [data])
-
-    const onProfileBodyDataUpdate = (updatedData) => {
-        setData(prevData => ({
-            ...prevData,
-            bodyHeight: updatedData.bodyHeight,
-            bodyWeight: updatedData.bodyWeight,
-            bodyWishWeight: updatedData.bodyWishWeight,
-            bodyWishConsCal: updatedData.bodyWishConscal,
-            bodyWishBurnCal: updatedData.bodyWishBurncal
-        }));
-    }
-
-    const onProfileDefaultDataUpdate = (updatedData) => {
-        console.log(updatedData);
-        setData(prevData => ({
-            ...prevData,
-            memNick: updatedData.memNick,
-            memImg: updatedData.memImg
-        }));
-    }
-    
-
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     return (
         <Container>
@@ -79,7 +59,7 @@ const Settings = () => {
                 <Tabs value={currentTab} onChange={(val) => onTabChange(val)}>
                     <TabList>
                         {Object.keys(settingsMenu).map((key) => (
-                            <TabNav key={key} value={key} icon={settingsMenu[key].icon}>
+                            <TabNav key={key} value={key}>
                                 {settingsMenu[key].label}
                             </TabNav>
                         ))}
@@ -88,18 +68,16 @@ const Settings = () => {
                 <div className="px-4 py-6">
                     <Suspense fallback={<></>}>
                         {currentTab === 'profile' && (
-                            <>
-                            <Profile data={data} onDataUpdate={onProfileDefaultDataUpdate} />
-                            <ProfileBody data={data}  onDataUpdate={onProfileBodyDataUpdate}/>
-                            </>
+                            <Profile data={data.profile} />
                         )}
                         {currentTab === 'password' && (
-                            <Password />
+                            <Password data={data.loginHistory} />
                         )}
-                        {currentTab === 'posts' && (
-                            <Posts />
+                        {currentTab === 'notification' && (
+                            <NotificationSetting data={data.notification} />
                         )}
-                        {currentTab === 'likes' && <Likes />}
+                        {currentTab === 'integration' && <Integration />}
+                        {currentTab === 'billing' && <Billing />}
                     </Suspense>
                 </div>
             </AdaptableCard>
