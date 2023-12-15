@@ -102,6 +102,8 @@ const SignInForm = (props) => {
                                     className="mb-0"
                                     name="rememberMe"
                                     component={Checkbox}
+                                    variant="twoTone"
+                                    color="green-600"
                                     children="로그인 정보 저장"
                                 />
                             </div>
@@ -113,6 +115,8 @@ const SignInForm = (props) => {
                                 loading={isSubmitting}
                                 variant="solid"
                                 type="submit"
+                                className="mr-2 mb-2"
+                                color="green-600"
                             >
                                 {isSubmitting ? 'Signing in...' : '로그인'}
                             </Button>
