@@ -1,3 +1,4 @@
+
 FROM node:18-alpine3.16 as build
 # Configure the main working directory inside the docker image. 
 # This is the base directory used in any further RUN, COPY, and ENTRYPOINT 
@@ -26,3 +27,4 @@ COPY nginx.conf /etc/nginx/nginx.conf
 # from the outside.
 EXPOSE 80
 ENTRYPOINT ["nginx","-g","daemon off;"]
+
