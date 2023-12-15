@@ -25,16 +25,24 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         //Authorization 헤더를 통한 인증 사용하지 않음
-        http.httpBasic(config -> config.disable());
+//        http.httpBasic(config -> config.disable());
         //폼을 통한 인증 사용하지 않음
-        http.formLogin(config -> config.disable());
+        http.formLogin(config -> config.loginPage("/login")
+                .loginProcessingUrl("/member/login")
+                .defaultSuccessUrl("/")
+                .usernameParameter("memId")
+                .passwordParameter("memPassword")
+                .permitAll());
         //CORS 설정
         http.cors(config -> config.disable());
         //사이트간 요청 위조 방지 비활성화
         http.csrf(config -> config.disable());
         //서버 세션 비활성화
+//        http.sessionManagement(management -> management
+//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        //서버 세션 활성화
         http.sessionManagement(management -> management
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                .sessionCreationPolicy(SessionCreationPolicy.ALWAYS));
 
         //요청 경로별 권한 설정
         http.authorizeHttpRequests(customizer -> customizer
