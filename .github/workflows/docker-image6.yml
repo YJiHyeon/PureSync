@@ -16,20 +16,20 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag frontend/yoonjihyeon:$(date +%s)
+      run: docker build front/. --file front/Dockerfile --tag frontend/yoonjihyeon:$(date +%s)
  
     - name: Login to DockerHub
       uses: docker/login-action@v1
       with:
        username: ${{secrets.DOCKERHUB_USERNAME}}
        password: ${{secrets.DOCKERHUB_TOKEN}}
-       build_args: REACT_APP_HOST_URL=http://192.168.56.1:8080/api
+       build_args: REACT_APP_HOST_URL=http://localhost:8080/api
     - name: build and release to DockerHub
       env:
        NAME: yoonjihyeon
        REPO: frontend
       run: |
-       docker build -t $REPO . 
+       docker build -t $REPO front/. 
        docker tag $REPO:latest $NAME/$REPO:latest 
        docker push $NAME/$REPO:latest
 
