@@ -130,7 +130,6 @@ const Editor = () => {
     >
       {({ values, touched, errors, isSubmitting, setFieldValue }) => (
         <Form enctype="multipart/form-data" name="myform">
-          <input type='hidden' value={memId} name="memId" />
           <FormContainer>
             <FormItem label="제목">
               <Field autoComplete="off" name="boardName" component={Input} />
