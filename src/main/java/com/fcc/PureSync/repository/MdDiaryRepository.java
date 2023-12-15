@@ -13,7 +13,7 @@ import java.util.List;
 
 @Repository
 public interface MdDiaryRepository extends JpaRepository <MdDiary, Long> {
-    List<MdDiary> findAllByMemberOrderByDyDateDescDyWdateDesc(Member member);
+    List<MdDiary> findAllByMemberOrderByDyDateDescDyWdateDesc(Member member, Pageable pageable);
 
 
     @Query(value =
