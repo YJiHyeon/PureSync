@@ -16,7 +16,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build front/. --file front/Dockerfile --tag frontend/yoonjihyeon:$(date +%s)
+      run: docker build ./front/. --file ./front/Dockerfile --tag frontend/yoonjihyeon:$(date +%s)
  
     - name: Login to DockerHub
       uses: docker/login-action@v1
