@@ -2,11 +2,16 @@ import React, { useState, useRef, useCallback } from 'react'
 import { Card, Button, Input } from 'components/ui'
 import axios from 'axios';
 import {HiOutlinePencil} from 'react-icons/hi'
+import getHeaderCookie from 'utils/hooks/getHeaderCookie'
+import {parseJwt, getMemInfoFromToken} from 'utils/hooks/parseToken'
 
 const ArticleAction = (props) => {
     const commentInput = useRef();
     const [comment, setComment] = useState('');
     const [comments, setComments] = useState([]);
+    const access_token = getHeaderCookie();
+    let parse_token = parseJwt(access_token);
+    let  { memId, memSeq } = getMemInfoFromToken(parse_token);
 
     const onHelpfulClick = useCallback((event) => {
       const val = event.target.value;
@@ -21,6 +26,9 @@ const ArticleAction = (props) => {
         headers: {
           'Content-Type': 'application/json', 
         },
+        withCredentials: false, headers: {
+          Authorization: `Bearer ${access_token}`
+      }
       })
       .then((res)=>{
         console.log(res.data);

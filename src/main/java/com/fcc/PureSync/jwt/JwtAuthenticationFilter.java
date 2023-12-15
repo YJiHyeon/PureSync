@@ -29,13 +29,14 @@ public class JwtAuthenticationFilter  extends OncePerRequestFilter {
         try {
             // 요청에서 토큰 가져오기
             String token = parseBearerToken(request);
-
+            System.out.println("token : "+token);
             // 토큰 검사하기. JWT이므로 인가 서버에 요청하지 않고도 검증 가능
             if(token != null && !token.equalsIgnoreCase(null)) {
                 // userId 가져오기. 위조된 경우 예외 처리된다.
                 String userId = jwtUtil.getMemId(token);
                 Long memSeq = jwtUtil.getMemSeq(token);
-                Member member = Member.builder().memId(userId).memSeq(memSeq).build();
+                String memEmail = jwtUtil.getMemEmail(token);
+                Member member = Member.builder().memId(userId).memSeq(memSeq).memEmail(memEmail).build();
 
                 //인증 완료. SecurityContextHolder에 등록해야 인증된 사용자라고 생가한다.
                 AbstractAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
@@ -46,13 +47,15 @@ public class JwtAuthenticationFilter  extends OncePerRequestFilter {
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
                 securityContext.setAuthentication(authentication); // 인증 정보 넣기
+                System.out.println("authentication"+authentication);
                 SecurityContextHolder.setContext(securityContext); // 다시 등록
             }
         } catch (Exception ex) {
             logger.error("Could not set user authentication in security context", ex);
         }
-
-        filterChain.doFilter(request, response);
+        finally {
+            filterChain.doFilter(request, response);
+        }
     }
 
     private String parseBearerToken(HttpServletRequest request) {

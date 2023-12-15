@@ -3,8 +3,9 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 
 <configuration>
+
     <typeAliases>
-        <typeAlias alias="Exam"  type="com.fcc.PureSync.entity.entity"/>
+        <typeAlias alias="Exam"       type="com.fcc.PureSync.entity.entity"/>
         <typeAlias alias="ExerciseDto" type="com.fcc.PureSync.dto.ExerciseDto"/>
         <typeAlias alias="MenuDto"     type="com.fcc.PureSync.dto.MenuDto"/>
         <typeAlias alias="SummaryDto"     type="com.fcc.PureSync.dto.SummaryDto"/>

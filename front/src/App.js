@@ -10,6 +10,7 @@ import mockServer from './mock'
 import appConfig from 'configs/app.config'
 import './locales'
 import Visit from 'visit'
+import { RecoilRoot } from 'recoil';
 
 const environment = process.env.NODE_ENV
 
@@ -21,11 +22,13 @@ function App() {
     return (
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
+                <RecoilRoot>
                 <BrowserRouter history={history}>
                     <Theme>
                         <Layout />
                     </Theme>
                 </BrowserRouter>
+                </RecoilRoot>
             </PersistGate>
             <Visit />
         </Provider>

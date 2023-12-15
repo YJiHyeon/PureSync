@@ -28,16 +28,16 @@ public class BoardController {
      * 등록
      */
     @PostMapping
-    public ResultDto createBoard(BoardDto boardDto, String memSeqStr, List<MultipartFile> file) throws IOException {
-        return boardService.createBoard(boardDto, memSeqStr, file);
+    public ResultDto createBoard(BoardDto boardDto,  List<MultipartFile> file) throws IOException {
+        return boardService.createBoard(boardDto, file);
     }
 
     /**
      * 수정
      */
     @PutMapping("/{boardSeq}")
-    public ResultDto updateBoard(@PathVariable Long boardSeq, BoardDto boardDto, String id, List<MultipartFile> file) throws IOException {
-        return boardService.updateBoard(boardSeq, boardDto, id, file);
+    public ResultDto updateBoard(@PathVariable Long boardSeq, BoardDto boardDto, List<MultipartFile> file) throws IOException {
+        return boardService.updateBoard(boardSeq, boardDto, file);
     }
 
     /**

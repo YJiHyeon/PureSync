@@ -5,6 +5,7 @@ import com.fcc.PureSync.repository.VisitorRepository;
 import com.fcc.PureSync.vo.CountInfoNativeVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class AdminMainService {
     private final VisitorRepository visitorRepository;
     private final MemberRepository memberRepository;

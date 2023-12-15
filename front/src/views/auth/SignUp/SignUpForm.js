@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { InputGroup,Input, Button, FormItem, FormContainer, Alert, Radio, SendCompareButton } from 'components/ui'
+import { InputGroup, Input, Button, FormItem, FormContainer, Alert, Radio, SendCompareButton } from 'components/ui'
 import { PasswordInput, ActionLink } from 'components/shared'
 import useTimeOutMessage from 'utils/hooks/useTimeOutMessage'
 import { Field, Form, Formik } from 'formik'
@@ -14,7 +14,7 @@ const validationSchema = Yup.object().shape({
     memEmail: Yup.string()
         .email('이메일을 입력해주세요.')
         .required('Please enter your email'),
-    memGender: Yup.string().required('성별을 선택해주세요.'),
+    //memGender: Yup.string().required('성별을 선택해주세요.'),
     memPassword: Yup.string().required('비밀번호를 입력해주세요.'),
     confirmPassword: Yup.string().oneOf(
         [Yup.ref('password'), null],
@@ -32,6 +32,10 @@ const SignUpForm = ({ onSubmit, ...props }) => {
 
     const [message, setMessage] = useTimeOutMessage()
 
+
+    // jihyeon
+    const [memGender, setMemGender] = useState('')
+
     const onSignUp = async (values, setSubmitting) => {
         const { memId, memNick, memPassword, memGender, memEmail } = values
         setSubmitting(true)
@@ -45,6 +49,12 @@ const SignUpForm = ({ onSubmit, ...props }) => {
     }
     const handleDuplicateCheck = (field, message) => {
         setDuplicateCheckMessage({ ...duplicateCheckMessage, [field]: message });
+    };
+
+    //jigyeon
+    const onGenderChange = (event) => {
+        console.log(event);
+        setMemGender(event);
     };
 
     return (
@@ -97,7 +107,7 @@ const SignUpForm = ({ onSubmit, ...props }) => {
                             >
                                 <InputGroup className="mb-4">
                                     <Field as={Input} placeholder="닉네임을 입력해주세요" name="memNick" />
-                                    <SendCompareButton  type="button" field={FILED_MEM_NICKNAME} inputValue={values.memNick} onDuplicateCheck={handleDuplicateCheck} setFieldError={setFieldError}>닉네임 중복 검사</SendCompareButton>
+                                    <SendCompareButton type="button" field={FILED_MEM_NICKNAME} inputValue={values.memNick} onDuplicateCheck={handleDuplicateCheck} setFieldError={setFieldError}>닉네임 중복 검사</SendCompareButton>
                                 </InputGroup>
                             </FormItem>
                             {/* 이메일 */}
@@ -109,7 +119,7 @@ const SignUpForm = ({ onSubmit, ...props }) => {
                             >
                                 <InputGroup className="mb-4">
                                     <Field as={Input} placeholder="Email 중복 검사" name="memEmail" />
-                                    <SendCompareButton  type="button" field={FILED_MEM_EMAIL} inputValue={values.memEmail} onDuplicateCheck={handleDuplicateCheck} setFieldError={setFieldError}>이메일 중복 검사</SendCompareButton>
+                                    <SendCompareButton type="button" field={FILED_MEM_EMAIL} inputValue={values.memEmail} onDuplicateCheck={handleDuplicateCheck} setFieldError={setFieldError}>이메일 중복 검사</SendCompareButton>
                                 </InputGroup>
                             </FormItem>
                             {/* 출생년도 */}
@@ -123,7 +133,7 @@ const SignUpForm = ({ onSubmit, ...props }) => {
                                     autoComplete="off"
                                     name="memBirth"
                                     component={Input}
-                                    
+
                                 />
                             </FormItem>
                             {/* 성별 */}
@@ -131,16 +141,10 @@ const SignUpForm = ({ onSubmit, ...props }) => {
                                 label="성별"
                                 invalid={errors.memGender && touched.memGender}
                                 errorMessage={errors.memGender}>
-                                <Field as={Radio.Group} name="memGender">
-                                    <label>
-                                        <Field type="radio" name="memGender" value="M" />
-                                        남성
-                                    </label>
-                                    <label>
-                                        <Field type="radio" name="memGender" value="W" />
-                                        여성
-                                    </label>
-                                </Field>
+    <Radio.Group value={memGender} name="memGender" onChange={onGenderChange} color="green-600">
+        <Radio value='W'>여성</Radio>
+        <Radio value='M'>남성</Radio>
+    </Radio.Group>
 
                             </FormItem>
 
@@ -176,6 +180,7 @@ const SignUpForm = ({ onSubmit, ...props }) => {
                                 loading={isSubmitting}
                                 variant="solid"
                                 type="submit"
+                                color="green-600"
                             >
                                 {isSubmitting
                                     ? 'Creating Account...'

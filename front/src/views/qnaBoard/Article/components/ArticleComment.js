@@ -4,8 +4,14 @@ import { HiOutlineClock } from 'react-icons/hi'
 import { Card, Button, Input } from 'components/ui'
 import axios from 'axios'
 import { useLocation, useNavigate } from 'react-router-dom'
+import getHeaderCookie from 'utils/hooks/getHeaderCookie'
+import {parseJwt, getMemInfoFromToken} from 'utils/hooks/parseToken'
+
 const ArticleComment = ({ data }) => {
   const navigate = useNavigate();
+  const access_token = getHeaderCookie();
+  let parse_token = parseJwt(access_token);
+  let  { memId, memSeq } = getMemInfoFromToken(parse_token);
   const [editingComment, setEditingComment] = useState(null);
   console.log(data.qnaComment);
   const cmtDelete = async (qnaCmtSeq) => {
@@ -16,7 +22,11 @@ const ArticleComment = ({ data }) => {
             console.error('댓글을 찾을 수 없습니다.');
             return;
         }
-        await axios.delete(`http://localhost:9000/api/qnaBoard/${data.qnaBoardSeq}/comments/${qnaCmtSeq}`);
+        await axios.delete(`http://localhost:9000/api/qnaBoard/${data.qnaBoardSeq}/comments/${qnaCmtSeq}`, {
+            withCredentials: false, headers: {
+            Authorization: `Bearer ${access_token}`
+        }
+        });
         console.log('게시물 삭제 성공');
         navigate('/qnaBoard');
     } catch (error) {
@@ -33,7 +43,10 @@ const cmtModify = async (qnaCmtSeq, modifiedContents) => {
     }
     // API를 호출하여 댓글 수정
     await axios.put(`http://localhost:9000/api/qnaBoard/${data.qnaBoardSeq}/comments/${qnaCmtSeq}`, {
-      qnaCmtContents: modifiedContents,
+        qnaCmtContents: modifiedContents,
+        withCredentials: false, headers: {
+        Authorization: `Bearer ${access_token}`
+    }
     });
     console.log('댓글 수정 성공');
     // 수정이 완료되면 editingComment 상태를 null로 설정하여 수정 모드를 종료
@@ -52,7 +65,7 @@ const cmtModify = async (qnaCmtSeq, modifiedContents) => {
                   <div className="flex gap-2">
                     <span className="flex items-center gap-2">
                       <HiOutlineClock className="text-lg" />
-                      <span>{qnaComment.cmtWdate}</span>
+                      <span>{qnaComment.qnaCmtWdate}</span>
                 </span>
                 {editingComment === qnaComment.qnaCmtSeq ? (
                   // 수정, 삭제 버튼 쓰려면 주석풀기

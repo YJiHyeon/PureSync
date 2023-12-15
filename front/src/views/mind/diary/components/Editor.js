@@ -12,6 +12,9 @@ import { Field, Form, Formik } from 'formik'
 import { useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
 import axios from 'axios'
+import DOMPurify from 'dompurify';
+import getHeaderCookie from 'utils/hooks/getHeaderCookie'
+import { parseJwt, getMemInfoFromToken } from 'utils/hooks/parseToken'
 
 const validationSchema = Yup.object().shape({
     title: Yup.string().required('Title required'),
@@ -19,24 +22,15 @@ const validationSchema = Yup.object().shape({
     content: Yup.string().required('Content required'),
 })
 
-/*
-{
-    "dyDate":"2023-11-24",
-    "dyTitle":"aaa의 감정일기3",
-    "dyContents": "오늘은 끝내야 하는데...",
-    "emoState" : "걱정",
-    "memId" : "aaa"
-}
-*/
 const Editor = (props) => {
     const navigate = useNavigate()
 
     const diary = props.diary ? props.diary : '';
-    console.log(diary);
 
-
-    //유저 아이디 받아와야함
-    const memId = 'aaa';
+    //Header Cookie
+    const access_token = getHeaderCookie();
+    let parse_token = parseJwt(access_token);
+    let { memId } = getMemInfoFromToken(parse_token);
 
     const emotionList = [
         { label: "좋음", value: "좋음" },
@@ -67,15 +61,9 @@ const Editor = (props) => {
         setSelectDate(date);
     }
 
-
-    function stripHtmlUsingDOM(html) {
-        const doc = new DOMParser().parseFromString(html, 'text/html');
-        return doc.body.textContent || "";
-    }
-
     const onComplete = async (values, setSubmitting) => {
         setSubmitting(true);
-        values.dyContents = stripHtmlUsingDOM(values.dyContents)
+        values.dyContents =  DOMPurify.sanitize(values.dyContents);
         const data = {
             dyDate: values.dyDate,
             dyTitle: values.dyTitle,
@@ -84,17 +72,22 @@ const Editor = (props) => {
             memId: values.memId
         }
 
-        console.log(data);
-
         try {
             const response = diary ?
-                await axios.put(`http://127.0.0.1:9000/api/mind/diary/${diary.dySeq}`, data,
+                await axios.put(process.env.REACT_APP_HOST_URL + `/api/mind/diary/${diary.dySeq}`, data, {
+                    headers: {
+                        Authorization: `Bearer ${access_token}`
+                    }
+                }
                 ) :
-                await axios.post('http://127.0.0.1:9000/api/mind/diary', data,
+                await axios.post(process.env.REACT_APP_HOST_URL + '/api/mind/diary', data, {
+                    headers: {
+                        Authorization: `Bearer ${access_token}`
+                    }
+                }
                 );
 
             // 요청이 성공하면 처리할 부분
-            alert('일기저장이 완료 되었습니다.');
             navigate('/mind/diary');
         } catch (error) {
             // 요청이 실패한 경우 에러 처리
@@ -139,28 +132,28 @@ const Editor = (props) => {
                                 />
                             </FormItem>
                             <FormItem label="감정">
-                                    <Field name="emoState">
-                                        {({ field, form }) => (
-                                            <Select
-                                                placeholder="Emotion"
-                                                field={field}
-                                                form={form}
-                                                options={emotionList}
-                                                value={emotionList.filter(
-                                                    (emotion) =>
-                                                        emotion.value ===
-                                                        values.emoState
-                                                )}
-                                                onChange={(emotion) =>
-                                                    form.setFieldValue(
-                                                        field.name,
-                                                        emotion.value,
-                                                    )
-                                                }
-                                            />
-                                        )}
-                                    </Field>
-                                </FormItem>
+                                <Field name="emoState">
+                                    {({ field, form }) => (
+                                        <Select
+                                            placeholder="Emotion"
+                                            field={field}
+                                            form={form}
+                                            options={emotionList}
+                                            value={emotionList.filter(
+                                                (emotion) =>
+                                                    emotion.value ===
+                                                    values.emoState
+                                            )}
+                                            onChange={(emotion) =>
+                                                form.setFieldValue(
+                                                    field.name,
+                                                    emotion.value,
+                                                )
+                                            }
+                                        />
+                                    )}
+                                </Field>
+                            </FormItem>
                             <FormItem
                                 label="내용"
                                 className="mb-0"

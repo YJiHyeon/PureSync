@@ -17,6 +17,7 @@ import { HiCheck } from 'react-icons/hi';
 import { components } from 'react-select';
 import * as Yup from 'yup';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'
 const { DateTimepicker } = DatePicker;
 
 const { Control } = components;
@@ -75,7 +76,7 @@ const validationSchema = Yup.object().shape({
 
 const EventDialog = ({ submit }) => {
     const dispatch = useDispatch();
-
+    const navigate = useNavigate();
     // 다이얼로그 상태와 선택된 이벤트 정보를 가져오기
      const open = useSelector((state) => state.sleepCalendar.state.dialogOpen);
      const selected = useSelector((state) => state.sleepCalendar.state.selected);
@@ -94,35 +95,57 @@ const EventDialog = ({ submit }) => {
         dispatch(closeDialog());
     };
     
+   const selectedId = selected.id;
     // 폼 제출 핸들러
-    const handleSubmit  = async (values, setSubmitting) => {
+    const handleSubmit  =  (values, setSubmitting) => {
+        
+        console.log('handleSubmit 실행됨', values);
         setSubmitting(false);
-
+        const sleepColor = values.color === 'yellow' ? 0 : 1;
         // 이벤트 데이터 구성
         const eventData = {
-            id: selected.id || newId, // 선택된 이벤트의 ID 또는 새로운 ID
-            title: values.title, // 제목
-            start: values.startDate, // 취침 시각
-            eventColor: values.color, // 이벤트 색상
-        };
-        if (values.endDate) {
-            eventData.end = values.endDate; // 기상 시각 (선택적)
-        }
+            id: selectedId, // 선택된 이벤트의 ID 또는 새로운 ID
+            title: "수면기록", // 제목
+            sleepGodate: (values.startDate), // 취침 시각
+            sleepCategory: sleepColor, // 이벤트 색상
+            sleepWudate : (values.endDate),
+        };     
+        const url = eventData.id ? `http://localhost:9000/api/sleep/${eventData.id}` : 'http://localhost:9000/api/sleep/save';
         try {
-            // Axios 요청 수행
-            const response = await axios.post('http://localhost:9000/api/sleep/save', eventData);
-    
-            // 응답을 필요에 맞게 처리
-            console.log('Axios 응답:', response.data);
+            
+            const response = eventData.id
+        ? axios.put(url, eventData) : axios.post(url, eventData);
+            // Axios를 사용하여 서버로 데이터 전송,
+            // 서버 요청이 성공하면 콘솔에 응답 확인 및 상태 업데이트
+            console.log(eventData);
+            console.log(eventData.id);
+            console.log("category",eventData.sleepCategory);
+            console.log('서버 응답:', response);
+            
+
+            navigate("/body/sleep")
+            window.location.reload();
         } catch (error) {
-            // 에러 처리
-            console.error('Axios 에러:', error);
+            
+            console.error('서버 요청 실패:', error);
         }
-        // 이벤트 제출 및 다이얼로그 닫기
-        submit?.(eventData, selected.type);
+        console.log(eventData);
         dispatch(closeDialog());
     };
-
+    const handleDelete = async () => {
+       
+            try {
+                const response = await axios.delete(`http://localhost:9000/api/sleep/delete/${selected.id}`);
+                console.log(response);
+                    
+                navigate("/body/sleep");
+                window.location.reload();
+            } catch (error) {
+                console.error('서버 요청 실패:', error);
+                      
+            dispatch(closeDialog());
+        }
+    };
     return (
         <Dialog
             isOpen={open}
@@ -138,14 +161,30 @@ const EventDialog = ({ submit }) => {
                 <Formik
                     enableReinitialize
                     initialValues={{
-                        title: selected.title || '', // 제목
+                        //title: selected.title || '', // 제목
                         startDate: new Date(selected.sleepGodate) || '', // 취침 시각
                         endDate: new Date(selected.sleepWudate) || '', // 기상 시각
                         color: selected.eventColor || colorOptions[0].value, // 색상te
                     }}
-                    validationSchema={validationSchema}
+                    // validationSchema={validationSchema}
                     onSubmit={(values, { setSubmitting }) => {
-                        handleSubmit(values, setSubmitting);
+                        const isoStartDateString =values.startDate.toISOString();
+                        const isoEndDateString =values.endDate.toISOString();
+                        const isoStartDate = new Date(isoStartDateString);
+                        const isoEndDate = new Date(isoEndDateString);
+                        const formattedStartDate = `${isoStartDate.getFullYear()}-${String(isoStartDate.getMonth() + 1).padStart(2, '0')}-${String(isoStartDate.getDate()).padStart(2, '0')}T${String(isoStartDate.getHours()).padStart(2, '0')}:${String(isoStartDate.getMinutes()).padStart(2, '0')}:${String(isoStartDate.getSeconds()).padStart(2, '0')}`;
+                        const formattedEndDate = `${isoEndDate.getFullYear()}-${String(isoEndDate.getMonth() + 1).padStart(2, '0')}-${String(isoEndDate.getDate()).padStart(2, '0')}T${String(isoEndDate.getHours()).padStart(2, '0')}:${String(isoEndDate.getMinutes()).padStart(2, '0')}:${String(isoEndDate.getSeconds()).padStart(2, '0')}`;
+                        const processedData = {
+                            startDate: formattedStartDate,
+                            endDate : formattedEndDate,
+                            // endDate: values.endDate.toISOString(),
+                            color : values.color
+
+                            // 추가적인 데이터 가공 가능
+                        };
+                        console.log(values.startDate.toLocaleString());
+                        handleSubmit(processedData, setSubmitting);
+                        
                     }}
                 >
                     {({ values, touched, errors, resetForm }) => (
@@ -195,7 +234,7 @@ const EventDialog = ({ submit }) => {
                                         )}
                                     </Field>
                                 </FormItem>
-                                <FormItem
+                                {/* <FormItem
                                     label="수면 유형"
                                     invalid={errors.category && touched.category}
                                     errorMessage={errors.category}
@@ -221,9 +260,9 @@ const EventDialog = ({ submit }) => {
                                             />
                                         )}
                                     </Field>
-                                </FormItem>
+                                </FormItem> */}
                                 <FormItem
-                                    label="색상 선택"
+                                    label="수면 유형"
                                     asterisk={true}
                                     invalid={errors.color && touched.color}
                                     errorMessage={errors.color}
@@ -234,13 +273,18 @@ const EventDialog = ({ submit }) => {
                                                 field={field}
                                                 form={form}
                                                 options={[
-                                                    { value: 'red', label: '빨강' },
-                                                    { value: 'blue', label: '파랑' },
-                                                    { value: 'green', label: '초록' },
+                                                    { value: 'yellow', label: '낮잠' },
+                                                    { value: 'purple', label: '밤잠' },
                                                     // ... 다른 색상 옵션들
                                                 ]}
                                                 // 선택된 값이 현재 색상인지 확인
-                                                value={values.color && values.color !== '' ? { value: values.color, label: values.color } : null}
+                                                value={
+                                                    values.color
+                                                      ? values.color === 'yellow'
+                                                        ? { value: values.color, label: '낮잠' }
+                                                        : { value: values.color, label: '밤잠' }
+                                                      : null
+                                                  }
                                                 onChange={(option) => form.setFieldValue(field.name, option.value)}
                                                 components={{
                                                     Option: CustomSelectOption,
@@ -251,9 +295,14 @@ const EventDialog = ({ submit }) => {
                                     </Field>
                                 </FormItem>
                                 <FormItem className="mb-0 text-right rtl:text-left">
-                                    <Button variant="solid" type="submit" onClick={() => handleSubmit(values)}>
+                                    <Button variant="solid" type="submit" >
                                         등록
                                     </Button>
+                                    {selected.type !== 'NEW' && (
+                                        <Button variant="outline"  type="button"   className="ml-2 text-red-500"  onClick={handleDelete}>
+                                            삭제
+                                        </Button>
+                                    )}
                                 </FormItem>
                             </FormContainer>
                         </Form>

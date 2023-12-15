@@ -8,6 +8,8 @@ import { theme } from 'twin.macro';
 import useWindowSize from '../hooks/useWindowSize';
 import { Button } from 'components/ui';
 import axios from 'axios';
+import getHeaderCookie from 'utils/hooks/getHeaderCookie'
+import { parseJwt, getMemInfoFromToken } from 'utils/hooks/parseToken'
 
 const DialogTrashInsert = (props) => {
     // 현재 창 크기를 가져오는 커스텀 훅 사용
@@ -79,27 +81,34 @@ const DialogTrashInsert = (props) => {
     const dialogClass = classNames(defaultDialogContentClass, contentClassName);
 
     const [tsContents, setTsContents] = useState('');
+    //Header Cookie
+    const access_token = getHeaderCookie();
+    let parse_token = parseJwt(access_token);
+    let { memId } = getMemInfoFromToken(parse_token);
 
     // 등록 버튼 클릭 핸들러
     const handleRegisterClick = () => {
-        
+
         const sendTrashData =
-            {   
-                tsContents: tsContents,
-                memId : 'aaa'
-            };
-        
-        axios.post('http://127.0.0.1:9000/api/mind/trash', sendTrashData)
-        .then((res) => {
-            console.log(res);
-            setTsContents('');
-            props.goRegister();
-            props.onClose();
+        {
+            tsContents: tsContents,
+            memId: memId
+        };
+
+        axios.post(process.env.REACT_APP_HOST_URL + '/api/mind/trash', sendTrashData, {
+            headers: {
+                Authorization: `Bearer ${access_token}`
+            }
         })
-        .catch((res) => {
-            console.log('에러 : ');
-            console.log(res);
-        })
+            .then((res) => {
+                setTsContents('');
+                props.goRegister();
+                props.onClose();
+            })
+            .catch((res) => {
+                console.log('에러 : ');
+                console.log(res);
+            })
     }
 
 
@@ -136,17 +145,17 @@ const DialogTrashInsert = (props) => {
                 {/* closable이 true인 경우 닫기 버튼 렌더링 */}
                 {closable && renderCloseButton}
                 <h4>버리고 싶은 감정을 적어주세요</h4><br />
-                    <div className="form-floating">
+                <div className="form-floating">
                     <textarea value={tsContents} onChange={(e) => setTsContents(e.target.value)} style={{
-                        width: "100%",                       
+                        width: "100%",
                         height: "200px",
                         padding: "10px",
                         border: "solid 2px #1E90FF",
                         borderRadius: "5px",
                         resize: "none"
-                        }}></textarea>
-                    </div>
-                
+                    }}></textarea>
+                </div>
+
 
                 <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                     <Button onClick={handleRegisterClick} variant="solid">

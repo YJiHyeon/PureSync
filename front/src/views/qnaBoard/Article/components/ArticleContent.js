@@ -16,10 +16,15 @@ import { Button } from 'components/ui'
 import { HiOutlineClock, HiOutlineCog, HiOutlinePencil, HiOutlineInboxIn, HiOutlineTrash,HiOutlineHeart} from 'react-icons/hi'
 import { getboardFile } from 'services/DashboardService'
 import LikeButton from './LikeButton';
+import getHeaderCookie from 'utils/hooks/getHeaderCookie'
+import {parseJwt, getMemInfoFromToken} from 'utils/hooks/parseToken'    
 
 const ArticleContent = ({ articleId }) => {
     const navigate = useNavigate();
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const access_token = getHeaderCookie();
+    let parse_token = parseJwt(access_token);
+    let { memId, memSeq } = getMemInfoFromToken(parse_token);
     const [flag, setFlag] = useState(false);
     const article = useSelector(
         (state) => state.knowledgeBaseQnaArticle.data.article
@@ -61,7 +66,11 @@ const ArticleContent = ({ articleId }) => {
     const handleLike = async () => {
         try {
             // 서버에 좋아요 요청을 보냄
-            await axios.post(`http://localhost:9000/api/qnaBoard/${article.qnaBoardSeq}/likes`);
+            await axios.post(`http://localhost:9000/api/qnaBoard/${article.qnaBoardSeq}/likes`, {
+                    withCredentials: false, headers: {
+                    Authorization: `Bearer ${access_token}`
+                }
+            });
             
             // 서버에서 좋아요 카운트를 업데이트했다면, 다시 데이터를 불러옴
             fetchData();
@@ -76,7 +85,11 @@ const ArticleContent = ({ articleId }) => {
                 console.error('게시물 qnaBoardSeq를 찾을 수 없습니다.');
                 return;
             }
-            await axios.delete(`http://localhost:9000/api/qnaBoard/${article.qnaBoardSeq}`);
+            await axios.delete(`http://localhost:9000/api/qnaBoard/${article.qnaBoardSeq}`, {
+                    withCredentials: false, headers: {
+                    Authorization: `Bearer ${access_token}`
+                }
+            });
             console.log('게시물 삭제 성공');
             navigate('/qnaBoard');
         } catch (error) {

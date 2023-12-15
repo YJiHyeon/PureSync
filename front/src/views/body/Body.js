@@ -5,9 +5,14 @@ import Exercise from 'components/body/exercise'
 import Axios from 'axios'
 import Summry from 'components/body/summary'
 import getHeaderCookie from 'utils/hooks/getHeaderCookie'
-import {parseJwt, getMemInfoFromToken} from 'utils/hooks/parseToken'
+import { parseJwt, getMemInfoFromToken } from 'utils/hooks/parseToken'
 
 const BodyMenu = () => {
+
+    //Header Cookie
+    const access_token = getHeaderCookie();
+    let parse_token = parseJwt(access_token);
+    let { memId, memSeq } = getMemInfoFromToken(parse_token);
 
     // 날짜 계산 ----------------------------------------------------------------
     let today = new Date();
@@ -29,10 +34,7 @@ const BodyMenu = () => {
 
     // Mneu -------------------------------------------------------------------------------------------------
     const [menuData, setMenuData] = useState([]);
-    //Header Cookie
-    const access_token = getHeaderCookie();
-    let parse_token = parseJwt(access_token);
-    let  { memId, memSeq } = getMemInfoFromToken(parse_token);
+
     //식사 유형에 대한 총 칼로리
     const [breakfastTotalCalories, setBreakfastTotalCalories] = useState(0);
     const [lunchTotalCalories, setLunchTotalCalories] = useState(0);
@@ -46,9 +48,10 @@ const BodyMenu = () => {
         if (access_token === "") return;
         Axios.get(process.env.REACT_APP_HOST_URL + '/api/menu/list', {
             params: {
-                mem_seq: memSeq,
                 menu_date: selectDate,
-            }, withCredentials: false, headers: {
+            }, 
+            withCredentials: false,
+            headers: {
                 Authorization: `Bearer ${access_token}`
             }
         })
@@ -100,13 +103,14 @@ const BodyMenu = () => {
     const menuDelete = (menu_seq) => {
         if (access_token === "") return;
         Axios.post(process.env.REACT_APP_HOST_URL + '/api/menu/delete', {
-            memSeq: memSeq,
             menuSeq: menu_seq
-        }, {
+        }, 
+        {
             withCredentials: true, // Include credentials (cookies)
             headers: {
                 Authorization: `Bearer ${access_token}`
-            }})
+            }
+        })
             .then((res) => {
                 //alert("삭제 메뉴" + menu_seq);
                 setMenuRefresh(!menuRefresh);
@@ -125,9 +129,10 @@ const BodyMenu = () => {
         if (access_token === "") return;
         Axios.get(process.env.REACT_APP_HOST_URL + '/api/exercise/list', {
             params: {
-                mem_seq: memSeq,
                 el_date: selectDate,
-            }, withCredentials: false, headers: {
+            }, 
+            withCredentials: false, 
+            headers: {
                 Authorization: `Bearer ${access_token}`
             }
         })
@@ -154,12 +159,13 @@ const BodyMenu = () => {
         if (access_token === "") return;
         Axios.post(process.env.REACT_APP_HOST_URL + '/api/exercise/delete', {
             elSeq: el_seq,
-            memSeq: memSeq,
-        } ,{
+        }, 
+        {
             withCredentials: true, // Include credentials (cookies)
             headers: {
                 Authorization: `Bearer ${access_token}`
-            }})
+            }
+        })
             .then((res) => {
                 setExerciseRefresh(!exerciseRefresh);
             })
@@ -180,10 +186,11 @@ const BodyMenu = () => {
         if (access_token === "") return;
         Axios.get(process.env.REACT_APP_HOST_URL + '/api/summary/list', {
             params: {
-                mem_seq: memSeq,
                 menu_date: selectDate,
                 el_date: selectDate,
-            }, withCredentials: false, headers: {
+            }, 
+            withCredentials: false, 
+            headers: {
                 Authorization: `Bearer ${access_token}`
             }
         })

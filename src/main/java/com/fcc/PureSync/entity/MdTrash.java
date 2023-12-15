@@ -22,7 +22,7 @@ public class MdTrash {
     @Builder.Default
     LocalDateTime tsWdate=LocalDateTime.now();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "mem_seq")
     Member member;
 }

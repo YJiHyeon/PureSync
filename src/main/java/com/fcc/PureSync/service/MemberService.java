@@ -43,19 +43,17 @@ public class MemberService {
     private final MailService mailService;
 
     // 회원가입
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public ResultDto signup(SignupDto signupDto) {
-        long beforeTime = System.currentTimeMillis(); // 코드 실행 전
-        long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
-        long secDiffTime = (afterTime - beforeTime)/1000; //두 시간에 차 계산
         Member inputMemberInfo = buildMemberFromSignupDto(signupDto);
-        Member signupMember = memberRepository.save(inputMemberInfo);
-        Body inputBody = buildBodyFromSignDtoAndSignupMember(signupDto, signupMember.getMemSeq());
+        Long memSeq = memberRepository.save(inputMemberInfo).getMemSeq();
+        //30초 대기 클로즈
+        Body inputBody = buildBodyFromSignDtoAndSignupMember(signupDto, memSeq);
         bodyRepository.save(inputBody);
         mailService.signUpByVerificationCode(inputMemberInfo.getMemEmail());
-        System.out.println("시간차이(m) : "+secDiffTime);
         return handleResultDtoFromSignUp();
     }
+
     //회원 정보 빌드
     private Member buildMemberFromSignupDto(SignupDto dto) {
         String encoPassword = passwordEncoder.encode(dto.getMemPassword());
@@ -100,9 +98,9 @@ public class MemberService {
                 new UsernamePasswordAuthenticationToken(loginDto.getMemId(), loginDto.getMemPassword());
         Authentication authentication = authenticationManager.authenticate(authToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        HashMap<String,Object> accessTokenMap = new HashMap<>();
+        HashMap<String, Object> accessTokenMap = new HashMap<>();
         String accessToken = jwtUtil.createToken(member);
-        accessTokenMap.put("access_token",accessToken);
+        accessTokenMap.put("access_token", accessToken);
 
         return ResultDto.builder()
                 .code(HttpStatus.OK.value())
@@ -112,7 +110,7 @@ public class MemberService {
                 .build();
     }
 
-    @Transactional(readOnly=true)
+    @Transactional(readOnly = true)
     public ResultDto checkDuplicate(String field, String value) {
         ResultDto resultDto;
         switch (field) {
@@ -144,13 +142,11 @@ public class MemberService {
     }
 
 
-
-
     @Transactional
     public ResultDto searchPassword(FindPasswordDto findPasswordDto) {
         Member member = memberRepository.findByMemEmail(findPasswordDto.getMemEmail()).orElseThrow(() -> new CustomException(NOT_FOUND_EMAIL));
         String newPassword = RandomStringGenerator.generateRandomPassword(12);
-        updateTemporaryPassword(member,newPassword);
+        updateTemporaryPassword(member, newPassword);
         mailService.sendTemporaryPassword(findPasswordDto.getMemEmail(), newPassword);
         return handleResultDtoFromFindPassword();
     }
@@ -168,18 +164,18 @@ public class MemberService {
         memberRepository.save(member);
     }
 
-    @Transactional(readOnly=true)
+    @Transactional(readOnly = true)
     public ResultDto searchId(String memEmail) {
         Member member = memberRepository.findByMemEmail(memEmail).orElseThrow(() -> new CustomException(NOT_FOUND_EMAIL));
         String memberId = member.getMemId();
         return handleResultDtoFromsearchId(memberId);
     }
 
-    @Transactional(readOnly=true)
+    @Transactional(readOnly = true)
     private ResultDto handleResultDtoFromsearchId(String memberId) {
         String msg = "아이디 찾기 성공";
         HashMap<String, Object> resultMap = new HashMap<>();
-        resultMap.put("memId",memberId);
+        resultMap.put("memId", memberId);
         return handleResultDto(msg, resultMap);
     }
 

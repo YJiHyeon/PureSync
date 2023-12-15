@@ -20,7 +20,7 @@ import com.fcc.PureSync.repository.BoardFileRepository;
 import com.fcc.PureSync.repository.BoardRepository;
 import com.fcc.PureSync.repository.MemberRepository;
 import com.fcc.PureSync.util.FileUploadUtil;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
@@ -40,6 +40,7 @@ import static com.fcc.PureSync.dto.BoardDto.toDto;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class BoardService {
     @Value("${fileUploadPath}")
     String fileUploadPath;
@@ -70,10 +71,10 @@ public class BoardService {
     }
 
     @Transactional
-    public ResultDto createBoard(BoardDto boardDto, String id, List<MultipartFile> file) {
+    public ResultDto createBoard(BoardDto boardDto, List<MultipartFile> file) {
         //Long id2 = Long.parseLong(id);
-        id = "aaa";//////////////////////////////////////////////
-        Member member = memberRepository.findByMemId(id)
+        //id = "aaa";//////////////////////////////////////////////
+        Member member = memberRepository.findByMemId(boardDto.getMemId())
                 .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
 
         System.out.println("*******************" + boardDto.getBoardName());
@@ -164,9 +165,9 @@ public class BoardService {
         }
     }
 
-    public ResultDto updateBoard(Long boardSeq, BoardDto boardDto, String id, List<MultipartFile> file) throws IOException {
-        id = "aaa";//////////////////////////////////////////////
-        Member member = memberRepository.findByMemId(id)
+    public ResultDto updateBoard(Long boardSeq, BoardDto boardDto, List<MultipartFile> file) throws IOException {
+
+        Member member = memberRepository.findByMemId(boardDto.getMemId())
                 .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
         Board board = boardRepository.findById(boardSeq)
                 .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_ARTICLE));
@@ -262,7 +263,7 @@ public class BoardService {
     }
 
     public ResultDto deleteBoard(Long boardSeq, String id) {
-        id = "aaa";//////////////////////////////////////////////
+        //id = "aaa";//////////////////////////////////////////////
         Member member = memberRepository.findByMemId(id)
                 .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
         Board board = boardRepository.findById(boardSeq)
@@ -289,7 +290,7 @@ public class BoardService {
                 .data(map)
                 .build();
     }
-
+    @Transactional(readOnly = true)
     public ResultDto detailBoard(Long boardSeq, String id) {
         Board board = boardRepository.findById(boardSeq)
                 .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_ARTICLE));
