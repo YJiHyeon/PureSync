@@ -33,7 +33,8 @@ jobs:
       run: chmod +x back/gradlew
 
     - name: Build with Gradle
-      uses: back/gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0      with:
+      uses: back/gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0      
+      with:
         arguments: clean bootJar
     
     - name: Login to DockerHub
@@ -44,7 +45,7 @@ jobs:
 
     - name: build and release to DockerHub
       env:
-        NAME: littleconan
+        NAME: yoonjihyeon
         REPO: backend
       run: |
         docker build --file back/Dockerfile --build-arg JAR_FILE=back/build/libs/*.jar -t $REPO back/. 
