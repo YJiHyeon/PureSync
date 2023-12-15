@@ -11,7 +11,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm install
 # Copy the main application
-COPY front/. ./
+COPY . ./
 # Arguments
 ARG REACT_APP_HOST_URL
 ENV REACT_APP_HOST_URL=http://3.133.13.108:9000
