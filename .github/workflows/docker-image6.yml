@@ -2,9 +2,9 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "dev3_setting" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "dev3_setting" ]
 
 jobs:
 
@@ -15,4 +15,4 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      run: docker build front/. --file front/Dockerfile --tag my-image-name:$(date +%s)
