@@ -1,17 +1,17 @@
 
 FROM node:18-alpine3.16 as build
-# Configure the main working directory inside the docker image. 
+# Configure the main working directory inside the docker image........ 
 # This is the base directory used in any further RUN, COPY, and ENTRYPOINT 
 # commands.
 WORKDIR /app
 # Copy the package.json as well as the package-lock.json and install 
 # the dependencies. This is a separate step so the dependencies 
 # will be cached unless changes to one of those two files 
-# are made...........................................................................
-COPY package.json package-lock.json ./
+# are made.....##############
+COPY /front/package.json /front/package-lock.json ./
 RUN npm install
-# Copy the main application
-COPY front/. ./
+# Copy the main application .........
+COPY /front/. ./
 # Arguments
 ARG REACT_APP_HOST_URL
 ENV REACT_APP_HOST_URL=http://3.133.13.108:9000
@@ -22,7 +22,7 @@ FROM nginx:1.17.0-alpine
 # Copy the react build from Stage 1
 COPY --from=build /app/build /var/www
 # Copy our custom nginx config
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY /front/nginx.conf /etc/nginx/nginx.conf
 # Expose port 80 to the Docker host, so we can access it 
 # from the outside.
 EXPOSE 80
