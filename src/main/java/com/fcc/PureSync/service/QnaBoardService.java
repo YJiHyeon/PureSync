@@ -17,7 +17,7 @@ import com.fcc.PureSync.exception.CustomExceptionCode;
 import com.fcc.PureSync.repository.QnaBoardFileRepository;
 import com.fcc.PureSync.repository.QnaBoardRepository;
 import com.fcc.PureSync.repository.MemberRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +33,7 @@ import static com.fcc.PureSync.dto.QnaBoardDto.toDto;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class QnaBoardService {
     @Value("${fileUploadPath}")
     String fileUploadPath;
@@ -62,7 +63,6 @@ public class QnaBoardService {
         }
     }
 
-    @Transactional
     public ResultDto createQnaBoard(String memId, QnaBoardDto qnaBoardDto, List<MultipartFile> file) {
         Member member = memberRepository.findByMemId(memId)
                 .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
@@ -277,11 +277,8 @@ public class QnaBoardService {
                 .data(map)
                 .build();
     }
-
+    @Transactional(readOnly = true)
     public ResultDto detailQnaBoard(String memId, Long qnaBoardSeq) {
-        Member member = memberRepository.findByMemId(memId)
-                .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
-
         QnaBoard qnaBoard = qnaBoardRepository.findById(qnaBoardSeq)
                 .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_ARTICLE));
         QnaBoardDto qnaBoardDetailDto = QnaBoardDto.QnaBoardDetailDto(qnaBoard);
@@ -292,9 +289,6 @@ public class QnaBoardService {
     }
 
     public ResultDto findAllQnaBoard(String memId, Pageable pageable) {
-        Member member = memberRepository.findByMemId(memId)
-                .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
-
         List<QnaBoard> qnaBoardPage = qnaBoardRepository.findByQnaBoardStatusOrderByQnaBoardWdateDesc(1, pageable).getContent();
         List<QnaBoardDto> qnaBoardDetailDtoList = qnaBoardPage.stream()
                 .map(QnaBoardDto::QnaBoardAllDetailDto)
@@ -305,9 +299,6 @@ public class QnaBoardService {
     }
 
     public ResultDto findFileChk(String memId, Long qnaBoardSeq, Pageable pageable) {
-        Member member = memberRepository.findByMemId(memId)
-                .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
-
         QnaBoard qnaBoard = qnaBoardRepository.findById(qnaBoardSeq)
                 .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_BOARD));
         Long qnaBoardId = qnaBoard.getQnaBoardSeq();
