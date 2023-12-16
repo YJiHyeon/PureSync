@@ -1,7 +1,9 @@
 import ApiService from './ApiService'
+import SendHeaderCookie from 'utils/hooks/getHeaderCookie'
 
 export async function apiGetMemberDashboardData(selectedDate) {
-    let url = 'http://localhost:9000/api/dashboard/1';
+    const token = SendHeaderCookie(); 
+    let url = process.env.REACT_APP_HOST_URL + '/api/dashboard';
 
     if (selectedDate) {
         url += `/${selectedDate}`;
@@ -10,12 +12,19 @@ export async function apiGetMemberDashboardData(selectedDate) {
     return ApiService.fetchData({
         url,
         method: 'get',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+        },
     });
 }
 
 export async function getPositive () {
+    const token = SendHeaderCookie(); 
     return ApiService.fetchData({
-        url: 'http://127.0.0.1:9000/api/positive',
-        method: 'get'
+        url: process.env.REACT_APP_HOST_URL + '/api/positive',
+        method: 'get',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+        },
     })
 }

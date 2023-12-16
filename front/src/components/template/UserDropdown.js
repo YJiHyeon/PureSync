@@ -18,7 +18,7 @@ let  { memId, memEmail } = getMemInfoFromToken(parse_token);
 const dropdownItemList = [
     {
         label: '내 정보',
-        path: '/app/account/settings/profile',
+        path: '/account/settings/profile',
         icon: <HiOutlineUser />,
     },
 ]

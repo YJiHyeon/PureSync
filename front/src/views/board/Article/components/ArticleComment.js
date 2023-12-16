@@ -4,8 +4,13 @@ import { HiOutlineClock } from 'react-icons/hi'
 import { Card, Button, Input } from 'components/ui'
 import axios from 'axios'
 import { useLocation, useNavigate } from 'react-router-dom'
+import getHeaderCookie from 'utils/hooks/getHeaderCookie'
+import { parseJwt, getMemInfoFromToken } from 'utils/hooks/parseToken'
 const ArticleComment = ({ data }) => {
   const navigate = useNavigate();
+  const access_token = getHeaderCookie();
+  let parse_token = parseJwt(access_token);
+  let { memId } = getMemInfoFromToken(parse_token);
   const [editingComment, setEditingComment] = useState(null);
   console.log(data.comment);
   const cmtDelete = async (cmtSeq) => {
@@ -16,7 +21,12 @@ const ArticleComment = ({ data }) => {
             console.error('댓글을 찾을 수 없습니다.');
             return;
         }
-        await axios.delete(`http://localhost:9000/api/board/${data.boardSeq}/comments/${cmtSeq}`);
+        await axios.delete(`http://localhost:9000/api/board/${data.boardSeq}/comments/${cmtSeq}`,{
+          headers: {
+            Authorization: `Bearer ${access_token}`
+        },
+        });
+        
         console.log('게시물 삭제 성공');
         navigate('/board');
     } catch (error) {
@@ -34,6 +44,10 @@ const cmtModify = async (cmtSeq, modifiedContents) => {
     // API를 호출하여 댓글 수정
     await axios.put(`http://localhost:9000/api/board/${data.boardSeq}/comments/${cmtSeq}`, {
       cmtContents: modifiedContents,
+      headers: {
+        Authorization: `Bearer ${access_token}`
+    },
+      
     });
     console.log('댓글 수정 성공');
     // 수정이 완료되면 editingComment 상태를 null로 설정하여 수정 모드를 종료
