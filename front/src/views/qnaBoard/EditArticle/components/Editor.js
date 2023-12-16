@@ -32,17 +32,16 @@ axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
 const Editor = () => {
   const access_token = getHeaderCookie();
   let parse_token = parseJwt(access_token);
-  let { memId, memSeq } = getMemInfoFromToken(parse_token);
+  let { memId } = getMemInfoFromToken(parse_token);
   const navigate = useNavigate();
   const { state } = useLocation();
   const { updateData } = state || {};
-  console.log(updateData);
+  // console.log(updateData);
   //const updateData = location.state && location.state.updateData;
   const onUpload = (files) => {
 
-    console.log(files);
+    // console.log(files);
   }
-
 
   function stripHtmlUsingDOM(html) {
     const doc = new DOMParser().parseFromString(html, 'text/html');
@@ -55,11 +54,11 @@ const Editor = () => {
     const formData = new FormData(window.document.myform);
 
     formData.append("qnaBoardContents", values.qnaBoardContents);
-    console.log("****", formData);
+    // console.log("****", formData);
 
     //formData.append("qnaBoardContents",  values.qnaBoardContents);
     for (let key of formData.keys()) {
-      console.log(key, formData.get(key));
+      // console.log(key, formData.get(key));
     }
     // formData.append('qnaBoardDto', new Blob([JSON.stringify({
     //   qnaBoardName: values.qnaBoardName,
@@ -78,33 +77,43 @@ const Editor = () => {
 
     try {
       if (updateData == null) {
-        const response = await axios.post('http://localhost:9000/api/qnaBoard', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${access_token}`
-          },
-        });
+        const shouldRegister = window.confirm('게시글을 등록하시겠습니까?');
+        if (shouldRegister) {
+          const response = await axios.post(process.env.REACT_APP_HOST_URL + '/api/qnaBoard', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: `Bearer ${access_token}`
+            },
+            data: formData,
+          });
 
-        console.log('파일 업로드 성공:', response.data);
-        // alert('게시글이 작성되었습니다.');
-        navigate('/qnaBoard');
+          // console.log('파일 업로드 성공:', response.data);
+          // alert('게시글이 작성되었습니다.');
+          const newArticleId = response.data.data.qnaBoard.qnaBoardSeq;
+          navigate(`/qnaBoard/view?id=${newArticleId}`);
+        }
       } else {
-        console.log(updateData);
+        // console.log(updateData);
 
-        const response = await axios.put(`http://localhost:9000/api/qnaBoard/${updateData.articleId}`, formData,  {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${access_token}`
-          },
-        });
+        const shouldUpdate = window.confirm('게시글을 수정하시겠습니까?');
+        if (shouldUpdate) {
+          const response = await axios.put(process.env.REACT_APP_HOST_URL + `/api/qnaBoard/${updateData.articleId}`, formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: `Bearer ${access_token}`
+            },
+            data: formData,
+          });
 
-        console.log('파일 업로드 성공:', response.data);
-        // alert('게시글이 수정되었습니다.');
-        navigate('/qnaBoard');
+          // console.log('파일 업로드 성공:', response.data);
+          // alert('게시글이 수정되었습니다.');
+          const articleId = response.data.data.qnaBoard.qnaBoardSeq;
+          navigate(`/qnaBoard/view?id=${articleId}`);
+        }
       }
     } catch (error) {
       // Handle errors
-      console.error('Error while saving article:', error);
+      // console.error('Error while saving article:', error);
     }
 
     setSubmitting(false);
@@ -115,7 +124,7 @@ const Editor = () => {
       initialValues={{
         qnaBoardName: updateData ? updateData.qnaBoardName : '',
         qnaBoardContents: updateData ? updateData.qnaBoardContents : '',
-        memId: '',
+        memId: memId,
         files: updateData ? updateData.qnaBoardFile : '',
       }}
       onSubmit={(values, { setSubmitting }) => {
@@ -124,7 +133,6 @@ const Editor = () => {
     >
       {({ values, touched, errors, isSubmitting, setFieldValue }) => (
         <Form enctype="multipart/form-data" name="myform">
-          <input type='hidden' value={memId} name="memId" />
           <FormContainer>
             <FormItem label="제목">
               <Field autoComplete="off" name="qnaBoardName" component={Input} />

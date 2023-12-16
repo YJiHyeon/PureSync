@@ -11,7 +11,7 @@ const ArticleAction = (props) => {
     const [comments, setComments] = useState([]);
     const access_token = getHeaderCookie();
     let parse_token = parseJwt(access_token);
-    let  { memId, memSeq } = getMemInfoFromToken(parse_token);
+    let  { memId } = getMemInfoFromToken(parse_token);
 
     const onHelpfulClick = useCallback((event) => {
       const val = event.target.value;
@@ -19,19 +19,17 @@ const ArticleAction = (props) => {
   }, []);
 
     const onCommentSubmit = () => {
-      console.log(comment);
-      console.log(props.data);
-      axios.post(`http://localhost:9000/api/qnaBoard/${props.data}/comments`,  { qnaCmtContents: comment } 
+      // console.log(comment);
+      // console.log(props.data);
+      axios.post(process.env.REACT_APP_HOST_URL + `/api/qnaBoard/${props.data}/comments`,  { qnaCmtContents: comment } 
       , {
         headers: {
           'Content-Type': 'application/json', 
-        },
-        withCredentials: false, headers: {
           Authorization: `Bearer ${access_token}`
-      }
+        },
       })
       .then((res)=>{
-        console.log(res.data);
+        // console.log(res.data);
         setComments((prevComments) => [...prevComments, res.data]);
         setComment('');
         props.commentRegister(); //부모한테 나 글등록했다.

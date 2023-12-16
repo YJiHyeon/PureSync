@@ -24,7 +24,7 @@ const ArticleContent = ({ articleId }) => {
     const dispatch = useDispatch();
     const access_token = getHeaderCookie();
     let parse_token = parseJwt(access_token);
-    let { memId, memSeq } = getMemInfoFromToken(parse_token);
+    let { memId } = getMemInfoFromToken(parse_token);
     const [flag, setFlag] = useState(false);
     const article = useSelector(
         (state) => state.knowledgeBaseQnaArticle.data.article
@@ -32,7 +32,7 @@ const ArticleContent = ({ articleId }) => {
     const loading = useSelector(
         (state) => state.knowledgeBaseQnaArticle.data.loading
     )
-    console.log(article);
+    // console.log(article);
     const { search } = useLocation()
     //const imageUrl = `https://fccbucket123.s3.ap-northeast-2.amazonaws.com/fileUpload/${response.data.qnaBoardfileName}`;
 
@@ -40,7 +40,7 @@ const ArticleContent = ({ articleId }) => {
         fetchData()
         
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        console.log(article);
+        // console.log(article);
     }, [search])
 
     const fetchData = () => {
@@ -59,41 +59,54 @@ const ArticleContent = ({ articleId }) => {
             qnaBoardFile: article.qnaBoardFile
             
         };
+
+        const shouldUpdate = window.confirm('게시물을 수정하시겠습니까?');
+
+            if (!shouldUpdate) {
+                return;
+            }
         
         // navigate를 사용하여 editor.js로 이동하면서 데이터 전달
         navigate('/qnaBoard/write', { state: { updateData } });
     }
-    const handleLike = async () => {
-        try {
-            // 서버에 좋아요 요청을 보냄
-            await axios.post(`http://localhost:9000/api/qnaBoard/${article.qnaBoardSeq}/likes`, {
-                    withCredentials: false, headers: {
-                    Authorization: `Bearer ${access_token}`
-                }
-            });
+    // const handleLike = async () => {
+    //     try {
+    //         // 서버에 좋아요 요청을 보냄
+    //         await axios.post(`http://localhost:9000/api/qnaBoard/${article.qnaBoardSeq}/likes`, {
+    //                 withCredentials: false, headers: {
+    //                 Authorization: `Bearer ${access_token}`
+    //             }
+    //         });
             
-            // 서버에서 좋아요 카운트를 업데이트했다면, 다시 데이터를 불러옴
-            fetchData();
-        } catch (error) {
-            console.error('좋아요 클릭 중 오류:', error);
-        }
-    };
+    //         // 서버에서 좋아요 카운트를 업데이트했다면, 다시 데이터를 불러옴
+    //         fetchData();
+    //     } catch (error) {
+    //         console.error('좋아요 클릭 중 오류:', error);
+    //     }
+    // };
     
     const handleDelete = async () => {
         try {
             if (!article.qnaBoardSeq) {
-                console.error('게시물 qnaBoardSeq를 찾을 수 없습니다.');
+                // console.error('게시물 qnaBoardSeq를 찾을 수 없습니다.');
                 return;
             }
-            await axios.delete(`http://localhost:9000/api/qnaBoard/${article.qnaBoardSeq}`, {
-                    withCredentials: false, headers: {
+
+            const shouldDelete = window.confirm('게시물을 삭제하시겠습니까?');
+
+            if (!shouldDelete) {
+                return;
+            }
+
+            await axios.delete(process.env.REACT_APP_HOST_URL + `/api/qnaBoard/${article.qnaBoardSeq}`, {
+            headers: {
                     Authorization: `Bearer ${access_token}`
                 }
             });
-            console.log('게시물 삭제 성공');
+            // console.log('게시물 삭제 성공');
             navigate('/qnaBoard');
         } catch (error) {
-            console.error('게시물 삭제 중 오류:', error);
+            // console.error('게시물 삭제 중 오류:', error);
         } finally {
 
         }
@@ -101,11 +114,9 @@ const ArticleContent = ({ articleId }) => {
     const commentRegister = () => {
         //alert("댓글등록");
         //setRegister(true);
-        console.log(article.findBoardFile);
+        // console.log(article.findBoardFile);
         fetchData()
     }
-
-
 
     const [imageUrlList, setImageUrlList] = useState([]);
 
@@ -160,8 +171,6 @@ const ArticleContent = ({ articleId }) => {
                         ))
                         : null
                 }
-
-
             </div>
 
             {/* <ArticleAction data={article.qnaBoardSeq} commentRegister={commentRegister} /> */}
