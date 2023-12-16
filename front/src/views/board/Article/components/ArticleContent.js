@@ -16,9 +16,14 @@ import { Button } from 'components/ui'
 import { HiOutlineClock, HiOutlineCog, HiOutlinePencil, HiOutlineInboxIn, HiOutlineTrash,HiOutlineHeart} from 'react-icons/hi'
 import { getboardFile } from 'services/DashboardService'
 import LikeButton from './LikeButton';
-
+import getHeaderCookie from 'utils/hooks/getHeaderCookie'
+import { parseJwt, getMemInfoFromToken } from 'utils/hooks/parseToken'
 const ArticleContent = ({ articleId }) => {
     const navigate = useNavigate();
+    const access_token = getHeaderCookie();
+    let parse_token = parseJwt(access_token);
+    let { memId } = getMemInfoFromToken(parse_token);
+    
     const dispatch = useDispatch()
     const [flag, setFlag] = useState(false);
     const [mylikes,setMylikes] = useState(0);
@@ -48,15 +53,19 @@ const ArticleContent = ({ articleId }) => {
         }
         setFlag(true);
     }
-    const fetchMylikes = async () => {
+    const fetchMylikes = async (access_token) => {
         try {
-            const response = await axios.get(`http://localhost:9000/api/board/${article.boardSeq}/mylikes`)
+            const response = await axios.get(`http://localhost:9000/api/board/${article.boardSeq}/mylikes`, {
+                headers: {
+                    Authorization: `Bearer ${access_token}`
+                }
+            });
+    
             setMylikes(response.data.data.findMyLikes);
-            
         } catch (error) {
             console.error("Error positive data:", error);
         }
-    }
+    };
     const handleUpdate = () => {
         // 필요한 데이터를 객체로 만들어 전달
         const updateData = {
