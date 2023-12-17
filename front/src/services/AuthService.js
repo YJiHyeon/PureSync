@@ -5,13 +5,18 @@ import TokenCookie from './tokenCookie'
 
 
 export async function apiSignIn(data) {
-    const POST_URL = `http://localhost:9000/api/member/login`;
+    const POST_URL = process.env.REACT_APP_HOST_URL + `/api/member/login`;
     
+    // 서비스단에서 try catch 없애기
     try {
         const response = await Axios.post(POST_URL, data, {withCredentials: true});
-        TokenCookie(response.data.data.access_token);
-        console.log("responseData",response.data);
-        return response.data;
+        console.log(response);
+        if (response.status !== 404)  {
+            TokenCookie(response.data.data.access_token);
+            return response.data;       
+        }
+
+        console.log(response);
     } catch (error) {
         console.error('Login error', error);
         throw error;
@@ -37,14 +42,11 @@ export async function apiSignOut(data) {
 }
 
 export async function apiForgotPassword(data) {
-    console.log(data.email);
     const GET_URL = `http://localhost:9000/api/member/searchId/${data.email}`;
     try{
         const response = await Axios.get(GET_URL)
-        console.log("responmse",response.data);
         return response;
     }catch(e){
-        console.log("searchId"+e);
         return e;
     }
 }

@@ -26,6 +26,7 @@ public class JwtAuthenticationFilter  extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        long beforTime = System.currentTimeMillis();
         try {
             // 요청에서 토큰 가져오기
             String token = parseBearerToken(request);
@@ -48,6 +49,9 @@ public class JwtAuthenticationFilter  extends OncePerRequestFilter {
                 SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
                 securityContext.setAuthentication(authentication); // 인증 정보 넣기
                 System.out.println("authentication"+authentication);
+                long afterTime=System.currentTimeMillis();
+                long secDiftTime = (afterTime - beforTime);
+                System.out.println("시간차이" + secDiftTime); //3msc
                 SecurityContextHolder.setContext(securityContext); // 다시 등록
             }
         } catch (Exception ex) {
