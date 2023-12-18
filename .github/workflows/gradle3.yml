@@ -60,7 +60,16 @@ jobs:
           password: ${{secrets.DOCKERHUB_TOKEN}}
           build_args: REACT_APP_HOST_URL=http://192.168.56.1:8080/api
 
-      - name: Build and release to DockerHub
+      - name: release to DockerHub (back)
+        env:
+          NAME: yoonjihyeon
+          REPO: back
+        run: |
+          docker build -t $REPO --file back/Dockerfile .
+          docker tag $REPO:latest $NAME/$REPO:latest
+          docker push $NAME/$REPO:latest
+
+      - name: release to DockerHub (front)
         env:
           NAME: yoonjihyeon
           REPO: front
