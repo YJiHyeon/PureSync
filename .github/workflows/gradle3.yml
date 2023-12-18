@@ -9,30 +9,7 @@ on:
       - main
 
 jobs:
-  build-and-release:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Login to DockerHub
-        uses: docker/login-action@v1
-        with:
-          username: ${{secrets.DOCKERHUB_USERNAME}}
-          password: ${{secrets.DOCKERHUB_TOKEN}}
-          build_args: REACT_APP_HOST_URL=http://192.168.56.1:8080/api
-
-      - name: Build and release to DockerHub
-        env:
-          NAME: yoonjihyeon
-          REPO: front
-        run: |
-          docker build -t $REPO --file front/Dockerfile .
-          docker tag $REPO:latest $NAME/$REPO:latest
-          docker push $NAME/$REPO:latest
-
-  build-with-gradle:
+  build-backend:
     runs-on: ubuntu-latest
 
     steps:
@@ -45,6 +22,36 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Build with Gradle
-        working-directory: backend
-        run: ./gradlew build
+      - name: Build Backend with Gradle
+        run: |
+          cd PureSync/backend
+          ./gradlew build
+
+  build-frontend-and-release:
+    runs-on: ubuntu-latest
+
+    needs: build-backend
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Build Frontend
+        run: |
+          cd PureSync/frontend
+
+      - name: Login to DockerHub and Build Image
+        uses: docker/login-action@v1
+        with:
+          username: ${{secrets.DOCKERHUB_USERNAME}}
+          password: ${{secrets.DOCKERHUB_TOKEN}}
+          build_args: REACT_APP_HOST_URL=http://192.168.56.1:8080/api
+
+      - name: Build and release to DockerHub (Frontend)
+        env:
+          NAME: yoonjihyeon
+          REPO: frontend
+        run: |
+          docker build -t $REPO --file PureSync/frontend/Dockerfile .
+          docker tag $REPO:latest $NAME/$REPO:latest
+          docker push $NAME/$REPO:latest
