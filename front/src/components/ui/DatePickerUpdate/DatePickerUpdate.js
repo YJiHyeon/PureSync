@@ -2,14 +2,14 @@ import React, { useState, useRef, forwardRef, useEffect } from 'react'
 import dayjs from 'dayjs'
 import useControllableState from '../hooks/useControllableState'
 import useMergedRef from '../hooks/useMergeRef'
-import Calendar from './Calendar'
+import Calendar from './CalendarUpdate'
 import BasePicker from './BasePicker'
 import { useConfig } from '../ConfigProvider'
 import capitalize from '../utils/capitalize'
 
 const DEFAULT_INPUT_FORMAT = 'YYYY-MM-DD'
 
-const DatePicker = forwardRef((props, ref) => {
+const DatePickerUpdate = forwardRef((props, ref) => {
     const {
         className,
         clearable,
@@ -101,7 +101,7 @@ const DatePicker = forwardRef((props, ref) => {
         setValue(props.today);
         if (value === null && !focused) {
             setInputState();
-           
+
         }
 
         if (value instanceof Date && !focused) {
@@ -123,19 +123,18 @@ const DatePicker = forwardRef((props, ref) => {
 
 
     //************* 날짜 세팅되는 부분  *********************/
-    const handleValueChange = (date) => {
-        setValue(date)
-        setInputState(
-            capitalize(dayjs(date).locale(finalLocale).format(dateFormat))
-        )
-        closePickerOnChange && closeDropdown()
+    const handleValueChange = (date, form, field) => {
+        if (date) {
+            const formattedDate = dayjs(date).format('YYYY-MM-DD');
+            setValue(date);
+            setInputState(formattedDate);
+            form.setFieldValue(field.name, formattedDate);
+        } else {
+            form.setFieldError(field.name, '유효한 날짜를 선택해주세요.');
+        }
         window.setTimeout(() => inputRef.current?.focus(), 0);
-        console.log( date );  //Tue Nov 28 2023 00:00:00 GMT+0900
-        console.log(finalLocale) //en
-        console.log(dateFormat) //YYYY-MM-DD
-        console.log(inputState); //2023-11-28
-        props.DatePickerClick(capitalize(dayjs(date).locale(finalLocale).format(dateFormat)));
-        // alert("**");
+        closePickerOnChange && closeDropdown();
+
     }
 
     const handleClear = () => {
@@ -205,7 +204,7 @@ const DatePicker = forwardRef((props, ref) => {
             setInputState(event.target.value)
         }
 
-       
+
     }
 
     return (
@@ -226,7 +225,7 @@ const DatePicker = forwardRef((props, ref) => {
             clearable={
                 type === 'date' ? false : clearable && !!_value && !disabled
             }
-           
+
             clearButton={clearButton}
             onClear={handleClear}
             disabled={disabled}
@@ -250,7 +249,7 @@ const DatePicker = forwardRef((props, ref) => {
                         ? _value
                         : _value && dayjs(_value).toDate()
                 }
-                onChange={handleValueChange}
+                onChange={(date) => handleValueChange(date, props.form, props.field)}
                 labelFormat={labelFormat}
                 dayClassName={dayClassName}
                 dayStyle={dayStyle}
@@ -273,7 +272,7 @@ const DatePicker = forwardRef((props, ref) => {
     )
 })
 
-DatePicker.defaultProps = {
+DatePickerUpdate.defaultProps = {
     closePickerOnChange: true,
     labelFormat: {
         month: 'MMM',
@@ -287,4 +286,4 @@ DatePicker.defaultProps = {
     openPickerOnClear: false,
 }
 
-export default DatePicker
+export default DatePickerUpdate;
