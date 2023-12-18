@@ -51,7 +51,7 @@ jobs:
         run: |
           cd front
           npm install
-          npm run build
+          CI='false' npm run build
 
       - name: Login to DockerHub and Build Image
         uses: docker/login-action@v1
