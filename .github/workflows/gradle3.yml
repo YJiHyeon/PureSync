@@ -46,5 +46,5 @@ jobs:
           distribution: 'temurin'
 
       - name: Build with Gradle
-        working-directory: PureSync/backend
+        working-directory: backend
         run: ./gradlew build
