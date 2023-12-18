@@ -24,7 +24,7 @@ jobs:
 
       - name: Build Backend with Gradle
         run: |
-          cd PureSync/back
+          cd back
           ./gradlew build
 
   build-frontend-and-release:
@@ -38,7 +38,7 @@ jobs:
 
       - name: Build Frontend
         run: |
-          cd PureSync/front
+          cd front
 
       - name: Login to DockerHub and Build Image
         uses: docker/login-action@v1
