@@ -63,9 +63,8 @@ jobs:
       - name: Build and release to DockerHub
         env:
           NAME: yoonjihyeon
-          REPO: frontend
+          REPO: front
         run: |
-          cd front
           docker build -t $REPO --file PureSync/frontend/Dockerfile .
           docker tag $REPO:latest $NAME/$REPO:latest
           docker push $NAME/$REPO:latest
