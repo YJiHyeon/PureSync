@@ -8,7 +8,6 @@ import {
 } from 'components/shared'
 import axios from 'axios'
 import getHeaderCookie from 'utils/hooks/getHeaderCookie'
-import { parseJwt, getMemInfoFromToken } from 'utils/hooks/parseToken'
 import { useInView } from 'react-intersection-observer';
 
 const Diary = () => {
@@ -22,13 +21,11 @@ const Diary = () => {
 
     //Header Cookie
     const access_token = getHeaderCookie();
-    let parse_token = parseJwt(access_token);
-    let { memId } = getMemInfoFromToken(parse_token);
 
     const diaryFetch = () => {
         setLoadingMore(true);
         // axios를 사용하여 데이터를 가져옴
-        axios.get(process.env.REACT_APP_HOST_URL + `/api/mind/diary/list/${memId}?page=${page}&size=9`,
+        axios.get(process.env.REACT_APP_HOST_URL + `/api/mind/diary/list?page=${page}&size=9`,
             {
                 headers: {
                     Authorization: `Bearer ${access_token}`
@@ -50,7 +47,7 @@ const Diary = () => {
     }
 
     useEffect(() => {
-        axios.get(process.env.REACT_APP_HOST_URL + `/api/mind/diary/list/${memId}?page=${page}&size=9`,
+        axios.get(process.env.REACT_APP_HOST_URL + `/api/mind/diary/list?page=${page}&size=9`,
             {
                 headers: {
                     Authorization: `Bearer ${access_token}`
