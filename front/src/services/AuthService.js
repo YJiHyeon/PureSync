@@ -1,26 +1,13 @@
 import ApiService from './ApiService'
 import Axios from 'axios'
-import TokenCookie from './tokenCookie'
-
-
 
 export async function apiSignIn(data) {
-    const POST_URL = process.env.REACT_APP_HOST_URL + `/api/member/login`;
-    
-    // 서비스단에서 try catch 없애기
-    try {
-        const response = await Axios.post(POST_URL, data, {withCredentials: true});
-        console.log(response);
-        if (response.status !== 404)  {
-            TokenCookie(response.data.data.access_token);
-            return response.data;       
-        }
 
-        console.log(response);
-    } catch (error) {
-        console.error('Login error', error);
-        throw error;
-    }
+    return ApiService.fetchData({
+        url: 'http://localhost:9000/api/member/login',
+        method: 'post',
+        data,
+    })
 }
 
 export async function apiSignUp(data) {
@@ -29,16 +16,6 @@ export async function apiSignUp(data) {
         method: 'post',
         data,
     })
-}
-
-export async function apiSignOut(data) {
-    // const POST_URL = `http://localhost:9000/api/member/logout`;
-    try{
-        // const response = await Axios.post(POST_URL, data, {withCredentials: false});
-        // return response.data;
-    }catch(e){
-        console.log(e);
-    }
 }
 
 export async function apiForgotPassword(data) {
