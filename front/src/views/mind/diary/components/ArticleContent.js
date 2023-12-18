@@ -11,8 +11,6 @@ import { Button } from 'components/ui'
 import { HiOutlinePencil, HiOutlineTrash } from 'react-icons/hi'
 import { Progress } from 'components/ui'
 import getHeaderCookie from 'utils/hooks/getHeaderCookie'
-import { parseJwt, getMemInfoFromToken } from 'utils/hooks/parseToken'
-
 
 
 const ArticleContent = () => {
