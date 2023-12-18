@@ -46,7 +46,6 @@ public class MemberService {
     public ResultDto signup(SignupDto signupDto) {
         Member inputMemberInfo = buildMemberFromSignupDto(signupDto);
         Long memSeq = memberRepository.save(inputMemberInfo).getMemSeq();
-        //30초 대기 클로즈
         Body inputBody = buildBodyFromSignDtoAndSignupMember(signupDto, memSeq);
         bodyRepository.save(inputBody);
         mailService.signUpByVerificationCode(inputMemberInfo.getMemEmail());
@@ -100,7 +99,9 @@ public class MemberService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         HashMap<String, Object> accessTokenMap = new HashMap<>();
         String accessToken = jwtUtil.createToken(member);
-        accessTokenMap.put("access_token", accessToken);
+        //
+        String lockToeken = lockingToken(accessToken);
+        accessTokenMap.put("access_token", lockToeken);
 
         return ResultDto.builder()
                 .code(HttpStatus.OK.value())
@@ -140,14 +141,6 @@ public class MemberService {
         }
         return resultDto;
     }
-
-/*
- 유저 찾는 시간 251 ms
- 비밀번호 생성 시간 2ms
-비밀번호 업데이트 시간 79ms
-메일 전송 실행 시간(ms): 12737
-비동기 방식 처리
-*/
 
     @Transactional
     public ResultDto searchPassword(FindPasswordDto findPasswordDto) {
@@ -206,6 +199,16 @@ public class MemberService {
                 .message(msg)
                 .data(map)
                 .build();
+    }
+
+    private String lockingToken(String token){
+        StringBuffer accessToken = new StringBuffer(token);
+        accessToken.insert(58,"Spu935");
+        accessToken.insert(77,"Bus9712");
+        accessToken.insert(122,"9YrH7");
+        accessToken.insert(199,"01Kej11");
+        String lockToken = accessToken.toString();
+        return lockToken;
     }
 
     // 어드민을 제외한 회원목록

@@ -15,7 +15,7 @@ const validationRule = (val) =>
 const isFirstDateSet = (val) =>
     Array.isArray(val) && val.length === 2 && val[0] instanceof Date
 
-const DatePickerRange = forwardRef((props, ref) => {
+const DatePickerRangeUpdate = forwardRef((props, ref) => {
     const {
         className,
         clearable,
@@ -158,7 +158,7 @@ const DatePickerRange = forwardRef((props, ref) => {
     )
 })
 
-DatePickerRange.defaultProps = {
+DatePickerRangeUpdate.defaultProps = {
     closePickerOnChange: true,
     labelFormat: {
         month: 'MMM',
@@ -173,4 +173,4 @@ DatePickerRange.defaultProps = {
     openPickerOnClear: false,
 }
 
-export default DatePickerRange
+export default DatePickerRangeUpdate

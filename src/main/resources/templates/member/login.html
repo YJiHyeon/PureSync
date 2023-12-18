@@ -81,29 +81,29 @@
 <th:block th:include="~{/fragments/scripts :: scriptFragment}"></th:block>
 </body>
 </html>
-<!--<script>-->
-<!--    $(() => {-->
-<!--        const sendForm = function(e) {-->
-<!--            e.preventDefault();-->
-<!--            let memIdValue = document.getElementById("memId").value;-->
-<!--            let memPassword = document.getElementById("memPassword").value;-->
-<!--            const validMemId = validation(memIdValue);-->
-<!--            const validMemPassword = validation(memPassword);-->
+<script>
+    $(() => {
+        const sendForm = function(e) {
+            e.preventDefault();
+            let memIdValue = document.getElementById("memId").value;
+            let memPassword = document.getElementById("memPassword").value;
+            const validMemId = validation(memIdValue);
+            const validMemPassword = validation(memPassword);
+            if(validMemId && validMemPassword){
+                document.getElementById("adminLogin").submit();
+               }
+        }
 
-<!--                document.getElementById("adminLogin").submit();-->
+        const validation = function(value) {
+            const LIMIT_LENGNTH =8;
+            if (value.length >= LIMIT_LENGNTH) {
+                console.log(value);
+                return true;
+            }
+            alert("제대로 된 값을 입력해주세요.")
+            return false
+        }
 
-<!--        }-->
-
-<!--        const validation = function(value) {-->
-<!--            const LIMIT_LENGNTH =1;-->
-<!--            if (value.length >= LIMIT_LENGNTH) {-->
-<!--                console.log(value);-->
-<!--                return true;-->
-<!--            }-->
-<!--            alert("제대로 된 값을 입력해주세요.")-->
-<!--            return false-->
-<!--        }-->
-
-<!--        document.getElementById("sendAdminInfoSubmitBtn").addEventListener("click", sendForm)-->
-<!--    })-->
-<!--</script>-->
+        document.getElementById("sendAdminInfoSubmitBtn").addEventListener("click", sendForm)
+    })
+</script>

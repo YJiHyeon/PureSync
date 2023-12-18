@@ -1,5 +1,5 @@
 import React from 'react'
-import CalendarBase from './CalendarBase'
+import CalendarBase from './CalendarBaseUpdate'
 import { isSameDate } from './utils'
 
 const CalendarUpdate = (props) => {

@@ -14,7 +14,7 @@ const validationSchema = Yup.object().shape({
     
     bodyWishWeight: Yup.number("소수점 둘째자리까지 입력 가능합니다.").required("원하시는 몸무게를 입력해주세요.").positive("양수여야 합니다."),
     
-    bodyWishConscal: Yup.number("소수점 둘째자리까지 입력 가능합니다.").required("원하시는 몸무게를 입력해주세요.").positive("양수여야 합니다."),
+    bodyWishConscal: Yup.number("소수점 둘째자리까지 입력 가능합니다.").required("원하시는 소모 칼로리를 입력해주세요.").positive("양수여야 합니다."),
     
 })
 

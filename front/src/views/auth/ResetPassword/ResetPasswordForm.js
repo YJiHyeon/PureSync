@@ -120,7 +120,7 @@
                                         </Button>
                                     </>
                                 ) : (
-                                    <div className='flex justify-center items-center px-1 py-1 w-1/2'>
+                                    <div className='flex justify-center items-center px-1 py-1'>
                                     <Button
                                     className="w-auto ml-2 mr-3"
                                         block

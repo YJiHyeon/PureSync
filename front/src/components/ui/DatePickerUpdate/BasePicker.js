@@ -10,7 +10,7 @@ import CloseButton from '../CloseButton'
 
 dayjs.extend(localizedFormat)
 
-const BasePicker = forwardRef((props, ref) => {
+const BasePickerUpdate = forwardRef((props, ref) => {
     const {
         className,
         clearButton,
@@ -153,4 +153,4 @@ const BasePicker = forwardRef((props, ref) => {
     )
 })
 
-export default BasePicker
+export default BasePickerUpdate

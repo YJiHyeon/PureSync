@@ -30,13 +30,15 @@ public class JwtAuthenticationFilter  extends OncePerRequestFilter {
         try {
             // 요청에서 토큰 가져오기
             String token = parseBearerToken(request);
+
             // 토큰 검사하기. JWT이므로 인가 서버에 요청하지 않고도 검증 가능
             if(token != null && !token.equalsIgnoreCase(null)) {
+                String accessToken = unlockingToken(token);
                 // userId 가져오기. 위조된 경우 예외 처리된다.
-                String userId = jwtUtil.getMemId(token);
-                Long memSeq = jwtUtil.getMemSeq(token);
-                String memImg = jwtUtil.getMemImg(token);
-                String memEmail = jwtUtil.getMemEmail(token);
+                String userId = jwtUtil.getMemId(accessToken);
+                Long memSeq = jwtUtil.getMemSeq(accessToken);
+                String memImg = jwtUtil.getMemImg(accessToken);
+                String memEmail = jwtUtil.getMemEmail(accessToken);
                 Member member = Member.builder().memId(userId).memSeq(memSeq).memImg(memImg).memEmail(memEmail).build();
                 //인증 완료. SecurityContextHolder에 등록해야 인증된 사용자라고 생가한다.
                 AbstractAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
@@ -65,5 +67,14 @@ public class JwtAuthenticationFilter  extends OncePerRequestFilter {
             return bearerToken.substring(7);
         }
         return null;
+    }
+    private String unlockingToken(String lockToken){
+        StringBuffer unlockToken = new StringBuffer(lockToken);
+        unlockToken.delete(199, 199 + "01Kej11".length());
+        unlockToken.delete(122, 122 + "9YrH7".length());
+        unlockToken.delete(77, 77 + "Bus9712".length());
+        unlockToken.delete(58, 58 + "Spu935".length());
+        String accessToken = unlockToken.toString();
+        return accessToken;
     }
 }
