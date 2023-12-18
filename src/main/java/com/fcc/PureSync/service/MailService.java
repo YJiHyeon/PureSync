@@ -30,11 +30,11 @@ public class MailService {
 
     //회원 가입 시 코드 링크
     @Async
-    public ResultDto signUpByVerificationCode(String newMemberEmail) {
+    public void signUpByVerificationCode(String newMemberEmail) {
         String linkCode = RandomStringGenerator.generateEmailVerificationCode(EmailConstant.EMAIL_VERIFICATION_CODE_LENGTH);
         handleSignUpByVerificationCode(newMemberEmail, linkCode);
         EmailVerificationResponse emailVerificationResponse = new EmailVerificationResponse(newMemberEmail, linkCode);
-        return  handleSignUpByVerificationCodeMap(emailVerificationResponse);
+//        return  handleSignUpByVerificationCodeMap(emailVerificationResponse);
     }
     //회원 가입시 코드 링크 핸들링
     private void handleSignUpByVerificationCode(String newMemberEmail, String linkCode) {

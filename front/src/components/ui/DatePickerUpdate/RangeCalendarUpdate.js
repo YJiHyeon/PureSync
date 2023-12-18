@@ -1,7 +1,7 @@
 import React, { useState, forwardRef } from 'react'
 import dayjs from 'dayjs'
 import { isSameDate } from './utils/isSameDate'
-import CalendarBase from './CalendarBase'
+import CalendarBase from './CalendarBaseUpdate'
 
 const RangeCalendar = forwardRef((props, ref) => {
     const {

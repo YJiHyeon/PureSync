@@ -6,7 +6,7 @@ import DateTable from './tables/DateTable'
 import MonthTable from './tables/MonthTable'
 import YearTable from './tables/YearTable'
 
-const CalendarBase = forwardRef((props, ref) => {
+const CalendarBaseUpdate = forwardRef((props, ref) => {
     const {
         className,
         dateViewCount = 1,
@@ -229,4 +229,4 @@ const CalendarBase = forwardRef((props, ref) => {
     )
 })
 
-export default CalendarBase
+export default CalendarBaseUpdate
