@@ -50,6 +50,7 @@ jobs:
       - name: Build Frontend
         run: |
           cd front
+          npm install
           npm run build
 
       - name: Login to DockerHub and Build Image
@@ -64,6 +65,7 @@ jobs:
           NAME: yoonjihyeon
           REPO: frontend
         run: |
+          cd front
           docker build -t $REPO --file PureSync/frontend/Dockerfile .
           docker tag $REPO:latest $NAME/$REPO:latest
           docker push $NAME/$REPO:latest
