@@ -37,7 +37,7 @@ public class JwtAuthenticationFilter  extends OncePerRequestFilter {
                 Long memSeq = jwtUtil.getMemSeq(token);
                 String memImg = jwtUtil.getMemImg(token);
                 String memEmail = jwtUtil.getMemEmail(token);
-                Member member = Member.builder().memSeq(memSeq).memId(userId).memImg(memImg).memEmail(memEmail).build();
+                Member member = Member.builder().memId(userId).memSeq(memSeq).memImg(memImg).memEmail(memEmail).build();
                 //인증 완료. SecurityContextHolder에 등록해야 인증된 사용자라고 생가한다.
                 AbstractAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                         new CustomUserDetails(member), // 인증된 사용자의 정보. 문자열이 아니어도 아무것이나 넣을 수 있다. 보통 UserDetails라는 오브젝트를 넣는데 우리는 넣지 않았다.

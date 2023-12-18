@@ -36,7 +36,7 @@ public class JwtUtil {
             builder.setHeaderParam("typ", "JWT"); //토큰의 종류
             builder.setHeaderParam("alg", "HS256"); //암호화 알고리즘 종류
             builder.setExpiration(new Date(new Date().getTime() + tokenValidityInMilliseconds));
-            builder.claim("mewSeq", member.getMemSeq()); //토큰에 저장되는 데이터
+            builder.claim("memSeq", member.getMemSeq()); //토큰에 저장되는 데이터
             builder.claim("memId", member.getMemId()); //토큰에 저장되는 데이터
             builder.claim("memImg", member.getMemImg()); //토큰에 저장되는 데이터
             builder.claim("memEmail",member.getMemEmail());//토큰에 추가되는 데이터
