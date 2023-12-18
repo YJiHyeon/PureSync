@@ -101,7 +101,7 @@ public class ExerciseService {
                 .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
 
         Exercise exercise = Exercise.builder()
-                .elDate(exerciseResponseDto.getElDate())
+                .elSeq(exerciseResponseDto.getElSeq())
                 .member(member)
                 .build();
 
