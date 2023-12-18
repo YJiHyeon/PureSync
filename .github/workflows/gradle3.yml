@@ -25,6 +25,7 @@ jobs:
       - name: Build Backend with Gradle
         run: |
           cd back
+          chmod +x PureSync/backend/gradlew
           ./gradlew build
 
   build-frontend-and-release:
