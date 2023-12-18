@@ -87,7 +87,11 @@ const ArticleContent = ({ articleId }) => {
                 console.error('게시물 boardSeq를 찾을 수 없습니다.');
                 return;
             }
-            await axios.delete(`http://localhost:9000/api/board/${article.boardSeq}`);
+            await axios.delete(`http://localhost:9000/api/board/${article.boardSeq}`,{
+                headers: {
+                    Authorization: `Bearer ${access_token}`
+                },
+            });
             
             navigate('/board');
         } catch (error) {
