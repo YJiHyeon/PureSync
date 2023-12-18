@@ -20,6 +20,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom'
 import getHeaderCookie from 'utils/hooks/getHeaderCookie'
 import { parseJwt, getMemInfoFromToken } from 'utils/hooks/parseToken'
+import 'dayjs/locale/ko'
 
 const { DateTimepicker } = DatePicker;
 
@@ -217,6 +218,7 @@ try {
                                     <Field name="startDate" placeholder="Date">
                                         {({ field, form }) => (
                                             <DateTimepicker
+                                                locale="ko"
                                                 field={field}
                                                 form={form}
                                                 value={field.value}
@@ -238,6 +240,7 @@ try {
                                     <Field name="endDate" placeholder="Date">
                                         {({ field, form }) => (
                                             <DateTimepicker
+                                                locale="ko"
                                                 field={field}
                                                 form={form}
                                                 value={field.value}

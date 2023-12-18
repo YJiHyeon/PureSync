@@ -87,8 +87,12 @@ const ArticleContent = ({ articleId }) => {
                 console.error('게시물 boardSeq를 찾을 수 없습니다.');
                 return;
             }
-            await axios.delete(`http://localhost:9000/api/board/${article.boardSeq}`);
-            console.log('게시물 삭제 성공');
+            await axios.delete(`http://localhost:9000/api/board/${article.boardSeq}`,{
+                headers: {
+                    Authorization: `Bearer ${access_token}`
+                },
+            });
+            
             navigate('/board');
         } catch (error) {
             console.error('게시물 삭제 중 오류:', error);
@@ -152,12 +156,19 @@ const ArticleContent = ({ articleId }) => {
                 <p>{ReactHtmlParser(article.content || '')}</p>
                 <p>{article.boardContents}</p>
                 {
-                    flag && article.boardFile
-                        ? article.boardFile.map((item, index) => (
-                            <img key={index} src={item.fileUrl} alt={`image-${index}`} style={{ width: '500px', height: 'auto' }} />
-                        ))
-                        : null
-                }
+    flag && article.boardFile && article.boardFile.length > 0
+        ? article.boardFile.map((item, index) => (
+            item.fileUrl && (
+                <img
+                    key={index}
+                    src={item.fileUrl}
+                    alt={`image-${index}`}
+                    style={{ width: '500px', height: 'auto' }}
+                />
+            )
+        ))
+        : null
+}
 
 
             </div>
