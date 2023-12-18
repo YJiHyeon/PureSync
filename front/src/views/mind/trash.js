@@ -7,7 +7,6 @@ import {
     Loading,
 } from 'components/shared'
 import getHeaderCookie from 'utils/hooks/getHeaderCookie'
-import { parseJwt, getMemInfoFromToken } from 'utils/hooks/parseToken'
 
 const Trash = () => {
     const [trashes, setTrashes] = useState([]);
@@ -17,12 +16,10 @@ const Trash = () => {
 
         //Header Cookie
         const access_token = getHeaderCookie();
-        let parse_token = parseJwt(access_token);
-        let { memId } = getMemInfoFromToken(parse_token);
 
     useEffect(() => {
         // axios를 사용하여 데이터를 가져옴
-        axios.get(process.env.REACT_APP_HOST_URL + `/api/mind/trash/list/${memId}`, {
+        axios.get(process.env.REACT_APP_HOST_URL + `/api/mind/trash/list`, {
             headers: {
                 Authorization: `Bearer ${access_token}`
             }
