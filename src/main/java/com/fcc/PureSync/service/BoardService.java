@@ -71,10 +71,10 @@ public class BoardService {
     }
 
     @Transactional
-    public ResultDto createBoard(BoardDto boardDto, List<MultipartFile> file) {
+    public ResultDto createBoard(BoardDto boardDto, List<MultipartFile> file,String id) {
         //Long id2 = Long.parseLong(id);
         //id = "aaa";//////////////////////////////////////////////
-        Member member = memberRepository.findByMemId(boardDto.getMemId())
+        Member member = memberRepository.findByMemId(id)
                 .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
 
         System.out.println("*******************" + boardDto.getBoardName());
@@ -165,9 +165,9 @@ public class BoardService {
         }
     }
 
-    public ResultDto updateBoard(Long boardSeq, BoardDto boardDto, List<MultipartFile> file) throws IOException {
+    public ResultDto updateBoard(Long boardSeq, BoardDto boardDto, List<MultipartFile> file,String id) throws IOException {
 
-        Member member = memberRepository.findByMemId(boardDto.getMemId())
+        Member member = memberRepository.findByMemId(id)
                 .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_USER));
         Board board = boardRepository.findById(boardSeq)
                 .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_ARTICLE));
