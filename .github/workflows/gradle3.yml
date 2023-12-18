@@ -25,7 +25,7 @@ jobs:
       - name: Build Backend with Gradle
         run: |
           cd back
-          chmod +x back/gradlew
+          chmod +x gradlew
           ./gradlew build
 
   build-frontend-and-release:
