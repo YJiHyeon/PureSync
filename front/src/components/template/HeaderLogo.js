@@ -8,7 +8,6 @@ const HeaderLogo = () => {
 
     return (
         <ActionLink to="/home">
-            24124124124
             <Logo mode={mode} className="hidden md:block" />
         </ActionLink>
     )

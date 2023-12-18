@@ -3,16 +3,18 @@ import { Link, useLocation } from "react-router-dom";
 
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+
 import './css/theme.css';
-import './css/theme.min.css';
+
 
 import { FiGithub } from 'react-icons/fi'
 import Visit from 'visit'
 
 function Landing() {
   // import('./css/theme.css');
-  // import('./css/theme.min.css');
+
   useEffect(() => {
+    
     AOS.init({
       duration: 800,
     });
@@ -43,7 +45,7 @@ function Landing() {
               <div className="col-lg-7 py-vh-6 position-relative ps-5" data-aos="fade-right">
                 <h1 className="display-1 fw-bold mt-5">PureSync</h1>
                 <p className="lead">몸과 마음의 건강을 챙기는 첫 걸음은 기록입니다. 몸과 마음의 건강을 챙기는 겟생, pureSync와 함께하고 나만의 더 나은 길을 찾아보세요! 지금 시작하세요.</p>
-                <Link className="btn btn-dark btn-xl shadow me-3 rounded-0 my-5" to="/sign-in">로그인 </Link>
+                <a href='/sign-in' className="btn btn-dark btn-xl shadow me-3 rounded-0 my-5" >로그인 </a>
               </div>
             </div>
           </div>
@@ -111,7 +113,7 @@ function Landing() {
                   <h3 class="display-6 mb-5">식단과 운동 기록을 통해 오늘의 칼로리 및 영양 성분을 확인하고, 감정 상태 분석을 지원하는 인공지능 기반 마음 일지를 작성하여 매일 몸과 마음의 균형을 손쉽게 파악하세요!</h3>
                 </div>
                 <div class="col-12">
-                <Link class="btn btn-warning btn-xl shadow me-3 mt-4" data-aos="fade-down" to="/sign-up">회원 가입</Link>
+                <a href='/sign-up' class="btn btn-warning btn-xl shadow me-3 mt-4" data-aos="fade-down" >회원 가입</a>
                 </div>
               </div>
 
