@@ -21,6 +21,15 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+          
+      - name: Copy Secret
+        env:
+          OCCUPY_SECRET: ${{ secrets.OCCUPY_SECRET }}
+          OCCUPY_SECRET_DIR: src/main/resources
+          OCCUPY_SECRET_TEST_DIR: src/test/resources
+          OCCUPY_SECRET_DIR_FILE_NAME: application-secret.properties
+        run: echo $OCCUPY_SECRET | base64 --decode > $OCCUPY_SECRET_DIR/$OCCUPY_SECRET_DIR_FILE_NAME && 
+             echo $OCCUPY_SECRET | base64 --decode > $OCCUPY_SECRET_TEST_DIR/$OCCUPY_SECRET_DIR_FILE_NAME
 
       - name: Build Backend with Gradle
         run: |
@@ -40,6 +49,7 @@ jobs:
       - name: Build Frontend
         run: |
           cd front
+          npm run build
 
       - name: Login to DockerHub and Build Image
         uses: docker/login-action@v1
@@ -48,7 +58,7 @@ jobs:
           password: ${{secrets.DOCKERHUB_TOKEN}}
           build_args: REACT_APP_HOST_URL=http://192.168.56.1:8080/api
 
-      - name: Build and release to DockerHub (Frontend)
+      - name: Build and release to DockerHub
         env:
           NAME: yoonjihyeon
           REPO: frontend
