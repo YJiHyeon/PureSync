@@ -21,7 +21,7 @@ BaseService.interceptors.request.use(
         const persistData = deepParseJson(rawPersistData)
         let accessToken = getCookie("access_token");
         // let accessToken = persistData.auth.session.token
-        console.log(accessToken);
+        // console.log(accessToken);
         
         if (!accessToken) {
             const { auth } = store.getState()

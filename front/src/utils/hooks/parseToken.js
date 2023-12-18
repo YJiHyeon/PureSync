@@ -1,4 +1,4 @@
-import getHeaderCookie from './getHeaderCookie';
+import {getCookie} from './cookie';
 
 function parseLockToken(lockToken) {
 
@@ -14,13 +14,15 @@ function parseLockToken(lockToken) {
 }
 
 export function parseJwt(token) {
+    if (token == "") return;
     try {
         let processedToken =  parseLockToken(token)
         const base64Payload = processedToken.split('.')[1];
         const payload = atob(base64Payload);
-        console.log("파싱토큰:::::::::::",processedToken);
         return JSON.parse(payload);
+
     } catch (e) {
+        console.log(e);
         console.error('JWT 디코딩 중 오류 발생:', e);
         return null;
     }
@@ -28,7 +30,7 @@ export function parseJwt(token) {
 
 // JWT 토큰에서 memId와 memSeq 추출
 export function getMemInfoFromToken() {
-    const token = getHeaderCookie();
+    const token = getCookie();
     const decodedToken = parseJwt(token);
 
     if (decodedToken) {
@@ -36,19 +38,18 @@ export function getMemInfoFromToken() {
         const memSeq = decodedToken.memSeq;
         const memEmail = decodedToken.memEmail;
         const memImg = decodedToken.memImg;
-        console.log("memId",memId);
-        console.log("memSeq",memSeq);
-        console.log("memEmail",memEmail);
-        console.log("memImg",memImg);
-    
-        return { memId, memSeq, memEmail, memImg };
+
+        const memberObject = {
+            avatar: memImg,
+            userName: memId,
+            authority: ['USER'],
+            email: memEmail
+        };
+
+        return memberObject;
     }
 
     return null;
 }
 
 export const memInfo = getMemInfoFromToken();
-if (memInfo) {
-    console.log('memId:', memInfo.memId, 'memSeq:', memInfo.memSeq, 'memEmail:', memInfo.memEmail);
-}
-
