@@ -9,7 +9,6 @@ import useWindowSize from '../hooks/useWindowSize';
 import { Button } from 'components/ui';
 import axios from 'axios';
 import getHeaderCookie from 'utils/hooks/getHeaderCookie'
-import { parseJwt, getMemInfoFromToken } from 'utils/hooks/parseToken'
 
 const DialogTrashInsert = (props) => {
     // 현재 창 크기를 가져오는 커스텀 훅 사용
@@ -83,8 +82,6 @@ const DialogTrashInsert = (props) => {
     const [tsContents, setTsContents] = useState('');
     //Header Cookie
     const access_token = getHeaderCookie();
-    let parse_token = parseJwt(access_token);
-    let { memId } = getMemInfoFromToken(parse_token);
 
     // 등록 버튼 클릭 핸들러
     const handleRegisterClick = () => {
@@ -92,7 +89,6 @@ const DialogTrashInsert = (props) => {
         const sendTrashData =
         {
             tsContents: tsContents,
-            memId: memId
         };
 
         axios.post(process.env.REACT_APP_HOST_URL + '/api/mind/trash', sendTrashData, {

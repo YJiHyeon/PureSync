@@ -14,7 +14,6 @@ import * as Yup from 'yup'
 import axios from 'axios'
 import DOMPurify from 'dompurify';
 import getHeaderCookie from 'utils/hooks/getHeaderCookie'
-import { parseJwt, getMemInfoFromToken } from 'utils/hooks/parseToken'
 
 const validationSchema = Yup.object().shape({
     title: Yup.string().required('Title required'),
@@ -29,8 +28,6 @@ const Editor = (props) => {
 
     //Header Cookie
     const access_token = getHeaderCookie();
-    let parse_token = parseJwt(access_token);
-    let { memId } = getMemInfoFromToken(parse_token);
 
     const emotionList = [
         { label: "좋음", value: "좋음" },
@@ -63,13 +60,12 @@ const Editor = (props) => {
 
     const onComplete = async (values, setSubmitting) => {
         setSubmitting(true);
-        values.dyContents =  DOMPurify.sanitize(values.dyContents);
+        values.dyContents = DOMPurify.sanitize(values.dyContents);
         const data = {
             dyDate: values.dyDate,
             dyTitle: values.dyTitle,
             dyContents: values.dyContents,
             emoState: values.emoState,
-            memId: values.memId
         }
 
         try {
@@ -105,7 +101,6 @@ const Editor = (props) => {
                     dyContents: diary.dyContents ? diary.dyContents : '',
                     emoState: diary.emoState ? diary.emoState : '',
                     dyDate: diary.dyDate ? diary.dyDate : selectDate,
-                    memId: diary.memId ? diary.memId : memId
                 }}
                 onSubmit={(values, { setSubmitting }) => {
                     onComplete(values, setSubmitting)
@@ -115,13 +110,18 @@ const Editor = (props) => {
                     <Form>
                         <FormContainer>
                             <FormItem label="날짜">
-                                <DatePicker
-                                    DatePickerClick={DatePickerClick}
-                                    placeholder={selectDate}
-                                    defaultValue={selectDate}
-                                >
-
-                                </DatePicker>
+                                <Field name="dyDate">
+                                    {({ field, form }) => (
+                                        <DatePicker
+                                            DatePickerClick={(date) => {
+                                                form.setFieldValue(field.name, date); 
+                                                setSelectDate(date);
+                                            }}
+                                            placeholder={values.dyDate}
+                                            defaultValue={values.dyDate}
+                                        />
+                                    )}
+                                </Field>
                             </FormItem>
                             <FormItem label="제목">
                                 <Field
