@@ -9,8 +9,6 @@ import {
   toast,
 } from 'components/ui'
 import { RichTextEditor } from 'components/shared'
-import { DropzoneArea } from 'react-dropzone-uploader';
-import 'react-dropzone-uploader/dist/styles.css'; // Import the styles
 import { Field, Form, Formik } from 'formik'
 import { useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
