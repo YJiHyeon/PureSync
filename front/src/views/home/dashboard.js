@@ -10,9 +10,9 @@ import MemberDashboardHeader from "./component/MemberDashboardHeader"
 import Statistic from './component/Statistic'
 import TaskOverview from "./component/TaskOverview"
 import EatOverview from "./component/EatOverview"
-import Schedule from './component/Schedule'
 import { DatePicker, Button } from 'components/ui'
 import { AdaptableCard } from 'components/shared'
+import 'dayjs/locale/ko'
 
 injectReducer('memberDashboard', reducer)
 
@@ -61,6 +61,7 @@ const Dashboard = () => {
                     <AdaptableCard>
                     <div className="mb-1 font-semibold text-sm">기준일자</div>
                     <DatePicker
+                        locale="ko"
                         DatePickerClick={DatePickerClick}
                         placeholder = {selectDate}
                         defaultValue={selectDate}

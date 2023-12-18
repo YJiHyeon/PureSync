@@ -14,6 +14,8 @@ import {parseJwt, getMemInfoFromToken} from 'utils/hooks/parseToken'
 const access_token = getHeaderCookie();
 let parse_token = parseJwt(access_token);
 let  { memId, memEmail } = getMemInfoFromToken(parse_token);
+console.log(memId);
+console.log(memEmail);
 
 const dropdownItemList = [
     {

@@ -10,7 +10,8 @@ const persistConfig = {
     key: PERSIST_STORE_NAME,
     keyPrefix: '',
     storage,
-    whitelist: ['auth', 'theme', 'locale'],
+    // whitelist: ['auth', 'theme', 'locale'],
+    whitelist: ['theme'],
 }
 
 const store = configureStore({

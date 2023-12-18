@@ -36,18 +36,15 @@ const SignInForm = (props) => {
 
     const onSignIn = async (values, setSubmitting) => {
         const { memId, memPassword } = values
+        setSubmitting(true)
 
-        try {
-            const response = await signIn({ memId, memPassword });
-            setSubmitting(true);
-            setMessage(response.message);
-        } catch (err) {
-            setSubmitting(false)
-            setMessage(err.message)
+        const result = await signIn({ memId, memPassword })
+        if (result.status === 'failed') {
+            setMessage(result.message)
         }
 
-
-    };
+        setSubmitting(false)
+    }
 
     return (
         <div className={className}>

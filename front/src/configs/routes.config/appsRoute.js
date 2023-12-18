@@ -26,15 +26,7 @@ const appsRoute = [
         component: React.lazy(() => import('views/body/Sleep')),
         authority: [ADMIN, USER],
     },
-    {
-        key: 'landing',
-        path: `/landing/landing`,
-        component: React.lazy(() => import('views/landing/landing')),
-        authority: [ADMIN, USER],
-        meta: {
-            layout: 'blank'
-        }
-    },
+    
     // 마음
     {
         key: 'mind.diary',
@@ -135,13 +127,6 @@ const appsRoute = [
         authority: [ADMIN, USER],
     },
     // 마이페이지
-    {
-        key: 'mypage',
-        path: `${APP_PREFIX_PATH}/mypage`,
-        component: React.lazy(() => import('views/Mypage2')),
-        authority: [],
-    },
-    //작업용
    
 // 기존 -----------------------------------------------------------------------------------------
 

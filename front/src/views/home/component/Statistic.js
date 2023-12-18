@@ -12,7 +12,6 @@ import {
 } from 'react-icons/hi'
 import { Tooltip } from 'components/ui'
 import StarRate from './StarRate'
-import Rate from 'rc-rate';
 
 const GrowShrinkEat = ({ wish, real }) => {
     return (
