@@ -4,7 +4,7 @@ import {
     NAV_ITEM_TYPE_COLLAPSE,
     NAV_ITEM_TYPE_ITEM,
 } from 'constants/navigation.constant'
-import { ADMIN, USER } from 'constants/roles.constant'
+import { USER } from 'constants/roles.constant'
 
 const uiComponentNavigationConfig = [
     {
@@ -14,16 +14,16 @@ const uiComponentNavigationConfig = [
         translateKey: 'nav.uiComponents',
         icon: 'uiComponents',
         type: NAV_ITEM_TYPE_TITLE,
-        authority: [ADMIN, USER],
+        authority: [USER],
         subMenu: [
             {
                 key: 'body.body',
                 path: `/body/body`,
                 title: '식단기록',
                 translateKey: 'nav.body.body',
-                icon: '',
+                icon: 'food',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN, USER],
+                authority: [USER],
                 subMenu: [],
             },
             {
@@ -31,9 +31,9 @@ const uiComponentNavigationConfig = [
                 path: `/body/sleep`,
                 title: '수면기록',
                 translateKey: 'nav.body.sleep',
-                icon: '',
+                icon: 'sleep',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN, USER],
+                authority: [USER],
                 subMenu: [],
             },
             {
@@ -43,7 +43,7 @@ const uiComponentNavigationConfig = [
                 translateKey: 'nav.uiComponentsCommon.common',
                 icon: 'common',
                 type: NAV_ITEM_TYPE_COLLAPSE,
-                authority: [ADMIN, USER],
+                authority: [USER],
                 subMenu: [
                     {
                         key: 'uiComponent.common.button',
@@ -52,7 +52,7 @@ const uiComponentNavigationConfig = [
                         translateKey: 'nav.uiComponentsCommon.button',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                     {
@@ -62,7 +62,7 @@ const uiComponentNavigationConfig = [
                         translateKey: 'nav.uiComponentsCommon.grid',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                     {
@@ -72,7 +72,7 @@ const uiComponentNavigationConfig = [
                         translateKey: 'nav.uiComponentsCommon.typography',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                     {
@@ -82,7 +82,7 @@ const uiComponentNavigationConfig = [
                         translateKey: 'nav.uiComponentsCommon.icons',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                 ],
@@ -94,7 +94,7 @@ const uiComponentNavigationConfig = [
                 translateKey: 'nav.uiComponentsFeeback.feedback',
                 icon: 'feedback',
                 type: NAV_ITEM_TYPE_COLLAPSE,
-                authority: [ADMIN, USER],
+                authority: [USER],
                 subMenu: [
                     {
                         key: 'uiComponent.feedback.alert',
@@ -103,7 +103,7 @@ const uiComponentNavigationConfig = [
                         translateKey: 'nav.uiComponentsFeeback.alert',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                     {
@@ -113,7 +113,7 @@ const uiComponentNavigationConfig = [
                         translateKey: 'nav.uiComponentsFeeback.dialog',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                     {
@@ -123,7 +123,7 @@ const uiComponentNavigationConfig = [
                         translateKey: 'nav.uiComponentsFeeback.drawer',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                     {
@@ -133,7 +133,7 @@ const uiComponentNavigationConfig = [
                         translateKey: 'nav.uiComponentsFeeback.progress',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                     {
@@ -143,7 +143,7 @@ const uiComponentNavigationConfig = [
                         translateKey: 'nav.uiComponentsFeeback.skeleton',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                     {
@@ -153,7 +153,7 @@ const uiComponentNavigationConfig = [
                         translateKey: 'nav.uiComponentsFeeback.spinner',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                     {
@@ -163,7 +163,7 @@ const uiComponentNavigationConfig = [
                         translateKey: 'nav.uiComponentsFeeback.toast',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                 ],
@@ -175,7 +175,7 @@ const uiComponentNavigationConfig = [
                 translateKey: 'nav.uiComponentsDataDisplay.dataDisplay',
                 icon: 'dataDisplay',
                 type: NAV_ITEM_TYPE_COLLAPSE,
-                authority: [ADMIN, USER],
+                authority: [USER],
                 subMenu: [
                     {
                         key: 'uiComponent.dataDisplay.avatar',
@@ -184,7 +184,7 @@ const uiComponentNavigationConfig = [
                         translateKey: 'nav.uiComponentsDataDisplay.avatar',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                     {
@@ -194,7 +194,7 @@ const uiComponentNavigationConfig = [
                         translateKey: 'nav.uiComponentsDataDisplay.badge',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                     {
@@ -204,7 +204,7 @@ const uiComponentNavigationConfig = [
                         translateKey: 'nav.uiComponentsDataDisplay.calendar',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                     {
@@ -214,7 +214,7 @@ const uiComponentNavigationConfig = [
                         translateKey: 'nav.uiComponentsDataDisplay.cards',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                     {
@@ -224,7 +224,7 @@ const uiComponentNavigationConfig = [
                         translateKey: 'nav.uiComponentsDataDisplay.table',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                     {
@@ -234,7 +234,7 @@ const uiComponentNavigationConfig = [
                         translateKey: 'nav.uiComponentsDataDisplay.tag',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                     {
@@ -244,7 +244,7 @@ const uiComponentNavigationConfig = [
                         translateKey: 'nav.uiComponentsDataDisplay.timeline',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                     {
@@ -254,7 +254,7 @@ const uiComponentNavigationConfig = [
                         translateKey: 'nav.uiComponentsDataDisplay.tooltip',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                 ],
@@ -266,7 +266,7 @@ const uiComponentNavigationConfig = [
                 translateKey: 'nav.uiComponentsForms.forms',
                 icon: 'forms',
                 type: NAV_ITEM_TYPE_COLLAPSE,
-                authority: [ADMIN, USER],
+                authority: [USER],
                 subMenu: [
                     {
                         key: 'uiComponent.forms.checkbox',
@@ -275,7 +275,7 @@ const uiComponentNavigationConfig = [
                         translateKey: 'nav.uiComponentsForms.checkbox',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                     {
@@ -285,7 +285,7 @@ const uiComponentNavigationConfig = [
                         translateKey: 'nav.uiComponentsForms.datePicker',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                     {
@@ -295,7 +295,7 @@ const uiComponentNavigationConfig = [
                         translateKey: 'nav.uiComponentsForms.formControl',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                     {
@@ -305,7 +305,7 @@ const uiComponentNavigationConfig = [
                         translateKey: 'nav.uiComponentsForms.input',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                     {
@@ -315,7 +315,7 @@ const uiComponentNavigationConfig = [
                         translateKey: 'nav.uiComponentsForms.inputGroup',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                     {
@@ -325,7 +325,7 @@ const uiComponentNavigationConfig = [
                         translateKey: 'nav.uiComponentsForms.radio',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                     {
@@ -335,7 +335,7 @@ const uiComponentNavigationConfig = [
                         translateKey: 'nav.uiComponentsForms.segment',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                     {
@@ -345,7 +345,7 @@ const uiComponentNavigationConfig = [
                         translateKey: 'nav.uiComponentsForms.select',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                     {
@@ -355,7 +355,7 @@ const uiComponentNavigationConfig = [
                         translateKey: 'nav.uiComponentsForms.switcher',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                     {
@@ -365,7 +365,7 @@ const uiComponentNavigationConfig = [
                         translateKey: 'nav.uiComponentsForms.timeInput',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                     {
@@ -375,7 +375,7 @@ const uiComponentNavigationConfig = [
                         translateKey: 'nav.uiComponentsForms.upload',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                 ],
@@ -387,7 +387,7 @@ const uiComponentNavigationConfig = [
                 translateKey: 'nav.uiComponentsNavigation.navigation',
                 icon: 'navigation',
                 type: NAV_ITEM_TYPE_COLLAPSE,
-                authority: [ADMIN, USER],
+                authority: [USER],
                 subMenu: [
                     {
                         key: 'uiComponent.navigation.dropdown',
@@ -396,7 +396,7 @@ const uiComponentNavigationConfig = [
                         translateKey: 'nav.uiComponentsNavigation.dropdown',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                     {
@@ -406,7 +406,7 @@ const uiComponentNavigationConfig = [
                         translateKey: 'nav.uiComponentsNavigation.menu',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                     {
@@ -416,7 +416,7 @@ const uiComponentNavigationConfig = [
                         translateKey: 'nav.uiComponentsNavigation.pagination',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                     {
@@ -426,7 +426,7 @@ const uiComponentNavigationConfig = [
                         translateKey: 'nav.uiComponentsNavigation.steps',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                     {
@@ -436,7 +436,7 @@ const uiComponentNavigationConfig = [
                         translateKey: 'nav.uiComponentsNavigation.tabs',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                 ],
@@ -448,7 +448,7 @@ const uiComponentNavigationConfig = [
                 translateKey: 'nav.uiComponentsGraph.graph',
                 icon: 'graph',
                 type: NAV_ITEM_TYPE_COLLAPSE,
-                authority: [ADMIN, USER],
+                authority: [USER],
                 subMenu: [
                     {
                         key: 'uiComponent.graph.charts',
@@ -457,7 +457,7 @@ const uiComponentNavigationConfig = [
                         translateKey: 'nav.uiComponentsGraph.charts',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                     {
@@ -467,7 +467,7 @@ const uiComponentNavigationConfig = [
                         translateKey: 'nav.uiComponentsGraph.maps',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                 ],

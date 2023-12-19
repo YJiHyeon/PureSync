@@ -3,7 +3,7 @@ import {
     NAV_ITEM_TYPE_TITLE,
     NAV_ITEM_TYPE_ITEM,
 } from 'constants/navigation.constant'
-import { ADMIN, USER } from 'constants/roles.constant'
+import { USER } from 'constants/roles.constant'
 
 const docNavigationConfig = [
     {
@@ -13,7 +13,7 @@ const docNavigationConfig = [
         translateKey: 'nav.docs.guide',
         icon: 'guide',
         type: NAV_ITEM_TYPE_TITLE,
-        authority: [ADMIN, USER],
+        authority: [USER],
         subMenu: [
             {
                 key: 'docs.documentation',
@@ -22,7 +22,7 @@ const docNavigationConfig = [
                 translateKey: 'nav.docs.documentation',
                 icon: 'documentation',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN, USER],
+                authority: [USER],
                 subMenu: [],
             },
             {
@@ -32,7 +32,7 @@ const docNavigationConfig = [
                 translateKey: 'nav.docs.sharedComponentDoc',
                 icon: 'sharedComponentDoc',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN, USER],
+                authority: [USER],
                 subMenu: [],
             },
             {
@@ -42,7 +42,7 @@ const docNavigationConfig = [
                 translateKey: 'nav.docs.utilsDoc',
                 icon: 'utilsDoc',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN, USER],
+                authority: [USER],
                 subMenu: [],
             },
             {
@@ -52,7 +52,7 @@ const docNavigationConfig = [
                 translateKey: 'nav.docs.changeLog',
                 icon: 'changeLog',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN, USER],
+                authority: [USER],
                 subMenu: [],
             },
         ],

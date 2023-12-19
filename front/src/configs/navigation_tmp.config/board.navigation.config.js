@@ -4,7 +4,7 @@ import {
     NAV_ITEM_TYPE_COLLAPSE,
     NAV_ITEM_TYPE_ITEM,
 } from 'constants/navigation.constant'
-import { ADMIN, USER } from 'constants/roles.constant'
+import { USER } from 'constants/roles.constant'
 
 const boardNavigationConfig = [
     {
@@ -14,7 +14,7 @@ const boardNavigationConfig = [
         translateKey: 'nav.authentication.authentication',
         icon: 'board',
         type: NAV_ITEM_TYPE_TITLE,
-        authority: [ADMIN, USER],
+        authority: [USER],
         subMenu: [
             {
                 key: 'board',
@@ -23,7 +23,17 @@ const boardNavigationConfig = [
                 translateKey: 'board',
                 icon: 'board',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN, USER],
+                authority: [USER],
+                subMenu: [],
+            },
+            {
+                key: 'qnaBoard',
+                path: `/qnaBoard`,
+                title: '문의 게시판',
+                translateKey: 'qnaBoard',
+                icon: 'qnaboard',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [USER],
                 subMenu: [],
             },
 

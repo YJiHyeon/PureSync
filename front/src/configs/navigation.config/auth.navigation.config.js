@@ -4,7 +4,7 @@ import {
     NAV_ITEM_TYPE_COLLAPSE,
     NAV_ITEM_TYPE_ITEM,
 } from 'constants/navigation.constant'
-import { ADMIN, USER } from 'constants/roles.constant'
+import { USER } from 'constants/roles.constant'
 
 const authNavigationConfig = [
     {
@@ -14,16 +14,16 @@ const authNavigationConfig = [
         translateKey: 'nav.authentication.authentication',
         icon: 'authentication',
         type: NAV_ITEM_TYPE_TITLE,
-        authority: [ADMIN, USER],
+        authority: [USER],
         subMenu: [
             {
                 key: 'board',
                 path: `/board`,
-                title: '게시판',
+                title: '자유 게시판',
                 translateKey: 'board',
-                icon: '',
+                icon: 'board',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN, USER],
+                authority: [USER],
                 subMenu: [],
             },
             {
@@ -31,9 +31,9 @@ const authNavigationConfig = [
                 path: `/qnaBoard`,
                 title: '문의 게시판',
                 translateKey: 'qnaBoard',
-                icon: '',
+                icon: 'qnaboard',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN, USER],
+                authority: [USER],
                 subMenu: [],
             },
             {
@@ -43,7 +43,7 @@ const authNavigationConfig = [
                 translateKey: 'nav.authentication.signIn',
                 icon: 'signIn',
                 type: NAV_ITEM_TYPE_COLLAPSE,
-                authority: [ADMIN, USER],
+                authority: [USER],
                 subMenu: [
                     {
                         key: 'authentication.signInSimple',
@@ -52,7 +52,7 @@ const authNavigationConfig = [
                         translateKey: 'nav.authentication.signInSimple',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                     {
@@ -62,7 +62,7 @@ const authNavigationConfig = [
                         translateKey: 'nav.authentication.signInSide',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                     {
@@ -72,7 +72,7 @@ const authNavigationConfig = [
                         translateKey: 'nav.authentication.signInCover',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                 ],
@@ -84,7 +84,7 @@ const authNavigationConfig = [
                 translateKey: 'nav.authentication.signUp',
                 icon: 'signUp',
                 type: NAV_ITEM_TYPE_COLLAPSE,
-                authority: [ADMIN, USER],
+                authority: [USER],
                 subMenu: [
                     {
                         key: 'authentication.signUpSimple',
@@ -93,7 +93,7 @@ const authNavigationConfig = [
                         translateKey: 'nav.authentication.signUpSimple',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                     {
@@ -103,7 +103,7 @@ const authNavigationConfig = [
                         translateKey: 'nav.authentication.signUpSide',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                     {
@@ -113,7 +113,7 @@ const authNavigationConfig = [
                         translateKey: 'nav.authentication.signUpCover',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                 ],
@@ -125,7 +125,7 @@ const authNavigationConfig = [
                 translateKey: 'nav.authentication.forgotPassword',
                 icon: 'forgotPassword',
                 type: NAV_ITEM_TYPE_COLLAPSE,
-                authority: [ADMIN, USER],
+                authority: [USER],
                 subMenu: [
                     {
                         key: 'authentication.forgotPasswordSimple',
@@ -134,7 +134,7 @@ const authNavigationConfig = [
                         translateKey: 'nav.authentication.forgotPasswordSimple',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                     {
@@ -144,7 +144,7 @@ const authNavigationConfig = [
                         translateKey: 'nav.authentication.forgotPasswordSide',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                     {
@@ -154,7 +154,7 @@ const authNavigationConfig = [
                         translateKey: 'nav.authentication.forgotPasswordCover',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                 ],
@@ -166,7 +166,7 @@ const authNavigationConfig = [
                 translateKey: 'nav.authentication.resetPassword',
                 icon: 'resetPassword',
                 type: NAV_ITEM_TYPE_COLLAPSE,
-                authority: [ADMIN, USER],
+                authority: [USER],
                 subMenu: [
                     {
                         key: 'authentication.resetPasswordSimple',
@@ -175,7 +175,7 @@ const authNavigationConfig = [
                         translateKey: 'nav.authentication.resetPasswordSimple',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                     {
@@ -185,7 +185,7 @@ const authNavigationConfig = [
                         translateKey: 'nav.authentication.resetPasswordSide',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                     {
@@ -195,7 +195,7 @@ const authNavigationConfig = [
                         translateKey: 'nav.authentication.resetPasswordCover',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [USER],
                         subMenu: [],
                     },
                 ],
