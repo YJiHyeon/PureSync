@@ -3,7 +3,7 @@ import {
     NAV_ITEM_TYPE_TITLE,
     NAV_ITEM_TYPE_ITEM,
 } from 'constants/navigation.constant'
-import { ADMIN, USER } from 'constants/roles.constant'
+import { USER } from 'constants/roles.constant'
 
 const pagesNavigationConfig = [
     {
@@ -13,16 +13,16 @@ const pagesNavigationConfig = [
         translateKey: 'nav.pages.pages',
         icon: 'pages',
         type: NAV_ITEM_TYPE_TITLE,
-        authority: [ADMIN, USER],
+        authority: [USER],
         subMenu: [
             {
                 key: 'mind.diary',
                 path: `/mind/diary`,
                 title: '마음일지',
                 translateKey: 'nav.mind.diary',
-                icon: '',
+                icon: 'write',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN, USER],
+                authority: [USER],
                 subMenu: [],
             },
             {
@@ -30,9 +30,9 @@ const pagesNavigationConfig = [
                 path: `/mind/trash`,
                 title: '마음쓰레기통',
                 translateKey: 'nav.mind.trash',
-                icon: '',
+                icon: 'heart',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN, USER],
+                authority: [USER],
                 subMenu: [],
             },
             {
@@ -40,29 +40,9 @@ const pagesNavigationConfig = [
                 path: `/mind/test`,
                 title: '심리검사',
                 translateKey: 'nav.mind.test',
-                icon: '',
+                icon: 'test',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN, USER],
-                subMenu: [],
-            },
-            {
-                key: 'pages.welcome',
-                path: `${PAGES_PREFIX_PATH}/welcome`,
-                title: 'Welcome',
-                translateKey: 'nav.pages.welcome',
-                icon: 'welcome',
-                type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN, USER],
-                subMenu: [],
-            },
-            {
-                key: 'pages.accessDenied',
-                path: '/access-denied',
-                title: 'Access Denied',
-                translateKey: 'nav.pages.accessDenied',
-                icon: 'accessDenied',
-                type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN, USER],
+                authority: [USER],
                 subMenu: [],
             },
         ],

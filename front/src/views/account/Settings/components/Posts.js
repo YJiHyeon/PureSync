@@ -1,30 +1,23 @@
 import React, { useState, useEffect } from 'react'
 import Table from 'components/ui/Table'
-import axios from 'axios';
 import { Loading } from 'components/shared'
 import ActionLink from 'components/shared/ActionLink'
-import SendHeaderCookie from 'utils/hooks/getHeaderCookie'
+import { apiGetMyPosts } from 'services/AccountServices'
 
 const { Tr, Th, Td, THead, TBody } = Table
 
 const Posts = () => {
-    const token = SendHeaderCookie(); 
     const [postList, setPostList] = useState({});
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchPosts = async () => {
-            try {
-                const response = await axios.get(process.env.REACT_APP_HOST_URL + '/api/my/posts', { 
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                    }
-                });
-                setPostList(response.data.data.postList);
-                setLoading(false);
-            } catch (error) {
-                console.error('API Error:', error.response.data);
-            }
+            await apiGetMyPosts()
+                .then((response) => {
+                    setPostList(response.data.data.postList);
+                    setLoading(false);
+                })
+                .catch((err) => {console.log(err)});
         };
 
         fetchPosts();

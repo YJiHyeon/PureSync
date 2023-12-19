@@ -12,12 +12,10 @@ import { RichTextEditor } from 'components/shared'
 import { Field, Form, Formik } from 'formik'
 import { useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
-import axios from 'axios'
 import { useLocation } from 'react-router-dom';
 import getHeaderCookie from 'utils/hooks/getHeaderCookie'
 import { parseJwt, getMemInfoFromToken } from 'utils/hooks/parseToken'
-
-axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
+import { apiPostArticle, apiPutArticle } from 'services/BoardService'
 
 // const validationSchema = Yup.object().shape({
 //     title: Yup.string().required('Title required'),
@@ -25,22 +23,45 @@ axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
 //     content: Yup.string().required('Content required'),
 // })
 
-
 const Editor = () => {
   const navigate = useNavigate();
 
   const access_token = getHeaderCookie();
   let parse_token = parseJwt(access_token);
   let { memId } = getMemInfoFromToken(parse_token);
-
   const { state } = useLocation();
   const { updateData } = state || {};
+  const [initialFilePreviews, setInitialFilePreviews] = useState([]);
   console.log(updateData);
+
+
+  useEffect(() => {
+    // 페이지 진입 시 이미 존재하는 파일에 대한 정보를 가져와서 filePreviews를 초기화
+    if (updateData && updateData.boardFile) {
+
+      console.log(updateData.boardFile);
+      setInitialFilePreviews([updateData.boardFile]);
+
+    }
+  }, [updateData]);
+  // useEffect(() => {
+  //   // 페이지 진입 시 이미 존재하는 파일에 대한 정보를 가져와서 filePreviews를 초기화
+  //   if (updateData && updateData.boardFile) {
+  //     const existingFilePreviews = updateData.boardFile.map((file) => ({
+  //       fileUrl: file.fileUrl,
+  //       file,
+  //     }));
+  //     setInitialFilePreviews(existingFilePreviews);
+  //   }
+  // }, [updateData]);
+
+  useEffect(() => {
+    console.log(initialFilePreviews);
+  }, [initialFilePreviews]);
 
 
   //const updateData = location.state && location.state.updateData;
   const onUpload = (files) => {
-
     console.log(files);
   }
 
@@ -59,46 +80,32 @@ const Editor = () => {
     for (let key of formData.keys()) {
       console.log(key, formData.get(key));
     }
-    
-    if (values.file == undefined) {
-        formData.delete("file");
+
+    console.log(values.files);
+    if (values.files.length === 0) {
+      formData.delete("file");
     }
     
-    try {
-
-      if (updateData == null) {
-        const response = await axios.post('http://localhost:9000/api/board', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${access_token}`
-          },
-          data: formData,
-        });
-
-        console.log('파일 업로드 성공:', response.data);
-        alert('게시글이 작성되었습니다.');
-        navigate('/board');
-      } else {
-        console.log(updateData);
-
-        const response = await axios.put(`http://localhost:9000/api/board/${updateData.articleId}`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${access_token}`
-          },
-          data: formData,
-        });
-
-        console.log('파일 업로드 성공:', response.data);
-
-        alert('게시글이 수정되었습니다.');
-        navigate('/board');
-      }
-    } catch (error) {
-      // Handle errors
-      console.error('Error while saving article:', error);
+    if (updateData == null) {
+      await apiPostArticle(formData)
+        .then((res) => {
+          console.log('파일 업로드 성공:', res.data);
+          alert('게시글이 작성되었습니다.');
+          navigate(`/board/view?id=${res.data.data.board.boardSeq}`);
+        })
+        .catch((error) => {console.log(error)})
+      
+    } else {
+      console.log(updateData);
+      await apiPutArticle(updateData.articleId, formData)
+        .then((res) => {
+          console.log('파일 업로드 성공:', res.data);
+          alert('게시글이 수정되었습니다.');
+          navigate(`/board/view?id=${res.data.data.board.boardSeq}`);
+        })
+        .catch((error) => {console.log(error)})
     }
-
+    
     setSubmitting(false);
   };
 
@@ -108,7 +115,8 @@ const Editor = () => {
         boardName: updateData ? updateData.boardName : '',
         boardContents: updateData ? updateData.boardContents : '',
 
-        files: updateData ? updateData.boardFile : '',
+        files: updateData && updateData.boardFile ? [...updateData.boardFile] : [],
+        filePreviews: initialFilePreviews,
       }}
       onSubmit={(values, { setSubmitting }) => {
         onComplete(values, setSubmitting);
@@ -143,27 +151,63 @@ const Editor = () => {
                 name="file"
                 multiple
                 onChange={(event) => {
-                  const file = event.currentTarget.files[0];
-                  setFieldValue('files', file || null);
+                  const file = event.currentTarget.files;
+                  console.log(file);
 
-                  if (file) {
-                    const reader = new FileReader();
-                    reader.onloadend = () => {
-                      setFieldValue('filePreview', reader.result);
-                    };
-                    reader.readAsDataURL(file);
+                  // 기존에 업로드된 파일 목록
+                  const existingFiles = values.files ? [...values.files] : [];
+
+                  // 새로 업로드한 파일 목록
+                  const newFiles = Array.from(file);
+
+                  // 기존에 업로드된 파일 목록과 새로 업로드한 파일 목록을 합침
+                  const mergedFiles = [...existingFiles, ...newFiles];
+
+                  // 업로드된 파일 목록 업데이트
+                  setFieldValue('files', mergedFiles);
+
+                  console.log('file:', file);
+
+                  if (file.length > 0) {
+                    const previews = values.filePreviews ? [...values.filePreviews] : [];
+                    newFiles.forEach((files) => {
+                      const reader = new FileReader();
+                      reader.onloadend = () => {
+                        previews.push(reader.result);
+                        if (previews.length === mergedFiles.length) {
+                          setFieldValue('filePreviews', previews);
+                          console.log(file);
+                        }
+                      };
+                      reader.readAsDataURL(files);
+                    });
                   } else {
-                    setFieldValue('filePreview', null);
+                    setFieldValue('filePreviews', values.filePreviews || []);
                   }
                 }}
               />
-              {values.filePreview && (
-                <img
-                  src={values.filePreview}
-                  alt="이미지 미리보기"
-                  style={{ width: '200px', height: 'auto', marginTop: '10px' }}
-                />
-              )}
+
+              {/* 파일 미리보기 맵핑 */}
+              <div className='flex'>
+                {Array.from(values.files).map((file, index) => (
+                  <img
+                    key={index}
+                    src={file.fileUrl || URL.createObjectURL(file)}
+                    alt={`이미지 미리보기 ${index + 1}`}
+                    style={{ width: '200px', height: 'auto', marginTop: '10px' }}
+                  />
+                ))}
+                {console.log('File Previews:', values.filePreviews)}
+                {values.filePreviews &&
+                  values.filePreviews.map((preview, index) => (
+                    <img
+                      key={index}
+                      src={preview}
+                      alt={`이미지 미리보기 ${index + 1}`}
+                      style={{ width: '200px', height: 'auto', marginTop: '10px' }}
+                    />
+                  ))}
+              </div>
             </FormItem>
             <div className="mt-4 flex justify-end">
               <Button loading={isSubmitting} variant="solid" type="submit">

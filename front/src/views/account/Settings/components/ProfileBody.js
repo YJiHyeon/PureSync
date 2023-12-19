@@ -11,10 +11,9 @@ import FormRow from './FormRow'
 import { Field, Form, Formik } from 'formik'
 import { components } from 'react-select'
 import * as Yup from 'yup'
-import axios from 'axios'
 import { ConfirmDialog } from 'components/shared'
-import useAuth from 'utils/hooks/useAuth';
-import SendHeaderCookie from 'utils/hooks/getHeaderCookie'
+import useAuth from 'utils/hooks/useAuth'
+import { apiDeleteMember, apiPostMemberDetails } from 'services/AccountServices'
 
 
 const { Control } = components
@@ -46,58 +45,32 @@ const validationSchema = Yup.object().shape({
 
 
 const ProfileBody = ({ data, onDataUpdate  }) => {
-    const token = SendHeaderCookie(); 
     const [open, setOpen] = useState(false)
     const { signOut } = useAuth();
 
     const handleClose = () => {
-        console.log('Close')
         setOpen(false)
     }
 
     const handleConfirm = async () => {
-        try {
-            const response = await axios.delete(process.env.REACT_APP_HOST_URL + '/api/my',
-            {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },        
-            });
-            if (response.data) {
-                signOut();
-            }
-            setOpen(false);
-            
-        } catch (error) {
-            console.error('API Error:', error.response.data);
-        }
-
+        const response = await apiDeleteMember();
+        signOut();
+        setOpen(false);
     }
 
     const onFormSubmit = async (values, setSubmitting) => {
-        try {
-            const response = await axios.post(process.env.REACT_APP_HOST_URL + '/api/my', values, 
-            {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },        
-            });
-    
-            console.log('API 호출 성공:', response.data.data.updateInfo);
-            onDataUpdate(response.data.data.updateInfo);
-            
+        await apiPostMemberDetails(values)
+            .then((res) => {
+                onDataUpdate(res.data.data.updateInfo);
             toast.push(<Notification title={'수정이 완료되었습니다.'} type="success" />, { placement: 'top-center' });
-        } catch (error) {
-            console.error('API Error:', error.response.data);
-            toast.push(<Notification title={'API 호출 에러'} type="danger" />, { placement: 'top-center' });
-        } finally {
-            setSubmitting(false);
-        }
-
+            })
+            .catch((err) => {
+                toast.push(<Notification title={'API 호출 에러'} type="danger" />, { placement: 'top-center' });
+            });
+        
+        setSubmitting(false);
     }
     
-
-
     return (
         <>
         <Formik

@@ -333,18 +333,6 @@ const appsRoute = [
             headerContainer: true,
         },
     },
-    {
-        key: 'appsAccount.invoice',
-        path: `${APP_PREFIX_PATH}/account/invoice/:id`,
-        component: React.lazy(() => import('views/account/Invoice')),
-        authority: [ADMIN, USER],
-    },
-    {
-        key: 'appsAccount.kycForm',
-        path: `${APP_PREFIX_PATH}/account/kyc-form`,
-        component: React.lazy(() => import('views/account/KycForm')),
-        authority: [ADMIN, USER],
-    },
 ]
 
 export default appsRoute

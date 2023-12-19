@@ -8,7 +8,7 @@ import {
     toast,
     FormContainer,
 } from 'components/ui'
-import SendHeaderCookie from 'utils/hooks/getHeaderCookie'
+import { useSelector, useDispatch } from 'react-redux'
 import { apiPutSettingData } from 'services/AccountServices'
 import FormDesription from './FormDesription'
 import FormRow from './FormRow'
@@ -16,7 +16,8 @@ import { Field, Form, Formik } from 'formik'
 import { components } from 'react-select'
 import { HiOutlineUser } from 'react-icons/hi'
 import * as Yup from 'yup'
-import axios from 'axios'
+import { setUser } from 'store/auth/userSlice'
+import { AWS_IMG_PATH } from 'constants/app.constant'
 
 const { Control } = components
 
@@ -24,20 +25,24 @@ const validationSchema = Yup.object().shape({
     nickname: Yup.string()
         .min(2, '2글자 이상 입력해주세요.')
         .max(21, '20자 이내로 입력해주세요.')
-        .required('User Name Required'),
+        .required('닉네임은 필수입력 항목입니다.'),
 })
 
 
 const Profile = ({ data, onDataUpdate }) => {
-    const token = SendHeaderCookie(); 
-    const imgPath = "https://fccbucket123.s3.ap-northeast-2.amazonaws.com/profileImg/";
+    const dispatch = useDispatch()
+
+    const { avatar, userName, authority, email, nickName } = useSelector(
+        (state) => state.auth.user
+    )
+
     const [previewImage, setPreviewImage] = useState('');
 
     const onSetFormFile = (form, field, files) => {
         const file = files[0];
 
         // Blob만 처리하도록 추가 확인
-        if (file instanceof Blob) {
+        if (file instanceof Blob || file instanceof File) {
             form.setFieldValue(field.name, file);
 
             // 미리보기 이미지를 업데이트
@@ -58,7 +63,6 @@ const Profile = ({ data, onDataUpdate }) => {
         const maxFileSize = 500000
 
         for (let file of files) {
-            console.log(file);
             if (!allowedFileType.includes(file.type)) {
                 valid = 'jpeg/png/gif 파일만 업로드 가능합니다.'
             }
@@ -71,40 +75,36 @@ const Profile = ({ data, onDataUpdate }) => {
     }
 
 
-
     const onFormSubmit = async (values, setSubmitting) => {
-        try {
-            const formData = new FormData();
-            formData.append('memberInfo', new Blob([JSON.stringify({
-                memNick: values.nickname
-            })], { type: 'application/json' }));
-            formData.append('file', values.avatar);
+        const formData = new FormData();
+        formData.append('memberInfo', new Blob([JSON.stringify({
+            memNick: values.nickname
+        })], { type: 'application/json' }));
+        formData.append('file', values.avatar);
 
-            const response = await axios.put(process.env.REACT_APP_HOST_URL + '/api/my', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                    'Authorization': `Bearer ${token}`,
-                },
-            });
-    
-            console.log('API 호출 성공:', response.data);
-            
-            onDataUpdate(response.data.data.result);
-            
-            toast.push(<Notification title={'수정이 완료되었습니다.'} type="success" />, { placement: 'top-center' });
-        } catch (error) {
-            console.error('API Error:', error);
-            toast.push(<Notification title={'알 수 없는 이유로 수정에 실패했습니다.'} type="danger" />, { placement: 'top-center' });
-        } finally {
+        await apiPutSettingData(formData)
+            .then((res) => {
+                dispatch(
+                    setUser(
+                        {nickName : res.data.data.result.memNick, avatar: res.data.data.result.memImg}
+                    )
+                )
+                onDataUpdate(res.data.data.result);
+                toast.push(<Notification title={'수정이 완료되었습니다.'} type="success" />, { placement: 'top-center' });
+            })
+            .catch((err) => {
+                console.log(err);
+                toast.push(<Notification title={'알 수 없는 이유로 수정에 실패했습니다.'} type="danger" />, { placement: 'top-center' });
+            })
+
             setSubmitting(false);
-        }
-        
+
     }
 
     return (
         <Formik
             initialValues={{
-                nickname : data.memNick || '',
+                nickname : data.memNick || nickName,
                 avatar : data.memImg || ''
             }}
             enableReinitialize
@@ -132,8 +132,8 @@ const Profile = ({ data, onDataUpdate }) => {
                             >
                                 <Field name="avatar">
                                     {({ field, form }) => {
-                                        const avatarProps = field.value || data.memImg
-                                        ? { src: `${imgPath}${field.value}` || `${imgPath}${data.memImg}` }
+                                        const avatarProps = avatar
+                                        ? { src: `${AWS_IMG_PATH}${avatar}` }
                                         : {};
                                         return (
                                             <Upload
@@ -163,7 +163,6 @@ const Profile = ({ data, onDataUpdate }) => {
                                                         shape="circle"
                                                         src={previewImage}
                                                         alt="프로필 이미지"
-                                                        {...avatarProps}
                                                     />
                                                 ) : (
                                                     <Avatar
@@ -195,6 +194,7 @@ const Profile = ({ data, onDataUpdate }) => {
                                     type="text"
                                     autoComplete="off"
                                     name="nickname"
+                                    value={values.nickname}
                                     component={Input}
                                 />
                             </FormRow>

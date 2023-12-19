@@ -48,7 +48,6 @@ const Settings = () => {
         if (isEmpty(data)) {
             fetchData()
         }
-        console.log(data);
     }, [data])
 
     const onProfileBodyDataUpdate = (updatedData) => {
@@ -63,15 +62,12 @@ const Settings = () => {
     }
 
     const onProfileDefaultDataUpdate = (updatedData) => {
-        console.log(updatedData);
         setData(prevData => ({
             ...prevData,
             memNick: updatedData.memNick,
             memImg: updatedData.memImg
         }));
     }
-    
-
 
     return (
         <Container>

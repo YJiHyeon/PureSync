@@ -6,12 +6,11 @@ import {
     toast,
     FormContainer,
 } from 'components/ui'
-import SendHeaderCookie from 'utils/hooks/getHeaderCookie'
 import FormDesription from './FormDesription'
 import FormRow from './FormRow'
 import { Field, Form, Formik } from 'formik'
 import * as Yup from 'yup'
-import axios from 'axios';
+import { apiPutPassword } from 'services/AccountServices'
 
 
 const validationSchema = Yup.object().shape({
@@ -28,30 +27,18 @@ const validationSchema = Yup.object().shape({
 })
 
 const Password = () => {
-    const token = SendHeaderCookie();
     const onFormSubmit = async (values, {setSubmitting, resetForm}) => {
-        try {
-            const { oldPassword, newPassword } = values
-            const response = await axios.put(process.env.REACT_APP_HOST_URL+ '/api/my/password', 
-            JSON.stringify({ oldPassword, newPassword }), 
-            {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                }
-            });
-    
-            
-            toast.push(<Notification title={'비밀번호가 변경되었습니다.'} type="success" />, { placement: 'top-center' });
-            resetForm();
-        } catch (error) {
-            console.error('API Error:', error.response.data);
+        const { oldPassword, newPassword } = values
+        await apiPutPassword(JSON.stringify({ oldPassword, newPassword }))
+            .then(() => {
+                toast.push(<Notification title={'비밀번호가 변경되었습니다.'} type="success" />, { placement: 'top-center' });
+                resetForm();
+            })
+            .catch((err) => {
+                toast.push(<Notification title={'비밀번호가 일치하지 않습니다.'} type="danger" />, { placement: 'top-center' });
+            })
 
-            toast.push(<Notification title={'비밀번호가 일치하지 않습니다.'} type="danger" />, { placement: 'top-center' });
-        } finally {
-            setSubmitting(false);
-        }
-
+        setSubmitting(false);
     }
 
     return (
