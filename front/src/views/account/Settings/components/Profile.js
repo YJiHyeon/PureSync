@@ -78,7 +78,6 @@ const Profile = ({ data, onDataUpdate }) => {
     }
 
 
-
     const onFormSubmit = async (values, setSubmitting) => {
         const formData = new FormData();
         formData.append('memberInfo', new Blob([JSON.stringify({
@@ -86,17 +85,23 @@ const Profile = ({ data, onDataUpdate }) => {
         })], { type: 'application/json' }));
         formData.append('file', values.avatar);
 
-        const response = await apiPutSettingData(formData)
-        if (response.data.code == 200) {
-            dispatch(setUser({nickName : response.data.data.result.memNick, avatar: response.data.data.result.memImg}))
-            onDataUpdate(response.data.data.result);
-            toast.push(<Notification title={'수정이 완료되었습니다.'} type="success" />, { placement: 'top-center' });
+        await apiPutSettingData(formData)
+            .then((res) => {
+                dispatch(
+                    setUser(
+                        {nickName : res.data.data.result.memNick, avatar: res.data.data.result.memImg}
+                    )
+                )
+                onDataUpdate(res.data.data.result);
+                toast.push(<Notification title={'수정이 완료되었습니다.'} type="success" />, { placement: 'top-center' });
+            })
+            .error((err) => {
+                console.log(err);
+                toast.push(<Notification title={'알 수 없는 이유로 수정에 실패했습니다.'} type="danger" />, { placement: 'top-center' });
+            })
+
             setSubmitting(false);
-            return;
-        }
-        
-        toast.push(<Notification title={'알 수 없는 이유로 수정에 실패했습니다.'} type="danger" />, { placement: 'top-center' });
-        return;
+
     }
 
     return (

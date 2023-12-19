@@ -12,9 +12,12 @@ const Posts = () => {
 
     useEffect(() => {
         const fetchPosts = async () => {
-            const response = await apiGetMyPosts();
-            setPostList(response.data.data.postList);
-            setLoading(false);
+            await apiGetMyPosts()
+                .then((response) => {
+                    setPostList(response.data.data.postList);
+                    setLoading(false);
+                })
+                .error((err) => {console.log(err)});
         };
 
         fetchPosts();
