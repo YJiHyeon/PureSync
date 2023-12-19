@@ -12,19 +12,16 @@ import { RichTextEditor } from 'components/shared'
 import { Field, Form, Formik } from 'formik'
 import { useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
-import axios from 'axios'
 import { useLocation } from 'react-router-dom';
 import getHeaderCookie from 'utils/hooks/getHeaderCookie'
 import { parseJwt, getMemInfoFromToken } from 'utils/hooks/parseToken'
-
-axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
+import { apiPostArticle, apiPutArticle } from 'services/BoardService'
 
 // const validationSchema = Yup.object().shape({
 //     title: Yup.string().required('Title required'),
 //     category: Yup.string().required('Category required'),
 //     content: Yup.string().required('Content required'),
 // })
-
 
 const Editor = () => {
   const navigate = useNavigate();
@@ -65,7 +62,6 @@ const Editor = () => {
 
   //const updateData = location.state && location.state.updateData;
   const onUpload = (files) => {
-
     console.log(files);
   }
 
@@ -89,42 +85,27 @@ const Editor = () => {
     if (values.files.length === 0) {
       formData.delete("file");
     }
-
-    try {
-
-      if (updateData == null) {
-        const response = await axios.post('http://localhost:9000/api/board', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${access_token}`
-          },
-          data: formData,
-        });
-
-        console.log('파일 업로드 성공:', response.data);
-        alert('게시글이 작성되었습니다.');
-        navigate('/board');
-      } else {
-        console.log(updateData);
-
-        const response = await axios.put(`http://localhost:9000/api/board/${updateData.articleId}`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${access_token}`
-          },
-          data: formData,
-        });
-
-        console.log('파일 업로드 성공:', response.data);
-
-        alert('게시글이 수정되었습니다.');
-        navigate('/board');
-      }
-    } catch (error) {
-      // Handle errors
-      console.error('Error while saving article:', error);
+    
+    if (updateData == null) {
+      await apiPostArticle(formData)
+        .then((res) => {
+          console.log('파일 업로드 성공:', res.data);
+          alert('게시글이 작성되었습니다.');
+          navigate(`/board/view?id=${res.data.data.board.boardSeq}`);
+        })
+        .catch((error) => {console.log(error)})
+      
+    } else {
+      console.log(updateData);
+      await apiPutArticle(updateData.articleId, formData)
+        .then((res) => {
+          console.log('파일 업로드 성공:', res.data);
+          alert('게시글이 수정되었습니다.');
+          navigate(`/board/view?id=${res.data.data.board.boardSeq}`);
+        })
+        .catch((error) => {console.log(error)})
     }
-
+    
     setSubmitting(false);
   };
 
