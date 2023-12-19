@@ -30,7 +30,6 @@ function App() {
                 </BrowserRouter>
                 </RecoilRoot>
             </PersistGate>
-            <Visit />
         </Provider>
     )
 }
