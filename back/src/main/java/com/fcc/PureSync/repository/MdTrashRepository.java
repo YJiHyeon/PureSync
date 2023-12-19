@@ -10,6 +10,7 @@ import java.util.List;
 
 @Repository
 public interface MdTrashRepository extends JpaRepository<MdTrash, Long> {
+    //주석테스트
     List<MdTrash> findAllByMemberOrderByTsWdateDesc(Member member);
     List<MdTrash> findAllByMemberAndTsStatusOrderByTsWdateDesc(Member member, boolean status);
 
