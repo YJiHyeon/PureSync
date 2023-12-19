@@ -131,9 +131,9 @@ const DialogTrashIntoTrashbin = (props) => {
 
     const [isDropped, setIsDropped] = useState(false);
     const draggableMarkup = (
-        <div>
+        <div className='flex align-middle justify-center'>
            <Draggable>
-            <div className='flex ml-10 mt-10'>
+            <div>
            <img src='/img/mind/trash.svg' width={100} height={100} />
            </div>
            </Draggable>
@@ -173,7 +173,7 @@ const DialogTrashIntoTrashbin = (props) => {
                 {closable && renderCloseButton}
                 <h5>버릴 감정을 쓰레기통으로 드래그해서 버려 주세요</h5>
                 <DndContext onDragEnd={handleDragEnd}>
-                    <div className="grid grid-cols-2 mt-10 pt-10" >
+                    <div className="grid grid-cols-2 mt-10" >
                     {!isDropped ? draggableMarkup : null}
                     <Droppable>
                         <div>
