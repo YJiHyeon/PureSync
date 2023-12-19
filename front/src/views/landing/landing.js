@@ -6,12 +6,10 @@ import 'aos/dist/aos.css';
 
 import './css/theme.css';
 
-
-import { FiGithub } from 'react-icons/fi'
+import { FaGithub } from "react-icons/fa";
 import Visit from 'visit'
 
 function Landing() {
-  // import('./css/theme.css');
 
   useEffect(() => {
     
@@ -21,17 +19,6 @@ function Landing() {
 
   }, []);
 
-  // const location = useLocation();
-  // console.log(location);
-
-  // // 특정 경로에서만 스타일을 로드
-  // if (location.pathname === '/landing') {
-  //   require('./css/theme.css');
-  //   require('./css/theme.min.css');
-  // }
-
-
-
   return (
     <div>
       <Visit />
@@ -39,13 +26,12 @@ function Landing() {
         <div className="w-100 h-100 overflow-hidden bg-gray-100" id="top">
           <div className="containernp position-relative">
             <div className="col-12 col-lg-8 mt-0 h-100 position-absolute top-0 end-0 bg-cover"
-              // background-image: url(/img/main.png);"></div>
               data-aos="fade-left" style={{ backgroundImage: `url(/img/interior11.webp)` }}></div>
             <div className="row">
               <div className="col-lg-7 py-vh-6 position-relative ps-5" data-aos="fade-right">
                 <h1 className="display-1 fw-bold mt-5">PureSync</h1>
-                <p className="lead">몸과 마음의 건강을 챙기는 첫 걸음은 기록입니다. 몸과 마음의 건강을 챙기는 겟생, pureSync와 함께하고 나만의 더 나은 길을 찾아보세요! 지금 시작하세요.</p>
-                <a href='/sign-in' className="btn btn-dark btn-xl shadow me-3 rounded-0 my-5" >로그인 </a>
+                <p className="lead" style={{wordBreak: "keep-all"}}>몸과 마음의 건강을 챙기는 첫 걸음은 기록입니다. 몸과 마음의 건강을 챙기는 겟생, pureSync와 함께하고 나만의 더 나은 길을 찾아보세요! 지금 시작하세요.</p>
+                <a href='/sign-in' className="btn btn-success px-5 py-3 me-3 rounded-2 my-5" >로그인 </a>
               </div>
             </div>
           </div>
@@ -110,10 +96,10 @@ function Landing() {
               <div class="row d-flex justify-content-center text-center">
                 <div class="col-lg-8 text-center" data-aos="fade">
                   <p class="text-secondary lead">PureSync와 함께 건강을 기록해보세요!</p>
-                  <h3 class="display-6 mb-5">식단과 운동 기록을 통해 오늘의 칼로리 및 영양 성분을 확인하고, 감정 상태 분석을 지원하는 인공지능 기반 마음 일지를 작성하여 매일 몸과 마음의 균형을 손쉽게 파악하세요!</h3>
+                  <h3 class="mb-4 lh-base" style={{wordBreak: "keep-all"}}>식단과 운동 기록을 통해 오늘의 칼로리 및 영양 성분을 확인하고, 감정 상태 분석을 지원하는 인공지능 기반 마음 일지를 작성하여 매일 몸과 마음의 균형을 손쉽게 파악하세요!</h3>
                 </div>
                 <div class="col-12">
-                <a href='/sign-up' class="btn btn-warning btn-xl shadow me-3 mt-4" data-aos="fade-down" >회원 가입</a>
+                <a href='/sign-up' class="btn btn-success px-5 py-3 rounded-2 me-3 mt-4" data-aos="fade-down" >회원 가입</a>
                 </div>
               </div>
 
@@ -126,48 +112,48 @@ function Landing() {
         <div class="container small border-top">
           <div class="row d-flex justify-content-between">
             <div class="col-12 p-3">
-              <div class="d-flex justify-content-between">
-                <h3 class="h6">PureSync</h3>
-                <ul class="nav d-flex">
+              <div class="d-flex justify-content-between align-items-center">
+                <h3 class="h6 mb-0">PureSync</h3>
+                <ul class="nav d-flex gap-3">
 
                   <li>
-                    <a href="https://github.com/YJiHyeon" target="_blank">
-                      <FiGithub />
+                    <a href="https://github.com/YJiHyeon" target="_blank" class="flex align-items-center text-decoration-none gap-1">
+                      <FaGithub />
                       <span class="icon-text">윤지현</span>
                     </a>
                   </li>
 
                   <li>
-                    <a href="https://github.com/seongeon0620" target="_blank">
-                      <FiGithub />
+                    <a href="https://github.com/seongeon0620" target="_blank" class="flex align-items-center text-decoration-none gap-1">
+                      <FaGithub />
                       <span class="icon-text">배성언</span>
                     </a>
                   </li>
 
                   <li>
-                    <a href="https://github.com/HSPU" target="_blank">
-                      <FiGithub />
+                    <a href="https://github.com/HSPU" target="_blank" class="flex align-items-center text-decoration-none gap-1">
+                      <FaGithub />
                       <span class="icon-text">신우석</span>
                     </a>
                   </li>
 
                   <li>
-                    <a href="https://github.com/simhyunbo" target="_blank">
-                      <FiGithub />
+                    <a href="https://github.com/simhyunbo" target="_blank" class="flex align-items-center text-decoration-none gap-1">
+                      <FaGithub />
                       <span class="icon-text">심현보</span>
                     </a>
                   </li>
 
                   <li>
-                    <a href="https://github.com/orisay" target="_blank">
-                      <FiGithub />
+                    <a href="https://github.com/orisay" target="_blank" class="flex align-items-center text-decoration-none gap-1">
+                      <FaGithub />
                       <span class="icon-text">유재건</span>
                     </a>
                   </li>
 
                   <li>
-                    <a href="https://github.com/ruhazle" target="_blank">
-                      <FiGithub />
+                    <a href="https://github.com/ruhazle" target="_blank" class="flex align-items-center text-decoration-none gap-1">
+                    <FaGithub />
                       <span class="icon-text">유하영</span>
                     </a>
                   </li>
