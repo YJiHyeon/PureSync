@@ -3,7 +3,7 @@ import {
     NAV_ITEM_TYPE_TITLE,
     NAV_ITEM_TYPE_ITEM,
 } from 'constants/navigation.constant'
-import { ADMIN, USER } from 'constants/roles.constant'
+import { USER } from 'constants/roles.constant'
 
 const heartNavigationConfig = [
     {
@@ -13,7 +13,7 @@ const heartNavigationConfig = [
         translateKey: 'nav.pages.pages',
         icon: 'heart',
         type: NAV_ITEM_TYPE_TITLE,
-        authority: [ADMIN, USER],
+        authority: [USER],
         subMenu: [
             {
                 key: 'mind.diary',
@@ -22,7 +22,7 @@ const heartNavigationConfig = [
                 translateKey: 'nav.mind.diary',
                 icon: 'write',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN, USER],
+                authority: [USER],
                 subMenu: [],
             },
             {
@@ -30,9 +30,9 @@ const heartNavigationConfig = [
                 path: `/mind/trash`,
                 title: '마음쓰레기통',
                 translateKey: 'nav.mind.trash',
-                icon: 'heart2',
+                icon: 'heart',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN, USER],
+                authority: [USER],
                 subMenu: [],
             },
             {
@@ -40,9 +40,9 @@ const heartNavigationConfig = [
                 path: `/mind/test`,
                 title: '심리검사',
                 translateKey: 'nav.mind.test',
-                icon: 'list',
+                icon: 'test',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN, USER],
+                authority: [USER],
                 subMenu: [],
             },
         ],
