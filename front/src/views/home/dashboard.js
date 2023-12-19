@@ -41,8 +41,11 @@ const Dashboard = () => {
 
     const fetchPositiveData = async () => {
         await getPositive()
-            .then((res) => {setPositive(res.data.data.Positive)})
-            .error((error) => {console.log("에러 발생" + error)})
+            .then((res) => {
+                console.log(res.data);
+                setPositive(res.data.data.Positive)}
+            )
+            .catch((error) => {console.log("에러 발생" + error)})
     }
 
     const DatePickerClick = (date) => {

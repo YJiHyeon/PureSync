@@ -42,17 +42,15 @@ const Profile = ({ data, onDataUpdate }) => {
         const file = files[0];
 
         // Blob만 처리하도록 추가 확인
-        if (file instanceof File) {
-            console.log(1);
+        if (file instanceof Blob || file instanceof File) {
             form.setFieldValue(field.name, file);
 
             // 미리보기 이미지를 업데이트
             const reader = new FileReader();
             reader.onload = (e) => {
                 setPreviewImage(e.target.result);
-                console.log(previewImage);
             };
-            reader.readAsDataURL(file); // await를 사용하여 비동기적으로 실행
+            reader.readAsDataURL(file);
         } else {
             console.error('Invalid file type:', file);
         }
@@ -65,7 +63,6 @@ const Profile = ({ data, onDataUpdate }) => {
         const maxFileSize = 500000
 
         for (let file of files) {
-            console.log(file);
             if (!allowedFileType.includes(file.type)) {
                 valid = 'jpeg/png/gif 파일만 업로드 가능합니다.'
             }
@@ -95,7 +92,7 @@ const Profile = ({ data, onDataUpdate }) => {
                 onDataUpdate(res.data.data.result);
                 toast.push(<Notification title={'수정이 완료되었습니다.'} type="success" />, { placement: 'top-center' });
             })
-            .error((err) => {
+            .catch((err) => {
                 console.log(err);
                 toast.push(<Notification title={'알 수 없는 이유로 수정에 실패했습니다.'} type="danger" />, { placement: 'top-center' });
             })
@@ -135,8 +132,8 @@ const Profile = ({ data, onDataUpdate }) => {
                             >
                                 <Field name="avatar">
                                     {({ field, form }) => {
-                                        const avatarProps = avatar || field.value
-                                        ? { src: `${AWS_IMG_PATH}${avatar}` || `${field.value}`}
+                                        const avatarProps = avatar
+                                        ? { src: `${AWS_IMG_PATH}${avatar}` }
                                         : {};
                                         return (
                                             <Upload
@@ -159,14 +156,13 @@ const Profile = ({ data, onDataUpdate }) => {
                                                 uploadLimit={1}
                                                 beforeUpload={beforeUpload}
                                             >
-                                                {previewImage !== '' ? (
+                                                {previewImage ? (
                                                     <Avatar
                                                         className="border-2 border-white dark:border-gray-800 shadow-lg"
                                                         size={100}
                                                         shape="circle"
                                                         src={previewImage}
                                                         alt="프로필 이미지"
-                                                        {...avatarProps}
                                                     />
                                                 ) : (
                                                     <Avatar

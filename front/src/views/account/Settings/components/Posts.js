@@ -17,7 +17,7 @@ const Posts = () => {
                     setPostList(response.data.data.postList);
                     setLoading(false);
                 })
-                .error((err) => {console.log(err)});
+                .catch((err) => {console.log(err)});
         };
 
         fetchPosts();
