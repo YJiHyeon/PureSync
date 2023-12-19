@@ -2,14 +2,22 @@ name: CI/CD with Docker and Java
 
 on:
   push:
+    paths:
+      - 'back/**'  # 백엔드 디렉토리 변경 감지
+      - 'front/**' # 프론트엔드 디렉토리 변경 감지
     branches:
       - main
   pull_request:
+    paths:
+      - 'back/**'
+      - 'front/**'
     branches:
       - main
 
 jobs:
   build-backend:
+    if: ${{ github.event_name == 'push' && contains(github.event.head_commit.modified, 'back/') }}
+    # 또는: if: ${{ github.event_name == 'push' && github.event.head_commit.modified | contains('back/') }}
     runs-on: ubuntu-latest
 
     steps:
@@ -39,9 +47,8 @@ jobs:
           ./gradlew build
 
   build-frontend-and-release:
+    if: ${{ github.event_name == 'push' && contains(github.event.head_commit.modified, 'front/') }}
     runs-on: ubuntu-latest
-
-    needs: build-backend
 
     steps:
       - name: Checkout repository
@@ -60,16 +67,7 @@ jobs:
           password: ${{secrets.DOCKERHUB_TOKEN}}
           build_args: REACT_APP_HOST_URL=http://192.168.56.1:8080/api
 
-      - name: release to DockerHub (back)
-        env:
-          NAME: yoonjihyeon
-          REPO: back
-        run: |
-          docker build -t $REPO --file back/Dockerfile .
-          docker tag $REPO:latest $NAME/$REPO:latest
-          docker push $NAME/$REPO:latest
-
-      - name: release to DockerHub (front)
+      - name: Build and release to DockerHub
         env:
           NAME: yoonjihyeon
           REPO: front
