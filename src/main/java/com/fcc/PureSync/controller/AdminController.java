@@ -23,9 +23,9 @@ public class AdminController {
 
     */
     //로그인 페이지
-    @GetMapping("/login")
+    @GetMapping("/admin/login")
     public String adminMain() {
-        return "/member/login";
+        return "/login/login";
     }
 
 //    //로그인 기능
