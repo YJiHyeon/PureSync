@@ -11,6 +11,7 @@ import { parseJwt, getMemInfoFromToken } from 'utils/hooks/parseToken'
 
 import { Button, Select, Input } from 'components/ui';
 import Axios from 'axios';
+import { apiWriteMenu, apiGetAllMenu } from 'services/BodyRecord';
 
 const DialogMenu = (props) => {
 
@@ -134,9 +135,11 @@ const DialogMenu = (props) => {
         } else {
             setInputError(false); // 검색어 길이가 2자 이상인 경우 inputError를 false로 설정
 
-            Axios.get(process.env.REACT_APP_HOST_URL + '/api/menu/foodList',
-                { params: { "foodName": searchValue } },
-            )
+            const sendFoodDatas = {
+                foodName : searchValue
+            };
+
+            apiGetAllMenu(sendFoodDatas)
                 .then((res) => {
                     setSearchResults(res.data.data.allFoods);
                     setLoding(true);
@@ -194,15 +197,7 @@ const DialogMenu = (props) => {
             };
             sendFoodDatas.push(foodInfo);
         });
-
-        Axios.post(process.env.REACT_APP_HOST_URL + '/api/menu/save', sendFoodDatas[0],
-            {
-                headers: {
-                    Authorization: `Bearer ${access_token}`
-                }
-            }
-
-        )
+        apiWriteMenu(sendFoodDatas[0])
             .then((res) => {
                 setMealType('');
                 setSearchValue('');
