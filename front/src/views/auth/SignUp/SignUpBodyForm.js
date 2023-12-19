@@ -95,7 +95,7 @@ const SignUpBodyForm = ({ formData, className, signInUrl }) => {
                                 {/* 몸무게 끝 */}
                             </FormItem>
                             <FormItem
-                                label="원하는 몸무게"
+                                label="목표 몸무게"
                                 asterisk
                                 invalid={errors.bodyWishWeight && touched.bodyWishWeight}
                                 errorMessage={errors.bodyWishWeight}

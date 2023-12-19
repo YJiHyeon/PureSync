@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity"
+      xmlns:th="https://www.thymeleaf.org%22%3E/"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{/layout/defaultLayout}">
 <script th:inline="javascript"></script>
@@ -837,15 +837,9 @@
                 <li class="nav-author">
                     <div class="d-flex gap-3">
                         <div sec:authorize="isAuthenticated()">
-                            dddd
-                            <div sec:authentication="principal">
-                                <div th:text="${member}"></div>
-                                <div th:text="${#authentication.name}"> </div>
-                                    <div th:text="${#authentication}"> </div>
-                            </div>
+                            <span sec:authentication="principal.member.memId">
+                            </span> 님 어서오세요.
                         </div>
-                        <!--                        <span sec:authentication="principal.member.memId">관리자</span> 님 어서오세요-->
-                        <!--                        <p th:text="${#Authentication.Principal.CustomUserDetails.member.Member.memId}"></p>-->
                         <a href="/admin/logout" class="nav-author__signout p-1 bg-none">
                             <i class="uil uil-sign-out-alt"></i> 로그아웃
                         </a>
