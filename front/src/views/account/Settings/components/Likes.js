@@ -1,34 +1,24 @@
 import React, { useState, useEffect } from 'react'
-import SendHeaderCookie from 'utils/hooks/getHeaderCookie'
 import Table from 'components/ui/Table'
-import axios from 'axios';
 import { Loading } from 'components/shared'
 import ActionLink from 'components/shared/ActionLink'
+import { apiGetLikePosts } from 'services/AccountServices'
 
 const { Tr, Th, Td, THead, TBody } = Table
 
 const Likes = () => {
-    const token = SendHeaderCookie();
     const [likeList, setLikeList] = useState({});
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchPosts = async () => {
-            try {
-                const response = await axios.get(process.env.REACT_APP_HOST_URL+ '/api/my/liked-posts', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                    }
-                });
-                setLikeList(response.data.data.likePostList);
-                setLoading(false);
-            } catch (error) {
-                console.error('API Error:', error.response.data);
-            }
+            const response = await apiGetLikePosts();
+            setLikeList(response.data.data.likePostList);
+            setLoading(false);
         };
 
         fetchPosts();
-    }, []); // 빈 배열을 전달하여 컴포넌트가 마운트될 때만 한 번 호출되도록 설정
+    }, []);
 
     return (
         <Loading loading={loading}>

@@ -42,7 +42,7 @@ export function getMemInfoFromToken() {
         const memberObject = {
             avatar: memImg,
             userName: memId,
-            authority: ['USER'],
+            authority: ['user', 'admin'],
             email: memEmail
         };
 
