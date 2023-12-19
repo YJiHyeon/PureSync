@@ -6,13 +6,11 @@ import CloseButton from '../CloseButton';
 import { motion } from 'framer-motion';
 import { theme } from 'twin.macro';
 import useWindowSize from '../hooks/useWindowSize';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { Notification, toast } from 'components/ui'
-import getHeaderCookie from 'utils/hooks/getHeaderCookie'
 import { DndContext } from '@dnd-kit/core';
 import { useDraggable } from '@dnd-kit/core';
 import { useDroppable } from '@dnd-kit/core';
+import { apiDeleteTrash } from 'services/MindTrashService';
 
 export function Draggable(props) {
     const { attributes, listeners, setNodeRef, transform } = useDraggable({
@@ -58,11 +56,6 @@ export function Droppable(props) {
 const DialogTrashIntoTrashbin = (props) => {
     // 현재 창 크기를 가져오는 커스텀 훅 사용
     const currentSize = useWindowSize();
-
-    //useNavigate
-    const navigate = useNavigate();
-
-    const access_token = getHeaderCookie();
 
     const {
         goRegister,
@@ -196,21 +189,15 @@ const DialogTrashIntoTrashbin = (props) => {
     function handleDragEnd(event) {
         if (event.over && event.over.id === 'droppable') {
           setIsDropped(true);
+
           //쓰레기 지우는 axios불러야함
-          axios.delete(process.env.REACT_APP_HOST_URL + `/api/mind/trash/${tsSeq}`, {
-            headers: {
-                Authorization: `Bearer ${access_token}`
-            }
-          })
-          .then((res) => {
-            openNotification('top-center');
-            onClose();
-            goRegister();
-          })
-          .catch((res) => {
-            console.log('에러 : ');
-            console.log(res);
-        })
+            apiDeleteTrash(tsSeq)
+            .then((res) => {
+                openNotification('top-center');
+                onClose();
+                goRegister();
+            })
+            .catch((res) => {})
         }
       }
 }
