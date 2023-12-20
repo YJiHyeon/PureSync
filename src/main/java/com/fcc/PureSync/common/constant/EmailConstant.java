@@ -8,6 +8,7 @@ public final class EmailConstant {
 
     //아래 위치 변경 필요
     public static final String LOCAL_DOMAIN="http://localhost:9000";
+    public static final String VERIFY_DOMAIN="http://localhost:4000";
     public static final String AWS_DOMAIN="";
 
     public static final Integer MEMBER_ENABLED_LEVEL=4;

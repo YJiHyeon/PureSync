@@ -1,12 +1,11 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en" dir="ltr"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org" lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>PureSync Admin</title>
-    <th:block th:include="~{/fragments/styles :: styleFragment}"></th:block>
+    <th:block th:insert="~{/fragments/styles :: styleFragment}"></th:block>
 </head>
 
 <body>
@@ -21,13 +20,13 @@
                             <div class="card-header">
                                 <div class="edit-profile__logos mb-0">
                                     <a href="#">
-                                        <img class="dark" th:src="@{img/logo-dark.svg}" alt="">
-                                        <img class="light" th:src="@{img/logo-white.svg}" alt="">
+                                        <img class="dark" th:src="@{~/img/logo-dark.svg}" alt="">
+                                        <img class="light" th:src="@{~/img/logo-white.svg}" alt="">
                                     </a>
                                 </div>
                             </div>
                             <div class="card-body">
-                                <form action="/member/login" id="adminLogin" method="post" name="adminLogin">
+                                <form action="/admin/login" id="adminLogin" method="post" name="adminLogin">
                                     <div class="edit-profile__body">
                                         <div class="form-group mb-25">
                                             <label for="memId">아이디</label>
@@ -78,32 +77,32 @@
         </li>
     </ul>
 </div>
-<th:block th:include="~{/fragments/scripts :: scriptFragment}"></th:block>
+<th:block th:insert="~{/fragments/scripts :: scriptFragment}"></th:block>
 </body>
 </html>
-<script>
-    $(() => {
-        const sendForm = function(e) {
-            e.preventDefault();
-            let memIdValue = document.getElementById("memId").value;
-            let memPassword = document.getElementById("memPassword").value;
-            const validMemId = validation(memIdValue);
-            const validMemPassword = validation(memPassword);
-            if(validMemId && validMemPassword){
-                document.getElementById("adminLogin").submit();
-               }
-        }
+<!--<script>-->
+<!--    $(() => {-->
+<!--        const sendForm = function(e) {-->
+<!--            e.preventDefault();-->
+<!--            let memIdValue = document.getElementById("memId").value;-->
+<!--            let memPassword = document.getElementById("memPassword").value;-->
+<!--            const validMemId = validation(memIdValue);-->
+<!--            const validMemPassword = validation(memPassword);-->
+<!--            if(validMemId && validMemPassword){-->
+<!--                document.getElementById("adminLogin").submit();-->
+<!--               }-->
+<!--        }-->
 
-        const validation = function(value) {
-            const LIMIT_LENGNTH =8;
-            if (value.length >= LIMIT_LENGNTH) {
-                console.log(value);
-                return true;
-            }
-            alert("제대로 된 값을 입력해주세요.")
-            return false
-        }
+<!--        const validation = function(value) {-->
+<!--            const LIMIT_LENGNTH =8;-->
+<!--            if (value.length >= LIMIT_LENGNTH) {-->
+<!--                console.log(value);-->
+<!--                return true;-->
+<!--            }-->
+<!--            alert("제대로 된 값을 입력해주세요.")-->
+<!--            return false-->
+<!--        }-->
 
-        document.getElementById("sendAdminInfoSubmitBtn").addEventListener("click", sendForm)
-    })
-</script>
+<!--        document.getElementById("sendAdminInfoSubmitBtn").addEventListener("click", sendForm)-->
+<!--    })-->
+<!--</script>-->

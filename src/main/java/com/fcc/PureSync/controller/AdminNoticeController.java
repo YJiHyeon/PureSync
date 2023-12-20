@@ -29,11 +29,14 @@ public class AdminNoticeController {
         noticeDto.setStart(pg*10);
         List<NoticeDto> noticeList = noticeService.getAllNoticeList(noticeDto);
 
-        model.addAttribute("noticeList", noticeList);
-        model.addAttribute("page", Pager.makePage(10, noticeService.getNoticeTotalcnt(noticeDto), pg));
-        model.addAttribute("pg", pg );
+        int total = noticeService.getNoticeTotalcnt(noticeDto);
 
-        return "/adminBoard/noticeList";
+        model.addAttribute("noticeList", noticeList);
+        model.addAttribute("page", Pager.makePage(10, total , pg));
+        model.addAttribute("pg", pg );
+        model.addAttribute("total", total );
+
+        return "adminBoard/noticeList";
     }
 
     @GetMapping("/admin/notice/view/{notice_seq}")
@@ -42,12 +45,12 @@ public class AdminNoticeController {
         noticeDto.setNotice_seq(notice_seq);
         NoticeDto resultDto = noticeService.noticeBoardView(noticeDto);
         model.addAttribute("noticeView", resultDto);
-        return "/adminBoard/noticeView";
+        return "adminBoard/noticeView";
     }
 
     @GetMapping("/admin/notice/write")
     public String adminBoardWrite() {
-        return "/adminBoard/noticeWrite";
+        return "adminBoard/noticeWrite";
     }
 
     @PostMapping("/admin/notice/save")
@@ -66,7 +69,7 @@ public class AdminNoticeController {
         noticeDto.setNotice_seq(notice_seq);
         NoticeDto resultDto = noticeService.noticeBoardView(noticeDto);
         model.addAttribute("noticeModify", resultDto);
-        return "/adminBoard/noticeModify";
+        return "adminBoard/noticeModify";
     }
 
     @PostMapping("/admin/notice/modifyOk")
