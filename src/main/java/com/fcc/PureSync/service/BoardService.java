@@ -183,11 +183,11 @@ public class BoardService {
          * 파일 존재 o
          */
         if (file != null) {
-//            List<BoardFile> filesToDelete = boardFileRepository.findAllByBoard_BoardSeq(boardSeq);
-//            for (BoardFile fileToDelete : filesToDelete) {
-//                deleteFileFromS3(fileToDelete.getBoardfileName());
-//                boardFileRepository.delete(fileToDelete);
-//            }
+            List<BoardFile> filesToDelete = boardFileRepository.findAllByBoard_BoardSeq(boardSeq);
+            for (BoardFile fileToDelete : filesToDelete) {
+                deleteFileFromS3(fileToDelete.getBoardfileName());
+                boardFileRepository.delete(fileToDelete);
+            }
 
             List<String> originalFileNameList = new ArrayList<>();
             List<String> storedFileNameList = new ArrayList<>();
