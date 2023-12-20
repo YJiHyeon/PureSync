@@ -11,20 +11,21 @@ import { getArticle } from '../store/dataSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import ReactHtmlParser from 'html-react-parser'
 import { useLocation, useNavigate } from 'react-router-dom'
-import axios from 'axios'
 import { Button } from 'components/ui'
 import { HiOutlineClock, HiOutlineCog, HiOutlinePencil, HiOutlineInboxIn, HiOutlineTrash,HiOutlineHeart} from 'react-icons/hi'
 import { getboardFile } from 'services/DashboardService'
-import LikeButton from './LikeButton';
-import getHeaderCookie from 'utils/hooks/getHeaderCookie'
-import { parseJwt, getMemInfoFromToken } from 'utils/hooks/parseToken'
+import LikeButton from './LikeButton'
+import { apiDeleteArticle } from 'services/BoardService'
+import axios from 'axios'
+
+
 const ArticleContent = ({ articleId }) => {
     const navigate = useNavigate();
-    const access_token = getHeaderCookie();
-    let parse_token = parseJwt(access_token);
-    let { memId } = getMemInfoFromToken(parse_token);
-    
     const dispatch = useDispatch()
+    const { userName } = useSelector(
+        (state) => state.auth.user
+    )
+
     const [flag, setFlag] = useState(false);
     const [mylikes,setMylikes] = useState(0);
     const article = useSelector(
@@ -35,14 +36,12 @@ const ArticleContent = ({ articleId }) => {
     )
     console.log(article);
     const { search } = useLocation()
-    //const imageUrl = `https://fccbucket123.s3.ap-northeast-2.amazonaws.com/fileUpload/${response.data.boardfileName}`;
 
     useEffect(() => {
         fetchData();
         fetchMylikes();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
         
-        console.log("자잘봐" + mylikes);
+        console.log("================" + mylikes);
         console.log(article);
     }, [search, mylikes])
     
@@ -53,12 +52,9 @@ const ArticleContent = ({ articleId }) => {
         }
         setFlag(true);
     }
-    const fetchMylikes = async (access_token) => {
+    const fetchMylikes = async () => {
         try {
             const response = await axios.get(`http://localhost:9000/api/board/${article.boardSeq}/mylikes`, {
-                headers: {
-                    Authorization: `Bearer ${access_token}`
-                }
             });
     
             setMylikes(response.data.data.findMyLikes);
@@ -82,24 +78,18 @@ const ArticleContent = ({ articleId }) => {
 
     
     const handleDelete = async () => {
-        try {
+       
             if (!article.boardSeq) {
                 console.error('게시물 boardSeq를 찾을 수 없습니다.');
                 return;
             }
-            await axios.delete(`http://localhost:9000/api/board/${article.boardSeq}`,{
-                headers: {
-                    Authorization: `Bearer ${access_token}`
-                },
-            });
-            
-            navigate('/board');
-        } catch (error) {
-            console.error('게시물 삭제 중 오류:', error);
-        } finally {
+            await apiDeleteArticle(article.boardSeq)
+            .then((res) => {
+                navigate('/board');
+              })
+              .catch(error => { console.log(error) })
+          };
 
-        }
-    };
     const commentRegister = () => {
         //alert("댓글등록");
         //setRegister(true);
