@@ -146,20 +146,25 @@ const ArticleContent = ({ articleId }) => {
             <div className="mt-8 prose dark:prose-invert max-w-none">
                 <p>{ReactHtmlParser(article.content || '')}</p>
                 <p>{article.boardContents}</p>
-                {
-                    article && article.boardFile && article.boardFile.length > 0
-                        ? article.boardFile.map((item, index) => (
-                            item.fileUrl && (
-                                <img
-                                    key={index}
-                                    src={item.fileUrl}
-                                    alt={`image-${index}`}
-                                    style={{ width: '500px', height: 'auto' }}
-                                />
-                            )
-                        ))
-                        : null
-                }
+                <div className="grid grid-cols-2 gap-5">
+                    {
+                        article && article.boardFile && article.boardFile.length > 0
+                            ? article.boardFile.map((item, index) => (
+                                item.fileUrl && (
+                                    <div style={{ width: '100%', height: 'auto' }}>
+                                        <img
+                                            key={index}
+                                            src={item.fileUrl}
+                                            alt={`image-${index}`}
+                                            style={{ width: '100%', height: '100%', objectFit: 'cover', margin: 0 }}
+                                        />
+                                    </div>
+                                )
+                            ))
+                            : null
+                    }
+                </div>
+
 
 
             </div>
