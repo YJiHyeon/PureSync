@@ -2,7 +2,6 @@ import React from 'react'
 import {
     Input,
     Button,
-    Checkbox,
     FormItem,
     FormContainer,
     Alert,
@@ -127,7 +126,7 @@ const SignInForm = (props) => {
                                         </ActionLink>
                                     </div>
                                 </div>
-                                <div className="mt-2">    
+                                <div className="mt-2">
                                     <span>계정이 없으신가요? </span>
                                     <ActionLink to={signUpUrl}>회원가입</ActionLink>
                                 </div>

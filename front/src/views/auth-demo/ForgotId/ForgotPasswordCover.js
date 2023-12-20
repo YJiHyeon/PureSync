@@ -1,11 +1,11 @@
 import React from 'react'
-import ForgotPasswordForm from 'views/auth/ForgotPassword/ForgotPasswordForm'
+import ForgotIdForm from 'views/auth/ForgotId/ForgotIdForm'
 import Cover from 'components/layout/AuthLayout/Cover'
 
 const ForgotPasswordCover = (props) => {
     return (
         <Cover>
-            <ForgotPasswordForm
+            <ForgotIdForm
                 disableSubmit={true}
                 signInUrl="/auth/sign-in-cover"
                 {...props}
