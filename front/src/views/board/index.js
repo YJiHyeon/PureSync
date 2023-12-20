@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { AdaptableCard } from 'components/shared'
 import BoardListHeader from './components/BoardListHeader'
 import Table from 'components/ui/Table'
@@ -43,25 +43,33 @@ const Customers = () => {
                         </Tr>
                     </THead>
                     <Loading loading={loading}>
-                    <TBody>
-                        {boardList.length > 0 ? (
-                            boardList.map((board) => (
-                                <Tr key={board.boardSeq}>
-                                    <Td>{board.boardSeq}</Td>
-                                    <Td>
-                                        <ActionLink to={`/board/view?id=${board.boardSeq}`}>{board.boardName}</ActionLink>
-                                    </Td>
-                                    <Td>{board.memId}</Td>
-                                    <Td>{board.boardWdate}</Td>
-                                    <Td>{board.boardLikescount}</Td>
+                        <TBody>
+
+
+
+                            
+                            {boardList.length > 0 ? (
+                                boardList.map((board) => (
+                                    <Tr key={board.boardSeq}>
+                                        <Td>{board.boardSeq}</Td>
+                                        <Td>
+                                            {board.boardStatus === 2 ? (
+                                                <span className="deleted-message">관리자에 의해 삭제된 게시글입니다</span>
+                                            ) : (
+                                                <ActionLink to={`/board/view?id=${board.boardSeq}`}>{board.boardName}</ActionLink>
+                                            )}
+                                        </Td>
+                                        <Td>{board.memId}</Td>
+                                        <Td>{board.boardWdate}</Td>
+                                        <Td>{board.boardLikescount}</Td>
+                                    </Tr>
+                                ))
+                            ) : (
+                                <Tr>
+                                    <Td colSpan="5" className="text-center">게시물이 없습니다.</Td>
                                 </Tr>
-                            ))
-                        ) : (
-                            <Tr>
-                                <Td colSpan="5" className="text-center">게시물이 없습니다.</Td>
-                            </Tr>
-                        )}
-                    </TBody>
+                            )}
+                        </TBody>
                     </Loading>
                 </Table>
             </AdaptableCard>

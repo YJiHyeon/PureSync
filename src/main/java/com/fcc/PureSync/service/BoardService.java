@@ -298,7 +298,7 @@ public class BoardService {
     }
 
     public ResultDto findAllBoard(Pageable pageable, String id) {
-        List<Board> boardPage = boardRepository.findByBoardStatusOrderByBoardWdateDesc(1, pageable).getContent();
+        List<Board> boardPage = boardRepository.findByBoardStatusNotOrderByBoardWdateDesc(0, pageable).getContent();
         List<BoardDto> boardDetailDtoList = boardPage.stream()
                 .map(BoardDto::BoardAllDetailDto)
                 .toList();
