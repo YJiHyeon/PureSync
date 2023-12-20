@@ -16,7 +16,7 @@ import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 public class AdminNoticeController {
 
@@ -43,11 +43,13 @@ public class AdminNoticeController {
         return "adminBoard/noticeList";
     }
 
+    @ResponseBody
     @GetMapping("/api/notice/list")
     public ResultDto getNoticeListTopThree (NoticeDto noticeDto) {
         return noticeService.getNoticeListTopThree(noticeDto);
     }
 
+    @ResponseBody
     @GetMapping("/api/notice/view/{notice_seq}")
     public ResultDto getNoticeView (@PathVariable Long notice_seq) {
         NoticeDto noticeViewDto = new NoticeDto();
