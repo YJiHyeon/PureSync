@@ -18,11 +18,12 @@ PureSync는 순수한 동기화라는 뜻으로<br>
 
 
 ##  ℹ️ 프로젝트 정보
+[클라우드 기반 토큰 보안과 JPA를 활용한 인공지능 풀스택 프로젝트]<br>
 멋쟁이사자처럼 테킷 백엔드 스쿨 플러스 4조 팀프로젝트입니다.<br>
 개발 기간 : 2023.11.17~2023.12.22
 ## 🖥 홈페이지, 시연영상
-- 홈페이지 : http://fcc.puresync.site/
-- [시연영상](fcc.puresync.site/)
+- [홈페이지](http://fcc.puresync.site)
+- [시연영상](http://www.youtube.com)
 ## 📌 주요기능
 🔸 메인 대시보드
   - 신체 및 마음 기록을 바탕으로 종합점수 제공 
@@ -68,13 +69,14 @@ PureSync는 순수한 동기화라는 뜻으로<br>
 ### Front-end
 <img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=React&logoColor=white"/></a>
 <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=JavaScript&logoColor=white"/></a>
-<img src="https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=CSS3&logoColor=white"/></a>
+<img src="https://img.shields.io/badge/Tailwind%20CSS-06B6D4?style=flat-square&logo=TailwindCSS&logoColor=white"/></a>
 <img src="https://img.shields.io/badge/Bootstrap-7952B3?style=flat-square&logo=Bootstrap&logoColor=white"/></a>
 
 ### Infra
 <img src="https://img.shields.io/badge/Amazon%20S3-569A31?style=flat-square&logo=AmazonS3&logoColor=white"/></a>
 <img src="https://img.shields.io/badge/Amazon%20EC2-FF9900?style=flat-square&logo=AmazonEC2&logoColor=white"/></a>
-
+<img src="https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=Docker&logoColor=white"/></a>
+<img src="https://img.shields.io/badge/Github%20Actions-181717?style=flat-square&logo=GithubActions&logoColor=white"/></a>
 ### DB
 <img src="https://img.shields.io/badge/MariaDB-003545?style=flat-square&logo=MariaDB&logoColor=white"/></a>
 <img src="https://img.shields.io/badge/Redis-DC382D?style=flat-square&logo=Redis&logoColor=white"/></a>
@@ -85,7 +87,7 @@ PureSync는 순수한 동기화라는 뜻으로<br>
 ### API
 <img src="https://img.shields.io/badge/Naver_Sentiment_API-03C75A?style=flat-square&logo=Naver&logoColor=white"/></a>
 
-### 사용 툴
+# 사용 툴
 
 <img src="https://img.shields.io/badge/IntelliJ_IDEA-000000?style=flat-square&logo=IntelliJIDEA&logoColor=white"/></a>
 <img src="https://img.shields.io/badge/Visual_Studio_Code-007ACC?style=flat-square&logo=VisualStudioCode&logoColor=white"/></a>
@@ -95,9 +97,9 @@ PureSync는 순수한 동기화라는 뜻으로<br>
 <table>
   <tbody>
     <tr>
-      <td align="center"><a href="https://github.com/YJiHyeon"><img src="https://github.com/YJiHyeon/PureSync/assets/55646863/c49ca41e-3ec8-4272-8624-19bcaa74deff" width="100px;" alt=""/><br /><sub><b>팀장 : 윤지현 </b></sub></a><br /></td>
-      <td align="center"><a href="https://github.com/seongeon0620"><img src="https://github.com/YJiHyeon/PureSync/assets/55646863/c49ca41e-3ec8-4272-8624-19bcaa74deff" width="100px;" alt=""/><br /><sub><b>팀원 : 배성언 </b></sub></a><br /></td>
-      <td align="center"><a href="https://github.com/HSPU"><img src="https://github.com/YJiHyeon/PureSync/assets/55646863/c49ca41e-3ec8-4272-8624-19bcaa74deff" width="100px;" alt=""/><br /><sub><b>팀원 : 신우석 </b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/YJiHyeon"><img src="https://github.com/YJiHyeon/PureSync/assets/55646863/27a9a6a5-ff4d-43b7-aa7c-1ab88e7596a1" width="100px;" alt=""/><br /><sub><b>팀장 : 윤지현 </b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/seongeon0620"><img src="https://github.com/YJiHyeon/PureSync/assets/55646863/22a94a86-2ec2-45bc-826c-c15fd920341c" width="100px;" alt=""/><br /><sub><b>팀원 : 배성언 </b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/HSPU"><img src="https://github.com/YJiHyeon/PureSync/assets/55646863/ee0f3cd0-dee3-4f14-9d17-9e0d1998e1b5" width="100px;" alt=""/><br /><sub><b>팀원 : 신우석 </b></sub></a><br /></td>
      </tr>
      <tr>
         <td>
@@ -125,9 +127,9 @@ PureSync는 순수한 동기화라는 뜻으로<br>
         <br>
         </td>
      </tr>
-      <td align="center"><a href=https://github.com/simhyunbo"><img src="https://github.com/YJiHyeon/PureSync/assets/55646863/c49ca41e-3ec8-4272-8624-19bcaa74deff" width="100px;" alt=""/><br /><sub><b>팀원 : 심현보 </b></sub></a><br /></td>
+      <td align="center"><a href=https://github.com/simhyunbo"><img src="https://github.com/YJiHyeon/PureSync/assets/55646863/fa50cdc6-5853-4d22-ba6a-7bcabd575801" width="100px;" alt=""/><br /><sub><b>팀원 : 심현보 </b></sub></a><br /></td>
       <td align="center"><a href="https://github.com/orisay"><img src="https://github.com/YJiHyeon/PureSync/assets/55646863/c49ca41e-3ec8-4272-8624-19bcaa74deff" width="100px;" alt=""/><br /><sub><b>팀원 : 유재건 </b></sub></a><br /></td>
-      <td align="center"><a href="https://github.com/ruhazle"><img src="https://github.com/YJiHyeon/PureSync/assets/55646863/c49ca41e-3ec8-4272-8624-19bcaa74deff" width="100px;" alt=""/><br /><sub><b>팀원 : 유하영 </b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/ruhazle"><img src="https://github.com/YJiHyeon/PureSync/assets/55646863/047b2062-4430-4ff5-a602-db8f93e2a43b" width="100px;" alt=""/><br /><sub><b>팀원 : 유하영 </b></sub></a><br /></td>
     </tr>
     <tr>
         <td>
