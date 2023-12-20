@@ -5,6 +5,7 @@ import Table from 'components/ui/Table'
 import { Loading, TextBlockSkeletonm, TableRowSkeleton } from 'components/shared'
 import ActionLink from 'components/shared/ActionLink'
 import { apiGetArticleList } from 'services/BoardService'
+import Pagination from 'components/ui/Pagination'
 
 const { Tr, Th, Td, THead, TBody } = Table
 
@@ -12,21 +13,34 @@ const { Tr, Th, Td, THead, TBody } = Table
 const Customers = () => {
     const [boardList, setboardList] = useState({});
     const [loading, setLoading] = useState(true);
+    const [number, setNumber] = useState(0);
+    const [totalPages, setTotalPages] = useState(1);
+
+    const onPaginationChange = (number) => {
+        console.log('onPaginationChange', number)
+        apiGetArticleList(number-1)
+        .then((res) => {
+            setboardList(res.data.data.boardPage);
+            console.log(res.data.data.totalPages);
+            setTotalPages(res.data.data.totalPages);
+            setLoading(false);
+            setNumber(number);
+        })
+    }
 
     useEffect(() => {
         const fetchPosts = async () => {
-            await apiGetArticleList()
+            await apiGetArticleList(number-1)
                 .then((res) => {
                     setboardList(res.data.data.boardPage);
+                    setTotalPages(res.data.data.totalPages);
                     setLoading(false);
                 })
-                .catch((err) => {
-                    console.log(err);
-                });
+           
         };
 
         fetchPosts();
-    }, []);
+    }, [number]);
 
     return (
         <>
@@ -48,6 +62,8 @@ const Customers = () => {
                         <TableRowSkeleton columns={5} rows={10} />
                     ) : (
                         <TBody>
+
+
                             {boardList.length > 0 ? (
                                 boardList.map((board) => (
                                     <Tr key={board.boardSeq}>
@@ -72,6 +88,10 @@ const Customers = () => {
                         </TBody>
                     )}
                 </Table>
+
+                <div>
+                    <Pagination onChange={onPaginationChange} total={totalPages}/>
+                </div>
 
             </AdaptableCard>
         </>
