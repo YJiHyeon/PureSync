@@ -36,7 +36,7 @@ public class AdminNoticeController {
         model.addAttribute("pg", pg );
         model.addAttribute("total", total );
 
-        return "/adminBoard/noticeList";
+        return "adminBoard/noticeList";
     }
 
     @GetMapping("/admin/notice/view/{notice_seq}")
@@ -45,12 +45,12 @@ public class AdminNoticeController {
         noticeDto.setNotice_seq(notice_seq);
         NoticeDto resultDto = noticeService.noticeBoardView(noticeDto);
         model.addAttribute("noticeView", resultDto);
-        return "/adminBoard/noticeView";
+        return "adminBoard/noticeView";
     }
 
     @GetMapping("/admin/notice/write")
     public String adminBoardWrite() {
-        return "/adminBoard/noticeWrite";
+        return "adminBoard/noticeWrite";
     }
 
     @PostMapping("/admin/notice/save")
@@ -69,7 +69,7 @@ public class AdminNoticeController {
         noticeDto.setNotice_seq(notice_seq);
         NoticeDto resultDto = noticeService.noticeBoardView(noticeDto);
         model.addAttribute("noticeModify", resultDto);
-        return "/adminBoard/noticeModify";
+        return "adminBoard/noticeModify";
     }
 
     @PostMapping("/admin/notice/modifyOk")
