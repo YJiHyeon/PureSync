@@ -94,7 +94,7 @@ const SignInForm = (props) => {
                                     component={PasswordInput}
                                 />
                             </FormItem>
-                            <div className="ml-auto">
+                            {/* <div className="ml-auto">
                                 <Field
                                     className="mb-0"
                                     name="rememberMe"
@@ -103,7 +103,7 @@ const SignInForm = (props) => {
                                     color="green-600"
                                     children="로그인 정보 저장"
                                 />
-                            </div>
+                            </div> */}
                             <Button
                                 block
                                 loading={isSubmitting}
