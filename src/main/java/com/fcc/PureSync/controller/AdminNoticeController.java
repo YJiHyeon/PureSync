@@ -1,9 +1,13 @@
 package com.fcc.PureSync.controller;
 
 import com.fcc.PureSync.common.Pager;
+import com.fcc.PureSync.dto.MenuDto;
 import com.fcc.PureSync.dto.NoticeDto;
+import com.fcc.PureSync.dto.ResultDto;
+import com.fcc.PureSync.jwt.CustomUserDetails;
 import com.fcc.PureSync.service.NoticeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +16,7 @@ import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class AdminNoticeController {
 
@@ -37,6 +41,18 @@ public class AdminNoticeController {
         model.addAttribute("total", total );
 
         return "adminBoard/noticeList";
+    }
+
+    @GetMapping("/api/notice/list")
+    public ResultDto getNoticeListTopThree (NoticeDto noticeDto) {
+        return noticeService.getNoticeListTopThree(noticeDto);
+    }
+
+    @GetMapping("/api/notice/view/{notice_seq}")
+    public ResultDto getNoticeView (@PathVariable Long notice_seq) {
+        NoticeDto noticeViewDto = new NoticeDto();
+        noticeViewDto.setNotice_seq(notice_seq);
+        return noticeService.detailNotice(noticeViewDto);
     }
 
     @GetMapping("/admin/notice/view/{notice_seq}")
