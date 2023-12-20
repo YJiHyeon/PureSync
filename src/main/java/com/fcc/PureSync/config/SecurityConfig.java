@@ -40,7 +40,7 @@ public class SecurityConfig {
 
     //관리자 측 폼
     @Bean
-    public SecurityFilterChain filterChainforAdmin(HttpSecurity httpSecurity) throws Exception {
+    public SecurityFilterChain filterChainForAdmin(HttpSecurity httpSecurity) throws Exception {
         configureCommonAuthentication(httpSecurity);
         httpSecurity
                 .authorizeHttpRequests(admin -> admin
