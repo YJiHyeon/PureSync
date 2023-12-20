@@ -91,6 +91,7 @@ public class MailService {
         } catch (Exception e) {
             e.printStackTrace();
             throw new CustomException(SEND_ERROR);
+
         }
     }
 
