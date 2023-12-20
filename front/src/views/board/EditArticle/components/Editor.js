@@ -1,20 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import {
-  Input,
-  FormItem,
-  FormContainer,
-  Select,
-  Button,
-  Notification,
-  toast,
+    Input,
+    FormItem,
+    FormContainer,
+    Button,
+    Notification,
+    Upload
 } from 'components/ui'
 import { RichTextEditor } from 'components/shared'
-import { Field, Form, Formik } from 'formik'
-import { useNavigate } from 'react-router-dom'
+import { Field, Form, Formik, setIn } from 'formik'
+import { useNavigate, useLocation } from 'react-router-dom'
 import * as Yup from 'yup'
-import { useLocation } from 'react-router-dom';
-import getHeaderCookie from 'utils/hooks/getHeaderCookie'
-import { parseJwt, getMemInfoFromToken } from 'utils/hooks/parseToken'
 import { apiPostArticle, apiPutArticle } from 'services/BoardService'
 
 // const validationSchema = Yup.object().shape({
@@ -24,201 +20,206 @@ import { apiPostArticle, apiPutArticle } from 'services/BoardService'
 // })
 
 const Editor = () => {
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  const access_token = getHeaderCookie();
-  let parse_token = parseJwt(access_token);
-  let { memId } = getMemInfoFromToken(parse_token);
-  const { state } = useLocation();
-  const { updateData } = state || {};
-  const [initialFilePreviews, setInitialFilePreviews] = useState([]);
-  console.log(updateData);
+    const { state } = useLocation();
+    const { updateData } = state || {};
+    const [initFile, setInitFile] = useState([]);
 
-
-  useEffect(() => {
-    // 페이지 진입 시 이미 존재하는 파일에 대한 정보를 가져와서 filePreviews를 초기화
-    if (updateData && updateData.boardFile) {
-
-      console.log(updateData.boardFile);
-      setInitialFilePreviews([updateData.boardFile]);
-
-    }
-  }, [updateData]);
-  // useEffect(() => {
-  //   // 페이지 진입 시 이미 존재하는 파일에 대한 정보를 가져와서 filePreviews를 초기화
-  //   if (updateData && updateData.boardFile) {
-  //     const existingFilePreviews = updateData.boardFile.map((file) => ({
-  //       fileUrl: file.fileUrl,
-  //       file,
-  //     }));
-  //     setInitialFilePreviews(existingFilePreviews);
-  //   }
-  // }, [updateData]);
-
-  useEffect(() => {
-    console.log(initialFilePreviews);
-  }, [initialFilePreviews]);
-
-
-  //const updateData = location.state && location.state.updateData;
-  const onUpload = (files) => {
-    console.log(files);
-  }
-
-
-  function stripHtmlUsingDOM(html) {
-    const doc = new DOMParser().parseFromString(html, 'text/html');
-    return doc.body.textContent || '';
-  }
-
-  const onComplete = async (values, setSubmitting) => {
-    setSubmitting(true);
-    values.boardContents = stripHtmlUsingDOM(values.boardContents)
-    const formData = new FormData(window.document.myform);
-
-    formData.append("boardContents", values.boardContents);
-    for (let key of formData.keys()) {
-      console.log(key, formData.get(key));
-    }
-
-    console.log(values.files);
-    if (values.files.length === 0) {
-      formData.delete("file");
-    }
+    useEffect(() => {
+        const fetchData = async () => {
+            if (updateData && updateData.boardFile) {
+                const fileObjects = await convertDataToFileObjects(updateData);
+                setInitFile(fileObjects);
+                // console.log(fileObjects)
+            }
+        };
     
-    if (updateData == null) {
-      await apiPostArticle(formData)
-        .then((res) => {
-          console.log('파일 업로드 성공:', res.data);
-          alert('게시글이 작성되었습니다.');
-          navigate(`/board/view?id=${res.data.data.board.boardSeq}`);
-        })
-        .catch((error) => {console.log(error)})
-      
-    } else {
-      console.log(updateData);
-      await apiPutArticle(updateData.articleId, formData)
-        .then((res) => {
-          console.log('파일 업로드 성공:', res.data);
-          alert('게시글이 수정되었습니다.');
-          navigate(`/board/view?id=${res.data.data.board.boardSeq}`);
-        })
-        .catch((error) => {console.log(error)})
+        fetchData();
+    }, [updateData]);
+
+
+    const beforeUpload = (files) => {
+        let valid = true
+
+        const allowedFileType = ['image/jpeg', 'image/png', 'image/gif']
+        const maxFileSize = 500000
+
+        for (let file of files) {
+            if (!allowedFileType.includes(file.type)) {
+                valid = 'jpeg/png/gif 파일만 업로드 가능합니다.'
+            }
+            if (file.size >= maxFileSize) {
+                valid = '500kb미만의 파일만 업로드 가능합니다.'
+            }
+        }
+
+        return valid
     }
-    
-    setSubmitting(false);
-  };
 
-  return (
-    <Formik
-      initialValues={{
-        boardName: updateData ? updateData.boardName : '',
-        boardContents: updateData ? updateData.boardContents : '',
+    const onSetFormFile = (form, field, files) => {
 
-        files: updateData && updateData.boardFile ? [...updateData.boardFile] : [],
-        filePreviews: initialFilePreviews,
-      }}
-      onSubmit={(values, { setSubmitting }) => {
-        onComplete(values, setSubmitting);
-      }}
-    >
-      {({ values, touched, errors, isSubmitting, setFieldValue }) => (
-        <Form enctype="multipart/form-data" name="myform">
-          <FormContainer>
-            <FormItem label="제목">
-              <Field autoComplete="off" name="boardName" component={Input} />
-            </FormItem>
-            <FormItem
-              label="내용"
-              className="mb-0"
-              labelClass="!justify-start"
-              invalid={errors.content && touched.content}
-              errorMessage={errors.content}
-            >
-              <Field name="boardContents">
-                {({ field, form }) => (
-                  <RichTextEditor
-                    value={field.value}
-                    onChange={(val) => form.setFieldValue(field.name, val)}
-                  />
-                )}
-              </Field>
-            </FormItem>
-            <FormItem label="파일 업로드">
+        const dataTransfer = new DataTransfer();
 
-              <Field
-                type="file"
-                name="file"
-                multiple
-                onChange={(event) => {
-                  const file = event.currentTarget.files;
-                  console.log(file);
+        if (files && files.length > 0) {
+            for (const file of files) {
+                dataTransfer.items.add(file);
+            }
+        }
 
-                  // 기존에 업로드된 파일 목록
-                  const existingFiles = values.files ? [...values.files] : [];
+        form.setFieldValue(field.name, dataTransfer.files);
+    }
 
-                  // 새로 업로드한 파일 목록
-                  const newFiles = Array.from(file);
+    const createFileObject = async (fileInfo) => {
+        const { boardfileName, boardfileSize, fileUrl } = fileInfo;
+        console.log("===fileUrl");
+        console.log(fileUrl);
 
-                  // 기존에 업로드된 파일 목록과 새로 업로드한 파일 목록을 합침
-                  const mergedFiles = [...existingFiles, ...newFiles];
+        const mimeType = boardfileName.endsWith('.jpg') ? 'image/jpeg' : 'image/png';
 
-                  // 업로드된 파일 목록 업데이트
-                  setFieldValue('files', mergedFiles);
+        const response = await fetch(fileUrl);
+        const blob = await response.blob();
 
-                  console.log('file:', file);
+        const file = new File([blob], boardfileName, { type: mimeType, lastModified: Date.now() });
+        return file;
+    };
 
-                  if (file.length > 0) {
-                    const previews = values.filePreviews ? [...values.filePreviews] : [];
-                    newFiles.forEach((files) => {
-                      const reader = new FileReader();
-                      reader.onloadend = () => {
-                        previews.push(reader.result);
-                        if (previews.length === mergedFiles.length) {
-                          setFieldValue('filePreviews', previews);
-                          console.log(file);
-                        }
-                      };
-                      reader.readAsDataURL(files);
-                    });
-                  } else {
-                    setFieldValue('filePreviews', values.filePreviews || []);
-                  }
-                }}
-              />
+    const convertDataToFileObjects = async (updateData) => {
+        if (updateData && updateData.boardFile && updateData.boardFile.length > 0) {
+            const fileObjects = await Promise.all(updateData.boardFile.map((fileInfo) => createFileObject(fileInfo)));
+            return fileObjects;
+        }
 
-              {/* 파일 미리보기 맵핑 */}
-              <div className='flex'>
-                {Array.from(values.files).map((file, index) => (
-                  <img
-                    key={index}
-                    src={file.fileUrl || URL.createObjectURL(file)}
-                    alt={`이미지 미리보기 ${index + 1}`}
-                    style={{ width: '200px', height: 'auto', marginTop: '10px' }}
-                  />
-                ))}
-                {console.log('File Previews:', values.filePreviews)}
-                {values.filePreviews &&
-                  values.filePreviews.map((preview, index) => (
-                    <img
-                      key={index}
-                      src={preview}
-                      alt={`이미지 미리보기 ${index + 1}`}
-                      style={{ width: '200px', height: 'auto', marginTop: '10px' }}
-                    />
-                  ))}
-              </div>
-            </FormItem>
-            <div className="mt-4 flex justify-end">
-              <Button loading={isSubmitting} variant="solid" type="submit">
-                등록
-              </Button>
-            </div>
-          </FormContainer>
-        </Form>
-      )}
-    </Formik>
-  );
+        return [];
+    };
+
+    function stripHtmlUsingDOM(html) {
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        return doc.body.textContent || '';
+    }
+
+    const onComplete = async (values, setSubmitting) => {
+        setSubmitting(true);
+        values.boardContents = stripHtmlUsingDOM(values.boardContents)
+
+        const formData = new FormData();
+        formData.append("boardName", values.boardName);
+        formData.append("boardContents", values.boardContents);
+        console.log("***************************" + values.file);
+        if (values.file.length != 0) {
+            Array.from(values.file).forEach(file => {
+                formData.append('file', file);
+            });
+        }
+
+        console.log("====================");
+        console.log(values);
+        console.log(values.file);
+        console.log(values.file.length);
+
+        for (let key of formData.keys()) {
+            console.log(key, formData.get(key));
+        }
+
+
+        if (updateData == null) {
+            await apiPostArticle(formData)
+                .then((res) => {
+                    console.log('파일 업로드 성공:', res.data);
+                    alert('게시글이 작성되었습니다.');
+                    navigate(`/board/view?id=${res.data.data.board.boardSeq}`);
+                })
+                .catch((error) => { console.log(error) })
+
+        } else {
+            console.log(updateData);
+            await apiPutArticle(updateData.articleId, formData)
+                .then((res) => {
+                    console.log('파일 업로드 성공:', res.data);
+                    alert('게시글이 수정되었습니다.');
+                    navigate(`/board/view?id=${updateData.articleId}`);
+                })
+                .catch((error) => { console.log(error) })
+        }
+
+        setSubmitting(false);
+    };
+
+    return (
+        <Formik
+            initialValues={{
+                boardName: updateData ? updateData.boardName : '',
+                boardContents: updateData ? updateData.boardContents : '',
+                file: updateData && updateData.boardFile ? initFile : [],
+                // file: [],
+            }}
+            onSubmit={(values, { setSubmitting }) => {
+                onComplete(values, setSubmitting);
+            }}
+        >
+            {({ values, touched, errors, isSubmitting, setFieldValue }) => (
+                <Form enctype="multipart/form-data" name="myform">
+                    <FormContainer>
+                        <FormItem label="제목">
+                            <Field autoComplete="off" name="boardName" component={Input} />
+                        </FormItem>
+                        <FormItem
+                            label="내용"
+                            className="mb-0"
+                            labelClass="!justify-start"
+                            invalid={errors.content && touched.content}
+                            errorMessage={errors.content}
+                        >
+                            <Field name="boardContents">
+                                {({ field, form }) => (
+                                    <RichTextEditor
+                                        value={field.value}
+                                        onChange={(val) => form.setFieldValue(field.name, val)}
+                                    />
+                                )}
+                            </Field>
+                        </FormItem>
+                        <Field name="file">
+                            {({ field, form }) => {
+                                return (
+                                    <Upload
+                                        className="mt-3"
+                                        uploadLimit={5}
+                                        multiple
+                                        beforeUpload={beforeUpload}
+                                        onChange={(files) =>
+                                            onSetFormFile(
+                                                form,
+                                                field,
+                                                files
+                                            )
+                                        }
+                                        onFileRemove={(files) => {
+                                            console.log(files);
+                                            onSetFormFile(
+                                                form,
+                                                field,
+                                                files
+                                            )
+                                        }
+                                        }
+                                        name="file"
+                                        fileList={updateData ? initFile : undefined}
+                                    />
+                                )
+                            }}
+                        </Field>
+
+                        <div className="mt-4 flex justify-end">
+                            <Button loading={isSubmitting} variant="solid" type="submit">
+                                등록
+                            </Button>
+                        </div>
+                    </FormContainer>
+                </Form>
+            )}
+        </Formik>
+    );
 };
 
 export default Editor;

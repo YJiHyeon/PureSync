@@ -183,11 +183,11 @@ public class BoardService {
          * 파일 존재 o
          */
         if (file != null) {
-//            List<BoardFile> filesToDelete = boardFileRepository.findAllByBoard_BoardSeq(boardSeq);
-//            for (BoardFile fileToDelete : filesToDelete) {
-//                deleteFileFromS3(fileToDelete.getBoardfileName());
-//                boardFileRepository.delete(fileToDelete);
-//            }
+            List<BoardFile> filesToDelete = boardFileRepository.findAllByBoard_BoardSeq(boardSeq);
+            for (BoardFile fileToDelete : filesToDelete) {
+                deleteFileFromS3(fileToDelete.getBoardfileName());
+                boardFileRepository.delete(fileToDelete);
+            }
 
             List<String> originalFileNameList = new ArrayList<>();
             List<String> storedFileNameList = new ArrayList<>();
@@ -298,7 +298,7 @@ public class BoardService {
     }
 
     public ResultDto findAllBoard(Pageable pageable, String id) {
-        List<Board> boardPage = boardRepository.findByBoardStatusOrderByBoardWdateDesc(1, pageable).getContent();
+        List<Board> boardPage = boardRepository.findByBoardStatusNotOrderByBoardWdateDesc(0, pageable).getContent();
         List<BoardDto> boardDetailDtoList = boardPage.stream()
                 .map(BoardDto::BoardAllDetailDto)
                 .toList();
