@@ -14,7 +14,46 @@ PureSync는 순수한 동기화라는 뜻으로<br>
 한 눈에 확인 할 수 있습니다.<br>
 
 # 📝 프로젝트 소개
-## 🖥 주요기능
+<img width="519" alt="스크린샷 2023-12-20 오전 10 22 59" src="https://github.com/YJiHyeon/PureSync/assets/55646863/b3d1e3bd-4dad-4e66-9b8e-27057c2953bf">
+
+
+##  ℹ️ 프로젝트 정보
+멋쟁이사자처럼 테킷 백엔드 스쿨 플러스 4조 팀프로젝트입니다.<br>
+개발 기간 : 2023.11.17~2023.12.22
+## 🖥 홈페이지, 시연영상
+- [홈페이지](www.google.com)
+- [시연영상](www.google.com)
+## 📌 주요기능
+🔸 메인 대시보드
+  - 신체 및 마음 기록을 바탕으로 종합점수 제공 
+  - 목표 섭취 칼로리, 목표 소비칼로리 비교
+  - 긍정문구
+  - 최근 7일 섭취 칼로리 차트
+  - 최근 7일, 30일, 12개월 운동 기록 차트
+  - 최근 7일, 30일, 12개월 수면 기록 차트
+
+🔸 식단 및 운동 기록
+ - 아침, 점심, 저녁, 간식 식단 기록 
+ - 운동 기록
+ - 식단 및 운동기록을 섭취칼로리 및 소모칼로리 분석
+
+🔸 마음 일기
+ - 마음일기 작성
+ - 마음 일기 AI 감정분석
+ - 마음 일기 감정 비율 차트
+
+🔸 마음 쓰레기통
+ - 버리고 싶은 감정 적기
+ - 감정 쓰레기통에 버리는 UI
+
+🔸 심리테스트
+ - 간이 우울증 검사
+ - 간이 스트레스 검사
+
+🔸 유저 커뮤니티
+ - 유저 게시판
+
+
 ## ⚒ 기술스택
 ### Back-end
 <img src="https://img.shields.io/badge/Java-007396?style=flat-square&logo=Java&logoColor=white"/></a>
@@ -56,13 +95,65 @@ PureSync는 순수한 동기화라는 뜻으로<br>
 <table>
   <tbody>
     <tr>
-      <td align="center"><a href=""><img src="width="100px;" alt=""/><br /><sub><b>팀장 : 윤지현 </b></sub></a><br /></td>
-      <td align="center"><a href=""><img src="" width="100px;" alt=""/><br /><sub><b>팀원 : 신우석 </b></sub></a><br /></td>
-      <td align="center"><a href=""><img src="" width="100px;" alt=""/><br /><sub><b>팀원 : 심현보 </b></sub></a><br /></td>
-     <tr/>
-      <td align="center"><a href=""><img src="" width="100px;" alt=""/><br /><sub><b>팀원 : 배성언 </b></sub></a><br /></td>
-      <td align="center"><a href=""><img src="" width="100px;" alt=""/><br /><sub><b>팀원 : 유재건 </b></sub></a><br /></td>
-      <td align="center"><a href=""><img src="" width="100px;" alt=""/><br /><sub><b>팀원 : 유하영 </b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/YJiHyeon"><img src="https://github.com/YJiHyeon/PureSync/assets/55646863/c49ca41e-3ec8-4272-8624-19bcaa74deff" width="100px;" alt=""/><br /><sub><b>팀장 : 윤지현 </b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/seongeon0620"><img src="https://github.com/YJiHyeon/PureSync/assets/55646863/c49ca41e-3ec8-4272-8624-19bcaa74deff" width="100px;" alt=""/><br /><sub><b>팀원 : 배성언 </b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/HSPU"><img src="https://github.com/YJiHyeon/PureSync/assets/55646863/c49ca41e-3ec8-4272-8624-19bcaa74deff" width="100px;" alt=""/><br /><sub><b>팀원 : 신우석 </b></sub></a><br /></td>
+     </tr>
+     <tr>
+        <td>
+        -----------------------<br>
+        데이터베이스 서버 구축<br>
+        식단&운동 기록<br>
+        랜딩 페이지<br>
+        유저 커뮤니티 게시판 관리<br>
+        공지사항 관리<br>
+        </td>
+        <td>
+        -----------------------<br>
+        메인페이지<br>
+        마이페이지<br>
+        유저 관리<br>
+        로고 디자인<br>
+        CSS 통합<br>
+        </td>
+        <td>
+        -----------------------<br>
+        심리테스트<br>
+        문의 게시판<br>
+        문의 게시판 관리<br>
+        배포<br>
+        <br>
+        </td>
+     </tr>
+      <td align="center"><a href=https://github.com/simhyunbo"><img src="https://github.com/YJiHyeon/PureSync/assets/55646863/c49ca41e-3ec8-4272-8624-19bcaa74deff" width="100px;" alt=""/><br /><sub><b>팀원 : 심현보 </b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/orisay"><img src="https://github.com/YJiHyeon/PureSync/assets/55646863/c49ca41e-3ec8-4272-8624-19bcaa74deff" width="100px;" alt=""/><br /><sub><b>팀원 : 유재건 </b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/ruhazle"><img src="https://github.com/YJiHyeon/PureSync/assets/55646863/c49ca41e-3ec8-4272-8624-19bcaa74deff" width="100px;" alt=""/><br /><sub><b>팀원 : 유하영 </b></sub></a><br /></td>
     </tr>
+    <tr>
+        <td>
+        -----------------------<br>
+        유저 커뮤니티 게시판<br>
+        게시판 추천 기능<br>
+        수면 기록<br>
+        파일 업로드 환경 구축<br>
+        <br>
+        </td>
+        <td>
+        -----------------------<br>
+        로그인<br>
+        회원가입<br>
+        비밀번호 찾기<br>
+        메일서비스<br>
+        최적화<br>
+        </td>
+        <td>
+        -----------------------<br>
+        마음일기<br>
+        마음쓰레기통<br>
+        방문자 기록<br>
+        관리자 메인 페이지<br>
+        <br>
+        </td>
+     </tr>
   </tbody>
 </table>
