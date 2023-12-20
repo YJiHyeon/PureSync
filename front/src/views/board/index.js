@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { AdaptableCard } from 'components/shared'
 import BoardListHeader from './components/BoardListHeader'
 import Table from 'components/ui/Table'
-import { Loading } from 'components/shared'
+import { Loading, TextBlockSkeletonm, TableRowSkeleton } from 'components/shared'
 import ActionLink from 'components/shared/ActionLink'
 import { apiGetArticleList } from 'services/BoardService'
 
@@ -32,6 +32,8 @@ const Customers = () => {
         <>
             <AdaptableCard className="h-full" bodyClass="h-full">
                 <BoardListHeader />
+
+
                 <Table>
                     <THead>
                         <Tr>
@@ -42,12 +44,10 @@ const Customers = () => {
                             <Th>좋아요</Th>
                         </Tr>
                     </THead>
-                    <Loading loading={loading}>
+                    {loading ? (
+                        <TableRowSkeleton columns={5} rows={10} />
+                    ) : (
                         <TBody>
-
-
-
-                            
                             {boardList.length > 0 ? (
                                 boardList.map((board) => (
                                     <Tr key={board.boardSeq}>
@@ -70,8 +70,9 @@ const Customers = () => {
                                 </Tr>
                             )}
                         </TBody>
-                    </Loading>
+                    )}
                 </Table>
+
             </AdaptableCard>
         </>
     )
