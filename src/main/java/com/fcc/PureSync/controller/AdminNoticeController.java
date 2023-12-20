@@ -29,9 +29,12 @@ public class AdminNoticeController {
         noticeDto.setStart(pg*10);
         List<NoticeDto> noticeList = noticeService.getAllNoticeList(noticeDto);
 
+        int total = noticeService.getNoticeTotalcnt(noticeDto);
+
         model.addAttribute("noticeList", noticeList);
-        model.addAttribute("page", Pager.makePage(10, noticeService.getNoticeTotalcnt(noticeDto), pg));
+        model.addAttribute("page", Pager.makePage(10, total , pg));
         model.addAttribute("pg", pg );
+        model.addAttribute("total", total );
 
         return "/adminBoard/noticeList";
     }
