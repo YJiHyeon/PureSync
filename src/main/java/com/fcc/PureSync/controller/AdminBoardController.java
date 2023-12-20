@@ -36,7 +36,7 @@ public class AdminBoardController {
         model.addAttribute("userBoardList", userBoardList);
         model.addAttribute("total" , totalcnt );
         model.addAttribute("pg", pg );
-        return "/userBoard/userList";
+        return "userBoard/userList";
     }
 
     @GetMapping("/admin/cmt/list/{pg}")
@@ -56,7 +56,7 @@ public class AdminBoardController {
         model.addAttribute("total", totalcnt);
         model.addAttribute("pg", pg );
 
-        return "/userBoard/userCmtList";
+        return "userBoard/userCmtList";
     }
 
     @GetMapping("/admin/user/view/{board_seq}")
@@ -67,7 +67,7 @@ public class AdminBoardController {
         List<AdminBoardDto> fileList = adminBoardService.getAllBoardFiles(adminBoardDto);
         model.addAttribute("userBoardView", resultDto);
         model.addAttribute("fileList", fileList);
-        return "/userBoard/userView";
+        return "userBoard/userView";
     }
 
     @GetMapping("admin/user/list/delete/{board_seq}")
