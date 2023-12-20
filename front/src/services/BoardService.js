@@ -72,7 +72,12 @@ export async function apiDeleteComment(boardSeq,cmtSeq) {
     })
 }
 
-
+export async function apiGetMyLikes(params) {
+    return ApiService.fetchData({
+        url: process.env.REACT_APP_HOST_URL + `/api/board/${params}/mylikes`,
+        method: 'get',
+    })
+}
 
 // =================================================
 
@@ -95,5 +100,7 @@ export async function apiGetCrmCustomerDetails(params) {
         params,
     })
 }
+
+
 
 
