@@ -2,7 +2,7 @@ import ApiService from './ApiService'
 
 export async function apiGetArticleList(number) {
     return  ApiService.fetchData({
-        url: `http://localhost:9000/api/board?page=${number}&size=10`,
+        url: process.env.REACT_APP_HOST_URL + `/api/board?page=${number}&size=10`,
         method: 'get',
     });
 }
