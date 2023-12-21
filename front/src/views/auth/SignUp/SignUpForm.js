@@ -6,6 +6,7 @@ import { Field, Form, Formik } from 'formik'
 import * as Yup from 'yup' //유효성검사
 import dayjs from 'dayjs';
 import useAuth from 'utils/hooks/useAuth'
+// import FormPatternInput from 'components/shared/FormPatternInput'
 
 const today = new Date();
 const minAgeDate = dayjs(today).subtract(14, 'year').toDate();
@@ -35,9 +36,9 @@ const validationSchema = Yup.object().shape({
         .required('성별을 선택해주세요.'),
 
     memBirth: Yup.date()
-    .required('생년월일을 입력해주세요.')
+        .required('생년월일을 입력해주세요.')
         .max(minAgeDate, ALERT_MEMBIRT),
-        memPassword: Yup.string()
+    memPassword: Yup.string()
         .required('비밀번호를 입력해주세요.')
         .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/, '영문 숫자 특수문자를 조합하여 비밀번호를 만들어주세요.')
         .min(8, '비밀번호는 최소 8글자 이상입니다.'),
@@ -56,6 +57,13 @@ const SignUpForm = ({ onSubmit, ...props }) => {
     const { signUp } = useAuth()
     const [duplicateCheckMessage, setDuplicateCheckMessage] = useState({});
     const [message, setMessage] = useTimeOutMessage()
+
+
+    const [memBirth, setMemBirth] = useState(0);
+
+    const handleMemBirthChange = (value) => {
+        setMemBirth(value);
+    }
 
 
     const onSignUp = async (values, setSubmitting) => {
@@ -129,18 +137,7 @@ const SignUpForm = ({ onSubmit, ...props }) => {
                                 </InputGroup>
                             </FormItem>
                             {/* 아이디 끝 */}
-                            {/* 닉네임 인풋박스 */}
-                            <FormItem
-                                label="닉네임"
-                                asterisk
-                                invalid={errors.memNick && touched.memNick}
-                                errorMessage={errors.memNick}
-                            >
-                                <InputGroup className="mb-4">
-                                    <Field as={Input} name="memNick" />
-                                    <SendCompareButton color="green-600" variant="solid" type="button" field={FILED_MEM_NICKNAME} inputValue={values.memNick} onDuplicateCheck={handleDuplicateCheck} setFieldError={setFieldError}>닉네임 중복 검사</SendCompareButton>
-                                </InputGroup>
-                            </FormItem>
+
                             {/* 이메일 */}
                             {/* 이메일 중복검사 */}
                             <FormItem
@@ -154,6 +151,18 @@ const SignUpForm = ({ onSubmit, ...props }) => {
                                     <SendCompareButton color="green-600" variant="solid" type="button" field={FILED_MEM_EMAIL} inputValue={values.memEmail} onDuplicateCheck={handleDuplicateCheck} setFieldError={setFieldError}>이메일 중복 검사</SendCompareButton>
                                 </InputGroup>
                             </FormItem>
+                            {/* 닉네임 인풋박스 */}
+                            <FormItem
+                                label="닉네임"
+                                asterisk
+                                invalid={errors.memNick && touched.memNick}
+                                errorMessage={errors.memNick}
+                            >
+                                <InputGroup className="mb-4">
+                                    <Field as={Input} name="memNick" />
+                                </InputGroup>
+                            </FormItem>
+                            {/* 닉네임 끝 */}
                             {/* 출생년도 */}
                             <FormItem
                                 label="생년월일"
@@ -171,6 +180,11 @@ const SignUpForm = ({ onSubmit, ...props }) => {
                                     )}
                                 </Field>
                             </FormItem>
+                            {/* <FormPatternInput
+                                value={memBirth}
+                                format="####-##-##"
+                                onValueChange={(e) => handleMemBirthChange}
+                            /> */}
                             {/* 성별 */}
                             <FormItem
                                 label="성별"
