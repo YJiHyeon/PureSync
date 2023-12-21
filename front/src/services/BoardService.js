@@ -1,8 +1,8 @@
 import ApiService from './ApiService'
 
-export async function apiGetArticleList() {
+export async function apiGetArticleList(number) {
     return  ApiService.fetchData({
-        url: 'http://localhost:9000/api/board',
+        url: `http://localhost:9000/api/board?page=${number}&size=10`,
         method: 'get',
     });
 }
@@ -78,6 +78,14 @@ export async function apiGetMyLikes(params) {
         method: 'get',
     })
 }
+
+export async function apiGetNotice() {
+    return ApiService.fetchData({
+        url: process.env.REACT_APP_HOST_URL + `/api/notice/list`,
+        method: 'get',
+    })
+}
+
 
 // =================================================
 

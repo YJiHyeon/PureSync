@@ -20,7 +20,7 @@ public class AdminBoardController {
 
     private final AdminBoardService adminBoardService;
 
-    @GetMapping("/admin/user/list/{pg}")
+    @GetMapping("admin/user/list/{pg}")
     public String userBoardList(Model model, AdminBoardDto adminBoardDto , @PathVariable("pg") int pg) {
         String searchText = URLDecoder.decode( adminBoardDto.getSearchText() );
             if( searchText == null ) {

@@ -6,19 +6,13 @@ import CloseButton from '../CloseButton';
 import { motion } from 'framer-motion';
 import { theme } from 'twin.macro';
 import useWindowSize from '../hooks/useWindowSize';
-import getHeaderCookie from 'utils/hooks/getHeaderCookie'
-import { parseJwt, getMemInfoFromToken } from 'utils/hooks/parseToken'
 
 import { Button, Select, Input } from 'components/ui';
-import Axios from 'axios';
 import { apiWriteMenu, apiGetAllMenu } from 'services/BodyRecord';
 
 const DialogMenu = (props) => {
 
-    //Header Cookie
-    const access_token = getHeaderCookie();
-    let parse_token = parseJwt(access_token);
-    let { memId, memSeq } = getMemInfoFromToken(parse_token);
+
 
     // 현재 창 크기를 가져오는 커스텀 훅 사용
     const currentSize = useWindowSize();

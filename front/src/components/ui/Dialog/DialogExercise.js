@@ -7,17 +7,10 @@ import { motion } from 'framer-motion';
 import { theme } from 'twin.macro';
 import useWindowSize from '../hooks/useWindowSize';
 import { Button, Input } from 'components/ui';
-import Axios from 'axios';
-import getHeaderCookie from 'utils/hooks/getHeaderCookie';
-import {parseJwt, getMemInfoFromToken} from 'utils/hooks/parseToken';
 import { apiGetAllExercise, apiWriteExercise } from 'services/BodyRecord';
 
 const DialogExercise = (props) => {
 
-    //Header Cookie
-    const access_token = getHeaderCookie();
-    let parse_token = parseJwt(access_token);
-    let  { memId, memSeq } = getMemInfoFromToken(parse_token);
 
     const currentSize = useWindowSize();
 

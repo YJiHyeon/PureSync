@@ -19,6 +19,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 
     Page<Board> findByBoardStatusNotOrderByBoardWdateDesc(Integer boardStatus,Pageable pageable);
 
+    Long countByBoardStatusNot(Integer boardStatus);
     @Query("SELECT COUNT(a) FROM Likes a WHERE a.board = :board")
     Long countLikesByBoard(@Param("board") Board board);
 
