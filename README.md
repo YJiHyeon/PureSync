@@ -135,7 +135,7 @@
      </tr>
       <td align="center"><a href="https://github.com/simhyunbo"><img src="https://github.com/YJiHyeon/PureSync/assets/55646863/fa50cdc6-5853-4d22-ba6a-7bcabd575801" width="100px;" alt=""/><br /><sub><b>팀원 : 심현보 </b></sub></a><br /></td>
       <td align="center"><a href="https://github.com/orisay"><img src="https://github.com/YJiHyeon/PureSync/assets/55646863/605c9550-9f65-4d4f-8d41-3c3deb24be5a" width="100px;" alt=""/><br /><sub><b>팀원 : 유재건 </b></sub></a><br /></td>
-      <td align="center"><a href="https://github.com/ruhazle"><img src="https://github.com/YJiHyeon/PureSync/assets/55646863/047b2062-4430-4ff5-a602-db8f93e2a43b" width="100px;" alt=""/><br /><sub><b>팀원 : 유하영 </b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/ruhazle"><img src="https://github.com/YJiHyeon/PureSync/assets/55646863/950e5b2f-fa0f-49b9-aefe-39135a5eab59" width="100px;" alt=""/><br /><sub><b>팀원 : 유하영 </b></sub></a><br /></td>
     </tr>
     <tr>
         <td>
