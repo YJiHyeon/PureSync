@@ -108,12 +108,12 @@ const appsRoute = [
         authority: [ADMIN, USER],
     },
     // 문의게시판
-    // {
-    //     key: 'qnaBoard',
-    //     path: `/qnaBoard`,
-    //     component: React.lazy(() => import('views/qnaBoard/index')),
-    //     authority: [ADMIN, USER],
-    // },
+    {
+        key: 'qnaboard',
+        path: `/qnaboard`,
+        component: React.lazy(() => import('views/qnaboard/index')),
+        authority: [ADMIN, USER],
+    },
     // {
     //     key: 'qnaBoard.detail',
     //     path: `/qnaBoard/view`,
