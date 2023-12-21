@@ -79,6 +79,13 @@ export async function apiGetMyLikes(params) {
     })
 }
 
+export async function apiGetNotice() {
+    return ApiService.fetchData({
+        url: process.env.REACT_APP_HOST_URL + `/api/notice/list`,
+        method: 'get',
+    })
+}
+
 // =================================================
 
 export async function apiGetOthersArticleList(params) {
