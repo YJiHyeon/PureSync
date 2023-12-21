@@ -8,15 +8,15 @@ import * as Yup from 'yup' //유효성검사
 import Axios from 'axios'
 
 const validationSchema = Yup.object().shape({
-    bodyHeight: Yup.number("소수점 둘째자리까지 입력 가능합니다.").required("현재 키를 입력해주세요").positive("양수여야 합니다.").lessThan(300, '세상에서 제일 키가 큰 사람은 251cm 입니다.'),
+    bodyHeight: Yup.number("소수점 둘째자리까지 입력 가능합니다.").required("현재 키를 입력해주세요").positive("양수여야 합니다.").lessThan(300, '300.00cm 작아야 입니다.'),
     
-    bodyWeight: Yup.number("소수점 둘째자리까지 입력 가능합니다.").required("현재 몸무게를 입력해주세요").positive("양수여야 합니다.").lessThan(500, '500보다 작아야합니다.'),
+    bodyWeight: Yup.number("소수점 둘째자리까지 입력 가능합니다.").required("현재 몸무게를 입력해주세요").positive("양수여야 합니다.").lessThan(500, '500.00Kg보다 작아야합니다.'),
     
-    bodyWishWeight: Yup.number("소수점 둘째자리까지 입력 가능합니다.").required("원하시는 목표 몸무게를 입력해주세요.").positive("양수여야 합니다."),
+    bodyWishWeight: Yup.number("소수점 둘째자리까지 입력 가능합니다.").required("원하시는 목표 몸무게를 입력해주세요.").positive("양수여야 합니다.").lessThan(500, '500.00Kg 작아야합니다.'),
     
-    bodyWishConscal: Yup.number("소수점 둘째자리까지 입력 가능합니다.").required("원하시는 섭취 칼로리를 입력해주세요.").positive("양수여야 합니다."),
+    bodyWishConscal: Yup.number("소수점 둘째자리까지 입력 가능합니다.").required("원하시는 섭취 칼로리를 입력해주세요.").positive("양수여야 합니다.").lessThan(10000, '10000Kcal 작아야합니다.'),
 
-    bodyWishBurncal: Yup.number("소수점 둘째자리까지 입력 가능합니다.").required("원하시는 소모 칼로리를 입력해주세요.").positive("양수여야 합니다."),
+    bodyWishBurncal: Yup.number("소수점 둘째자리까지 입력 가능합니다.").required("원하시는 소모 칼로리를 입력해주세요.").positive("양수여야 합니다.").lessThan(10000, '10000Kcal 작아야합니다.'),
     
 })
 
