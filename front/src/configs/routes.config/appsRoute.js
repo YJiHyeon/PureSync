@@ -126,6 +126,13 @@ const appsRoute = [
         component: React.lazy(() => import('views/qnaBoard/EditArticle')),
         authority: [ADMIN, USER],
     },
+    {
+        key: 'notice.view',
+        path: `/notice/view`,
+        component: React.lazy(() => import('views/board/EditArticle')),
+        authority: [ADMIN, USER],
+    },
+
     // 마이페이지
    
 // 기존 -----------------------------------------------------------------------------------------
