@@ -25,7 +25,7 @@ public class MailController {
             , HttpServletResponse response) throws IOException {
         ResultDto resultDto = mailService.checkVerificationCode(email, verificationCode);
         if (resultDto!=null)
-            response.sendRedirect(EmailConstant.VERIFY_DOMAIN +"/sign-in");
+            response.sendRedirect(EmailConstant.VERIFY_DOMAIN +"/landing");
         return resultDto;
     }
 

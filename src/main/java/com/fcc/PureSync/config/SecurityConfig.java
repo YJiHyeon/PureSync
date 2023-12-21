@@ -79,7 +79,8 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .portMapper(portMapper -> portMapper
                         .http(9000)
-                        .mapsTo(9443));
+                        .mapsTo(9443))
+                .formLogin(config-> config.disable());
         return httpSecurity.build();
     }
 

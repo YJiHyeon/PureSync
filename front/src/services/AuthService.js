@@ -13,7 +13,7 @@ export async function apiSignIn(data) {
 export async function apiSignUp(data) {
     return ApiService.fetchData({
 
-        url: 'member/sign-up',
+        url: '/member/sign-up',
         method: 'post',
         data,
     })
@@ -22,7 +22,7 @@ export async function apiSignUp(data) {
 export async function apiForgotPassword(data) {
     return ApiService.fetchData({
 
-        url: `member/searchId/${data.email}`,
+        url: `/member/searchId/${data.email}`,
         method: 'get',
         data,
     })
@@ -31,7 +31,7 @@ export async function apiForgotPassword(data) {
 export async function apiResetPassword(data) {
     return ApiService.fetchData({
         
-        url: 'member/searchPassword',
+        url: '/member/searchPassword',
         method: 'post',
         data,
     })

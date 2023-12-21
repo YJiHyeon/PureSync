@@ -10,7 +10,7 @@ const validationSchema = Yup.object().shape({
     email: Yup.string().required('이메일을 다시 확인해주세요.'),
 })
 
-const ForgotPasswordForm = (props) => {
+const ForgotIdForm = (props) => {
     const { disableSubmit = false, className, signInUrl = '/sign-in' } = props
 
     const [emailSent, setEmailSent] = useState(false);
@@ -114,4 +114,4 @@ const ForgotPasswordForm = (props) => {
     )
 }
 
-export default ForgotPasswordForm
+export default ForgotIdForm;
