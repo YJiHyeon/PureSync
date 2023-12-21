@@ -6,11 +6,33 @@ import { Field, Form, Formik } from 'formik'
 import * as Yup from 'yup' //유효성검사
 import dayjs from 'dayjs';
 import useAuth from 'utils/hooks/useAuth'
-// import FormPatternInput from 'components/shared/FormPatternInput'
 
 const today = new Date();
 const minAgeDate = dayjs(today).subtract(14, 'year').toDate();
 const ALERT_MEMBIRT = `만 15세 미만은 가입할 수 없습니다.`;
+
+
+const formatDate = (input) => {
+    if (!input) return '';
+
+    if (input instanceof Date) {
+        return dayjs(input).format('YYYY-MM-DD');
+    }
+
+    if (typeof input == 'string') {
+        if (input.length <= 4) {
+            return input;
+        } else if (input.length <= 6) {
+            console.log("input.length",input.length)
+            console.log("input", input)
+            return `${input.slice(0, 4)}-${input.slice(4)}`;
+        } else if (input.length <= 8) {
+            return `${input.slice(0, 4)}-${input.slice(4, 6)}-${input.slice(6)}`;
+        }
+    }
+
+    return input;
+};
 
 
 const validationSchema = Yup.object().shape({
@@ -38,6 +60,7 @@ const validationSchema = Yup.object().shape({
     memBirth: Yup.date()
         .required('생년월일을 입력해주세요.')
         .max(minAgeDate, ALERT_MEMBIRT),
+
     memPassword: Yup.string()
         .required('비밀번호를 입력해주세요.')
         .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/, '영문 숫자 특수문자를 조합하여 비밀번호를 만들어주세요.')
@@ -58,12 +81,6 @@ const SignUpForm = ({ onSubmit, ...props }) => {
     const [duplicateCheckMessage, setDuplicateCheckMessage] = useState({});
     const [message, setMessage] = useTimeOutMessage()
 
-
-    const [memBirth, setMemBirth] = useState(0);
-
-    const handleMemBirthChange = (value) => {
-        setMemBirth(value);
-    }
 
 
     const onSignUp = async (values, setSubmitting) => {
@@ -94,7 +111,7 @@ const SignUpForm = ({ onSubmit, ...props }) => {
                     memId: '',
                     memNick: '',
                     memEmail: '',
-                    memBirth: null,
+                    memBirth: '',
                     memGender: '',
                     memPassword: '',
                     confirmMemPassword: '',
@@ -172,10 +189,16 @@ const SignUpForm = ({ onSubmit, ...props }) => {
                             >
                                 <Field name="memBirth">
                                     {({ field, form }) => (
-                                        <DatePickerUpdate
+                                        <DatePickerUpdate inputtable
+                                            inputtableBlurClose={false}
+                                            placeholder="YYYY-MM-DD"
                                             field={field}
                                             form={form}
+                                            maxLength="8"
                                             value={field.value}
+                                            onChange={(newValue) => {
+                                                formatDate(newValue)
+                                            }}
                                         />
                                     )}
                                 </Field>
@@ -185,6 +208,28 @@ const SignUpForm = ({ onSubmit, ...props }) => {
                                 format="####-##-##"
                                 onValueChange={(e) => handleMemBirthChange}
                             /> */}
+                            {/* 임의 추가 */}
+                            {/* <Field name="memBirth">
+                                {({ field, form }) => (
+                                    <div>
+                                        <Input
+                                            value={field.value}
+                                            onChange={(e) => {
+                                                const formattedValue = formatDate(e.target.value);
+                                                form.setFieldValue(field.name, formattedValue);
+                                            }}
+                                            onBlur={() => form.setFieldTouched(field.name)}
+                                        />
+                                        <DatePickerUpdate
+                                            inputtable={false} // 사용자 입력을 받지 않음
+                                            field={field}
+                                            form={form}
+                                            value={field.value ? new Date(field.value) : null}
+                                        />
+                                    </div>
+                                )}
+                            </Field> */}
+
                             {/* 성별 */}
                             <FormItem
                                 label="성별"
