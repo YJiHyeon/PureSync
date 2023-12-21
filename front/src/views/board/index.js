@@ -17,11 +17,10 @@ const Customers = () => {
     const [totalPages, setTotalPages] = useState(1);
 
     const onPaginationChange = (number) => {
-        console.log('onPaginationChange', number)
+        setLoading(true);
         apiGetArticleList(number-1)
         .then((res) => {
             setboardList(res.data.data.boardPage);
-            console.log(res.data.data.totalPages);
             setTotalPages(res.data.data.totalPages);
             setLoading(false);
             setNumber(number);
@@ -89,7 +88,7 @@ const Customers = () => {
                     )}
                 </Table>
 
-                <div>
+                <div className='text-center mt-5'>
                     <Pagination onChange={onPaginationChange} total={totalPages}/>
                 </div>
 

@@ -17,10 +17,6 @@ export async function apiPostSleepCalendar(data) {
       data: data,
       headers : {
         'Content-Type': 'application/json', 
-
-      headers: {
-        'Content-Type': 'application/json',
-
       }
   })
 }
