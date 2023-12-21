@@ -85,7 +85,7 @@ const ArticleContent = ({ articleId }) => {
             .then((res) => {
                 navigate('/board');
             })
-            .catch(error => { console.log(error) })
+            
     };
 
     const commentRegister = () => {

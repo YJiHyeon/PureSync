@@ -302,8 +302,12 @@ public class BoardService {
         List<BoardDto> boardDetailDtoList = boardPage.stream()
                 .map(BoardDto::BoardAllDetailDto)
                 .toList();
+        Long totalPost = boardRepository.countByBoardStatusNot(0);
+        int pageSize = pageable.getPageSize();
+        long totalPages = (totalPost + pageSize - 1) / pageSize;
         HashMap<String, Object> map = new HashMap<>();
         map.put("boardPage", boardDetailDtoList);
+        map.put("totalPages",totalPages);
         return buildResultDto(HttpStatus.OK.value(), HttpStatus.OK, "게시판 전체 조회 성공", map);
     }
 
