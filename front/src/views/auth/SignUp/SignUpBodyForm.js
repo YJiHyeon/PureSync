@@ -23,8 +23,6 @@ const validationSchema = Yup.object().shape({
 
 
 const SignUpBodyForm = ({ formData, className, signInUrl }) => {
-    // const { disableSubmit = false, className, signInUrl = '/sign-in' } = props
-    // const { signUp } = useAuth()
     const disableSubmit = false;
     const [message, setMessage] = useTimeOutMessage()
 

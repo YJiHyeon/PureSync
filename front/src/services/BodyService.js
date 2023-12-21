@@ -2,11 +2,11 @@ import ApiService from './ApiService'
 
 
 
-
 export async function apiGetSleepCalendar() {
     return ApiService.fetchData({
         url: process.env.REACT_APP_HOST_URL + `/api/sleep`,
         method: 'get',
+
     })
 }
 
@@ -17,6 +17,10 @@ export async function apiPostSleepCalendar(data) {
       data: data,
       headers : {
         'Content-Type': 'application/json', 
+
+      headers: {
+        'Content-Type': 'application/json',
+
       }
   })
 }

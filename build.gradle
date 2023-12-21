@@ -73,6 +73,8 @@ dependencies {
 
 	//타입리프 사용자 로그인 확인
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.1.RELEASE'
+	//유효성 검사
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '3.2.0'
 
 }
 

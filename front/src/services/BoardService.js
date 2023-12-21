@@ -1,8 +1,8 @@
 import ApiService from './ApiService'
 
-export async function apiGetArticleList() {
+export async function apiGetArticleList(number) {
     return  ApiService.fetchData({
-        url: 'http://localhost:9000/api/board',
+        url: `http://localhost:9000/api/board?page=${number}&size=10`,
         method: 'get',
     });
 }
