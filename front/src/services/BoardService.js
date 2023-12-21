@@ -86,6 +86,14 @@ export async function apiGetNotice() {
     })
 }
 
+export async function apiGetNoticeView(params) {
+    return ApiService.fetchData({
+        url: process.env.REACT_APP_HOST_URL + `/api/notice/view/${params}`,
+        method: 'get',
+    })
+}
+
+
 
 // =================================================
 
