@@ -2,18 +2,11 @@ import React, { useState, useRef, forwardRef, useEffect } from 'react'
 import { DatePicker, Button } from 'components/ui'
 import Menu from 'components/body/menu'
 import Exercise from 'components/body/exercise'
-import Axios from 'axios'
 import Summry from 'components/body/summary'
-import getHeaderCookie from 'utils/hooks/getHeaderCookie'
-import { parseJwt, getMemInfoFromToken } from 'utils/hooks/parseToken'
 import { apiGetMenu, apiDeleteMenu, apiGetExercise, apiDeleteExercise, apiGetSummary } from 'services/BodyRecord'
 
 const BodyMenu = () => {
 
-    //Header Cookie
-    const access_token = getHeaderCookie();
-    let parse_token = parseJwt(access_token);
-    let { memId, memSeq } = getMemInfoFromToken(parse_token);
 
     // 날짜 계산 ----------------------------------------------------------------
     let today = new Date();
@@ -50,11 +43,9 @@ const BodyMenu = () => {
 
     // 식단 리스트 불러오기
     const callMenu = () => {
-        if (access_token === "") return;
         apiGetMenu(sendMenuData)
             .then((res) => {
                 const menuList = res.data.data.menuList;
-                console.log(res);
                 let breakfastCalories = 0;
                 let lunchCalories = 0;
                 let dinnerCalories = 0;
@@ -102,7 +93,6 @@ const BodyMenu = () => {
         const deleteMenuData = {
             menuSeq: menu_seq
         };
-        if (access_token === "") return;
         apiDeleteMenu(deleteMenuData)
             .then((res) => {
                 setMenuRefresh(!menuRefresh);
@@ -123,7 +113,6 @@ const BodyMenu = () => {
 
 
     const callExercise = () => {
-        if (access_token === "") return;
         apiGetExercise(sendExerciseData)
             .then((res) => {
                 setExerciseData(res.data.data.exerciseList);
@@ -148,7 +137,6 @@ const BodyMenu = () => {
         const deleteExerciseData = {
             elSeq: el_seq
         };
-        if (access_token === "") return;
         apiDeleteExercise(deleteExerciseData)
             .then((res) => {
                 setExerciseRefresh(!exerciseRefresh);
@@ -172,7 +160,6 @@ const BodyMenu = () => {
 
     // 데이터 불러오기
     const callSummary = () => {
-        if (access_token === "") return;
         apiGetSummary(sendSummaryData)
             .then((res) => {
                 const menuTotalWhenList = res.data.data.menuTotalWhenList;
