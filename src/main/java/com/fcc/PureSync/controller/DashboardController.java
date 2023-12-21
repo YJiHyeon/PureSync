@@ -25,7 +25,6 @@ public class DashboardController {
             LocalDate localDate = LocalDate.now();
             baseDate = localDate.toString();
         }
-
         return dashboardService.getDashboardInfo(customUserDetails.getMemSeq(), baseDate);
     }
 

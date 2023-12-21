@@ -12,4 +12,6 @@ public interface LikesRepository extends JpaRepository<Likes, Long> {
 
 
     Long countByMemberAndBoard(Member member, Board board);
+
+//    Long countByMemIdAndBoard(String memId, Board board);
 }

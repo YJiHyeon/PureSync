@@ -100,6 +100,26 @@ public class LikesService {
         return buildResultDto(HttpStatus.CREATED.value(), HttpStatus.CREATED, "좋아요 개수 확인", map);
     }
 
+    // Optional<Board> findById(Long boardSeq);
+    //보드 시퀀스로 보드 아이디를 찾고 이를 보드 정보 반환
+    // @Query("SELECT COUNT(a) FROM Likes a WHERE a.board = :board")
+    // Long countLikesByBoard(@Param("board") Board board);
+    // 보드의 좋아요 전체 수 반환
+    // 이 후 요청
+
+    //id로 member 정보 찾고 member 객체 반환
+    //보드 시퀀스로 보드의 정보 가져오기
+    //아이디와 보드시퀀스로 좋아요 테이블에서 Like_seq 가져오는건가?
+    //그 후 좋아요를 눌렀나 안눌렀나 확인
+    
+    //보드 시퀀스로 보드 아이디를 보드 정보를 반환 clear
+    //아이디와 보드 시퀀스로 값이 있으면  delete 있으면 update
+    //시퀀스 값은 boardSeq = 0 또는 boardSeq>0 두 조건 중 하나를 만족한다.
+    //보드의 전체 좋아요 전체 수와 boardSeq값 반환
+
+
+    //
+
 
     public ResultDto findMyLike(Long boardSeq, String id) {
 
@@ -109,6 +129,44 @@ public class LikesService {
                 .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_ARTICLE));
         Long findMyLikes = likesRepository.countByMemberAndBoard(member, board);
         HashMap<String, Object> map = new HashMap<>();
+        map.put("findMyLikes", findMyLikes);
+        return buildResultDto(HttpStatus.CREATED.value(), HttpStatus.CREATED, "좋아요 개수 확인", map);
+    }
+
+    public ResultDto boardLikes(Long boardSeq, String memId){
+        //보드 시퀀스로 보드 아이디를 보드 정보를 반환 clear
+        Board board = boardRepository.findById(boardSeq)
+                .orElseThrow(() -> new CustomException(CustomExceptionCode.NOT_FOUND_ARTICLE));
+
+        //유저로 유정 정보 가져오기
+        Member member = memberRepository.findByMemId(memId).orElseThrow(()->new CustomException(CustomExceptionCode.NOT_FOUND_USER));
+
+        //전체 좋아요 수 구하기
+        Long totalBoardLikes = boardRepository.countLikesByBoard(board);
+
+        //해당 보드의 좋아요 객체 정보 가져오기
+        Likes findLike = likesRepository.findByMemberAndBoard(member, board);
+
+        //멤버객체와 보드 객체로 보드의 좋아요 총 수 구하기 1또는 0
+        Long findMyLikes = likesRepository.countByMemberAndBoard(member, board);
+        System.out.println("findMyLikes::::::::::" + findMyLikes);
+
+        //정보가 있을 때 삭제
+        if(findMyLikes==1)
+            likesRepository.delete(findLike);
+
+        //정보가 없을 때 등록
+        if(findMyLikes==0) {
+            Likes updatesLikes =
+                    Likes.builder()
+                            .member(member)
+                            .board(board)
+                            .build();
+            likesRepository.save(updatesLikes);
+        }
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("totalBoardLikes", totalBoardLikes);
         map.put("findMyLikes", findMyLikes);
         return buildResultDto(HttpStatus.CREATED.value(), HttpStatus.CREATED, "좋아요 개수 확인", map);
     }

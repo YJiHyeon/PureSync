@@ -75,7 +75,10 @@ dependencies {
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.1.RELEASE'
 	//유효성 검사
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '3.2.0'
-
+	//JPA 캐시
+	dependencies {
+		implementation 'org.hibernate:hibernate-ehcache:5.3.34.Final'
+	}
 }
 
 tasks.named('bootBuildImage') {
