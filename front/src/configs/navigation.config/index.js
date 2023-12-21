@@ -5,11 +5,11 @@ import authNavigationConfig from './auth.navigation.config'
 import docNavigationConfig from './doc.navigation.config'
 
 const navigationConfig = [
-    ...appsNavigationConfig,
+    //...appsNavigationConfig,
     ...uiComponentNavigationConfig,
     ...pagesNavigationConfig,
     ...authNavigationConfig,
-    ...docNavigationConfig,
+    // ...docNavigationConfig,
 ]
 
 export default navigationConfig
