@@ -7,6 +7,7 @@ import ActionLink from 'components/shared/ActionLink'
 import { apiGetArticleList, apiGetNotice } from 'services/BoardService'
 import Pagination from 'components/ui/Pagination'
 import { HiOutlineSpeakerphone } from 'react-icons/hi'
+import { Link } from 'react-router-dom'
 
 const { Tr, Th, Td, THead, TBody } = Table
 
@@ -76,25 +77,30 @@ const Customers = () => {
                     ) : (
                         <TBody>
                             {noticeList.length > 0 ? (
-                                noticeList.map((notice) => (
-                                    <Tr key={notice.notice_seq}>
-                                        <Td >
-                                            <span className="flex items-center rounded-full gap-1">
-                                                <span
-                                                    className='text-red-600 bg-red-100 dark:text-red-100 dark:bg-red-500/20 p-1 avatar-circle'
-                                                >
-                                                    <HiOutlineSpeakerphone />
+                                noticeList.map((notice) => {
+                                    console.log(notice);
+                                    return (
+
+                                        <Tr key={notice.notice_seq}>
+                                            <Td >
+                                                <span className="flex items-center rounded-full gap-1">
+                                                    <span
+                                                        className='text-red-600 bg-red-100 dark:text-red-100 dark:bg-red-500/20 p-1 avatar-circle'
+                                                    >
+                                                        <HiOutlineSpeakerphone />
+                                                    </span>
                                                 </span>
-                                            </span>
-                                        </Td>
-                                        <Td >
-                                            <ActionLink to={`/notice/view/${notice.notice_seq}`}>{notice.notice_title}</ActionLink>
-                                        </Td>
-                                        <Td >{notice.notice_writer}</Td>
-                                        <Td >{notice.notice_wdate}</Td>
-                                        <Td>-</Td>
-                                    </Tr>
-                                ))
+                                            </Td>
+                                            <Td >
+                                            <ActionLink to={`/notice/view?id=${notice.notice_seq}`}>{notice.notice_title}</ActionLink>
+                                                    {/* <Link to={{ PathNm`/notice/view?id=${notice.notice_seq}`, data = { notice }}  >{notice.notice_title}</Link> */}
+                                            </Td>
+                                            <Td >{notice.notice_writer}</Td>
+                                            <Td >{notice.notice_wdate}</Td>
+                                            <Td>-</Td>
+                                        </Tr>
+                                    )
+                                })
                             ) : (
                                 <Tr>
                                     <Td colSpan="5" className="text-center">게시물이 없습니다.</Td>

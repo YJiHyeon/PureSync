@@ -127,9 +127,9 @@ const appsRoute = [
     //     authority: [ADMIN, USER],
     // },
     {
-        key: 'notice.view',
+        key: 'notice.detail',
         path: `/notice/view`,
-        component: React.lazy(() => import('views/board/EditArticle')),
+        component: React.lazy(() => import('views/board/Article/notice')),
         authority: [ADMIN, USER],
     },
     {
