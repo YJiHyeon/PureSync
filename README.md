@@ -101,7 +101,7 @@
 <img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=Github&logoColor=white"/></a>
 
 ## 🔗 프로젝트 아키텍처
-![PureSync 아키텍처](https://github.com/YJiHyeon/PureSync/assets/55646863/5e279750-f176-4ec3-bb33-d1ead5d204b6)
+<img width="1124" alt="스크린샷 2023-12-22 오전 10 44 49" src="https://github.com/YJiHyeon/PureSync/assets/55646863/322fbc1e-4110-4f55-b604-b892880ba887">
 
 
 ## 💾 ERD
