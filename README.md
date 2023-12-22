@@ -100,6 +100,10 @@
 <img src="https://img.shields.io/badge/Visual_Studio_Code-007ACC?style=flat-square&logo=VisualStudioCode&logoColor=white"/></a>
 <img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=Github&logoColor=white"/></a>
 
+## 🔗 프로젝트 아키텍처
+![PureSync 아키텍처](https://github.com/YJiHyeon/PureSync/assets/55646863/5e279750-f176-4ec3-bb33-d1ead5d204b6)
+
+
 ## 💾 ERD
 ![PureSync ERD](https://github.com/YJiHyeon/PureSync/assets/55646863/4f5d75d1-fd12-4660-b306-83f7a658b96c)
 
